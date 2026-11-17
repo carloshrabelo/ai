@@ -95,11 +95,11 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
               id={filtersId}
               label={t.filters.title}
               onClose={() => setFiltersOpen(false)}
-              footer={
-                <Button className="w-full" onClick={() => setFiltersOpen(false)}>
+              footer={(close) => (
+                <Button className="w-full" onClick={close}>
                   {t.filters.done}
                 </Button>
-              }
+              )}
             >
               <GenreFilter plain />
             </BottomSheet>

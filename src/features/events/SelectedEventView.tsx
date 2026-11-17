@@ -3,6 +3,7 @@ import { type ReactNode, useEffect, useId, useRef } from 'react'
 import { IconButton } from '../../components/ui/Button'
 import { Card } from '../../components/ui/Card'
 import type { IsoDate } from '../../data/dates'
+import { useModalTransition } from '../../components/ui/useModalTransition'
 import { EventDetails, EventDetailsSkeleton } from './EventDetails'
 import { useEventById } from './useEventById'
 import { useI18n } from '../../i18n/useI18n'
@@ -64,33 +65,27 @@ export function EventDetailsPanel({
 export function EventDetailsDrawer({ startDate, eventId, onClose }: ViewProps) {
   const headingId = useId()
   const dialogRef = useRef<HTMLDialogElement>(null)
+  // Entra e sai pela direita, como uma página.
+  const { visible, requestClose } = useModalTransition(dialogRef, onClose)
 
   useEffect(() => {
-    const dialog = dialogRef.current
-    if (!dialog) return
-    if (!dialog.open) dialog.showModal()
-    // A página por trás não rola enquanto o drawer está aberto.
-    const root = document.documentElement
-    const previous = root.style.overflow
-    root.style.overflow = 'hidden'
     document.getElementById(headingId)?.focus({ preventScroll: true })
-    return () => {
-      root.style.overflow = previous
-    }
   }, [headingId])
 
   return (
     <dialog
       ref={dialogRef}
       aria-labelledby={headingId}
-      // Esc: o navegador fecharia o <dialog> sozinho; quem fecha é a URL.
+      // Esc: fecha com animação; quem fecha de fato é a URL (onClose).
       onCancel={(event) => {
         event.preventDefault()
-        onClose()
+        requestClose()
       }}
-      className="fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none translate-x-0 overflow-y-auto bg-bg p-0 text-fg transition-transform duration-300 ease-out backdrop:bg-transparent starting:open:translate-x-full"
+      className={`fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none overflow-y-auto bg-bg p-0 text-fg transition-transform duration-300 ease-out backdrop:bg-black/40 backdrop:transition-opacity backdrop:duration-300 ${
+        visible ? 'translate-x-0 backdrop:opacity-100' : 'translate-x-full backdrop:opacity-0'
+      }`}
     >
-      <DrawerHeader onClose={onClose} />
+      <DrawerHeader onClose={requestClose} />
       <div className="mx-auto max-w-3xl px-4 py-4 pb-[calc(1rem+env(safe-area-inset-bottom))] md:px-6">
         <DetailsBody startDate={startDate} eventId={eventId} headingId={headingId} />
       </div>
