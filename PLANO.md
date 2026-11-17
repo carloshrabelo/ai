@@ -343,12 +343,14 @@ Cada passo é um commit independente que mantém o app funcionando.
 > Feito: `Header` (título por rota via `handle`), `BottomNav` até 1279px, `Sidebar` a partir de `xl` com um *slot* (`SidebarPortal`) para a página colocar atalhos e filtros, e coluna do mapa (360/480px) na rota Dança. Áreas ainda não implementadas aparecem como blocos tracejados. Conferido com screenshots em 375, 768, 1280 e 1920px, claro e escuro. Ícones: `lucide-react`. Nome provisório do app em `src/app.ts`.
 
 ### Passo 4 — Lista de eventos
-- [ ] `EventCard` com título, local, horário, chips, preço e seta que expande (descrição sanitizada com DOMPurify + links).
-- [ ] `EventList`: feed agrupado por dia, 1 coluna até `xl`, 2 colunas acima.
-- [ ] Scroll infinito: sentinela com `IntersectionObserver` → `fetchNextPage()` (+2 semanas), skeleton no fim enquanto carrega, botão "Carregar mais 2 semanas" e mensagem de fim do feed.
-- [ ] `Skeleton` base + `EventCardSkeleton` e `EventListSkeleton`, com as mesmas dimensões do card real (ver "Estados de carregamento").
-- [ ] `EventList` dentro de `<Suspense>` + `ErrorBoundary` próprios: skeleton no primeiro carregamento, erro com botão "tentar de novo" e estado vazio ("Nenhum evento nas próximas 2 semanas", com o botão para carregar mais).
-- [ ] Botão "adicionar ao calendário": abre o `htmlLink` do Google ou gera um `.ics`.
+- [x] `EventCard` com título, local, horário, chips, preço e seta que expande (descrição sanitizada com DOMPurify + links).
+- [x] `EventList`: feed agrupado por dia, 1 coluna até `xl`, 2 colunas acima.
+- [x] Scroll infinito: sentinela com `IntersectionObserver` → `fetchNextPage()` (+2 semanas), skeleton no fim enquanto carrega, botão "Carregar mais 2 semanas" e mensagem de fim do feed.
+- [x] `Skeleton` base + `EventCardSkeleton` e `EventListSkeleton`, com as mesmas dimensões do card real (ver "Estados de carregamento").
+- [x] `EventList` dentro de `<Suspense>` + `ErrorBoundary` próprios: skeleton no primeiro carregamento, erro com botão "tentar de novo" e estado vazio ("Nenhum evento nas próximas 2 semanas", com o botão para carregar mais).
+- [x] Botão "adicionar ao calendário": abre o `htmlLink` do Google ou gera um `.ics`.
+
+> Feito: `src/features/events/` (`EventCard`, `EventFeed`, `groupByDay`, `format`, `description`). Uma grade só para o feed, com o cabeçalho do dia ocupando a linha inteira. Horários sempre no fuso de Lisboa. "Adicionar ao calendário" abre o `htmlLink` do Google (o `.ics` ficou de fora). Descrição sanitizada com DOMPurify e testada com jsdom; URLs soltas viram links. Já inclui a regra do passo 5 sobre eventos que passam da meia-noite e festivais.
 
 ### Passo 5 — Navegação por data
 - [ ] `DayShortcuts` (Ontem / Hoje / Amanhã / data atual).
@@ -356,7 +358,7 @@ Cada passo é um commit independente que mantém o app funcionando.
 - [ ] Data inicial do feed em `?date=2026-07-11` na URL, para o link ser compartilhável. Sem `?date=`, começa hoje.
 - [ ] Escolher um dia já carregado rola até ele; um dia fora do que foi carregado começa um feed novo a partir dele.
 - [ ] Ao rolar a lista, o dia destacado na faixa da semana acompanha o cabeçalho de dia visível.
-- [ ] Eventos que passam da meia-noite (ex.: 22:00–04:00) aparecem no dia em que começam; festivais aparecem em todos os dias do intervalo.
+- [x] Eventos que passam da meia-noite (ex.: 22:00–04:00) aparecem no dia em que começam; festivais aparecem em todos os dias do intervalo. (feito no passo 4, `groupByDay`)
 
 ### Passo 6 — Filtros por gênero
 - [ ] Painel "Filtro Ativo" com um chip por gênero de `GENRES` que aparece nos eventos carregados (na cor de `genreToPalette`), selecionáveis, e botão "limpar".
