@@ -1,4 +1,4 @@
-import { expandGenres, GENRES, type Genre, genreSlug } from './genres'
+import { expandGenres, GENRE_INCLUDES, GENRES, type Genre, genreSlug } from './genres'
 
 /** Nome do parâmetro na URL: ?genres=salsa,west-coast-swing,outros */
 export const GENRES_PARAM = 'genres'
@@ -74,9 +74,12 @@ export function canonicalGenresSearch(params: URLSearchParams): URLSearchParams 
 export function matchesGenres(eventGenres: readonly Genre[], selected: readonly GenreFilterValue[]): boolean {
   if (selected.length === 0) return true
   if (eventGenres.length === 0) return selected.includes(OTHER_GENRES)
-  // "Latinas" também passa no filtro de Salsa e de Bachata (GENRE_INCLUDES).
+  // Evento "Latinas" passa no filtro de Salsa, Bachata e Merengue; e o filtro de um conjunto
+  // ("Latinas") pega o grupo todo: eventos com a tag do conjunto ou com qualquer gênero dele.
   const expanded = expandGenres(eventGenres)
-  return selected.some((value) => value !== OTHER_GENRES && expanded.has(value))
+  return selected.some(
+    (value) => value !== OTHER_GENRES && (expanded.has(value) || (GENRE_INCLUDES[value]?.some((g) => expanded.has(g)) ?? false)),
+  )
 }
 
 /** "?a=1&genres=salsa,zouk" com vírgulas legíveis (URLSearchParams codifica como %2C). */

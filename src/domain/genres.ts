@@ -13,6 +13,7 @@ export const GENRES = [
   'West Coast Swing',
   'Bolero',
   'Samba',
+  'BR',
 ] as const
 
 export type Genre = (typeof GENRES)[number]
@@ -55,6 +56,7 @@ export type GenreColor =
   | 'coral'
   | 'lime'
   | 'indigo'
+  | 'emerald'
 
 export const genreToPalette: Record<Genre, GenreColor> = {
   Bachata: 'wine',
@@ -71,16 +73,27 @@ export const genreToPalette: Record<Genre, GenreColor> = {
   Latinas: 'coral',
   Afro: 'lime',
   Merengue: 'indigo',
+  BR: 'emerald',
 }
 
 /**
  * Gêneros "guarda-chuva": o evento aparece também no filtro dos gêneros incluídos
- * (Latinas → Salsa, Bachata e Merengue; Afro → Kizomba e Semba).
+ * (Latinas → Salsa, Bachata e Merengue; Afro → Kizomba e Semba; BR → Forró, Zouk e Samba).
  */
 export const GENRE_INCLUDES: Partial<Record<Genre, readonly Genre[]>> = {
   Latinas: ['Salsa', 'Bachata', 'Merengue'],
   Afro: ['Kizomba', 'Semba'],
+  BR: ['Forró', 'Zouk', 'Samba'],
 }
+
+/** Conjuntos para os filtros: o gênero "guarda-chuva" e os gêneros dele. */
+export const GENRE_GROUPS = Object.entries(GENRE_INCLUDES).map(([umbrella, genres]) => ({
+  umbrella: umbrella as Genre,
+  genres: genres as readonly Genre[],
+}))
+
+/** O gênero é um conjunto (Latinas, Afro, BR)? */
+export const isUmbrella = (genre: Genre) => !!GENRE_INCLUDES[genre]
 
 /**
  * Gêneros para exibir nas tags. Um gênero "guarda-chuva" fica oculto quando algum dos gêneros
@@ -99,6 +112,7 @@ export function visibleGenres(genres: readonly Genre[]): Genre[] {
 const UMBRELLA_EVIDENCE: Partial<Record<Genre, RegExp>> = {
   Latinas: /(?<![\p{L}\p{N}])latin(?:a|as|o|os)?(?![\p{L}\p{N}])/iu,
   Afro: /(?<![\p{L}\p{N}])(?:afro|africana|africanas|african)(?![\p{L}\p{N}])/iu,
+  BR: /(?<![\p{L}\p{N}])(?:br|brasil|brazil|brasileir[ao]s?|brazilian)(?![\p{L}\p{N}])/iu,
 }
 
 /**

@@ -7,7 +7,7 @@ import { Skeleton } from '../../components/ui/Skeleton'
 import type { IsoDate } from '../../data/dates'
 import { eventsInfiniteQueryOptions, flattenEvents } from '../../data/queries'
 import { FILTER_VALUES, type GenreFilterValue, OTHER_GENRES } from '../../domain/genreFilter'
-import { expandGenres } from '../../domain/genres'
+import { expandGenres, GENRE_GROUPS } from '../../domain/genres'
 import { LocationControl } from '../location/LocationControl'
 import { useGenreFilter } from './useGenreFilter'
 
@@ -15,8 +15,9 @@ import { useGenreFilter } from './useGenreFilter'
 const SKELETON_WIDTHS = ['w-16', 'w-20', 'w-14', 'w-18', 'w-12', 'w-16']
 
 /**
- * Painel "Filtros": um chip por gênero presente nos eventos carregados, "Outros" para os eventos
- * fora da lista (mais os já marcados, para poder desmarcar) e o botão "Limpar".
+ * Painel "Filtros": os conjuntos (Latinas, Afro, BR), cada um com seus gêneros, e depois os
+ * estilos avulsos e "Outros". Só aparecem gêneros presentes nos eventos carregados (mais os já
+ * marcados, para poder desmarcar). Marcar um conjunto filtra o grupo todo.
  */
 export function GenreFilter({ startDate }: { startDate: IsoDate }) {
   const { selected, toggle, clear } = useGenreFilter()
@@ -31,6 +32,14 @@ export function GenreFilter({ startDate }: { startDate: IsoDate }) {
     if (events.some((event) => event.genres.length === 0)) present.add(OTHER_GENRES)
     return FILTER_VALUES.filter((value) => present.has(value) || selected.includes(value))
   }, [data, selected])
+
+  // Conjuntos com algum gênero disponível; o resto vai para a linha dos estilos avulsos.
+  const groups = GENRE_GROUPS.map(({ umbrella, genres }) => ({
+    umbrella,
+    members: genres.filter((genre) => available.includes(genre)),
+  })).filter(({ umbrella, members }) => members.length > 0 || available.includes(umbrella))
+  const grouped = new Set<GenreFilterValue>(GENRE_GROUPS.flatMap(({ umbrella, genres }) => [umbrella, ...genres]))
+  const standalone = available.filter((value) => !grouped.has(value))
 
   return (
     <Card variant="panel" as="section" aria-labelledby="genre-filter-title" className="space-y-2">
@@ -62,16 +71,40 @@ export function GenreFilter({ startDate }: { startDate: IsoDate }) {
       ) : available.length === 0 ? (
         <p className="text-sm text-fg-muted">Nenhum gênero nos eventos carregados.</p>
       ) : (
-        <div role="group" aria-label="Gêneros" className="flex flex-wrap gap-2">
-          {available.map((value) => (
-            <ToggleChip
-              key={value}
-              // "Outros" usa o chip neutro, como os eventos sem gênero da lista.
-              {...(value === OTHER_GENRES ? { label: value } : { genre: value })}
-              pressed={selected.includes(value)}
-              onClick={() => toggle(value)}
-            />
+        <div role="group" aria-label="Gêneros" className="space-y-2">
+          {/* Conjuntos: chip do conjunto | gêneros dele. */}
+          {groups.map(({ umbrella, members }) => (
+            <div key={umbrella} role="group" aria-label={`Conjunto ${umbrella}`} className="flex items-start gap-2">
+              <ToggleChip
+                genre={umbrella}
+                variant="group"
+                pressed={selected.includes(umbrella)}
+                onClick={() => toggle(umbrella)}
+                title={`Todos de ${umbrella}`}
+              />
+              <span aria-hidden="true" className="mt-1 h-6 w-px shrink-0 bg-border" />
+              <div className="flex min-w-0 flex-wrap gap-2">
+                {members.map((genre) => (
+                  <ToggleChip key={genre} genre={genre} pressed={selected.includes(genre)} onClick={() => toggle(genre)} />
+                ))}
+              </div>
+            </div>
           ))}
+
+          {/* Estilos fora dos conjuntos e "Outros". */}
+          {standalone.length > 0 && (
+            <div className={`flex flex-wrap gap-2 ${groups.length > 0 ? 'border-t border-border pt-2' : ''}`}>
+              {standalone.map((value) => (
+                <ToggleChip
+                  key={value}
+                  // "Outros" usa o chip neutro, como os eventos sem gênero da lista.
+                  {...(value === OTHER_GENRES ? { label: value } : { genre: value })}
+                  pressed={selected.includes(value)}
+                  onClick={() => toggle(value)}
+                />
+              ))}
+            </div>
+          )}
         </div>
       )}
 

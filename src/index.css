@@ -50,6 +50,8 @@
   --color-genre-lime-fg: #1a2e05;
   --color-genre-indigo: #4f46e5;
   --color-genre-indigo-fg: #ffffff;
+  --color-genre-emerald: #047857;
+  --color-genre-emerald-fg: #ffffff;
 }
 
 @layer base {

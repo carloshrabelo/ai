@@ -108,6 +108,7 @@ describe('matchesGenres', () => {
 
   it('Latinas não inclui Afro (nem Kizomba/Semba)', () => {
     expect(matchesGenres(['Latinas'], ['Afro'])).toBe(false)
+    expect(matchesGenres(['Kizomba'], ['Latinas'])).toBe(false)
     expect(matchesGenres(['Latinas'], ['Kizomba'])).toBe(false)
   })
 
@@ -118,8 +119,13 @@ describe('matchesGenres', () => {
     expect(matchesGenres(['Latinas', 'Afro'], ['Forró'])).toBe(false)
   })
 
-  it('filtro "Latinas" não traz eventos só de Salsa (a inclusão é num sentido só)', () => {
-    expect(matchesGenres(['Salsa'], ['Latinas'])).toBe(false)
+  it('filtro de conjunto pega o grupo todo ("Latinas" traz eventos só de Salsa)', () => {
+    expect(matchesGenres(['Salsa'], ['Latinas'])).toBe(true)
+    expect(matchesGenres(['Merengue'], ['Latinas'])).toBe(true)
+    expect(matchesGenres(['Kizomba'], ['Latinas'])).toBe(false)
+    expect(matchesGenres(['Forró'], ['BR'])).toBe(true)
+    expect(matchesGenres(['Zouk'], ['BR'])).toBe(true)
+    expect(matchesGenres(['Swing'], ['BR'])).toBe(false)
   })
 
   it('evento sem gênero some quando há filtro', () => {
