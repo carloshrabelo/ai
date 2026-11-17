@@ -1,0 +1,26 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`toDanceEvent com o mock > gêneros de cada summary 1`] = `
+[
+  "Afro-Latinas • Salsaviva Festa_ • 5€ → Salsa, Bachata, Kizomba, Semba",
+  "Bachata • Bachata na Rua → Bachata",
+  "Forró • Forró da Liberdade • Contribuição Voluntaria → Forró",
+  "Forró • Forró do Bela • 5€ ou 7€ ou 10€ → Forró",
+  "Fusão • The Fusion Social • 5€ → (nenhum)",
+  "Kizomba • Festa Mirage • Pago → Kizomba",
+  "Kizomba • Kizomba na Rua → Kizomba",
+  "SBK • Dança na Rua → Salsa, Bachata, Kizomba",
+  "SBK • Festa na Aerlis • 7€ (4€ Sócios) → Salsa, Bachata, Kizomba",
+  "SBK • Segundas SBK → Salsa, Bachata, Kizomba",
+  "SBK • Sensual White Party • 10€ (8€ bebidas incluído) → Salsa, Bachata, Kizomba",
+  "Salsa & Bachata • Festival Tropical Oporto Dance → Salsa, Bachata",
+  "Salsa & Bachata • Latin Fiesta • 10€ → Salsa, Bachata",
+  "Salsa • Salsa na Praia Ericeira → Salsa",
+  "Samba de Gafieira • Baile do Branco e Preto Setubalense → Samba",
+  "Swing • Arraial Community Big Band → Swing",
+  "Swing • Jam sessions • 3€ → Swing",
+  "Swing • Street Jazz Concert " Tuba Skinny" & "The Invisible Tuba" • 13€ ou 17€ ou 20€ → Swing",
+  "Vários • Festival TIPDI Duo → (nenhum)",
+  "West Coas Swing • Festival Lisbon Westie Fest → West Coast Swing",
+]
+`;

@@ -37,13 +37,13 @@ function RawEventFeed({ startDate }: EventsLoaderData) {
       {data.pages.map((page) => (
         <div key={page.start} className="space-y-2">
           <h3 className="text-sm font-semibold text-slate-500 tabular-nums">
-            {page.start} → {page.end} · {page.items.length} eventos
+            {page.start} → {page.end} · {page.events.length} eventos
           </h3>
           <ul className="space-y-1 text-sm">
-            {page.items.map((event) => (
+            {page.events.map((event) => (
               <li key={event.id}>
-                <span className="text-slate-500 tabular-nums">{event.start.dateTime ?? event.start.date}</span>{' '}
-                {event.summary}
+                <span className="text-slate-500 tabular-nums">{event.start.toLocaleString('pt-BR')}</span>{' '}
+                {event.title} <span className="text-slate-500">· {event.genres.join(', ') || event.rawTag}</span>
               </li>
             ))}
           </ul>

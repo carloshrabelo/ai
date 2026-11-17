@@ -309,17 +309,19 @@ Cada passo é um commit independente que mantém o app funcionando.
 > Feito com o mock: 37 eventos em 5 janelas (29/06 → 07/09), o feed para depois de 2 janelas vazias. Falta validar com a API real quando a chave existir. No GitHub Pages, o mock fica ativo até a variável `VITE_USE_MOCK` do repositório ser `false`.
 
 ### Passo 1 — Domínio e parser
-- [ ] `genres.ts`: `GENRES`, `ALIAS` e `genreToPalette`, como na seção "Parser de gêneros".
-- [ ] `parseGenres.ts`: algoritmo de 5 passos (alias e gêneros do mais longo para o mais curto).
-- [ ] `parseSummary.ts`: separa `Tag • Nome • Preço` em `{ genres, rawTag, title, price }`. Sem ` • `, o `summary` inteiro é o título e `genres = []`.
-- [ ] `event.ts`: transforma o item do Google Calendar em `DanceEvent` (dia inteiro vs. com hora, fuso de Lisboa, venue a partir de `venues.json`).
-- [ ] Instalar **Vitest** e testar:
+- [x] `genres.ts`: `GENRES`, `ALIAS` e `genreToPalette`, como na seção "Parser de gêneros".
+- [x] `parseGenres.ts`: algoritmo de 5 passos (alias e gêneros do mais longo para o mais curto).
+- [x] `parseSummary.ts`: separa `Tag • Nome • Preço` em `{ genres, rawTag, title, price }`. Sem ` • `, o `summary` inteiro é o título e `genres = []`.
+- [x] `event.ts`: transforma o item do Google Calendar em `DanceEvent` (dia inteiro vs. com hora, fuso de Lisboa, venue a partir de `venues.json`).
+- [x] Instalar **Vitest** e testar:
   - cada chave do `ALIAS` (incluindo as que viram `''`);
   - ordem: `AFRO-LATINAS` ≠ `AFRO`, `SBKZ` ≠ `SBK`, `WCS` e `West Coas Swing` → só West Coast Swing (nunca Swing); `Swing` → só Swing;
   - maiúsculas/minúsculas e acentos (`Forro` → Forró);
   - os 37 `summary` reais do mock (snapshot).
 
 **Pronto quando:** `pnpm test` passa e o resultado bate com a tabela da seção "Parser de gêneros".
+
+> Feito: 48 testes. A normalização roda no `select` da query, então a UI já recebe `DanceEvent`.
 
 ### Passo 2 — Tema e design tokens
 - [ ] Aplicar os "Padrões visuais": tipografia, espaçamento e tamanhos. Criar componentes base (`Chip`, `Card`, `Button`, `IconButton`) que já usam esses valores, para as telas não repetirem classes soltas.
