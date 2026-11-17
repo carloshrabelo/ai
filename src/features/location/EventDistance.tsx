@@ -1,11 +1,14 @@
 import { Skeleton } from '../../components/ui/Skeleton'
 import type { Venue } from '../../domain/event'
 import { distanceKm, formatDistance } from './distance'
+import { useGeocodedVenue } from './useGeocodedEvents'
 import { useUserLocation } from './userLocation'
 
 /** Distância até o local do evento. Só aparece com localização liberada e local com coordenadas. */
-export function EventDistance({ venue }: { venue?: Venue }) {
+export function EventDistance({ venue: original }: { venue?: Venue }) {
   const location = useUserLocation()
+  // Só busca coordenadas de local desconhecido quando a distância vai aparecer.
+  const venue = useGeocodedVenue(original, location.status === 'granted')
   if (venue?.lat === undefined || venue.lng === undefined) return null
   if (location.status === 'pending') return <Skeleton rounded="rounded-full" className="h-4 w-12" />
   if (location.status !== 'granted') return null

@@ -39,6 +39,8 @@ export const persistOptions: Omit<PersistQueryClientOptions, 'queryClient'> = {
   // Mock e API não se misturam; mudar a versão do formato descarta o que estava salvo.
   buster: `events-v1-${USE_MOCK ? 'mock' : 'api'}`,
   dehydrateOptions: {
-    shouldDehydrateQuery: (query) => query.queryKey[0] === 'events' && query.state.status === 'success',
+    // Eventos e coordenadas buscadas no navegador (inclusive "não achou", para não repetir a busca).
+    shouldDehydrateQuery: (query) =>
+      (query.queryKey[0] === 'events' || query.queryKey[0] === 'geocode') && query.state.status === 'success',
   },
 }

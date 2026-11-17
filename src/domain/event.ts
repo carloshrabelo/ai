@@ -5,6 +5,8 @@ import type { Genre } from './genres'
 import { parseSummary } from './parseSummary'
 
 export type Venue = {
+  /** Texto original do `location` no calendário (chave do venues.json e da geocodificação). */
+  location: string
   name: string
   /** Texto do location sem o nome do local. '' quando o location é só o nome. */
   address: string
@@ -63,6 +65,7 @@ function toVenue(location: string): Venue {
   const [first, ...rest] = location.split(',').map((part) => part.trim())
   const known = VENUES[location]
   return {
+    location,
     name: known?.name ?? first,
     address: rest.join(', '),
     ...(known ? { lat: known.lat, lng: known.lng } : {}),

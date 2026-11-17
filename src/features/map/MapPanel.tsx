@@ -5,6 +5,7 @@ import { formatDayHeading, formatTimeRange } from '../events/format'
 import { useDayEvents } from '../events/useDayEvents'
 import { useEventFocus } from '../events/eventFocusStore'
 import { useEventById } from '../events/useEventById'
+import { useGeocodedEvents } from '../location/useGeocodedEvents'
 
 // Leaflet só é baixado a partir de `xl`, quando o mapa aparece.
 const EventsMap = lazy(() => import('./EventsMap'))
@@ -31,11 +32,15 @@ export function MapPanel({
   // O evento aberto aparece no mapa mesmo se for de outro dia ou estiver fora do filtro.
   const selectedId = useEventFocus((state) => state.selectedId)
   const selected = useEventById(startDate, selectedId)
-  const mapEvents = useMemo(
+  const withSelected = useMemo(
     () => (selected && !events.some((event) => event.id === selected.id) ? [...events, selected] : events),
     [events, selected],
   )
-  const withoutCoords = events.filter((event) => event.venue?.lat === undefined).length
+  // Locais fora do venues.json: coordenadas buscadas na hora (Photon), guardadas no aparelho.
+  const { events: mapEvents, pending: locating } = useGeocodedEvents(withSelected)
+  const dayIds = useMemo(() => new Set(events.map((event) => event.id)), [events])
+  const withoutCoords = mapEvents.filter((event) => dayIds.has(event.id) && event.venue?.lat === undefined).length
+  const resolvedSelected = mapEvents.find((event) => event.id === selected?.id)
 
   return (
     <section
@@ -52,7 +57,7 @@ export function MapPanel({
             </p>
             <p className="text-fg-muted tabular-nums" aria-live="polite">
               {formatDayHeading(lisbonDate(selected.start))} · {formatTimeRange(selected)}
-              {selected.venue?.lat === undefined && ' · sem local no mapa'}
+              {resolvedSelected?.venue?.lat === undefined && (locating > 0 ? ' · localizando…' : ' · sem local no mapa')}
             </p>
           </>
         ) : (
@@ -64,7 +69,7 @@ export function MapPanel({
                 : events.length === 0
                   ? 'Nenhum evento neste dia.'
                   : `${events.length} evento${events.length > 1 ? 's' : ''}${
-                      withoutCoords > 0 ? ` · ${withoutCoords} sem local no mapa` : ''
+                      locating > 0 ? ' · localizando…' : withoutCoords > 0 ? ` · ${withoutCoords} sem local no mapa` : ''
                     }`}
             </p>
           </>

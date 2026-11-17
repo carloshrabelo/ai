@@ -25,7 +25,10 @@ export type NavigationLink = {
  * - Outros (desktop): rota no Google Maps.
  * Usa as coordenadas quando conhecidas; senão, o nome e o endereço.
  */
-export function navigationLink(venue: Venue, platform: Platform = detectPlatform()): NavigationLink {
+export function navigationLink(
+  venue: Pick<Venue, 'name' | 'address' | 'lat' | 'lng'>,
+  platform: Platform = detectPlatform(),
+): NavigationLink {
   const hasCoords = venue.lat !== undefined && venue.lng !== undefined
   const coords = hasCoords ? `${venue.lat},${venue.lng}` : ''
   const address = [venue.name, venue.address].filter(Boolean).join(', ')

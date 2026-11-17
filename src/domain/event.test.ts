@@ -60,7 +60,7 @@ describe('toDanceEvent', () => {
 
   it('local desconhecido fica sem coordenadas', () => {
     const event = toDanceEvent({ ...base, location: 'Lugar Novo, Rua X, Lisboa' })
-    expect(event.venue).toEqual({ name: 'Lugar Novo', address: 'Rua X, Lisboa' })
+    expect(event.venue).toEqual({ location: 'Lugar Novo, Rua X, Lisboa', name: 'Lugar Novo', address: 'Rua X, Lisboa' })
   })
 
   it('sem location, sem venue', () => {

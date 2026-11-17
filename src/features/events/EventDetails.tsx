@@ -7,13 +7,16 @@ import type { DanceEvent } from '../../domain/event'
 import { renderDescription } from './description'
 import { EventDistance } from '../location/EventDistance'
 import { navigationLink } from '../location/navigationLink'
+import { useGeocodedVenue } from '../location/useGeocodedEvents'
 import { formatDayHeading, formatTimeRange } from './format'
 
 /** Conteúdo dos detalhes: usado no painel da coluna do mapa (`xl+`) e no drawer (abaixo de `xl`). */
 export function EventDetails({ event, headingId }: { event: DanceEvent; headingId: string }) {
   const html = useMemo(() => (event.description ? renderDescription(event.description) : ''), [event.description])
   // App de navegação do aparelho (Android: seletor de apps; iOS: Apple Maps; desktop: Google Maps).
-  const directions = event.venue ? navigationLink(event.venue) : undefined
+  // Local fora do venues.json: busca as coordenadas para a rota abrir no ponto certo.
+  const venue = useGeocodedVenue(event.venue)
+  const directions = venue ? navigationLink(venue) : undefined
 
   return (
     <div className="space-y-4">

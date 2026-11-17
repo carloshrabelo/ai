@@ -405,7 +405,10 @@ Cada passo é um commit independente que mantém o app funcionando.
 - [x] Script `pnpm venues:check [dias] [--fix]`: lista os `location` dos próximos eventos da API que não estão em `venues.json`; com `--fix`, busca as coordenadas no Nominatim (rejeitando resultados de outra região postal) e grava o arquivo.
 - [x] `pnpm lint` e `pnpm test` no workflow antes do build: o deploy não sai se falharem.
 
-> Pendente: na primeira execução contra a API real, 26 locais dos próximos 60 dias não estavam no `venues.json` (ficam sem pino e sem distância). O Nominatim parou de responder no meio do `--fix`; rodar `pnpm venues:check --fix` de novo mais tarde e conferir as coordenadas antes do commit.
+> Coordenadas dos locais (OSM, sem chave): `src/features/location/geocoding.ts`, usado pelo script e pelo app.
+> - **Action diária** (`.github/workflows/venues.yml`, 05:00 UTC ou manual): `venues:check 90 --fix` com Nominatim e Photon; se o `venues.json` mudou, faz commit e publica.
+> - **No navegador**: local fora do `venues.json` é buscado no Photon na hora (mapa, distância, rota), mostra "localizando…" e fica salvo no aparelho.
+> - Primeira execução: 26 de 26 locais novos encontrados.
 
 ## 4. Decisões
 
@@ -413,6 +416,7 @@ Cada passo é um commit independente que mantém o app funcionando.
 - **Busca de dados**: TanStack Query + Google Calendar API.
 - **Geocodificação**: Nominatim (OpenStreetMap).
 - **Mapa**: Leaflet + tiles do OpenStreetMap.
+- **Coordenadas a partir do nome**: Nominatim + Photon (OSM), na Action diária e no navegador.
 - **Nome do app**: Lisbon Social Dance.
 - **Idioma da interface**: pt-BR. Os textos dos eventos continuam como vêm da API (pt-PT).
 - **Janelas da API**: 2 semanas a partir da data inicial, com mais 2 semanas a cada fim de lista (scroll infinito).
