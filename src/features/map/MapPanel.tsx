@@ -1,7 +1,7 @@
 import { lazy, Suspense, useMemo } from 'react'
-import type { IsoDate } from '../../data/dates'
+import { type IsoDate, lisbonDate } from '../../data/dates'
 import type { GenreFilterValue } from '../../domain/genreFilter'
-import { formatDayHeading } from '../events/format'
+import { formatDayHeading, formatTimeRange } from '../events/format'
 import { useDayEvents } from '../events/useDayEvents'
 import { useEventFocus } from '../events/eventFocusStore'
 import { useEventById } from '../events/useEventById'
@@ -42,18 +42,33 @@ export function MapPanel({
       aria-label="Mapa dos eventos do dia"
       className={`relative isolate min-h-0 overflow-hidden rounded-2xl bg-genre-neutral shadow-md dark:border dark:border-border dark:shadow-none ${className}`}
     >
-      {/* Resumo por cima do mapa (Leaflet usa z-index até 1000 dentro do próprio contexto). */}
+      {/* Resumo por cima do mapa (Leaflet usa z-index até 1000 dentro do próprio contexto).
+          Com um evento aberto: nome, dia e horário dele; senão, o dia ativo e quantos eventos tem. */}
       <div className="absolute inset-x-2 top-2 z-[1000] rounded-xl bg-surface/95 px-4 py-2 text-sm shadow-sm backdrop-blur">
-        <p className="font-semibold">{formatDayHeading(day)}</p>
-        <p className="text-fg-muted" aria-live="polite">
-          {isPending
-            ? 'Carregando eventos…'
-            : events.length === 0
-              ? 'Nenhum evento neste dia.'
-              : `${events.length} evento${events.length > 1 ? 's' : ''}${
-                  withoutCoords > 0 ? ` · ${withoutCoords} sem local no mapa` : ''
-                }`}
-        </p>
+        {selected ? (
+          <>
+            <p className="truncate font-semibold" title={selected.title}>
+              {selected.title}
+            </p>
+            <p className="text-fg-muted tabular-nums" aria-live="polite">
+              {formatDayHeading(lisbonDate(selected.start))} · {formatTimeRange(selected)}
+              {selected.venue?.lat === undefined && ' · sem local no mapa'}
+            </p>
+          </>
+        ) : (
+          <>
+            <p className="font-semibold">{formatDayHeading(day)}</p>
+            <p className="text-fg-muted" aria-live="polite">
+              {isPending
+                ? 'Carregando eventos…'
+                : events.length === 0
+                  ? 'Nenhum evento neste dia.'
+                  : `${events.length} evento${events.length > 1 ? 's' : ''}${
+                      withoutCoords > 0 ? ` · ${withoutCoords} sem local no mapa` : ''
+                    }`}
+            </p>
+          </>
+        )}
       </div>
 
       <Suspense fallback={<div aria-hidden="true" className="h-full w-full animate-pulse bg-genre-neutral" />}>
