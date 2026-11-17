@@ -384,11 +384,12 @@ Cada passo é um commit independente que mantém o app funcionando.
 > Feito: `src/features/genres/` (`GenreFilter`, `useGenreFilter`). Testado no navegador, inclusive com o caminho `/ai/` do GitHub Pages.
 
 ### Passo 7 — Mapa e distância
-- [ ] **Leaflet + OpenStreetMap** (`react-leaflet`): gratuito, sem chave de API, funciona no GitHub Pages. Tiles escuros (CARTO Dark Matter) no tema escuro.
-- [ ] Pinos dos eventos do dia/filtro; clicar no pino destaca o card e vice-versa.
-- [ ] Distância: `navigator.geolocation` (com permissão) + fórmula de Haversine. Sem permissão, a distância some.
-- [ ] Carregar o mapa com `lazy` apenas em `xl+` para não pesar no mobile. Skeleton do tamanho da coluna enquanto o componente e os eventos carregam.
-- [ ] Skeleton curto no lugar da distância enquanto a geolocalização responde.
+- [x] **Leaflet + OpenStreetMap** (`react-leaflet`): gratuito e sem chave. Tiles do próprio OSM (`tile.openstreetmap.org`); no tema escuro, um filtro CSS inverte as cores dos tiles. (Os tiles da CARTO, previstos antes, passaram a exigir chave.)
+- [x] Pinos dos eventos do **dia ativo** do feed, com o filtro de gêneros aplicado. Um pino por local, na cor do gênero; vários eventos no mesmo local viram um pino com contador e lista. Clicar no pino abre os detalhes (que ocupam a coluna do mapa).
+- [x] Resumo por cima do mapa: dia, quantidade de eventos e quantos ficaram sem local no mapa.
+- [x] Distância: `navigator.geolocation` + Haversine. A localização só é pedida quando o usuário clica em "Mostrar distâncias" (na seção de filtros); se a permissão já foi dada antes, carrega sozinha. Aparece nos cards, nos detalhes e como marcador no mapa.
+- [x] Mapa carregado com `lazy` apenas em `xl+` (Leaflet fica num pacote separado).
+- [x] Skeleton do mapa enquanto o Leaflet carrega e da distância enquanto a localização responde.
 
 ### Passo 8 — Escolas e Info
 - [x] Escolas: página "Em breve". A aba está oculta na navegação até existir uma fonte de dados (a rota `/escolas` continua existindo).
@@ -407,6 +408,7 @@ Cada passo é um commit independente que mantém o app funcionando.
 **Tomadas:**
 - **Busca de dados**: TanStack Query + Google Calendar API.
 - **Geocodificação**: Nominatim (OpenStreetMap).
+- **Mapa**: Leaflet + tiles do OpenStreetMap.
 - **Nome do app**: Lisbon Social Dance.
 - **Idioma da interface**: pt-BR. Os textos dos eventos continuam como vêm da API (pt-PT).
 - **Janelas da API**: 2 semanas a partir da data inicial, com mais 2 semanas a cada fim de lista (scroll infinito).
@@ -419,4 +421,3 @@ Cada passo é um commit independente que mantém o app funcionando.
 **Em aberto:**
 1. **Chave da API**: criar a chave própria no Google Cloud (até lá, `VITE_USE_MOCK=true`).
 2. **Escolas**: existe uma fonte de dados prevista?
-3. **Mapa**: OpenStreetMap (recomendado, grátis) ou Google Maps (precisa de chave e faturação)?

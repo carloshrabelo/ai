@@ -1,4 +1,4 @@
-import { type ReactNode, useId, useRef, useState } from 'react'
+import { useId, useRef, useState } from 'react'
 import { useLoaderData } from 'react-router'
 import type { EventsLoaderData } from '../data/eventsLoader'
 import { DayShortcuts } from '../features/dates/DayShortcuts'
@@ -10,6 +10,7 @@ import { useSelectedEvent } from '../features/events/useSelectedEvent'
 import { GenreFilter } from '../features/genres/GenreFilter'
 import { GenreFilterButton } from '../features/genres/GenreFilterButton'
 import { useGenreFilter } from '../features/genres/useGenreFilter'
+import { MapPanel } from '../features/map/MapPanel'
 import { useMediaQuery, XL_QUERY } from '../hooks/useMediaQuery'
 import { SidebarPortal } from '../layouts/SidebarSlot'
 
@@ -83,22 +84,12 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
         {isXl && selectedId ? (
           <EventDetailsPanel startDate={startDate} eventId={selectedId} onClose={close} />
         ) : (
-          <Placeholder className="h-full">Mapa (passo 7)</Placeholder>
+          isXl && <MapPanel startDate={startDate} day={activeDay} genres={genres} onOpenEvent={open} />
         )}
       </aside>
 
       {/* Abaixo de `xl`: detalhes como página num drawer. */}
       {!isXl && selectedId && <EventDetailsDrawer startDate={startDate} eventId={selectedId} onClose={close} />}
-    </div>
-  )
-}
-
-function Placeholder({ children, className = '' }: { children: ReactNode; className?: string }) {
-  return (
-    <div
-      className={`flex items-center justify-center rounded-xl border-2 border-dashed border-border p-4 text-center text-sm text-fg-muted ${className}`}
-    >
-      {children}
     </div>
   )
 }
