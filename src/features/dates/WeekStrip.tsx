@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { CalendarDays } from 'lucide-react'
-import { useEffect, useRef } from 'react'
+import { type ReactNode, useEffect, useRef } from 'react'
 import { IconButton } from '../../components/ui/Button'
 import { WINDOW_DAYS } from '../../data/config'
 import { addDays, type IsoDate, isIsoDate } from '../../data/dates'
@@ -11,10 +11,12 @@ type Props = {
   startDate: IsoDate
   activeDay: IsoDate
   onSelect: (day: IsoDate) => void
+  /** Ações depois da faixa (ex.: botão de filtros). */
+  actions?: ReactNode
 }
 
 /** Botão de calendário + faixa de dias, do início do feed até o fim do que já foi carregado. */
-export function WeekStrip({ startDate, activeDay, onSelect }: Props) {
+export function WeekStrip({ startDate, activeDay, onSelect, actions }: Props) {
   // Só lê o cache (mesma query do feed): a faixa cresce conforme novas janelas chegam.
   const { data } = useInfiniteQuery(eventsInfiniteQueryOptions(startDate))
   const end = data?.pages.at(-1)?.end ?? addDays(startDate, WINDOW_DAYS)
@@ -88,6 +90,7 @@ export function WeekStrip({ startDate, activeDay, onSelect }: Props) {
           )
         })}
       </ul>
+      {actions}
     </div>
   )
 }

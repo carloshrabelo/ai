@@ -1,4 +1,4 @@
-import { type ReactNode, useRef } from 'react'
+import { type ReactNode, useId, useRef, useState } from 'react'
 import { useLoaderData } from 'react-router'
 import type { EventsLoaderData } from '../data/eventsLoader'
 import { DayShortcuts } from '../features/dates/DayShortcuts'
@@ -8,6 +8,7 @@ import { EventFeed } from '../features/events/EventFeed'
 import { EventDetailsDrawer, EventDetailsPanel } from '../features/events/SelectedEventView'
 import { useSelectedEvent } from '../features/events/useSelectedEvent'
 import { GenreFilter } from '../features/genres/GenreFilter'
+import { GenreFilterButton } from '../features/genres/GenreFilterButton'
 import { useGenreFilter } from '../features/genres/useGenreFilter'
 import { useMediaQuery, XL_QUERY } from '../hooks/useMediaQuery'
 import { SidebarPortal } from '../layouts/SidebarSlot'
@@ -24,6 +25,8 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
   const { selected: genres } = useGenreFilter()
   const { selectedId, open, close } = useSelectedEvent()
   const isXl = useMediaQuery(XL_QUERY)
+  const [filtersOpen, setFiltersOpen] = useState(false)
+  const filtersId = useId()
 
   const shortcuts = <DayShortcuts today={today} activeDay={activeDay} onSelect={selectDay} />
 
@@ -36,13 +39,37 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
           className="sticky top-[calc(3.5rem+env(safe-area-inset-top))] z-[5] -mx-4 space-y-2 bg-bg px-4 py-2 md:-mx-6 md:px-6 xl:-mr-6 xl:-ml-8 xl:pr-6 xl:pl-8"
         >
           <div className="xl:hidden">{shortcuts}</div>
-          <WeekStrip startDate={startDate} activeDay={activeDay} onSelect={selectDay} />
+          <WeekStrip
+            startDate={startDate}
+            activeDay={activeDay}
+            onSelect={selectDay}
+            actions={
+              // A partir de `xl` os filtros ficam sempre visíveis na sidebar.
+              !isXl && (
+                <GenreFilterButton
+                  open={filtersOpen}
+                  onToggle={() => setFiltersOpen((value) => !value)}
+                  controls={filtersId}
+                  activeCount={genres.length}
+                />
+              )
+            }
+          />
+
+          {/* Até 1279px: a seção de filtros abre aqui, dentro da área fixa, visível em qualquer ponto da lista. */}
+          {!isXl && filtersOpen && (
+            <div
+              id={filtersId}
+              className="max-h-[50dvh] overflow-y-auto"
+              onKeyDown={(event) => {
+                if (event.key === 'Escape') setFiltersOpen(false)
+              }}
+            >
+              <GenreFilter startDate={startDate} />
+            </div>
+          )}
         </div>
 
-        {/* Até 1279px os filtros ficam no conteúdo; a partir de `xl`, na sidebar. */}
-        <div className="xl:hidden">
-          <GenreFilter startDate={startDate} />
-        </div>
         <SidebarPortal>
           {shortcuts}
           <GenreFilter startDate={startDate} />

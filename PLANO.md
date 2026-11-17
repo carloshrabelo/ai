@@ -372,7 +372,7 @@ Cada passo é um commit independente que mantém o app funcionando.
 ### Passo 6 — Filtros por gênero
 - [x] Painel "Filtro Ativo" com um chip por gênero de `GENRES` que aparece nos eventos carregados (na cor de `genreToPalette`), selecionáveis, e botão "limpar".
 - [x] Estado em `?genres=salsa,kizomba` (slug do gênero; um evento aparece se tiver **qualquer** gênero selecionado).
-- [ ] ~~Ícone de filtros do header abre o painel como *bottom sheet* no mobile.~~ Não feito: o painel fica no conteúdo, como no protótipo.
+- [x] Até 1279px: botão de filtros ao lado da faixa de dias, com contador de gêneros ativos. Ele abre e fecha a seção de filtros dentro da área fixa, visível em qualquer ponto da lista (`Esc` fecha). A partir de `xl`, os filtros ficam sempre visíveis na sidebar.
 - [x] Skeleton de chips no painel de filtros.
 
 **Regras da URL (`?genres=`), em `src/domain/genreFilter.ts`:**
