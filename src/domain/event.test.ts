@@ -79,6 +79,16 @@ describe('toDanceEvent', () => {
     expect(visibleGenres(event.genres)).toEqual(['Salsa'])
   })
 
+  it('"Afro-Latinas" sem citar nenhum gênero: exibe Latinas e Afro (não inventa Kizomba/Semba)', () => {
+    const event = toDanceEvent({ ...base, summary: 'Afro-Latinas • Latin Dance Night', description: 'Latin Party with Dj Tanya' })
+    expect(visibleGenres(event.genres)).toEqual(['Latinas', 'Afro'])
+  })
+
+  it('"Afro" com Kizomba na descrição: exibe Kizomba, oculta Afro', () => {
+    const event = toDanceEvent({ ...base, summary: 'Pista Africana • Noite', description: 'Kizomba até de manhã' })
+    expect(visibleGenres(event.genres)).toEqual(['Kizomba'])
+  })
+
   it('"Latinas" sem Salsa nem Bachata informadas: exibe Latinas', () => {
     const event = toDanceEvent({ ...base, summary: 'Latinas • Dance Night', description: 'Noite latina' })
     expect(visibleGenres(event.genres)).toEqual(['Latinas'])

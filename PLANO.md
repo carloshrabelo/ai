@@ -279,9 +279,9 @@ export const genreToPalette: Record<Genre, GenreColor> = {
 
 Tags com erro de digitação que contêm o nome de outro gênero (como `WEST COAS SWING`, que contém `SWING`) precisam de alias próprio. Senão caem no gênero errado.
 
-**Latinas:** gênero próprio (chip coral), mas incluído nos filtros de Salsa e Bachata (`GENRE_INCLUDES`). `AFRO-LATINAS` → Latinas + Kizomba + Semba; `PISTA LATINAS` → Latinas. O filtro "Latinas" mostra só eventos com essa tag.
+**Latinas e Afro (gêneros "guarda-chuva"):** Latinas (chip coral) entra nos filtros de Salsa e Bachata; Afro (chip lima) entra nos de Kizomba e Semba (`GENRE_INCLUDES`). `AFRO-LATINAS` → Latinas + Afro; `PISTA LATINAS` → Latinas; `AFRO` e `PISTA AFRICANA` → Afro. Assim a tag não inventa gêneros que o evento não cita. O filtro "Latinas" mostra só eventos com essa tag.
 
-**Gêneros na descrição:** além da tag, nomes de gêneros citados no título ou na descrição entram nas tags (sem aliases, para evitar falsos positivos como "afro house"; "Latinas" não é procurado em texto). "Latinas" é uma tag de reserva: aparece só quando nem Salsa nem Bachata foram informadas (na tag ou na descrição); se alguma foi, ela fica oculta (`visibleGenres`). Nos filtros o evento continua contando como Latinas. Nos dados reais de 90 dias, 6 títulos ganharam gêneros assim (ex.: "Bachata & Kizomba • Timbre Lisboa" + Salsa).
+**Gêneros na descrição:** além da tag, nomes de gêneros citados no título ou na descrição entram nas tags (sem aliases, para evitar falsos positivos como "afro house"; "Latinas" não é procurado em texto). "Latinas" e "Afro" são tags de reserva: só aparecem quando nenhum dos gêneros que incluem foi informado (na tag ou na descrição); senão ficam ocultas (`visibleGenres`). Nos filtros o evento continua contando como Latinas/Afro. Nos dados reais de 90 dias, 6 títulos ganharam gêneros assim (ex.: "Bachata & Kizomba • Timbre Lisboa" + Salsa).
 
 **Cores:** cada `GenreColor` vira um par de tokens no `@theme` do Tailwind (`--color-genre-wine`, `--color-genre-wine-fg`…), com valores para o tema claro e para o escuro. O contraste do texto sobre o chip precisa passar em AA nos dois temas. Chip sem gênero (`rawTag`) usa um cinza neutro.
 

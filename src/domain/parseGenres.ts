@@ -39,8 +39,8 @@ export function parseGenres(tag: string): Genre[] {
   return GENRES.filter((genre) => found.has(genre))
 }
 
-/** Gêneros que não são procurados em texto corrido (genéricos demais: "músicas latinas"). */
-const NOT_IN_TEXT = new Set<Genre>(['Latinas'])
+/** Gêneros que não são procurados em texto corrido (genéricos demais). */
+const NOT_IN_TEXT = new Set<Genre>(['Latinas', 'Afro']) // "músicas latinas", "afro house"
 
 /**
  * Gêneros citados pelo nome num texto livre (título, descrição). Sem aliases: siglas como "SBK"

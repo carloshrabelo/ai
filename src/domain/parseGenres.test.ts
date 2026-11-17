@@ -19,10 +19,10 @@ describe('parseGenres', () => {
 
   describe('ALIAS', () => {
     it.each([
-      ['Afro-Latinas', ['Latinas', 'Kizomba', 'Semba']],
-      ['Afro', ['Kizomba', 'Semba']],
+      ['Afro-Latinas', ['Latinas', 'Afro']],
+      ['Afro', ['Afro']],
       ['Pista Latinas', ['Latinas']],
-      ['Pista Africana', ['Kizomba', 'Semba']],
+      ['Pista Africana', ['Afro']],
       ['SBKZ', ['Zouk', 'Salsa', 'Bachata', 'Kizomba']],
       ['SBK', ['Salsa', 'Bachata', 'Kizomba']],
       ['WCS', ['West Coast Swing']],

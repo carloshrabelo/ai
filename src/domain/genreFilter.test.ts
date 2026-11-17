@@ -99,6 +99,12 @@ describe('matchesGenres', () => {
     expect(matchesGenres(['Latinas'], ['Kizomba'])).toBe(false)
   })
 
+  it('"Afro" aparece no filtro de Kizomba e de Semba', () => {
+    expect(matchesGenres(['Afro'], ['Kizomba'])).toBe(true)
+    expect(matchesGenres(['Afro'], ['Semba'])).toBe(true)
+    expect(matchesGenres(['Afro'], ['Salsa'])).toBe(false)
+  })
+
   it('filtro "Latinas" não traz eventos só de Salsa (a inclusão é num sentido só)', () => {
     expect(matchesGenres(['Salsa'], ['Latinas'])).toBe(false)
   })

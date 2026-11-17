@@ -46,6 +46,8 @@
   --color-genre-teal-fg: #ffffff;
   --color-genre-coral: #ff7a5c;
   --color-genre-coral-fg: #2a0d07;
+  --color-genre-lime: #84cc16;
+  --color-genre-lime-fg: #1a2e05;
 }
 
 @layer base {

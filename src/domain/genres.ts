@@ -6,6 +6,7 @@ export const GENRES = [
   'Latinas',
   'Kizomba',
   'Semba',
+  'Afro',
   'Swing',
   'Tango',
   'West Coast Swing',
@@ -22,10 +23,10 @@ export type Genre = (typeof GENRES)[number]
 export const ALIAS: Record<string, string> = {
   'QUEEN KIZOMBA PROJECT': '',
   'RODA DE SAMBA?': '',
-  'AFRO-LATINAS': 'LATINAS KIZOMBA SEMBA',
-  AFRO: 'KIZOMBA SEMBA',
+  'AFRO-LATINAS': 'LATINAS AFRO',
+  AFRO: 'AFRO',
   'PISTA LATINAS': 'LATINAS',
-  'PISTA AFRICANA': 'KIZOMBA SEMBA',
+  'PISTA AFRICANA': 'AFRO',
   SBKZ: 'SALSA BACHATA KIZOMBA ZOUK',
   SBK: 'SALSA BACHATA KIZOMBA',
   WCS: 'WEST COAST SWING',
@@ -51,6 +52,7 @@ export type GenreColor =
   | 'purple'
   | 'teal'
   | 'coral'
+  | 'lime'
 
 export const genreToPalette: Record<Genre, GenreColor> = {
   Bachata: 'wine',
@@ -65,19 +67,22 @@ export const genreToPalette: Record<Genre, GenreColor> = {
   Zouk: 'purple',
   'West Coast Swing': 'teal',
   Latinas: 'coral',
+  Afro: 'lime',
 }
 
 /**
- * Gêneros que incluem outros: o evento mostra a própria tag ("Latinas"), mas também aparece
- * no filtro dos gêneros incluídos (Salsa e Bachata).
+ * Gêneros "guarda-chuva": o evento aparece também no filtro dos gêneros incluídos
+ * (Latinas → Salsa e Bachata; Afro → Kizomba e Semba).
  */
 export const GENRE_INCLUDES: Partial<Record<Genre, readonly Genre[]>> = {
   Latinas: ['Salsa', 'Bachata'],
+  Afro: ['Kizomba', 'Semba'],
 }
 
 /**
  * Gêneros para exibir nas tags. Um gênero "guarda-chuva" fica oculto quando algum dos gêneros
- * que ele inclui já aparece: "Latinas" só é exibida se nem Salsa nem Bachata foram informadas.
+ * que ele inclui já aparece: "Latinas" só é exibida se nem Salsa nem Bachata foram informadas;
+ * "Afro", se nem Kizomba nem Semba.
  * (Os filtros continuam usando todos os gêneros do evento.)
  */
 export function visibleGenres(genres: readonly Genre[]): Genre[] {
