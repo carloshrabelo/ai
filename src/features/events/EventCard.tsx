@@ -23,7 +23,7 @@ export function EventCard({ event, selected = false, onOpen }: Props) {
   return (
     <Card
       as="article"
-      className={`relative flex flex-col gap-2 transition-shadow hover:shadow-md ${selected ? 'ring-2 ring-brand' : ''}`}
+      className={`relative isolate flex flex-col gap-2 transition-shadow hover:shadow-md ${selected ? 'ring-2 ring-brand' : ''}`}
     >
       <div className="flex items-start gap-2">
         <div className="min-w-0 flex-1 space-y-1">
