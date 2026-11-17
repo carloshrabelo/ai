@@ -1,15 +1,27 @@
 import DOMPurify from 'dompurify'
 
 const HAS_TAGS = /<[a-z][\s\S]*>/i
-const URL_PATTERN = /https?:\/\/[^\s<>"']+[^\s<>"'.,;:!?)\]]/g
+
+/**
+ * URL solta ou @perfil do Instagram. O @ não pode vir colado a letra, número, ponto ou "/"
+ * (assim e-mails como "nome@site.pt" e URLs com @ não viram perfil).
+ */
+const LINKABLE = /https?:\/\/[^\s<>"']+[^\s<>"'.,;:!?)\]]|(?<![\w.@/])@([A-Za-z0-9._]{2,30}[A-Za-z0-9_])/g
+
+/** Textos dos rótulos curtos, no idioma ativo. */
+export type DescriptionLabels = {
+  /** Link para uma publicação/reel do Instagram ("Ver no Instagram"). */
+  instagramPost: string
+}
 
 /**
  * Descrição do calendário (HTML de terceiros) → HTML seguro para renderizar.
  * - Texto puro: quebras de linha viram <br>.
  * - Sanitiza com DOMPurify (sem scripts, estilos, iframes…).
- * - URLs soltas no texto viram links; todos os links abrem em nova aba.
+ * - URLs soltas e @perfis viram links; todos abrem em nova aba.
+ * - Link cujo texto é a própria URL ganha um rótulo curto (ver `friendlyLinkText`).
  */
-export function renderDescription(raw: string): string {
+export function renderDescription(raw: string, labels: DescriptionLabels): string {
   // Sem suporte a DOMPurify, ele devolveria a entrada sem sanitizar: mostra só o texto.
   if (!DOMPurify.isSupported) {
     const text = document.createElement('div')
@@ -28,11 +40,42 @@ export function renderDescription(raw: string): string {
   for (const anchor of fragment.querySelectorAll('a')) {
     anchor.setAttribute('target', '_blank')
     anchor.setAttribute('rel', 'noopener noreferrer')
+    const text = anchor.textContent?.trim() ?? ''
+    if (/^https?:\/\//i.test(text)) {
+      anchor.textContent = friendlyLinkText(anchor.href, labels)
+      anchor.title = anchor.href // URL completa ao passar o mouse
+    }
   }
 
   const container = document.createElement('div')
   container.append(fragment)
   return container.innerHTML
+}
+
+/**
+ * Rótulo curto para um link que só mostrava a URL:
+ * - publicação/reel do Instagram → "Ver no Instagram"
+ * - perfil do Instagram → "@perfil"
+ * - outros → domínio + caminho curto ("linktr.ee/lisbonwestiefest", "goandance.com/…")
+ */
+export function friendlyLinkText(href: string, labels: DescriptionLabels): string {
+  let url: URL
+  try {
+    url = new URL(href)
+  } catch {
+    return href
+  }
+  const host = url.hostname.replace(/^www\./, '')
+  const path = url.pathname.replace(/\/+$/, '')
+  const segments = path.split('/').filter(Boolean)
+
+  if (host === 'instagram.com' || host.endsWith('.instagram.com')) {
+    if (['p', 'reel', 'reels', 'tv', 'stories'].includes(segments[0] ?? '')) return labels.instagramPost
+    if (segments.length === 1) return `@${segments[0]}`
+  }
+  if (segments.length === 0) return host
+  const short = `${host}/${segments.join('/')}`
+  return short.length <= 32 ? short : `${host}/…`
 }
 
 function linkifyTextNodes(root: DocumentFragment) {
@@ -44,7 +87,7 @@ function linkifyTextNodes(root: DocumentFragment) {
 
   for (const node of textNodes) {
     const text = node.data
-    const matches = [...text.matchAll(URL_PATTERN)]
+    const matches = [...text.matchAll(LINKABLE)]
     if (matches.length === 0) continue
 
     const parts = document.createDocumentFragment()
@@ -53,7 +96,9 @@ function linkifyTextNodes(root: DocumentFragment) {
       const start = match.index
       parts.append(text.slice(last, start))
       const anchor = document.createElement('a')
-      anchor.href = match[0]
+      const handle = match[1]
+      // @perfil → perfil no Instagram (os perfis citados nas descrições são do Instagram).
+      anchor.href = handle ? `https://www.instagram.com/${handle}/` : match[0]
       anchor.textContent = match[0]
       parts.append(anchor)
       last = start + match[0].length

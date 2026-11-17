@@ -16,7 +16,11 @@ import { useI18n } from '../../i18n/useI18n'
 /** Conteúdo dos detalhes: usado no painel da coluna do mapa (`xl+`) e no drawer (abaixo de `xl`). */
 export function EventDetails({ event, headingId }: { event: DanceEvent; headingId: string }) {
   const { t, locale } = useI18n()
-  const html = useMemo(() => (event.description ? renderDescription(event.description) : ''), [event.description])
+  const instagramPost = t.event.instagramPost
+  const html = useMemo(
+    () => (event.description ? renderDescription(event.description, { instagramPost }) : ''),
+    [event.description, instagramPost],
+  )
   // App de navegação do aparelho (Android: seletor de apps; iOS: Apple Maps; desktop: Google Maps).
   // Local fora do venues.json: busca as coordenadas para a rota abrir no ponto certo.
   const venue = useGeocodedVenue(event.venue)
