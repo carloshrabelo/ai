@@ -32,6 +32,24 @@ describe('parseGenresParam', () => {
   })
 })
 
+describe('Outros', () => {
+  it('aceita "outros" na URL, em qualquer caixa, e fica por último', () => {
+    expect(parseGenresParam('OUTROS,salsa')).toEqual(['Salsa', 'Outros'])
+    expect(genresToParam(['Outros', 'Salsa'])).toBe('salsa,outros')
+  })
+
+  it('só "Outros": eventos sem gênero da lista', () => {
+    expect(matchesGenres([], ['Outros'])).toBe(true)
+    expect(matchesGenres(['Salsa'], ['Outros'])).toBe(false)
+  })
+
+  it('acumulativo com gêneros', () => {
+    expect(matchesGenres([], ['Salsa', 'Outros'])).toBe(true)
+    expect(matchesGenres(['Salsa'], ['Salsa', 'Outros'])).toBe(true)
+    expect(matchesGenres(['Kizomba'], ['Salsa', 'Outros'])).toBe(false)
+  })
+})
+
 describe('genresToParam', () => {
   it('slugs em caixa baixa, sem acento, na ordem de GENRES', () => {
     expect(genresToParam(['West Coast Swing', 'Forró', 'Salsa'])).toBe('forro,salsa,west-coast-swing')

@@ -5,8 +5,7 @@ import { ErrorBoundary } from '../../components/ErrorBoundary'
 import { Button } from '../../components/ui/Button'
 import type { IsoDate } from '../../data/dates'
 import { eventsInfiniteQueryOptions, flattenEvents } from '../../data/queries'
-import { matchesGenres } from '../../domain/genreFilter'
-import type { Genre } from '../../domain/genres'
+import { type GenreFilterValue, matchesGenres } from '../../domain/genreFilter'
 import { EventCard, EventCardSkeleton } from './EventCard'
 import { formatDayHeading } from './format'
 import { groupByDay } from './groupByDay'
@@ -17,7 +16,7 @@ const GRID = 'grid grid-cols-1 gap-3 xl:grid-cols-2 xl:gap-4'
 type FeedProps = {
   startDate: IsoDate
   /** Gêneros do filtro (vazio = todos). */
-  genres: readonly Genre[]
+  genres: readonly GenreFilterValue[]
   onOpenEvent: (id: string) => void
 }
 

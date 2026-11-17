@@ -6,7 +6,7 @@ import { ToggleChip } from '../../components/ui/Chip'
 import { Skeleton } from '../../components/ui/Skeleton'
 import type { IsoDate } from '../../data/dates'
 import { eventsInfiniteQueryOptions, flattenEvents } from '../../data/queries'
-import { GENRES } from '../../domain/genres'
+import { FILTER_VALUES, type GenreFilterValue, OTHER_GENRES } from '../../domain/genreFilter'
 import { LocationControl } from '../location/LocationControl'
 import { useGenreFilter } from './useGenreFilter'
 
@@ -14,8 +14,8 @@ import { useGenreFilter } from './useGenreFilter'
 const SKELETON_WIDTHS = ['w-16', 'w-20', 'w-14', 'w-18', 'w-12', 'w-16']
 
 /**
- * Painel "Filtros": um chip por gênero presente nos eventos carregados (mais os já marcados,
- * para poder desmarcar) e o botão "Limpar".
+ * Painel "Filtros": um chip por gênero presente nos eventos carregados, "Outros" para os eventos
+ * fora da lista (mais os já marcados, para poder desmarcar) e o botão "Limpar".
  */
 export function GenreFilter({ startDate }: { startDate: IsoDate }) {
   const { selected, toggle, clear } = useGenreFilter()
@@ -23,8 +23,11 @@ export function GenreFilter({ startDate }: { startDate: IsoDate }) {
   const { data, isPending } = useInfiniteQuery(eventsInfiniteQueryOptions(startDate))
 
   const available = useMemo(() => {
-    const present = new Set(flattenEvents(data?.pages ?? []).flatMap((event) => event.genres))
-    return GENRES.filter((genre) => present.has(genre) || selected.includes(genre))
+    const events = flattenEvents(data?.pages ?? [])
+    const present = new Set<GenreFilterValue>(events.flatMap((event) => event.genres))
+    // "Outros": eventos cujo gênero não está na lista.
+    if (events.some((event) => event.genres.length === 0)) present.add(OTHER_GENRES)
+    return FILTER_VALUES.filter((value) => present.has(value) || selected.includes(value))
   }, [data, selected])
 
   return (
@@ -58,8 +61,14 @@ export function GenreFilter({ startDate }: { startDate: IsoDate }) {
         <p className="text-sm text-fg-muted">Nenhum gênero nos eventos carregados.</p>
       ) : (
         <div role="group" aria-label="Gêneros" className="flex flex-wrap gap-2">
-          {available.map((genre) => (
-            <ToggleChip key={genre} genre={genre} pressed={selected.includes(genre)} onClick={() => toggle(genre)} />
+          {available.map((value) => (
+            <ToggleChip
+              key={value}
+              // "Outros" usa o chip neutro, como os eventos sem gênero da lista.
+              {...(value === OTHER_GENRES ? { label: value } : { genre: value })}
+              pressed={selected.includes(value)}
+              onClick={() => toggle(value)}
+            />
           ))}
         </div>
       )}

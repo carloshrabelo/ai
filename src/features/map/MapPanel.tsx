@@ -1,6 +1,6 @@
 import { lazy, Suspense, useMemo } from 'react'
 import type { IsoDate } from '../../data/dates'
-import type { Genre } from '../../domain/genres'
+import type { GenreFilterValue } from '../../domain/genreFilter'
 import { formatDayHeading } from '../events/format'
 import { useDayEvents } from '../events/useDayEvents'
 import { useEventFocus } from '../events/eventFocusStore'
@@ -13,7 +13,7 @@ type Props = {
   startDate: IsoDate
   /** Dia ativo do feed: o mapa mostra os eventos dele. */
   day: IsoDate
-  genres: readonly Genre[]
+  genres: readonly GenreFilterValue[]
   onOpenEvent: (id: string) => void
   /** Altura do painel (padrão: coluna inteira). */
   className?: string

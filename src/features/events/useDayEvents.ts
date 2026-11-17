@@ -3,12 +3,11 @@ import { useMemo } from 'react'
 import type { IsoDate } from '../../data/dates'
 import { eventsInfiniteQueryOptions, flattenEvents } from '../../data/queries'
 import type { DanceEvent } from '../../domain/event'
-import { matchesGenres } from '../../domain/genreFilter'
-import type { Genre } from '../../domain/genres'
+import { type GenreFilterValue, matchesGenres } from '../../domain/genreFilter'
 import { groupByDay } from './groupByDay'
 
 /** Eventos de um dia do feed, já com o filtro de gêneros (mesma regra da lista). */
-export function useDayEvents(startDate: IsoDate, day: IsoDate, genres: readonly Genre[]) {
+export function useDayEvents(startDate: IsoDate, day: IsoDate, genres: readonly GenreFilterValue[]) {
   const { data, isPending } = useInfiniteQuery(eventsInfiniteQueryOptions(startDate))
 
   const events = useMemo((): DanceEvent[] => {

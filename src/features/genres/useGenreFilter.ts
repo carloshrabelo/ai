@@ -1,7 +1,12 @@
 import { useCallback, useMemo } from 'react'
 import { useLocation, useNavigate } from 'react-router'
-import { GENRES_PARAM, genresToParam, parseGenresParam, toSearchString } from '../../domain/genreFilter'
-import type { Genre } from '../../domain/genres'
+import {
+  GENRES_PARAM,
+  type GenreFilterValue,
+  genresToParam,
+  parseGenresParam,
+  toSearchString,
+} from '../../domain/genreFilter'
 
 /**
  * Filtro de gêneros na URL (?genres=salsa,zouk). Acumulativo: cada gênero marcado soma ao filtro
@@ -14,7 +19,7 @@ export function useGenreFilter() {
   const selected = useMemo(() => parseGenresParam(new URLSearchParams(search).get(GENRES_PARAM)), [search])
 
   const update = useCallback(
-    (genres: Genre[]) => {
+    (genres: GenreFilterValue[]) => {
       const params = new URLSearchParams(search)
       const value = genresToParam(genres)
       if (value) params.set(GENRES_PARAM, value)
@@ -26,7 +31,7 @@ export function useGenreFilter() {
   )
 
   const toggle = useCallback(
-    (genre: Genre) => update(selected.includes(genre) ? selected.filter((g) => g !== genre) : [...selected, genre]),
+    (genre: GenreFilterValue) => update(selected.includes(genre) ? selected.filter((g) => g !== genre) : [...selected, genre]),
     [selected, update],
   )
 

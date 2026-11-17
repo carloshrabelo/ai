@@ -1,7 +1,21 @@
 import { GENRES, type Genre, genreSlug } from './genres'
 
-/** Nome do parâmetro na URL: ?genres=salsa,west-coast-swing */
+/** Nome do parâmetro na URL: ?genres=salsa,west-coast-swing,outros */
 export const GENRES_PARAM = 'genres'
+
+/** Opção do filtro para eventos cujo gênero não está em GENRES (Fusão, Vários…). */
+export const OTHER_GENRES = 'Outros'
+
+/** Um valor do filtro: um gênero da lista ou "Outros". */
+export type GenreFilterValue = Genre | typeof OTHER_GENRES
+
+/** Ordem das opções no filtro e na URL: os gêneros e, por último, "Outros". */
+export const FILTER_VALUES: readonly GenreFilterValue[] = [...GENRES, OTHER_GENRES]
+
+/** Slug na URL: "west-coast-swing", "forro", "outros". */
+export function filterSlug(value: GenreFilterValue): string {
+  return value === OTHER_GENRES ? 'outros' : genreSlug(value)
+}
 
 /** Texto livre → forma de slug: caixa baixa, sem acento, espaços e "_" viram "-". */
 export function normalizeSlug(text: string): string {
@@ -14,26 +28,26 @@ export function normalizeSlug(text: string): string {
     .replace(/-+/g, '-')
 }
 
-const BY_SLUG = new Map(GENRES.map((genre) => [genreSlug(genre), genre]))
+const BY_SLUG = new Map(FILTER_VALUES.map((value) => [filterSlug(value), value]))
 
 /**
- * Valor cru do parâmetro → gêneros válidos, sem repetição, na ordem de GENRES.
- * Cada item é normalizado (caixa baixa, sem acento); o que não bate com nenhum gênero é descartado.
+ * Valor cru do parâmetro → opções válidas, sem repetição, na ordem de FILTER_VALUES.
+ * Cada item é normalizado (caixa baixa, sem acento); o que não bate com nenhuma opção é descartado.
  */
-export function parseGenresParam(raw: string | null): Genre[] {
+export function parseGenresParam(raw: string | null): GenreFilterValue[] {
   if (!raw) return []
   const found = new Set(
     raw
       .split(',')
       .map((part) => BY_SLUG.get(normalizeSlug(part)))
-      .filter((genre): genre is Genre => !!genre),
+      .filter((value): value is GenreFilterValue => !!value),
   )
-  return GENRES.filter((genre) => found.has(genre))
+  return FILTER_VALUES.filter((value) => found.has(value))
 }
 
-/** Gêneros → valor canônico do parâmetro ('' quando vazio). */
-export function genresToParam(genres: readonly Genre[]): string {
-  return GENRES.filter((genre) => genres.includes(genre)).map(genreSlug).join(',')
+/** Opções → valor canônico do parâmetro ('' quando vazio). */
+export function genresToParam(values: readonly GenreFilterValue[]): string {
+  return FILTER_VALUES.filter((value) => values.includes(value)).map(filterSlug).join(',')
 }
 
 /**
@@ -53,9 +67,14 @@ export function canonicalGenresSearch(params: URLSearchParams): URLSearchParams 
   return next
 }
 
-/** Evento passa no filtro? Filtro vazio = tudo; senão, basta ter um dos gêneros (acumulativo). */
-export function matchesGenres(eventGenres: readonly Genre[], selected: readonly Genre[]): boolean {
-  return selected.length === 0 || eventGenres.some((genre) => selected.includes(genre))
+/**
+ * Evento passa no filtro? Filtro vazio = tudo; senão, basta ter um dos gêneros marcados
+ * (acumulativo). "Outros" pega os eventos sem gênero da lista.
+ */
+export function matchesGenres(eventGenres: readonly Genre[], selected: readonly GenreFilterValue[]): boolean {
+  if (selected.length === 0) return true
+  if (eventGenres.length === 0) return selected.includes(OTHER_GENRES)
+  return eventGenres.some((genre) => selected.includes(genre))
 }
 
 /** "?a=1&genres=salsa,zouk" com vírgulas legíveis (URLSearchParams codifica como %2C). */

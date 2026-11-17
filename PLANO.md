@@ -377,7 +377,8 @@ Cada passo é um commit independente que mantém o app funcionando.
 - [x] Skeleton de chips no painel de filtros.
 
 **Regras da URL (`?genres=`), em `src/domain/genreFilter.ts`:**
-- Filtro **acumulativo**: cada gênero marcado soma; um evento aparece se tiver qualquer um deles. Evento sem gênero some quando há filtro.
+- Filtro **acumulativo**: cada gênero marcado soma; um evento aparece se tiver qualquer um deles.
+- **"Outros"** (`outros` na URL, sempre por último): eventos cujo gênero não está na lista (ex.: Fusão, Vários). O chip só aparece quando há eventos assim. Sem "Outros" marcado, eles somem quando há filtro.
 - "Limpar" remove o parâmetro.
 - Sanitização no loader: cada valor vai para caixa baixa, sem acento, com espaços virando `-` (`Forró` → `forro`, `West Coast Swing` → `west-coast-swing`). O que não bate com nenhum gênero depois disso é removido; repetidos também. Se nada sobra, o parâmetro sai da URL.
 - A URL corrigida substitui a atual (`replace`), sem criar entrada no histórico. Filtrar também não cria entrada nem rola a página.
