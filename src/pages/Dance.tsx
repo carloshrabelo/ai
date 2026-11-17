@@ -1,4 +1,4 @@
-import { useId, useLayoutEffect, useRef, useState } from 'react'
+import { useCallback, useId, useLayoutEffect, useRef, useState } from 'react'
 import { useLoaderData } from 'react-router'
 import type { EventsLoaderData } from '../data/eventsLoader'
 import { DayShortcuts } from '../features/dates/DayShortcuts'
@@ -32,6 +32,23 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
   useLayoutEffect(() => eventFocus.syncSelectedFromUrl(selectedInUrl), [selectedInUrl])
   useLayoutEffect(() => () => eventFocus.reset(), []) // saindo da página
   const selectedId = useEventFocus((state) => state.selectedId)
+  const selectedFrom = useEventFocus((state) => state.selectedFrom)
+
+  // Abrir pela lista ou pelo mapa: o store guarda a origem (define a ordem mapa/detalhes).
+  const openFromList = useCallback(
+    (id: string) => {
+      eventFocus.willSelectFrom('list', id)
+      open(id)
+    },
+    [open],
+  )
+  const openFromMap = useCallback(
+    (id: string) => {
+      eventFocus.willSelectFrom('map', id)
+      open(id)
+    },
+    [open],
+  )
   const isXl = useMediaQuery(XL_QUERY)
   const [filtersOpen, setFiltersOpen] = useState(false)
   const filtersId = useId()
@@ -83,19 +100,24 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
           <GenreFilter startDate={startDate} />
         </SidebarPortal>
 
-        <EventFeed startDate={startDate} genres={genres} onOpenEvent={open} />
+        <EventFeed startDate={startDate} genres={genres} onOpenEvent={openFromList} />
       </div>
 
       {/* A partir de `xl`: coluna do mapa, que divide o espaço com os detalhes quando um evento está aberto. */}
-      <aside className="sticky top-20 hidden h-[calc(100dvh-7rem)] w-90 shrink-0 flex-col gap-4 xl:flex 2xl:w-120">
+      <aside
+        className={`sticky top-20 hidden h-[calc(100dvh-7rem)] w-90 shrink-0 gap-4 xl:flex 2xl:w-120 ${
+          selectedFrom === 'list' ? 'flex-col-reverse' : 'flex-col'
+        }`}
+      >
         {isXl && (
           <>
-            {/* Com um evento aberto, o mapa fica em cima e os detalhes embaixo. */}
+            {/* Com um evento aberto, a coluna se divide: aberto pela lista, detalhes em cima e mapa
+                embaixo (flex-col-reverse); pelo mapa ou por link, mapa em cima e detalhes embaixo. */}
             <MapPanel
               startDate={startDate}
               day={activeDay}
               genres={genres}
-              onOpenEvent={open}
+              onOpenEvent={openFromMap}
               className={selectedId ? 'h-2/5 shrink-0' : 'h-full'}
             />
             {selectedId && <EventDetailsPanel startDate={startDate} eventId={selectedId} onClose={close} />}

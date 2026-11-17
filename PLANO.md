@@ -354,7 +354,7 @@ Cada passo é um commit independente que mantém o app funcionando.
 
 ### Detalhes do evento (pedido durante o passo 6)
 - [x] Clicar num card abre os detalhes: título, gêneros, dia e horário, local com endereço e link "Abrir no mapa" (OpenStreetMap), preço, botão "Adicionar ao calendário" e descrição sanitizada.
-- [x] A partir de `xl`: os detalhes dividem a coluna com o mapa (mapa em cima, ~40%; detalhes embaixo), com botão de fechar (e `Esc`). O card aberto fica destacado, e o pino dele também, com o mapa centrado nele.
+- [x] A partir de `xl`: os detalhes dividem a coluna com o mapa (~40% para o mapa). Aberto pela lista: detalhes em cima e mapa embaixo (`flex-col-reverse`); aberto pelo mapa ou por link: mapa em cima. A origem fica no `eventFocusStore`, com botão de fechar (e `Esc`). O card aberto fica destacado, e o pino dele também, com o mapa centrado nele.
 - [x] Lista e mapa ligados por hover: hover no card destaca o pino; hover no pino mostra o título do evento (ou dos eventos do local) e destaca os cards correspondentes. O foco do teclado no card tem o mesmo efeito.
 - [x] Abaixo de `xl`: os detalhes abrem como uma página num drawer que entra pela direita (`<dialog>` modal, tela cheia, header com "Voltar"). A página por trás não rola.
 - [x] Evento aberto na URL (`?event=<id>`): o link é compartilhável e o "voltar" do navegador fecha o drawer. Abrir cria uma entrada no histórico; trocar de evento ou fechar não empilha.

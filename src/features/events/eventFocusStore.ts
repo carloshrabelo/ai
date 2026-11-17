@@ -6,6 +6,8 @@ export type HoverSource = 'list' | 'map'
 export type EventFocusState = {
   /** Evento aberto nos detalhes (espelho de ?event= na URL). */
   selectedId: string | null
+  /** Onde o evento foi aberto: lista, mapa, ou null (link direto, "voltar" do navegador). */
+  selectedFrom: HoverSource | null
   /** Eventos em destaque por hover, e quem originou o destaque. */
   hover: { ids: readonly string[]; source: HoverSource } | null
 }
@@ -20,11 +22,15 @@ export type EventFocusState = {
  * - A seleção é gravada na URL (link compartilhável, "voltar" fecha); `syncSelectedFromUrl`
  *   traz a URL para cá, e todos os componentes leem daqui.
  */
-let state: EventFocusState = { selectedId: null, hover: null }
+const INITIAL: EventFocusState = { selectedId: null, selectedFrom: null, hover: null }
+let state = INITIAL
 const listeners = new Set<() => void>()
 
+/** Origem da próxima seleção, gravada antes de a URL mudar (ver `willSelectFrom`). */
+let pendingSource: HoverSource | null = null
+
 function setState(next: EventFocusState) {
-  if (next.selectedId === state.selectedId && next.hover === state.hover) return
+  if (next.selectedId === state.selectedId && next.selectedFrom === state.selectedFrom && next.hover === state.hover) return
   state = next
   for (const listener of listeners) listener()
 }
@@ -41,10 +47,21 @@ export const eventFocus = {
     }
   },
 
+  /**
+   * Avisa de onde vem a seleção que está para acontecer (clique no card ou no pino).
+   * Se o evento já está aberto, a URL não muda: atualiza a origem na hora.
+   */
+  willSelectFrom(source: HoverSource, id: string) {
+    if (id === state.selectedId) setState({ ...state, selectedFrom: source })
+    else pendingSource = source
+  },
+
   /** Chamado quando ?event= muda na URL. */
   syncSelectedFromUrl(selectedId: string | null) {
-    if (selectedId === state.selectedId) return
-    setState({ selectedId, hover: null })
+    const selectedFrom = selectedId ? pendingSource : null
+    pendingSource = null
+    if (selectedId === state.selectedId && selectedFrom === state.selectedFrom) return
+    setState({ selectedId, selectedFrom, hover: null })
   },
 
   hover(ids: readonly string[], source: HoverSource) {
@@ -59,7 +76,8 @@ export const eventFocus = {
 
   /** Para testes e ao sair da página. */
   reset() {
-    setState({ selectedId: null, hover: null })
+    pendingSource = null
+    setState(INITIAL)
   },
 }
 
