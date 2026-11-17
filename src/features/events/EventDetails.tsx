@@ -4,6 +4,7 @@ import { Chip } from '../../components/ui/Chip'
 import { Skeleton } from '../../components/ui/Skeleton'
 import { lisbonDate } from '../../data/dates'
 import type { DanceEvent } from '../../domain/event'
+import { visibleGenres } from '../../domain/genres'
 import { renderDescription } from './description'
 import { EventDistance } from '../location/EventDistance'
 import { navigationLink } from '../location/navigationLink'
@@ -26,7 +27,7 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
         </h2>
         <div className="flex flex-wrap gap-2">
           {event.genres.length > 0
-            ? event.genres.map((genre) => <Chip key={genre} genre={genre} />)
+            ? visibleGenres(event.genres).map((genre) => <Chip key={genre} genre={genre} />)
             : event.rawTag && <Chip label={event.rawTag} />}
         </div>
       </div>

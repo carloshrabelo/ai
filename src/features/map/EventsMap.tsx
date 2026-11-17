@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef } from 'react'
 import { CircleMarker, MapContainer, Marker, Popup, TileLayer, Tooltip, useMap, ZoomControl } from 'react-leaflet'
 import { genreColorClasses } from '../../components/ui/genreColors'
 import type { DanceEvent } from '../../domain/event'
+import { visibleGenres } from '../../domain/genres'
 import { useResolvedTheme } from '../../theme/useResolvedTheme'
 import { eventFocus, useEventFocus } from '../events/eventFocusStore'
 import { formatTimeRange } from '../events/format'
@@ -189,7 +190,7 @@ const iconCache = new Map<string, L.DivIcon>()
 /** Pino redondo na cor do primeiro gênero do primeiro evento, com contador quando há mais de um. */
 function pinIcon(place: Place, state: keyof typeof PIN_STYLE): L.DivIcon {
   const { size, classes } = PIN_STYLE[state]
-  const colors = genreColorClasses(place.events[0].genres[0])
+  const colors = genreColorClasses(visibleGenres(place.events[0].genres)[0])
   const count = place.events.length > 1 ? place.events.length : ''
   const cacheKey = `${state}|${colors}|${count}`
   const cached = iconCache.get(cacheKey)

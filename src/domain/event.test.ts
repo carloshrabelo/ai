@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import type { GCalEvent } from '../data/googleCalendar'
 import mock from '../mocks/events.json'
 import { extractLinks, toDanceEvent } from './event'
+import { visibleGenres } from './genres'
 
 const items = mock.items as GCalEvent[]
 const events = items.map(toDanceEvent)
@@ -67,14 +68,20 @@ describe('toDanceEvent', () => {
     expect(event.genres).toEqual(['Salsa', 'Bachata', 'Kizomba'])
   })
 
-  it('"Latinas" com Salsa e Bachata na descrição mostra as três tags', () => {
+  it('"Latinas" com Salsa e Bachata na descrição: exibe Salsa e Bachata, oculta Latinas', () => {
     const event = toDanceEvent({ ...base, summary: 'Latinas • Dance Night', description: 'Salsa, Bachata e mais' })
-    expect(event.genres).toEqual(['Salsa', 'Bachata', 'Latinas'])
+    expect(event.genres).toEqual(['Salsa', 'Bachata', 'Latinas']) // filtros usam todos
+    expect(visibleGenres(event.genres)).toEqual(['Salsa', 'Bachata'])
   })
 
-  it('"Latinas" sem gêneros na descrição fica só com a própria tag', () => {
+  it('"Latinas" com só Salsa na descrição também fica oculta', () => {
+    const event = toDanceEvent({ ...base, summary: 'Latinas • Dance Night', description: 'Pista de salsa' })
+    expect(visibleGenres(event.genres)).toEqual(['Salsa'])
+  })
+
+  it('"Latinas" sem Salsa nem Bachata informadas: exibe Latinas', () => {
     const event = toDanceEvent({ ...base, summary: 'Latinas • Dance Night', description: 'Noite latina' })
-    expect(event.genres).toEqual(['Latinas'])
+    expect(visibleGenres(event.genres)).toEqual(['Latinas'])
   })
 
   it('siglas na descrição não contam ("afro house" não vira Kizomba)', () => {

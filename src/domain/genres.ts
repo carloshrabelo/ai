@@ -75,6 +75,15 @@ export const GENRE_INCLUDES: Partial<Record<Genre, readonly Genre[]>> = {
   Latinas: ['Salsa', 'Bachata'],
 }
 
+/**
+ * Gêneros para exibir nas tags. Um gênero "guarda-chuva" fica oculto quando algum dos gêneros
+ * que ele inclui já aparece: "Latinas" só é exibida se nem Salsa nem Bachata foram informadas.
+ * (Os filtros continuam usando todos os gêneros do evento.)
+ */
+export function visibleGenres(genres: readonly Genre[]): Genre[] {
+  return genres.filter((genre) => !GENRE_INCLUDES[genre]?.some((included) => genres.includes(included)))
+}
+
 /** Gêneros do evento + os incluídos por eles (para filtrar). */
 export function expandGenres(genres: readonly Genre[]): Set<Genre> {
   return new Set(genres.flatMap((genre) => [genre, ...(GENRE_INCLUDES[genre] ?? [])]))

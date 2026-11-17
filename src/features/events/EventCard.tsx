@@ -4,6 +4,7 @@ import { Card } from '../../components/ui/Card'
 import { Chip } from '../../components/ui/Chip'
 import { Skeleton } from '../../components/ui/Skeleton'
 import type { DanceEvent } from '../../domain/event'
+import { visibleGenres } from '../../domain/genres'
 import { EventDistance } from '../location/EventDistance'
 import { eventFocus, useEventFocus } from './eventFocusStore'
 import { formatTimeRange } from './format'
@@ -88,7 +89,7 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
       <div className="flex items-center gap-2">
         <div className="flex min-w-0 flex-1 flex-wrap gap-2">
           {event.genres.length > 0
-            ? event.genres.map((genre) => <Chip key={genre} genre={genre} />)
+            ? visibleGenres(event.genres).map((genre) => <Chip key={genre} genre={genre} />)
             : event.rawTag && <Chip label={event.rawTag} />}
         </div>
         <EventDistance venue={event.venue} />
