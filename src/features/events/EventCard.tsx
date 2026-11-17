@@ -11,6 +11,11 @@ import { eventFocus, useEventFocus } from './eventFocusStore'
 import { EventStatusBadge } from './EventStatusBadge'
 import { formatTimeRange } from './format'
 import { useI18n } from '../../i18n/useI18n'
+import { slugify } from '../../domain/slug'
+import { eventUrl } from '../../seo/useDocumentHead'
+import { detectPlatform } from '../location/navigationLink'
+import { trackEvent } from '../tracking/trackedEvents'
+import { downloadIcs, googleCalendarUrl } from './calendarLinks'
 
 const ICON_LINK =
   'relative z-10 inline-flex size-11 shrink-0 items-center justify-center rounded-lg text-fg-muted hover:bg-surface-muted hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand'
@@ -82,12 +87,20 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
         </div>
         {/* Tooltip visível: o ícone sozinho não é óbvio para todo mundo. */}
         <Tooltip label={t.event.addToCalendar} className="relative z-10 -mt-2 -mr-2 shrink-0">
+          {/* Google Agenda já preenchido; no iPhone, baixa o .ics (Calendário do iOS). */}
           <a
-            href={event.calendarUrl}
+            href={googleCalendarUrl(event, eventUrl(event.id))}
             target="_blank"
             rel="noopener noreferrer"
             aria-label={t.event.addToCalendarFor(event.title)}
             className={ICON_LINK}
+            onClick={(click) => {
+              trackEvent(event)
+              if (detectPlatform() === 'ios') {
+                click.preventDefault()
+                downloadIcs(event, eventUrl(event.id), slugify(event.title) || 'evento')
+              }
+            }}
           >
             <CalendarPlus className="size-5" aria-hidden="true" />
           </a>

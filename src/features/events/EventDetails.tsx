@@ -1,4 +1,4 @@
-import { CalendarPlus, Clock, MapPin, Navigation, Ticket } from 'lucide-react'
+import { BellRing, CalendarPlus, Clock, Download, MapPin, Navigation, Ticket } from 'lucide-react'
 import { type ReactNode, useMemo } from 'react'
 import { Chip } from '../../components/ui/Chip'
 import { Skeleton } from '../../components/ui/Skeleton'
@@ -13,10 +13,16 @@ import { EventStatusBadge } from './EventStatusBadge'
 import { formatDayHeading, formatTimeRange } from './format'
 import { ShareButton } from './ShareButton'
 import { useI18n } from '../../i18n/useI18n'
+import { Button } from '../../components/ui/Button'
+import { slugify } from '../../domain/slug'
+import { eventUrl } from '../../seo/useDocumentHead'
+import { untrackEvent, useIsTracked, trackEvent } from '../tracking/trackedEvents'
+import { downloadIcs, googleCalendarUrl } from './calendarLinks'
 
 /** Conteúdo dos detalhes: usado no painel da coluna do mapa (`xl+`) e no drawer (abaixo de `xl`). */
 export function EventDetails({ event, headingId }: { event: DanceEvent; headingId: string }) {
   const { t, locale } = useI18n()
+  const tracked = useIsTracked(event.id)
   const instagramPost = t.event.instagramPost
   const html = useMemo(
     () => (event.description ? renderDescription(event.description, { instagramPost }) : ''),
@@ -72,17 +78,45 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
         )}
       </dl>
 
-      <div className="flex flex-wrap gap-2">
-        <a
-          href={event.calendarUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-brand px-4 text-sm font-medium text-brand-fg hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-        >
-          <CalendarPlus className="size-5" aria-hidden="true" />
-          {t.event.addToCalendar}
-        </a>
-        <ShareButton event={event} />
+      {/* Adicionar ao calendário da pessoa (sem login) e passar a acompanhar mudanças. */}
+      <div className="space-y-2">
+        <p className="text-sm font-medium">{t.event.addToCalendar}</p>
+        <div className="flex flex-wrap gap-2">
+          <a
+            href={googleCalendarUrl(event, eventUrl(event.id))}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => trackEvent(event)}
+            className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-brand px-4 text-sm font-medium text-brand-fg hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+          >
+            <CalendarPlus className="size-5" aria-hidden="true" />
+            {t.tracking.googleCalendar}
+          </a>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              trackEvent(event)
+              downloadIcs(event, eventUrl(event.id), slugify(event.title) || 'evento')
+            }}
+          >
+            <Download className="size-5" aria-hidden="true" />
+            {t.tracking.icsCalendar}
+          </Button>
+          <ShareButton event={event} />
+        </div>
+        {tracked && (
+          <p className="flex flex-wrap items-center gap-x-2 text-sm text-fg-muted">
+            <BellRing className="size-4 shrink-0" aria-hidden="true" />
+            {t.tracking.tracked}
+            <button
+              type="button"
+              onClick={() => untrackEvent(event.id)}
+              className="min-h-11 cursor-pointer font-medium text-brand underline-offset-2 hover:underline"
+            >
+              {t.tracking.stop}
+            </button>
+          </p>
+        )}
       </div>
 
       {html && (

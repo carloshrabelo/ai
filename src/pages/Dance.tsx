@@ -18,6 +18,7 @@ import { DanceHead } from '../seo/DanceHead'
 import { useI18n } from '../i18n/useI18n'
 import { BottomSheet } from '../components/ui/BottomSheet'
 import { Button } from '../components/ui/Button'
+import { ChangesBanner } from '../features/tracking/ChangesBanner'
 
 /** Rota "/" — eventos de dança. Um feed novo (e estado novo) para cada data inicial. */
 export default function Dance() {
@@ -111,6 +112,7 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
           <GenreFilter />
         </SidebarPortal>
 
+        <ChangesBanner startDate={startDate} onOpenEvent={openFromList} />
         <EventFeed startDate={startDate} genres={genres} onOpenEvent={openFromList} />
       </div>
 
