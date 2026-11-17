@@ -44,6 +44,8 @@
   --color-genre-purple-fg: #ffffff;
   --color-genre-teal: #0b7d72;
   --color-genre-teal-fg: #ffffff;
+  --color-genre-coral: #ff7a5c;
+  --color-genre-coral-fg: #2a0d07;
 }
 
 @layer base {

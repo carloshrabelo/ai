@@ -7,6 +7,7 @@ import { Skeleton } from '../../components/ui/Skeleton'
 import type { IsoDate } from '../../data/dates'
 import { eventsInfiniteQueryOptions, flattenEvents } from '../../data/queries'
 import { FILTER_VALUES, type GenreFilterValue, OTHER_GENRES } from '../../domain/genreFilter'
+import { expandGenres } from '../../domain/genres'
 import { LocationControl } from '../location/LocationControl'
 import { useGenreFilter } from './useGenreFilter'
 
@@ -24,7 +25,8 @@ export function GenreFilter({ startDate }: { startDate: IsoDate }) {
 
   const available = useMemo(() => {
     const events = flattenEvents(data?.pages ?? [])
-    const present = new Set<GenreFilterValue>(events.flatMap((event) => event.genres))
+    // Inclui os gêneros implícitos: evento "Latinas" faz aparecer também Salsa e Bachata.
+    const present = new Set<GenreFilterValue>(events.flatMap((event) => [...expandGenres(event.genres)]))
     // "Outros": eventos cujo gênero não está na lista.
     if (events.some((event) => event.genres.length === 0)) present.add(OTHER_GENRES)
     return FILTER_VALUES.filter((value) => present.has(value) || selected.includes(value))

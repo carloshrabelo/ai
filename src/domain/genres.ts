@@ -3,6 +3,7 @@ export const GENRES = [
   'Forró',
   'Salsa',
   'Bachata',
+  'Latinas',
   'Kizomba',
   'Semba',
   'Swing',
@@ -21,9 +22,9 @@ export type Genre = (typeof GENRES)[number]
 export const ALIAS: Record<string, string> = {
   'QUEEN KIZOMBA PROJECT': '',
   'RODA DE SAMBA?': '',
-  'AFRO-LATINAS': 'SALSA BACHATA KIZOMBA SEMBA',
+  'AFRO-LATINAS': 'LATINAS KIZOMBA SEMBA',
   AFRO: 'KIZOMBA SEMBA',
-  'PISTA LATINAS': 'SALSA BACHATA',
+  'PISTA LATINAS': 'LATINAS',
   'PISTA AFRICANA': 'KIZOMBA SEMBA',
   SBKZ: 'SALSA BACHATA KIZOMBA ZOUK',
   SBK: 'SALSA BACHATA KIZOMBA',
@@ -49,6 +50,7 @@ export type GenreColor =
   | 'orange'
   | 'purple'
   | 'teal'
+  | 'coral'
 
 export const genreToPalette: Record<Genre, GenreColor> = {
   Bachata: 'wine',
@@ -62,6 +64,20 @@ export const genreToPalette: Record<Genre, GenreColor> = {
   Tango: 'orange',
   Zouk: 'purple',
   'West Coast Swing': 'teal',
+  Latinas: 'coral',
+}
+
+/**
+ * Gêneros que incluem outros: o evento mostra a própria tag ("Latinas"), mas também aparece
+ * no filtro dos gêneros incluídos (Salsa e Bachata).
+ */
+export const GENRE_INCLUDES: Partial<Record<Genre, readonly Genre[]>> = {
+  Latinas: ['Salsa', 'Bachata'],
+}
+
+/** Gêneros do evento + os incluídos por eles (para filtrar). */
+export function expandGenres(genres: readonly Genre[]): Set<Genre> {
+  return new Set(genres.flatMap((genre) => [genre, ...(GENRE_INCLUDES[genre] ?? [])]))
 }
 
 /** Slug para URL (?genres=west-coast-swing,forro). */

@@ -10,15 +10,18 @@ describe('parseGenres', () => {
     ['Forró', ['Forró']],
     ['Swing', ['Swing']],
     ['Salsa & Bachata', ['Salsa', 'Bachata']],
+    ['Latinas', ['Latinas']],
+    ['Latinas & Bachata', ['Bachata', 'Latinas']],
+    ['Salsa Cubana', ['Salsa']],
   ])('%s → gêneros diretos', (tag, expected) => {
     expect(parseGenres(tag)).toEqual(expected)
   })
 
   describe('ALIAS', () => {
     it.each([
-      ['Afro-Latinas', ['Salsa', 'Bachata', 'Kizomba', 'Semba']],
+      ['Afro-Latinas', ['Latinas', 'Kizomba', 'Semba']],
       ['Afro', ['Kizomba', 'Semba']],
-      ['Pista Latinas', ['Salsa', 'Bachata']],
+      ['Pista Latinas', ['Latinas']],
       ['Pista Africana', ['Kizomba', 'Semba']],
       ['SBKZ', ['Zouk', 'Salsa', 'Bachata', 'Kizomba']],
       ['SBK', ['Salsa', 'Bachata', 'Kizomba']],
@@ -39,7 +42,7 @@ describe('parseGenres', () => {
 
   describe('ordem do mais longo para o mais curto', () => {
     it('AFRO-LATINAS não é tratado como AFRO', () => {
-      expect(parseGenres('AFRO-LATINAS')).toContain('Salsa')
+      expect(parseGenres('AFRO-LATINAS')).toContain('Latinas')
     })
 
     it('SBKZ não é tratado como SBK', () => {

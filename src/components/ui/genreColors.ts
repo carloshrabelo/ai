@@ -14,6 +14,7 @@ const COLOR_CLASSES: Record<GenreColor | 'neutral', string> = {
   orange: 'bg-genre-orange text-genre-orange-fg',
   purple: 'bg-genre-purple text-genre-purple-fg',
   teal: 'bg-genre-teal text-genre-teal-fg',
+  coral: 'bg-genre-coral text-genre-coral-fg',
 }
 
 /** Classes de cor do gênero (ou neutras quando não há gênero). */
