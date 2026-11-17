@@ -39,7 +39,7 @@ App **"Eventos Futuros"**: agenda de eventos de dança, em tema claro (teal) e e
 |---|---|---|
 | Distância (`8.1KM`) e mapa com pinos | Não há coordenadas | Criar `src/data/venues.json` com lat/lng por local (geocodificar uma vez) + geolocalização do usuário. Locais novos que vierem da API e não estiverem na tabela ficam sem pino e sem distância |
 | Aba **Escolas** | Não há dados | Página "Em breve" por enquanto |
-| Hoje = data atual | A API busca a partir de hoje, de 2 em 2 semanas; o mock é de jun–ago/2026 | Com a API, nada a fazer. Em modo mock, a data inicial é o primeiro evento do arquivo |
+| Hoje = data atual | A API busca a partir de hoje, de 2 em 2 semanas; o mock é de jun–ago/2026 | Com a API, nada a fazer. O mock tem as datas deslocadas para perto de hoje (`src/data/mockDates.ts`): sempre há eventos na semana passada, hoje e na próxima semana |
 | Tags inventadas (Srilocita…) | A tag é o 1º trecho do `summary` | O 1º trecho passa pelo `ALIAS` e vira gêneros da lista `GENRES` (ver "Parser de gêneros") |
 
 ### ⚠️ Atenção antes de publicar
@@ -306,7 +306,7 @@ Cada passo é um commit independente que mantém o app funcionando.
 
 **Pronto quando:** a página inicial lista os títulos crus vindos da API em dev e no GitHub Pages.
 
-> Feito com o mock: 37 eventos em 5 janelas (29/06 → 07/09), o feed para depois de 2 janelas vazias. Falta validar com a API real quando a chave existir. No GitHub Pages, o mock fica ativo até a variável `VITE_USE_MOCK` do repositório ser `false`.
+> Feito com o mock: 37 eventos em 5 janelas, o feed para depois de 2 janelas vazias. Falta validar com a API real quando a chave existir. No GitHub Pages, o mock fica ativo até a variável `VITE_USE_MOCK` do repositório ser `false`.
 
 ### Passo 1 — Domínio e parser
 - [x] `genres.ts`: `GENRES`, `ALIAS` e `genreToPalette`, como na seção "Parser de gêneros".
@@ -397,6 +397,7 @@ Cada passo é um commit independente que mantém o app funcionando.
 - **Fim do feed**: depois de 2 janelas seguidas sem eventos.
 - **Filtro de gênero com poucos resultados**: continua buscando as próximas janelas automaticamente, até o fim do feed.
 - **Fonte em dev**: mock por padrão (`VITE_USE_MOCK`).
+- **Datas do mock**: relativas a hoje (`Date.now`). O arquivo `events.json` não muda; as datas são deslocadas em dias inteiros ao carregar, mantendo o horário de Lisboa, de forma que hoje tenha eventos e a semana anterior e a seguinte tenham pelo menos 3 dias com eventos cada. Quando possível, mantém o dia da semana.
 
 **Em aberto:**
 1. **Nome do app**: "Eventos Futuros", como no protótipo, ou outro? (manifest do PWA hoje diz "Meu WebApp")

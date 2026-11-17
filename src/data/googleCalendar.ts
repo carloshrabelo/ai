@@ -1,5 +1,6 @@
 import { CALENDAR_ID, GOOGLE_API_KEY, MOCK_DELAY_MS, USE_MOCK } from './config'
-import { type IsoDate, lisbonMidnight, todayIso } from './dates'
+import { lisbonMidnight, todayIso } from './dates'
+import { shiftMockEvents } from './mockDates'
 
 /** Início/fim de um evento: `date` para dia inteiro, `dateTime` para evento com hora. */
 export type GCalDateTime = { date?: string; dateTime?: string; timeZone?: string }
@@ -33,14 +34,6 @@ const API_URL = `https://www.googleapis.com/calendar/v3/calendars/${encodeURICom
 /** Eventos que se sobrepõem a [timeMin, timeMax), ordenados pelo início. */
 export function fetchEvents(params: FetchEventsParams): Promise<GCalEvent[]> {
   return USE_MOCK ? fetchMockEvents(params) : fetchApiEvents(params)
-}
-
-/** Data inicial padrão do feed: hoje com a API; o primeiro evento do arquivo com o mock. */
-export async function getDefaultStartDate(): Promise<IsoDate> {
-  if (!USE_MOCK) return todayIso()
-  const items = await loadMockItems()
-  const first = items.map(startOf).sort((a, b) => a.getTime() - b.getTime())[0]
-  return first ? todayIso(first) : todayIso()
 }
 
 // ---------------------------------------------------------------------------
@@ -78,9 +71,10 @@ async function fetchApiEvents({ timeMin, timeMax, signal }: FetchEventsParams): 
 // ---------------------------------------------------------------------------
 // Mock
 
+/** Eventos do mock com as datas deslocadas para perto de hoje (ver shiftMockEvents). */
 async function loadMockItems(): Promise<GCalEvent[]> {
   const mock = await import('../mocks/events.json')
-  return mock.default.items as GCalEvent[]
+  return shiftMockEvents(mock.default.items as GCalEvent[], todayIso())
 }
 
 async function fetchMockEvents({ timeMin, timeMax, signal }: FetchEventsParams): Promise<GCalEvent[]> {
