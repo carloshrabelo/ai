@@ -1,12 +1,13 @@
 import { QueryErrorResetBoundary, useSuspenseInfiniteQuery } from '@tanstack/react-query'
-import { CalendarX } from 'lucide-react'
-import { Fragment, Suspense, useEffect, useMemo, useRef } from 'react'
+import { CalendarX, SearchX } from 'lucide-react'
+import { Fragment, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { ErrorBoundary } from '../../components/ErrorBoundary'
 import { Button } from '../../components/ui/Button'
 import type { IsoDate } from '../../data/dates'
 import { eventsInfiniteQueryOptions, flattenEvents } from '../../data/queries'
 import { type GenreFilterValue, matchesGenres } from '../../domain/genreFilter'
 import { EventCard, EventCardSkeleton } from './EventCard'
+import { lastSearchedDay, shouldPauseFilteredSearch } from './filteredSearch'
 import { formatDayHeading } from './format'
 import { groupByDay } from './groupByDay'
 
@@ -45,12 +46,23 @@ function EventFeedContent({ startDate, genres, onOpenEvent }: FeedProps) {
     return groupByDay(events, startDate, rangeEnd)
   }, [data.pages, startDate, genres])
 
+  // Com filtro ativo, a busca automática para depois de 3 janelas seguidas sem resultado.
+  // "Buscar mais" libera mais 3 a partir dali; trocar o filtro recomeça a contagem.
+  const filterKey = genres.join(',')
+  const [resume, setResume] = useState({ filterKey, fromPage: 0 })
+  const fromPage = resume.filterKey === filterKey ? resume.fromPage : 0
+  const paused = hasNextPage && shouldPauseFilteredSearch(data.pages, genres, fromPage)
+  const searchMore = () => {
+    setResume({ filterKey, fromPage: data.pages.length })
+    void fetchNextPage()
+  }
+
   // Sentinela ~600px antes do fim da lista: busca mais 2 semanas antes de o usuário chegar lá.
   // Se depois da busca ele continuar visível (poucos eventos), o observer dispara de novo.
   const sentinelRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     const sentinel = sentinelRef.current
-    if (!sentinel || !hasNextPage || isFetchingNextPage || isFetchNextPageError) return
+    if (!sentinel || !hasNextPage || isFetchingNextPage || isFetchNextPageError || paused) return
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) void fetchNextPage()
@@ -59,7 +71,7 @@ function EventFeedContent({ startDate, genres, onOpenEvent }: FeedProps) {
     )
     observer.observe(sentinel)
     return () => observer.disconnect()
-  }, [hasNextPage, isFetchingNextPage, isFetchNextPageError, fetchNextPage])
+  }, [hasNextPage, isFetchingNextPage, isFetchNextPageError, fetchNextPage, paused])
 
   return (
     <div className="space-y-6" aria-busy={isFetchingNextPage}>
@@ -110,6 +122,17 @@ function EventFeedContent({ startDate, genres, onOpenEvent }: FeedProps) {
           <p className="text-sm text-fg-muted">Não foi possível carregar mais eventos.</p>
           <Button variant="secondary" onClick={() => fetchNextPage()}>
             Tentar de novo
+          </Button>
+        </div>
+      ) : paused && !isFetchingNextPage ? (
+        <div role="status" className="flex flex-col items-center gap-2 py-4 text-center">
+          <SearchX className="size-8 text-fg-muted" aria-hidden="true" />
+          <p className="text-sm text-fg-muted">
+            {days.length === 0 ? 'Nenhum evento' : 'Nenhum outro evento'} de {genres.join(', ')} até{' '}
+            {formatDayHeading(lastSearchedDay(data.pages, startDate)).toLowerCase()}.
+          </p>
+          <Button variant="secondary" onClick={searchMore}>
+            Buscar mais 2 semanas
           </Button>
         </div>
       ) : hasNextPage ? (
