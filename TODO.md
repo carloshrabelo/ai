@@ -20,18 +20,18 @@ Coisas que o código não resolve sozinho: chaves, configurações e verificaç�
 - [ ] **Secrets and variables → Actions**:
   - [ ] Secret `VITE_GOOGLE_API_KEY` com a chave do passo 1.
   - [ ] Variable `VITE_USE_MOCK` = `false` (sem ela, o site é publicado com o mock).
-  - [ ] Variable `VITE_GOATCOUNTER_CODE` (passo 3, opcional).
 - [ ] **Actions → General → Workflow permissions**: se a Action *Update venues* falhar no push, permitir *Read and write* (ela grava o `venues.json` no `main`). Uma proteção de branch no `main` também bloquearia esse push.
-- [ ] Abrir e fazer o merge do PR da branch `feat/seo-ssg-share-analytics`:
-      https://github.com/carloshrabelo/ai/compare/main...feat/seo-ssg-share-analytics
 - [ ] Rodar uma vez à mão: **Actions → Update venues → Run workflow**, e conferir o commit do bot e o deploy seguinte.
 - [ ] Conferir se o deploy diário (05:30 UTC) está rodando em **Actions → Deploy to GitHub Pages**.
 
-## 3. Analytics (GoatCounter, opcional)
+## 3. Analytics (GoatCounter) — branch `feat/seo-ssg-share-analytics`
+
+O analytics está pronto, mas fica fora do `main` até ser configurado. A branch contém só ele.
 
 - [ ] Criar a conta e o site em [goatcounter.com](https://www.goatcounter.com) (o código é o `<codigo>` de `https://<codigo>.goatcounter.com`).
-- [ ] Colocar o código na variable `VITE_GOATCOUNTER_CODE` (passo 2) e fazer um deploy.
-- [ ] Depois do deploy, abrir o site e conferir se a visita e os eventos (filtros, eventos abertos, calendário, compartilhar) aparecem no painel.
+- [ ] Em **Settings → Secrets and variables → Actions**, criar a variable `VITE_GOATCOUNTER_CODE` com esse código.
+- [ ] Fazer o merge da branch: https://github.com/carloshrabelo/ai/compare/main...feat/seo-ssg-share-analytics
+- [ ] Depois do deploy, abrir o site e conferir se as visitas e os eventos (filtros, eventos abertos, calendário, compartilhar, mapa) aparecem no painel.
 
 ## 4. SEO e compartilhamento (depois do deploy com a API)
 
