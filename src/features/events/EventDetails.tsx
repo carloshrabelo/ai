@@ -1,4 +1,4 @@
-import { CalendarPlus, Clock, ExternalLink, MapPin, Ticket } from 'lucide-react'
+import { CalendarPlus, Clock, MapPin, Navigation, Ticket } from 'lucide-react'
 import { type ReactNode, useMemo } from 'react'
 import { Chip } from '../../components/ui/Chip'
 import { Skeleton } from '../../components/ui/Skeleton'
@@ -6,12 +6,14 @@ import { lisbonDate } from '../../data/dates'
 import type { DanceEvent } from '../../domain/event'
 import { renderDescription } from './description'
 import { EventDistance } from '../location/EventDistance'
+import { navigationLink } from '../location/navigationLink'
 import { formatDayHeading, formatTimeRange } from './format'
 
 /** Conteúdo dos detalhes: usado no painel da coluna do mapa (`xl+`) e no drawer (abaixo de `xl`). */
 export function EventDetails({ event, headingId }: { event: DanceEvent; headingId: string }) {
   const html = useMemo(() => (event.description ? renderDescription(event.description) : ''), [event.description])
-  const mapsUrl = event.venue ? mapsLink(event) : undefined
+  // App de navegação do aparelho (Android: seletor de apps; iOS: Apple Maps; desktop: Google Maps).
+  const directions = event.venue ? navigationLink(event.venue) : undefined
 
   return (
     <div className="space-y-4">
@@ -38,15 +40,14 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
               <EventDistance venue={event.venue} />
             </span>
             {event.venue.address && <span className="block text-fg-muted">{event.venue.address}</span>}
-            {mapsUrl && (
+            {directions && (
               <a
-                href={mapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={directions.href}
+                {...(directions.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                 className="inline-flex min-h-11 items-center gap-1 font-medium text-brand underline-offset-2 hover:underline"
               >
+                <Navigation className="size-4" aria-hidden="true" />
                 Abrir no mapa
-                <ExternalLink className="size-4" aria-hidden="true" />
               </a>
             )}
           </Row>
@@ -91,16 +92,6 @@ function Row({ icon, label, children }: { icon: ReactNode; label: string; childr
       <dd className="min-w-0 flex-1">{children}</dd>
     </div>
   )
-}
-
-/** Link para o mapa: coordenadas quando conhecidas, senão o endereço. */
-function mapsLink(event: DanceEvent): string {
-  const { venue } = event
-  if (venue?.lat !== undefined && venue.lng !== undefined) {
-    return `https://www.openstreetmap.org/?mlat=${venue.lat}&mlon=${venue.lng}#map=17/${venue.lat}/${venue.lng}`
-  }
-  const query = [venue?.name, venue?.address].filter(Boolean).join(', ')
-  return `https://www.openstreetmap.org/search?query=${encodeURIComponent(query)}`
 }
 
 /** Enquanto os eventos carregam (ex.: link direto com ?event=). */
