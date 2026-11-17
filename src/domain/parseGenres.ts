@@ -48,8 +48,12 @@ const NOT_IN_TEXT = new Set<Genre>(['Latinas', 'Afro', 'BR']) // "músicas latin
  * Mesma regra de nome inteiro e do mais longo para o mais curto (West Coast Swing ≠ Swing).
  */
 export function genresInText(text: string): Genre[] {
-  // Grafias sem espaço de nomes compostos: "UrbanKiz" → "URBAN KIZ".
-  let upper = text.normalize('NFC').toUpperCase().replace(/(?<![\p{L}\p{N}])URBANKIZ(?![\p{L}\p{N}])/gu, 'URBAN KIZ')
+  // Outras grafias: "UrbanKiz" → "URBAN KIZ", "Cuban Salsa" → "SALSA CUBANA".
+  let upper = text
+    .normalize('NFC')
+    .toUpperCase()
+    .replace(/(?<![\p{L}\p{N}])URBANKIZ(?![\p{L}\p{N}])/gu, 'URBAN KIZ')
+    .replace(/(?<![\p{L}\p{N}])CUBAN\s+SALSA(?![\p{L}\p{N}])/gu, 'SALSA CUBANA')
   const found = new Set<Genre>()
   for (const { genre, pattern } of GENRE_RULES) {
     if (upper.match(pattern)) {

@@ -54,6 +54,8 @@
   --color-genre-emerald-fg: #ffffff;
   --color-genre-cyan: #0e7490;
   --color-genre-cyan-fg: #ffffff;
+  --color-genre-rose: #be123c;
+  --color-genre-rose-fg: #ffffff;
 }
 
 @layer base {

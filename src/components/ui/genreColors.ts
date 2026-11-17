@@ -19,6 +19,7 @@ const COLOR_CLASSES: Record<GenreColor | 'neutral', string> = {
   indigo: 'bg-genre-indigo text-genre-indigo-fg',
   emerald: 'bg-genre-emerald text-genre-emerald-fg',
   cyan: 'bg-genre-cyan text-genre-cyan-fg',
+  rose: 'bg-genre-rose text-genre-rose-fg',
 }
 
 /** Classes de cor do gênero (ou neutras quando não há gênero). */

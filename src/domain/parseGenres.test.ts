@@ -12,7 +12,8 @@ describe('parseGenres', () => {
     ['Salsa & Bachata', ['Salsa', 'Bachata']],
     ['Latinas', ['Latinas']],
     ['Latinas & Bachata', ['Bachata', 'Latinas']],
-    ['Salsa Cubana', ['Salsa']],
+    ['Salsa Cubana', ['Salsa Cubana']],
+    ['Cuban Salsa', ['Salsa Cubana']],
     ['Merengue', ['Merengue']],
     ['Bachata & Merengue', ['Bachata', 'Merengue']],
   ])('%s → gêneros diretos', (tag, expected) => {

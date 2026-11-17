@@ -100,6 +100,13 @@ describe('matchesGenres', () => {
     expect(matchesGenres(['Latinas'], ['Kizomba'])).toBe(false)
   })
 
+  it('Salsa Cubana aparece no filtro de Salsa e de Latinas; Salsa não aparece no de Salsa Cubana', () => {
+    expect(matchesGenres(['Salsa Cubana'], ['Salsa'])).toBe(true)
+    expect(matchesGenres(['Salsa Cubana'], ['Latinas'])).toBe(true)
+    expect(matchesGenres(['Salsa Cubana'], ['Salsa Cubana'])).toBe(true)
+    expect(matchesGenres(['Salsa'], ['Salsa Cubana'])).toBe(false)
+  })
+
   it('Urban Kiz faz parte de Afro', () => {
     expect(matchesGenres(['Urban Kiz'], ['Afro'])).toBe(true)
     expect(matchesGenres(['Afro'], ['Urban Kiz'])).toBe(true)
