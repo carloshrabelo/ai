@@ -169,6 +169,8 @@ function groupByPlace(events: DanceEvent[]): Place[] {
   for (const event of events) {
     const { venue } = event
     if (venue?.lat === undefined || venue.lng === undefined) continue
+    // Cancelado ou adiado não acontece ali naquela data: fica fora do mapa.
+    if (event.status) continue
     const key = `${venue.lat},${venue.lng}`
     const place = byKey.get(key) ?? { key, name: venue.name, coords: { lat: venue.lat, lng: venue.lng }, events: [] }
     if (!place.events.some((e) => e.id === event.id)) place.events.push(event)

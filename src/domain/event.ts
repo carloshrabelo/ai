@@ -3,7 +3,7 @@ import { lisbonMidnight } from '../data/dates'
 import type { GCalDateTime, GCalEvent } from '../data/googleCalendar'
 import { confirmedUmbrellas, GENRES, type Genre } from './genres'
 import { genresInText } from './parseGenres'
-import { parseSummary } from './parseSummary'
+import { type EventStatus, parseSummary } from './parseSummary'
 
 export type Venue = {
   /** Texto original do `location` no calendário (chave do venues.json e da geocodificação). */
@@ -17,6 +17,8 @@ export type Venue = {
 
 export type DanceEvent = {
   id: string
+  /** Marcado no título do calendário como cancelado ou adiado. */
+  status?: EventStatus
   title: string
   genres: Genre[]
   /** Tag original do summary, para exibir quando genres = []. */
@@ -37,7 +39,7 @@ type VenueCoords = { name: string; lat: number; lng: number }
 const VENUES: Record<string, VenueCoords> = venues
 
 export function toDanceEvent(event: GCalEvent): DanceEvent {
-  const { genres: tagGenres, rawTag, title, price } = parseSummary(event.summary)
+  const { genres: tagGenres, rawTag, title, price, status } = parseSummary(event.summary)
   const description = event.description?.trim() || undefined
   // A tag do título é a fonte principal; gêneros citados no título ou na descrição completam
   // (ex.: tag "Bachata & Kizomba" com "70% Bachata / 30% Salsa" na descrição → inclui Salsa).
@@ -50,6 +52,7 @@ export function toDanceEvent(event: GCalEvent): DanceEvent {
 
   return {
     id: event.id,
+    ...(status ? { status } : {}),
     title,
     genres,
     rawTag,

@@ -283,6 +283,8 @@ Tags com erro de digitação que contêm o nome de outro gênero (como `WEST COA
 
 **Gêneros na descrição:** além da tag, nomes de gêneros citados no título ou na descrição entram nas tags (sem aliases, para evitar falsos positivos como "afro house"; "Latinas" não é procurado em texto). "Latinas" e "Afro" são tags de reserva: só aparecem quando nenhum dos gêneros que incluem foi informado (na tag ou na descrição); senão ficam ocultas (`visibleGenres`). Nos filtros o evento continua contando como Latinas/Afro. Nos dados reais de 90 dias, 6 títulos ganharam gêneros assim (ex.: "Bachata & Kizomba • Timbre Lisboa" + Salsa).
 
+**Cancelados e adiados:** prefixo no título ("(Cancelado)", "[Cancelled]", "[Postponed]", "(Adiado)", incluindo variações como "Cancelada" e "Cancrlado") vira `status`, sai do título e da tag. O card mostra o aviso ("Cancelado" em vermelho, com o título riscado; "Adiado" em amarelo), os detalhes também, e o evento sai do mapa.
+
 **Cores:** cada `GenreColor` vira um par de tokens no `@theme` do Tailwind (`--color-genre-wine`, `--color-genre-wine-fg`…), com valores para o tema claro e para o escuro. O contraste do texto sobre o chip precisa passar em AA nos dois temas. Chip sem gênero (`rawTag`) usa um cinza neutro.
 
 ## 3. Passo a passo

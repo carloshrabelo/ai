@@ -9,6 +9,7 @@ import { renderDescription } from './description'
 import { EventDistance } from '../location/EventDistance'
 import { navigationLink } from '../location/navigationLink'
 import { useGeocodedVenue } from '../location/useGeocodedEvents'
+import { EventStatusBadge } from './EventStatusBadge'
 import { formatDayHeading, formatTimeRange } from './format'
 
 /** Conteúdo dos detalhes: usado no painel da coluna do mapa (`xl+`) e no drawer (abaixo de `xl`). */
@@ -26,6 +27,7 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
           {event.title}
         </h2>
         <div className="flex flex-wrap gap-2">
+          {event.status && <EventStatusBadge status={event.status} />}
           {event.genres.length > 0
             ? visibleGenres(event.genres).map((genre) => <Chip key={genre} genre={genre} />)
             : event.rawTag && <Chip label={event.rawTag} />}

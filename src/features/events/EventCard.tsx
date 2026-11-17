@@ -7,6 +7,7 @@ import type { DanceEvent } from '../../domain/event'
 import { visibleGenres } from '../../domain/genres'
 import { EventDistance } from '../location/EventDistance'
 import { eventFocus, useEventFocus } from './eventFocusStore'
+import { EventStatusBadge } from './EventStatusBadge'
 import { formatTimeRange } from './format'
 
 const ICON_LINK =
@@ -38,7 +39,7 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
       onBlur={unhover}
       className={`relative isolate flex flex-col gap-2 transition-shadow hover:shadow-md ${
         selected || highlighted ? 'ring-2 ring-brand' : ''
-      }`}
+      } ${event.status === 'cancelled' ? 'opacity-75' : ''}`}
     >
       <div className="flex items-start gap-2">
         <div className="min-w-0 flex-1 space-y-1">
@@ -47,7 +48,9 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
               type="button"
               aria-current={selected || undefined}
               onClick={() => onOpen(event.id)}
-              className="cursor-pointer text-left outline-none after:absolute after:inset-0 after:rounded-xl focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-brand"
+              className={`cursor-pointer text-left outline-none after:absolute after:inset-0 after:rounded-xl focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-brand ${
+                event.status === 'cancelled' ? 'line-through decoration-2' : ''
+              }`}
             >
               {event.title}
             </button>
@@ -88,6 +91,7 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
 
       <div className="flex items-center gap-2">
         <div className="flex min-w-0 flex-1 flex-wrap gap-2">
+          {event.status && <EventStatusBadge status={event.status} />}
           {event.genres.length > 0
             ? visibleGenres(event.genres).map((genre) => <Chip key={genre} genre={genre} />)
             : event.rawTag && <Chip label={event.rawTag} />}

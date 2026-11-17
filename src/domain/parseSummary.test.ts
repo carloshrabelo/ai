@@ -33,6 +33,26 @@ describe('parseSummary', () => {
     expect(parseSummary('Baile de verão')).toEqual({ genres: [], rawTag: '', title: 'Baile de verão' })
   })
 
+  it.each([
+    ['(Cancelado) Bachata • Noite X', 'cancelled'],
+    ['[Cancelled] Latinas • Noite X', 'cancelled'],
+    ['(Cancelada) Afro-Latinas • Noite X', 'cancelled'],
+    ['(CANCELADO) Forró • Noite X', 'cancelled'],
+    ['(Cancrlado) Swing • Noite X', 'cancelled'],
+    ['[Postponed] Bachata • Noite X', 'postponed'],
+    ['(Adiado) Salsa • Noite X', 'postponed'],
+  ])('%s → %s, sem o prefixo', (summary, status) => {
+    const parsed = parseSummary(summary)
+    expect(parsed.status).toBe(status)
+    expect(parsed.rawTag).not.toMatch(/[[(]/)
+    expect(parsed.genres.length).toBeGreaterThan(0)
+    expect(parsed.title).toBe('Noite X')
+  })
+
+  it('sem prefixo, sem status', () => {
+    expect(parseSummary('Salsa • Noite').status).toBeUndefined()
+  })
+
   it('summary vazio ou ausente', () => {
     expect(parseSummary(undefined).title).toBe('Sem título')
     expect(parseSummary('   ').title).toBe('Sem título')
