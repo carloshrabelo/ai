@@ -100,6 +100,12 @@ describe('matchesGenres', () => {
     expect(matchesGenres(['Latinas'], ['Kizomba'])).toBe(false)
   })
 
+  it('Urban Kiz faz parte de Afro', () => {
+    expect(matchesGenres(['Urban Kiz'], ['Afro'])).toBe(true)
+    expect(matchesGenres(['Afro'], ['Urban Kiz'])).toBe(true)
+    expect(matchesGenres(['Urban Kiz'], ['Kizomba'])).toBe(false)
+  })
+
   it('"Afro" aparece no filtro de Kizomba e de Semba', () => {
     expect(matchesGenres(['Afro'], ['Kizomba'])).toBe(true)
     expect(matchesGenres(['Afro'], ['Semba'])).toBe(true)

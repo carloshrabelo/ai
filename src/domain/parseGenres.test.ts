@@ -25,6 +25,11 @@ describe('parseGenres', () => {
       ['Afro', ['Afro']],
       ['Pista Latinas', ['Latinas']],
       ['Pista Africana', ['Afro']],
+      ['Africanas', ['Afro']],
+      ['Afro-Latino', ['Latinas', 'Afro']],
+      ['Urban Kiz', ['Urban Kiz']],
+      ['UrbanKiz', ['Urban Kiz']],
+      ['Latinas & Africanas & Rock n\' Roll', ['Latinas', 'Afro']],
       ['SBKZ', ['Zouk', 'Salsa', 'Bachata', 'Kizomba']],
       ['SBK', ['Salsa', 'Bachata', 'Kizomba']],
       ['WCS', ['West Coast Swing']],
@@ -72,6 +77,10 @@ describe('parseGenres', () => {
 
   it('remove duplicados e devolve na ordem de GENRES', () => {
     expect(parseGenres('Bachata & SBK & Salsa')).toEqual(['Salsa', 'Bachata', 'Kizomba'])
+  })
+
+  it('Urban Kiz não vira Kizomba (é gênero próprio do conjunto Afro)', () => {
+    expect(parseGenres('Urban Kiz')).not.toContain('Kizomba')
   })
 
   it.each(['Vários', 'Fusão', ''])('%j → nenhum gênero', (tag) => {
