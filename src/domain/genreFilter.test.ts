@@ -106,6 +106,18 @@ describe('matchesGenres', () => {
     expect(matchesGenres(['Afro'], ['Salsa'])).toBe(false)
   })
 
+  it('Latinas não inclui Afro (nem Kizomba/Semba)', () => {
+    expect(matchesGenres(['Latinas'], ['Afro'])).toBe(false)
+    expect(matchesGenres(['Latinas'], ['Kizomba'])).toBe(false)
+  })
+
+  it('Afro-Latinas (Latinas + Afro) aparece nos filtros dos dois grupos', () => {
+    for (const filter of ['Latinas', 'Salsa', 'Bachata', 'Merengue', 'Afro', 'Kizomba', 'Semba'] as const) {
+      expect(matchesGenres(['Latinas', 'Afro'], [filter])).toBe(true)
+    }
+    expect(matchesGenres(['Latinas', 'Afro'], ['Forró'])).toBe(false)
+  })
+
   it('filtro "Latinas" não traz eventos só de Salsa (a inclusão é num sentido só)', () => {
     expect(matchesGenres(['Salsa'], ['Latinas'])).toBe(false)
   })
