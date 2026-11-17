@@ -4,6 +4,14 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Chamado pela Action "Update venues" depois de gravar o venues.json: um push feito com o
+  # GITHUB_TOKEN não dispara este workflow sozinho.
+  workflow_call:
+    inputs:
+      ref:
+        description: 'Commit a publicar (padrão: o que disparou o workflow)'
+        type: string
+        required: false
 
 permissions:
   contents: read
@@ -19,6 +27,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.sha }}
 
       - uses: pnpm/action-setup@v4
         with:
