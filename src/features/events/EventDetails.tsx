@@ -11,6 +11,7 @@ import { navigationLink } from '../location/navigationLink'
 import { useGeocodedVenue } from '../location/useGeocodedEvents'
 import { EventStatusBadge } from './EventStatusBadge'
 import { formatDayHeading, formatTimeRange } from './format'
+import { ShareButton } from './ShareButton'
 import { useI18n } from '../../i18n/useI18n'
 
 /** Conteúdo dos detalhes: usado no painel da coluna do mapa (`xl+`) e no drawer (abaixo de `xl`). */
@@ -71,15 +72,18 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
         )}
       </dl>
 
-      <a
-        href={event.calendarUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-brand px-4 text-sm font-medium text-brand-fg hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-      >
-        <CalendarPlus className="size-5" aria-hidden="true" />
-        {t.event.addToCalendar}
-      </a>
+      <div className="flex flex-wrap gap-2">
+        <a
+          href={event.calendarUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-brand px-4 text-sm font-medium text-brand-fg hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+        >
+          <CalendarPlus className="size-5" aria-hidden="true" />
+          {t.event.addToCalendar}
+        </a>
+        <ShareButton event={event} />
+      </div>
 
       {html && (
         <section aria-label={t.event.description} className="border-t border-border pt-4">
