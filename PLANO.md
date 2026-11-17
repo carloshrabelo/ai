@@ -324,10 +324,13 @@ Cada passo é um commit independente que mantém o app funcionando.
 > Feito: 48 testes. A normalização roda no `select` da query, então a UI já recebe `DanceEvent`.
 
 ### Passo 2 — Tema e design tokens
-- [ ] Aplicar os "Padrões visuais": tipografia, espaçamento e tamanhos. Criar componentes base (`Chip`, `Card`, `Button`, `IconButton`) que já usam esses valores, para as telas não repetirem classes soltas.
-- [ ] Trocar `--color-brand` (índigo) pelo teal do protótipo; definir tokens de superfície e texto, e os tokens das 11 cores de `genreToPalette` (fundo + texto, claro e escuro).
-- [ ] Tema escuro: seguir o sistema (`prefers-color-scheme`) + seletor manual (Claro / Escuro / Sistema) salvo em `localStorage`. Tailwind v4: `@custom-variant dark` baseado em `data-theme`.
-- [ ] Atualizar `theme_color`, `background_color`, nome e ícones do PWA em `vite.config.ts`.
+- [x] Aplicar os "Padrões visuais": tipografia, espaçamento e tamanhos. Criar componentes base (`Chip`, `Card`, `Button`, `IconButton`) que já usam esses valores, para as telas não repetirem classes soltas.
+- [x] Trocar `--color-brand` (índigo) pelo teal do protótipo; definir tokens de superfície e texto, e os tokens das 11 cores de `genreToPalette` (fundo + texto, claro e escuro).
+- [x] Tema escuro: seguir o sistema (`prefers-color-scheme`) + seletor manual (Claro / Escuro / Sistema) salvo em `localStorage`. Tailwind v4: `@custom-variant dark` baseado em `data-theme`.
+- [x] Atualizar `theme_color` e `background_color` do PWA em `vite.config.ts`.
+- [ ] Nome e ícones do PWA (aguardando o nome do app).
+
+> Feito: tokens semânticos em `src/index.css` (`bg-surface`, `text-fg-muted`, `bg-genre-*`…), contraste AA conferido em todos os pares de texto. Tema por `data-theme` no `<html>`, aplicado antes do primeiro paint por um script no `index.html`. Componentes base em `src/components/ui/` (`Chip`, `ToggleChip`, `Card`, `Button`, `IconButton`). Seletor de tema provisoriamente em Ajustes.
 
 ### Passo 3 — Layout responsivo e navegação
 - [ ] Rotas: `/` (Dança), `/escolas`, `/info`. Remover `Settings` (o seletor de tema vai para Info ou para o header).
