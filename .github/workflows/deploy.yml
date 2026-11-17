@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Todo dia: as páginas estáticas dos eventos (e o sitemap) acompanham o calendário.
+  schedule:
+    - cron: '30 5 * * *'
   # Chamado pela Action "Update venues" depois de gravar o venues.json: um push feito com o
   # GITHUB_TOKEN não dispara este workflow sozinho.
   workflow_call:
@@ -53,9 +56,6 @@ jobs:
           VITE_GOOGLE_API_KEY: ${{ secrets.VITE_GOOGLE_API_KEY }}
           # Código do site no GoatCounter (variável do repositório); vazio = analytics desligado
           VITE_GOATCOUNTER_CODE: ${{ vars.VITE_GOATCOUNTER_CODE }}
-
-      # Fallback de SPA: rotas como /ai/about servem o index.html
-      - run: cp dist/index.html dist/404.html
 
       - uses: actions/upload-pages-artifact@v3
         with:

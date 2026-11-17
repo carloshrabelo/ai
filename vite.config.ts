@@ -35,6 +35,7 @@ function seoFiles(): Plugin {
       return html.replaceAll('%SITE_URL%', siteUrl)
     },
     closeBundle() {
+      // Sitemap só com as rotas fixas; o scripts/prerender.mjs o reescreve com as páginas dos eventos.
       const today = new Date().toISOString().slice(0, 10)
       const urls = PUBLIC_ROUTES.map(
         (route) => `  <url><loc>${siteUrl}${route}</loc><lastmod>${today}</lastmod><changefreq>daily</changefreq></url>`,
