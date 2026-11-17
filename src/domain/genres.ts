@@ -3,6 +3,7 @@ export const GENRES = [
   'Forró',
   'Salsa',
   'Bachata',
+  'Merengue',
   'Latinas',
   'Kizomba',
   'Semba',
@@ -53,6 +54,7 @@ export type GenreColor =
   | 'teal'
   | 'coral'
   | 'lime'
+  | 'indigo'
 
 export const genreToPalette: Record<Genre, GenreColor> = {
   Bachata: 'wine',
@@ -68,20 +70,21 @@ export const genreToPalette: Record<Genre, GenreColor> = {
   'West Coast Swing': 'teal',
   Latinas: 'coral',
   Afro: 'lime',
+  Merengue: 'indigo',
 }
 
 /**
  * Gêneros "guarda-chuva": o evento aparece também no filtro dos gêneros incluídos
- * (Latinas → Salsa e Bachata; Afro → Kizomba e Semba).
+ * (Latinas → Salsa, Bachata e Merengue; Afro → Kizomba e Semba).
  */
 export const GENRE_INCLUDES: Partial<Record<Genre, readonly Genre[]>> = {
-  Latinas: ['Salsa', 'Bachata'],
+  Latinas: ['Salsa', 'Bachata', 'Merengue'],
   Afro: ['Kizomba', 'Semba'],
 }
 
 /**
  * Gêneros para exibir nas tags. Um gênero "guarda-chuva" fica oculto quando algum dos gêneros
- * que ele inclui já aparece: "Latinas" só é exibida se nem Salsa nem Bachata foram informadas;
+ * que ele inclui já aparece: "Latinas" só é exibida se nem Salsa, nem Bachata, nem Merengue foram informadas;
  * "Afro", se nem Kizomba nem Semba.
  * (Os filtros continuam usando todos os gêneros do evento.)
  */

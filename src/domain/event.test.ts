@@ -89,6 +89,11 @@ describe('toDanceEvent', () => {
     expect(visibleGenres(event.genres)).toEqual(['Kizomba'])
   })
 
+  it('"Latinas" com Merengue na descrição: exibe Merengue, oculta Latinas', () => {
+    const event = toDanceEvent({ ...base, summary: 'Latinas • Noite Dominicana', description: 'Merengue a noite toda' })
+    expect(visibleGenres(event.genres)).toEqual(['Merengue'])
+  })
+
   it('"Latinas" sem Salsa nem Bachata informadas: exibe Latinas', () => {
     const event = toDanceEvent({ ...base, summary: 'Latinas • Dance Night', description: 'Noite latina' })
     expect(visibleGenres(event.genres)).toEqual(['Latinas'])

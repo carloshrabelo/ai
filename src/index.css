@@ -48,6 +48,8 @@
   --color-genre-coral-fg: #2a0d07;
   --color-genre-lime: #84cc16;
   --color-genre-lime-fg: #1a2e05;
+  --color-genre-indigo: #4f46e5;
+  --color-genre-indigo-fg: #ffffff;
 }
 
 @layer base {

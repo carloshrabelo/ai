@@ -279,7 +279,7 @@ export const genreToPalette: Record<Genre, GenreColor> = {
 
 Tags com erro de digitação que contêm o nome de outro gênero (como `WEST COAS SWING`, que contém `SWING`) precisam de alias próprio. Senão caem no gênero errado.
 
-**Latinas e Afro (gêneros "guarda-chuva"):** Latinas (chip coral) entra nos filtros de Salsa e Bachata; Afro (chip lima) entra nos de Kizomba e Semba (`GENRE_INCLUDES`). `AFRO-LATINAS` → Latinas + Afro; `PISTA LATINAS` → Latinas; `AFRO` e `PISTA AFRICANA` → Afro. Assim a tag não inventa gêneros que o evento não cita. O filtro "Latinas" mostra só eventos com essa tag.
+**Latinas e Afro (gêneros "guarda-chuva"):** Latinas (chip coral) entra nos filtros de Salsa, Bachata e Merengue (chip índigo); Afro (chip lima) entra nos de Kizomba e Semba (`GENRE_INCLUDES`). `AFRO-LATINAS` → Latinas + Afro; `PISTA LATINAS` → Latinas; `AFRO` e `PISTA AFRICANA` → Afro. Assim a tag não inventa gêneros que o evento não cita. O filtro "Latinas" mostra só eventos com essa tag.
 
 **Gêneros na descrição:** além da tag, nomes de gêneros citados no título ou na descrição entram nas tags (sem aliases, para evitar falsos positivos como "afro house"; "Latinas" não é procurado em texto). "Latinas" e "Afro" são tags de reserva: só aparecem quando nenhum dos gêneros que incluem foi informado (na tag ou na descrição); senão ficam ocultas (`visibleGenres`). Nos filtros o evento continua contando como Latinas/Afro. Nos dados reais de 90 dias, 6 títulos ganharam gêneros assim (ex.: "Bachata & Kizomba • Timbre Lisboa" + Salsa).
 

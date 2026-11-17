@@ -13,6 +13,8 @@ describe('parseGenres', () => {
     ['Latinas', ['Latinas']],
     ['Latinas & Bachata', ['Bachata', 'Latinas']],
     ['Salsa Cubana', ['Salsa']],
+    ['Merengue', ['Merengue']],
+    ['Bachata & Merengue', ['Bachata', 'Merengue']],
   ])('%s → gêneros diretos', (tag, expected) => {
     expect(parseGenres(tag)).toEqual(expected)
   })

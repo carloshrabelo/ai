@@ -92,10 +92,11 @@ describe('matchesGenres', () => {
     expect(matchesGenres(['Kizomba'], ['Bachata', 'Zouk'])).toBe(false)
   })
 
-  it('"Latinas" aparece no filtro de Salsa, de Bachata e no próprio', () => {
+  it('"Latinas" aparece no filtro de Salsa, de Bachata, de Merengue e no próprio', () => {
     expect(matchesGenres(['Latinas'], ['Salsa'])).toBe(true)
     expect(matchesGenres(['Latinas'], ['Bachata'])).toBe(true)
     expect(matchesGenres(['Latinas'], ['Latinas'])).toBe(true)
+    expect(matchesGenres(['Latinas'], ['Merengue'])).toBe(true)
     expect(matchesGenres(['Latinas'], ['Kizomba'])).toBe(false)
   })
 
