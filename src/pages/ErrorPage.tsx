@@ -10,10 +10,10 @@ export default function ErrorPage() {
 
   return (
     <div className="flex min-h-dvh flex-col items-center justify-center gap-4 p-6 text-center">
-      <h1 className="text-2xl font-bold">Algo deu errado</h1>
-      <p className="text-slate-600 dark:text-slate-400">{message}</p>
+      <h1 className="text-2xl font-semibold">Algo deu errado</h1>
+      <p className="text-fg-muted">{message}</p>
       <button
-        className="min-h-11 rounded-xl bg-brand px-4 font-medium text-white"
+        className="min-h-11 rounded-lg bg-brand px-4 text-sm font-medium text-brand-fg"
         onClick={() => window.location.reload()}
       >
         Recarregar

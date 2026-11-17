@@ -333,12 +333,14 @@ Cada passo é um commit independente que mantém o app funcionando.
 > Feito: tokens semânticos em `src/index.css` (`bg-surface`, `text-fg-muted`, `bg-genre-*`…), contraste AA conferido em todos os pares de texto. Tema por `data-theme` no `<html>`, aplicado antes do primeiro paint por um script no `index.html`. Componentes base em `src/components/ui/` (`Chip`, `ToggleChip`, `Card`, `Button`, `IconButton`). Seletor de tema provisoriamente em Ajustes.
 
 ### Passo 3 — Layout responsivo e navegação
-- [ ] Rotas: `/` (Dança), `/escolas`, `/info`. Remover `Settings` (o seletor de tema vai para Info ou para o header).
-- [ ] `BottomNav` com Dança / Escolas / Info até 1279px.
-- [ ] A partir de `xl` (1280px): sidebar com atalhos de dia, filtros e navegação; área central; coluna do mapa.
-- [ ] A partir de `2xl`/1920px: navegação em árvore com os gêneros na sidebar.
+- [x] Rotas: `/` (Dança), `/escolas`, `/info`. Remover `Settings` (o seletor de tema vai para Info ou para o header).
+- [x] `BottomNav` com Dança / Escolas / Info até 1279px.
+- [x] A partir de `xl` (1280px): sidebar com atalhos de dia, filtros e navegação; área central; coluna do mapa.
+- [x] A partir de `2xl`/1920px: navegação em árvore com os gêneros na sidebar.
 
 **Pronto quando:** nos 4 tamanhos, a posição dos elementos corresponde ao protótipo (o que fica onde), usando os "Padrões visuais". Medidas exatas do protótipo não importam.
+
+> Feito: `Header` (título por rota via `handle`), `BottomNav` até 1279px, `Sidebar` a partir de `xl` com um *slot* (`SidebarPortal`) para a página colocar atalhos e filtros, e coluna do mapa (360/480px) na rota Dança. Áreas ainda não implementadas aparecem como blocos tracejados. Conferido com screenshots em 375, 768, 1280 e 1920px, claro e escuro. Ícones: `lucide-react`. Nome provisório do app em `src/app.ts`.
 
 ### Passo 4 — Lista de eventos
 - [ ] `EventCard` com título, local, horário, chips, preço e seta que expande (descrição sanitizada com DOMPurify + links).

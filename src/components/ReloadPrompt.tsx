@@ -18,7 +18,7 @@ export default function ReloadPrompt() {
   return (
     <div
       role="alert"
-      className="fixed inset-x-4 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-20 flex items-center gap-3 rounded-xl bg-slate-900 p-4 text-sm text-white shadow-lg md:inset-x-auto md:right-6 md:bottom-6 md:max-w-sm"
+      className="fixed inset-x-4 bottom-[calc(5rem+env(safe-area-inset-bottom))] z-20 flex items-center gap-3 rounded-xl bg-slate-900 p-4 text-sm text-white shadow-lg xl:inset-x-auto xl:right-6 xl:bottom-6 xl:max-w-sm"
     >
       <span className="flex-1">
         {needRefresh ? 'Nova versão disponível.' : 'App pronto para funcionar offline.'}

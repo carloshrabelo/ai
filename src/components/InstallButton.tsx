@@ -40,7 +40,7 @@ export default function InstallButton() {
   if (deferred) {
     return (
       <button
-        className="min-h-11 w-full rounded-xl bg-brand px-4 font-medium text-white sm:w-auto"
+        className="min-h-11 w-full rounded-lg bg-brand px-4 text-sm font-medium text-brand-fg sm:w-auto"
         onClick={async () => {
           await deferred.prompt()
           await deferred.userChoice
@@ -54,7 +54,7 @@ export default function InstallButton() {
 
   if (isIOS()) {
     return (
-      <p className="text-sm text-slate-600 dark:text-slate-400">
+      <p className="text-sm text-fg-muted">
         Para instalar: toque em <strong>Compartilhar</strong> e depois em{' '}
         <strong>Adicionar à Tela de Início</strong>.
       </p>
