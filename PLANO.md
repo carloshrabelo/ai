@@ -343,7 +343,7 @@ Cada passo é um commit independente que mantém o app funcionando.
 > Feito: `Header` (título por rota via `handle`), `BottomNav` até 1279px, `Sidebar` a partir de `xl` com um *slot* (`SidebarPortal`) para a página colocar atalhos e filtros, e coluna do mapa (360/480px) na rota Dança. Áreas ainda não implementadas aparecem como blocos tracejados. Conferido com screenshots em 375, 768, 1280 e 1920px, claro e escuro. Ícones: `lucide-react`. Nome provisório do app em `src/app.ts`.
 
 ### Passo 4 — Lista de eventos
-- [x] `EventCard` com título, local, horário, chips, preço e seta que expande (descrição sanitizada com DOMPurify + links).
+- [x] `EventCard` com título, local, horário, chips e preço. O card inteiro abre os detalhes do evento (ver "Detalhes do evento" abaixo).
 - [x] `EventList`: feed agrupado por dia, 1 coluna até `xl`, 2 colunas acima.
 - [x] Scroll infinito: sentinela com `IntersectionObserver` → `fetchNextPage()` (+2 semanas), skeleton no fim enquanto carrega, botão "Carregar mais 2 semanas" e mensagem de fim do feed.
 - [x] `Skeleton` base + `EventCardSkeleton` e `EventListSkeleton`, com as mesmas dimensões do card real (ver "Estados de carregamento").
@@ -351,6 +351,13 @@ Cada passo é um commit independente que mantém o app funcionando.
 - [x] Botão "adicionar ao calendário": abre o `htmlLink` do Google ou gera um `.ics`.
 
 > Feito: `src/features/events/` (`EventCard`, `EventFeed`, `groupByDay`, `format`, `description`). Uma grade só para o feed, com o cabeçalho do dia ocupando a linha inteira. Horários sempre no fuso de Lisboa. "Adicionar ao calendário" abre o `htmlLink` do Google (o `.ics` ficou de fora). Descrição sanitizada com DOMPurify e testada com jsdom; URLs soltas viram links. Já inclui a regra do passo 5 sobre eventos que passam da meia-noite e festivais.
+
+### Detalhes do evento (pedido durante o passo 6)
+- [x] Clicar num card abre os detalhes: título, gêneros, dia e horário, local com endereço e link "Abrir no mapa" (OpenStreetMap), preço, botão "Adicionar ao calendário" e descrição sanitizada.
+- [x] A partir de `xl`: os detalhes ocupam a coluna do mapa, com botão de fechar (e `Esc`). O card aberto fica destacado.
+- [x] Abaixo de `xl`: os detalhes abrem como uma página num drawer que entra pela direita (`<dialog>` modal, tela cheia, header com "Voltar"). A página por trás não rola.
+- [x] Evento aberto na URL (`?event=<id>`): o link é compartilhável e o "voltar" do navegador fecha o drawer. Abrir cria uma entrada no histórico; trocar de evento ou fechar não empilha.
+- [x] Skeleton enquanto os eventos carregam (link direto) e mensagem quando o evento não está nas datas carregadas.
 
 ### Passo 5 — Navegação por data
 - [x] `DayShortcuts` (Ontem / Hoje / Amanhã / data atual).
@@ -384,8 +391,8 @@ Cada passo é um commit independente que mantém o app funcionando.
 - [ ] Skeleton curto no lugar da distância enquanto a geolocalização responde.
 
 ### Passo 8 — Escolas e Info
-- [ ] Escolas: página "Em breve".
-- [ ] Info: sobre o projeto, fonte dos dados (calendário comunitário), seletor de tema, botão de instalar o PWA.
+- [x] Escolas: página "Em breve".
+- [x] Info: sobre o projeto, fonte dos dados (calendário do [pasdedeux.pt](https://pasdedeux.pt/), mantido por [@ateterca](https://www.instagram.com/ateterca/)), autoria ([carloshrabelo.dev](https://carloshrabelo.dev/)), seletor de tema, status da conexão e botão de instalar o PWA.
 
 ### Passo 9 — Qualidade e deploy
 - [ ] Acessibilidade: chips como `button`/`aria-pressed`, foco visível, contraste dos chips nos dois temas, `aria-busy` nas regiões carregando e `prefers-reduced-motion` nos skeletons.

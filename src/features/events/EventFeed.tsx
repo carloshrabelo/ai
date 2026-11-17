@@ -18,15 +18,18 @@ type FeedProps = {
   startDate: IsoDate
   /** Gêneros do filtro (vazio = todos). */
   genres: readonly Genre[]
+  /** Evento aberto nos detalhes (destacado na lista). */
+  selectedId: string | null
+  onOpenEvent: (id: string) => void
 }
 
-export function EventFeed({ startDate, genres }: FeedProps) {
+export function EventFeed(props: FeedProps) {
   return (
     <QueryErrorResetBoundary>
       {({ reset }) => (
         <ErrorBoundary onReset={reset} fallback={({ reset }) => <FeedError onRetry={reset} />}>
           <Suspense fallback={<EventFeedSkeleton />}>
-            <EventFeedContent startDate={startDate} genres={genres} />
+            <EventFeedContent {...props} />
           </Suspense>
         </ErrorBoundary>
       )}
@@ -34,7 +37,7 @@ export function EventFeed({ startDate, genres }: FeedProps) {
   )
 }
 
-function EventFeedContent({ startDate, genres }: FeedProps) {
+function EventFeedContent({ startDate, genres, selectedId, onOpenEvent }: FeedProps) {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetchNextPageError } = useSuspenseInfiniteQuery(
     eventsInfiniteQueryOptions(startDate),
   )
@@ -88,7 +91,12 @@ function EventFeedContent({ startDate, genres }: FeedProps) {
                 {formatDayHeading(day)}
               </h2>
               {events.map((event) => (
-                <EventCard key={`${day}-${event.id}`} event={event} />
+                <EventCard
+                  key={`${day}-${event.id}`}
+                  event={event}
+                  selected={event.id === selectedId}
+                  onOpen={onOpenEvent}
+                />
               ))}
             </Fragment>
           ))}
