@@ -34,6 +34,9 @@ jobs:
       - run: pnpm build
         env:
           GITHUB_PAGES: 'true'
+          # Mock até a variável do repositório VITE_USE_MOCK ser "false" (Settings → Secrets and variables → Actions)
+          VITE_USE_MOCK: ${{ vars.VITE_USE_MOCK || 'true' }}
+          VITE_GOOGLE_API_KEY: ${{ secrets.VITE_GOOGLE_API_KEY }}
 
       # Fallback de SPA: rotas como /ai/about servem o index.html
       - run: cp dist/index.html dist/404.html

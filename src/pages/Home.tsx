@@ -1,32 +1,67 @@
-import { Link } from 'react-router'
-import InstallButton from '../components/InstallButton'
+import { useSuspenseInfiniteQuery } from '@tanstack/react-query'
+import { Suspense } from 'react'
+import { useLoaderData } from 'react-router'
+import type { EventsLoaderData } from '../data/eventsLoader'
+import { eventsInfiniteQueryOptions } from '../data/queries'
 
+/**
+ * Versão provisória (passo 0.5 do PLANO.md): lista os títulos crus por janela,
+ * só para validar a camada de dados. A tela real vem nos passos 3 e 4.
+ */
 export default function Home() {
+  const { startDate } = useLoaderData() as EventsLoaderData
+
   return (
-    <section className="space-y-6">
-      <div className="space-y-2">
-        <h2 className="text-2xl font-bold md:text-3xl">Bem-vindo 👋</h2>
-        <p className="text-slate-600 dark:text-slate-400">
-          Aplicação React + Vite + React Router, mobile first e instalável como WebApp.
-        </p>
-      </div>
-
-      <div className="rounded-2xl border border-slate-200 p-4 dark:border-slate-800">
-        <h3 className="mb-3 font-semibold">Instale no seu dispositivo</h3>
-        <InstallButton />
-      </div>
-
-      <div className="grid gap-3 sm:grid-cols-2">
-        {['Funciona offline', 'Atualização automática', 'Tela cheia', 'Layout responsivo'].map((f) => (
-          <div key={f} className="rounded-xl bg-slate-100 p-4 font-medium dark:bg-slate-900">
-            {f}
-          </div>
-        ))}
-      </div>
-
-      <Link to="/about" className="inline-flex min-h-11 items-center font-medium text-brand">
-        Saiba mais →
-      </Link>
+    <section className="space-y-4">
+      <h2 className="text-2xl font-semibold">Eventos Futuros</h2>
+      <Suspense
+        fallback={
+          <p aria-busy="true" className="text-sm text-slate-500">
+            Carregando eventos…
+          </p>
+        }
+      >
+        <RawEventFeed startDate={startDate} />
+      </Suspense>
     </section>
+  )
+}
+
+function RawEventFeed({ startDate }: EventsLoaderData) {
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useSuspenseInfiniteQuery(
+    eventsInfiniteQueryOptions(startDate),
+  )
+
+  return (
+    <div className="space-y-6">
+      {data.pages.map((page) => (
+        <div key={page.start} className="space-y-2">
+          <h3 className="text-sm font-semibold text-slate-500 tabular-nums">
+            {page.start} → {page.end} · {page.items.length} eventos
+          </h3>
+          <ul className="space-y-1 text-sm">
+            {page.items.map((event) => (
+              <li key={event.id}>
+                <span className="text-slate-500 tabular-nums">{event.start.dateTime ?? event.start.date}</span>{' '}
+                {event.summary}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+
+      {hasNextPage ? (
+        <button
+          type="button"
+          onClick={() => fetchNextPage()}
+          disabled={isFetchingNextPage}
+          className="h-11 rounded-lg bg-brand px-4 text-sm font-medium text-white disabled:opacity-60"
+        >
+          {isFetchingNextPage ? 'Carregando…' : 'Carregar mais 2 semanas'}
+        </button>
+      ) : (
+        <p className="text-sm text-slate-500">Sem mais eventos por enquanto.</p>
+      )}
+    </div>
   )
 }

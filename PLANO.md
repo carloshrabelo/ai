@@ -114,7 +114,7 @@ GET https://www.googleapis.com/calendar/v3/calendars/pasdedeux.pt@gmail.com/even
 - `singleEvents=true` expande os recorrentes em ocorrências (como no mock) e permite `orderBy=startTime`.
 - Trocar `clients6.google.com` (endpoint interno usado pelo widget do Google Agenda) pelo endpoint público `www.googleapis.com`, que é o documentado.
 - Paginação: se vier `nextPageToken`, buscar as páginas seguintes (ou `maxResults=2500`).
-- `sanitizeHtml=true` continua, porque a `description` é renderizada como HTML.
+- `sanitizeHtml` não é um parâmetro documentado da API pública e foi deixado de fora. A `description` é HTML vindo de terceiros: sanitizar no cliente (ex.: DOMPurify) antes de renderizar, no passo 4.
 
 **Chave da API:**
 - Usar uma chave **própria**, criada no Google Cloud com só a Calendar API habilitada e restrita por *HTTP referrer* a `carloshrabelo.github.io/*` e `localhost:*`.
@@ -295,16 +295,18 @@ Cada passo é um commit independente que mantém o app funcionando.
 **Pronto quando:** nenhum e-mail no repositório, todo `location` do mock tem coordenadas e a chave funciona em `localhost`.
 
 ### Passo 0.5 — Camada de dados
-- [ ] Instalar `@tanstack/react-query` (+ `-devtools` em dev).
+- [x] Instalar `@tanstack/react-query` (+ `-devtools` em dev).
 - [x] Variáveis de ambiente: `.env.example` (versionado), `.env.local` (local), tipos em `src/env.d.ts` e leitura em `src/data/config.ts` (`USE_MOCK`, `GOOGLE_API_KEY`). Sem `VITE_USE_MOCK`, o padrão é o mock.
-- [ ] `googleCalendar.ts`: `fetchEvents` com paginação e erro tratado (HTTP ≠ 200 → exceção com mensagem); com `VITE_USE_MOCK=true`, devolve o `events.json`.
-- [ ] `queryClient.ts` + `QueryClientProvider` no `main.tsx`; `queries.ts` com `eventsInfiniteQueryOptions` (janelas de 14 dias, fim após 2 janelas vazias).
-- [ ] `fetchEvents({ timeMin, timeMax })` também no mock: filtra o `events.json` pela janela, para o scroll infinito funcionar igual com mock e API.
-- [ ] `loader` da rota `/` usando `prefetchInfiniteQuery` (sem `await`).
-- [ ] `VITE_MOCK_DELAY_MS` no mock (e no `.env.example`), para simular a latência da API.
-- [ ] Workflow de deploy: passar `VITE_GOOGLE_API_KEY` do *secret* para o `pnpm build`.
+- [x] `googleCalendar.ts`: `fetchEvents` com paginação e erro tratado (HTTP ≠ 200 → exceção com mensagem); com `VITE_USE_MOCK=true`, devolve o `events.json`.
+- [x] `queryClient.ts` + `QueryClientProvider` no `main.tsx`; `queries.ts` com `eventsInfiniteQueryOptions` (janelas de 14 dias, fim após 2 janelas vazias).
+- [x] `fetchEvents({ timeMin, timeMax })` também no mock: filtra o `events.json` pela janela, para o scroll infinito funcionar igual com mock e API.
+- [x] `loader` da rota `/` usando `prefetchInfiniteQuery` (sem `await`).
+- [x] `VITE_MOCK_DELAY_MS` no mock (e no `.env.example`), para simular a latência da API.
+- [x] Workflow de deploy: passar `VITE_GOOGLE_API_KEY` (*secret*) e `VITE_USE_MOCK` (variável do repositório, padrão `true`) para o `pnpm build`.
 
 **Pronto quando:** a página inicial lista os títulos crus vindos da API em dev e no GitHub Pages.
+
+> Feito com o mock: 37 eventos em 5 janelas (29/06 → 07/09), o feed para depois de 2 janelas vazias. Falta validar com a API real quando a chave existir. No GitHub Pages, o mock fica ativo até a variável `VITE_USE_MOCK` do repositório ser `false`.
 
 ### Passo 1 — Domínio e parser
 - [ ] `genres.ts`: `GENRES`, `ALIAS` e `genreToPalette`, como na seção "Parser de gêneros".
@@ -334,7 +336,7 @@ Cada passo é um commit independente que mantém o app funcionando.
 **Pronto quando:** nos 4 tamanhos, a posição dos elementos corresponde ao protótipo (o que fica onde), usando os "Padrões visuais". Medidas exatas do protótipo não importam.
 
 ### Passo 4 — Lista de eventos
-- [ ] `EventCard` com título, local, horário, chips, preço e seta que expande (descrição + links).
+- [ ] `EventCard` com título, local, horário, chips, preço e seta que expande (descrição sanitizada com DOMPurify + links).
 - [ ] `EventList`: feed agrupado por dia, 1 coluna até `xl`, 2 colunas acima.
 - [ ] Scroll infinito: sentinela com `IntersectionObserver` → `fetchNextPage()` (+2 semanas), skeleton no fim enquanto carrega, botão "Carregar mais 2 semanas" e mensagem de fim do feed.
 - [ ] `Skeleton` base + `EventCardSkeleton` e `EventListSkeleton`, com as mesmas dimensões do card real (ver "Estados de carregamento").
