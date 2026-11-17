@@ -92,14 +92,14 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
                 if (event.key === 'Escape') setFiltersOpen(false)
               }}
             >
-              <GenreFilter startDate={startDate} />
+              <GenreFilter />
             </div>
           )}
         </div>
 
         <SidebarPortal>
           {shortcuts}
-          <GenreFilter startDate={startDate} />
+          <GenreFilter />
         </SidebarPortal>
 
         <EventFeed startDate={startDate} genres={genres} onOpenEvent={openFromList} />
