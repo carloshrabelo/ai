@@ -3,6 +3,7 @@ import type { IsoDate } from '../../data/dates'
 import type { Genre } from '../../domain/genres'
 import { formatDayHeading } from '../events/format'
 import { useDayEvents } from '../events/useDayEvents'
+import { useEventFocus } from '../events/eventFocusStore'
 import { useEventById } from '../events/useEventById'
 
 // Leaflet só é baixado a partir de `xl`, quando o mapa aparece.
@@ -13,10 +14,7 @@ type Props = {
   /** Dia ativo do feed: o mapa mostra os eventos dele. */
   day: IsoDate
   genres: readonly Genre[]
-  selectedId: string | null
-  hoveredId: string | null
   onOpenEvent: (id: string) => void
-  onHoverPlace: (ids: string[] | null) => void
   /** Altura do painel (padrão: coluna inteira). */
   className?: string
 }
@@ -26,14 +24,12 @@ export function MapPanel({
   startDate,
   day,
   genres,
-  selectedId,
-  hoveredId,
   onOpenEvent,
-  onHoverPlace,
   className = 'h-full',
 }: Props) {
   const { events, isPending } = useDayEvents(startDate, day, genres)
   // O evento aberto aparece no mapa mesmo se for de outro dia ou estiver fora do filtro.
+  const selectedId = useEventFocus((state) => state.selectedId)
   const selected = useEventById(startDate, selectedId)
   const mapEvents = useMemo(
     () => (selected && !events.some((event) => event.id === selected.id) ? [...events, selected] : events),
@@ -61,13 +57,7 @@ export function MapPanel({
       </div>
 
       <Suspense fallback={<div aria-hidden="true" className="h-full w-full animate-pulse bg-genre-neutral" />}>
-        <EventsMap
-          events={mapEvents}
-          selectedId={selectedId}
-          hoveredId={hoveredId}
-          onOpenEvent={onOpenEvent}
-          onHoverPlace={onHoverPlace}
-        />
+        <EventsMap events={mapEvents} onOpenEvent={onOpenEvent} />
       </Suspense>
     </section>
   )

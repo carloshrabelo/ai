@@ -5,6 +5,7 @@ import { Chip } from '../../components/ui/Chip'
 import { Skeleton } from '../../components/ui/Skeleton'
 import type { DanceEvent } from '../../domain/event'
 import { EventDistance } from '../location/EventDistance'
+import { eventFocus, useEventFocus } from './eventFocusStore'
 import { formatTimeRange } from './format'
 
 const ICON_LINK =
@@ -12,33 +13,28 @@ const ICON_LINK =
 
 type Props = {
   event: DanceEvent
-  /** Evento aberto nos detalhes. */
-  selected?: boolean
-  /** Pino do evento com o mouse em cima, no mapa. */
-  highlighted?: boolean
   onOpen: (id: string) => void
-  /** Mouse/foco entrou (id) ou saiu (null) do card: destaca o pino no mapa. */
-  onHoverChange?: (id: string | null) => void
 }
 
 /**
  * O card inteiro abre os detalhes (o botão é o título, esticado sobre o card).
  * O link do calendário fica por cima e continua clicável.
+ * Seleção e hover vêm do eventFocusStore (fonte única, compartilhada com o mapa).
  */
-export const EventCard = memo(function EventCard({
-  event,
-  selected = false,
-  highlighted = false,
-  onOpen,
-  onHoverChange,
-}: Props) {
+export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
+  // Só este card re-renderiza quando a seleção ou o hover dele mudam.
+  const selected = useEventFocus((state) => state.selectedId === event.id)
+  const highlighted = useEventFocus((state) => state.hover?.source === 'map' && state.hover.ids.includes(event.id))
+  const hover = () => eventFocus.hover([event.id], 'list')
+  const unhover = () => eventFocus.unhover('list')
+
   return (
     <Card
       as="article"
-      onMouseEnter={() => onHoverChange?.(event.id)}
-      onMouseLeave={() => onHoverChange?.(null)}
-      onFocus={() => onHoverChange?.(event.id)}
-      onBlur={() => onHoverChange?.(null)}
+      onMouseEnter={hover}
+      onMouseLeave={unhover}
+      onFocus={hover}
+      onBlur={unhover}
       className={`relative isolate flex flex-col gap-2 transition-shadow hover:shadow-md ${
         selected || highlighted ? 'ring-2 ring-brand' : ''
       }`}

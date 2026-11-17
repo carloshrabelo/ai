@@ -1,9 +1,10 @@
-import { useCallback, useId, useMemo, useRef, useState } from 'react'
+import { useId, useLayoutEffect, useRef, useState } from 'react'
 import { useLoaderData } from 'react-router'
 import type { EventsLoaderData } from '../data/eventsLoader'
 import { DayShortcuts } from '../features/dates/DayShortcuts'
 import { useDayNavigation } from '../features/dates/useDayNavigation'
 import { WeekStrip } from '../features/dates/WeekStrip'
+import { eventFocus, useEventFocus } from '../features/events/eventFocusStore'
 import { EventFeed } from '../features/events/EventFeed'
 import { EventDetailsDrawer, EventDetailsPanel } from '../features/events/SelectedEventView'
 import { useSelectedEvent } from '../features/events/useSelectedEvent'
@@ -24,15 +25,15 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
   const stickyRef = useRef<HTMLDivElement>(null)
   const { activeDay, selectDay } = useDayNavigation(startDate, stickyRef)
   const { selected: genres } = useGenreFilter()
-  const { selectedId, open, close } = useSelectedEvent()
+  const { selectedId: selectedInUrl, open, close } = useSelectedEvent()
+
+  // A URL (?event=) guarda a seleção; o eventFocusStore é a fonte única que lista, mapa e
+  // detalhes leem. useLayoutEffect: sincroniza antes da pintura, sem um frame desatualizado.
+  useLayoutEffect(() => eventFocus.syncSelectedFromUrl(selectedInUrl), [selectedInUrl])
+  useLayoutEffect(() => () => eventFocus.reset(), []) // saindo da página
+  const selectedId = useEventFocus((state) => state.selectedId)
   const isXl = useMediaQuery(XL_QUERY)
   const [filtersOpen, setFiltersOpen] = useState(false)
-
-  // Hover ligando lista e mapa: card em hover destaca o pino; pino em hover destaca os cards do local.
-  const [hoveredCardId, setHoveredCardId] = useState<string | null>(null)
-  const [hoveredPinKey, setHoveredPinKey] = useState('') // ids separados por vírgula (string: evita re-render à toa)
-  const highlightedIds = useMemo(() => new Set(hoveredPinKey ? hoveredPinKey.split(',') : []), [hoveredPinKey])
-  const onHoverPlace = useCallback((ids: string[] | null) => setHoveredPinKey(ids?.join(',') ?? ''), [])
   const filtersId = useId()
 
   const shortcuts = <DayShortcuts today={today} activeDay={activeDay} onSelect={selectDay} />
@@ -82,14 +83,7 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
           <GenreFilter startDate={startDate} />
         </SidebarPortal>
 
-        <EventFeed
-          startDate={startDate}
-          genres={genres}
-          selectedId={selectedId}
-          onOpenEvent={open}
-          highlightedIds={highlightedIds}
-          onHoverEvent={setHoveredCardId}
-        />
+        <EventFeed startDate={startDate} genres={genres} onOpenEvent={open} />
       </div>
 
       {/* A partir de `xl`: coluna do mapa, que divide o espaço com os detalhes quando um evento está aberto. */}
@@ -101,10 +95,7 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
               startDate={startDate}
               day={activeDay}
               genres={genres}
-              selectedId={selectedId}
-              hoveredId={hoveredCardId}
               onOpenEvent={open}
-              onHoverPlace={onHoverPlace}
               className={selectedId ? 'h-2/5 shrink-0' : 'h-full'}
             />
             {selectedId && <EventDetailsPanel startDate={startDate} eventId={selectedId} onClose={close} />}

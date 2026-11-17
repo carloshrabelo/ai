@@ -5,6 +5,7 @@ import { CircleMarker, MapContainer, Marker, Popup, TileLayer, Tooltip, useMap, 
 import { genreColorClasses } from '../../components/ui/genreColors'
 import type { DanceEvent } from '../../domain/event'
 import { useResolvedTheme } from '../../theme/useResolvedTheme'
+import { eventFocus, useEventFocus } from '../events/eventFocusStore'
 import { formatTimeRange } from '../events/format'
 import type { Coords } from '../location/distance'
 import { useUserLocation } from '../location/userLocation'
@@ -21,21 +22,20 @@ type Place = { key: string; name: string; coords: Coords; events: DanceEvent[] }
 
 type Props = {
   events: DanceEvent[]
-  /** Evento aberto nos detalhes: pino destacado e mapa centrado nele. */
-  selectedId: string | null
-  /** Card com o mouse em cima, na lista: pino destacado. */
-  hoveredId: string | null
   onOpenEvent: (id: string) => void
-  /** Mouse entrou (ids do local) ou saiu (null) de um pino: destaca os cards na lista. */
-  onHoverPlace: (ids: string[] | null) => void
 }
 
-/** Pinos dos eventos (um por local; vários eventos no mesmo local viram um pino com contador). */
-export default function EventsMap({ events, selectedId, hoveredId, onOpenEvent, onHoverPlace }: Props) {
+/**
+ * Pinos dos eventos (um por local; vários eventos no mesmo local viram um pino com contador).
+ * Seleção e hover vêm do eventFocusStore (fonte única, compartilhada com a lista).
+ */
+export default function EventsMap({ events, onOpenEvent }: Props) {
   const theme = useResolvedTheme()
   const location = useUserLocation()
   const userCoords = location.status === 'granted' ? location.coords : undefined
   const places = useMemo(() => groupByPlace(events), [events])
+  const selectedId = useEventFocus((state) => state.selectedId)
+  const hover = useEventFocus((state) => state.hover)
   const selectedPlace = places.find((place) => place.events.some((event) => event.id === selectedId))
 
   return (
@@ -51,7 +51,8 @@ export default function EventsMap({ events, selectedId, hoveredId, onOpenEvent, 
 
       {places.map((place) => {
         const ids = place.events.map((event) => event.id)
-        const state = place === selectedPlace ? 'selected' : hoveredId && ids.includes(hoveredId) ? 'hovered' : 'normal'
+        const hovered = !!hover && hover.ids.some((id) => ids.includes(id))
+        const state = place === selectedPlace ? 'selected' : hovered ? 'hovered' : 'normal'
         return (
           <Marker
             key={place.key}
@@ -60,15 +61,17 @@ export default function EventsMap({ events, selectedId, hoveredId, onOpenEvent, 
             zIndexOffset={state === 'normal' ? 0 : 1000}
             alt={place.events.map((event) => event.title).join(', ')}
             eventHandlers={{
-              mouseover: () => onHoverPlace(ids),
-              mouseout: () => onHoverPlace(null),
+              mouseover: () => eventFocus.hover(ids, 'map'),
+              mouseout: () => eventFocus.unhover('map'),
               click: () => {
                 if (place.events.length === 1) onOpenEvent(place.events[0].id)
               },
             }}
           >
-            {/* Hover: título do evento (ou dos eventos do local). */}
-            <Tooltip direction="top" offset={[0, -16]}>
+            {/* Título do evento (ou dos eventos do local) enquanto o pino ou o card estão em hover.
+                Controlado pelo store: fecha junto com o hover, mesmo se o mouse "sumir" do pino. */}
+            {hovered && (
+            <Tooltip direction="top" offset={[0, -16]} permanent>
               {place.events.length === 1 ? (
                 <span className="font-semibold">{place.events[0].title}</span>
               ) : (
@@ -82,6 +85,7 @@ export default function EventsMap({ events, selectedId, hoveredId, onOpenEvent, 
                 </span>
               )}
             </Tooltip>
+            )}
             {place.events.length > 1 && (
               <Popup>
                 <p className="mb-1 font-semibold">{place.name}</p>
