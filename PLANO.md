@@ -396,12 +396,14 @@ Cada passo é um commit independente que mantém o app funcionando.
 - [x] Info: sobre o projeto, fonte dos dados (calendário do [pasdedeux.pt](https://pasdedeux.pt/), mantido por [@ateterca](https://www.instagram.com/ateterca/)), autoria ([carloshrabelo.dev](https://carloshrabelo.dev/)), seletor de tema, status da conexão e botão de instalar o PWA.
 
 ### Passo 9 — Qualidade e deploy
-- [ ] Acessibilidade: chips como `button`/`aria-pressed`, foco visível, contraste dos chips nos dois temas, `aria-busy` nas regiões carregando e `prefers-reduced-motion` nos skeletons.
-- [ ] Conferir com `VITE_MOCK_DELAY_MS=2000` que nenhum elemento pula de lugar quando os dados chegam.
-- [ ] Testar offline: o service worker faz cache do app e o persister do TanStack Query guarda os últimos eventos.
+- [x] Acessibilidade: chips como `button`/`aria-pressed`, foco visível, contraste dos chips nos dois temas, `aria-busy` nas regiões carregando e `prefers-reduced-motion` nos skeletons.
+- [x] Conferir com `VITE_MOCK_DELAY_MS=2000` que nenhum elemento pula de lugar quando os dados chegam.
+- [x] Offline: o service worker faz cache do app e o persister do TanStack Query guarda os eventos carregados no `localStorage` por 24h. Testado no navegador com a rede cortada: o app abre com os eventos.
 - [x] Atualização do PWA: `registerType: 'autoUpdate'` com `skipWaiting`/`clientsClaim`. A versão nova assume no recarregamento seguinte ao deploy, e o app procura versão nova a cada hora e ao voltar para o primeiro plano. Service worker desligado no `pnpm dev` (ligar com `PWA_DEV=true`). A página Info mostra a versão (commit) e a data do build.
-- [ ] Script `pnpm venues:check` que lista os `location` vindos da API que ainda não estão em `venues.json`.
-- [ ] `pnpm lint && pnpm test && pnpm build` no workflow antes do deploy.
+- [x] Script `pnpm venues:check [dias] [--fix]`: lista os `location` dos próximos eventos da API que não estão em `venues.json`; com `--fix`, busca as coordenadas no Nominatim (rejeitando resultados de outra região postal) e grava o arquivo.
+- [x] `pnpm lint` e `pnpm test` no workflow antes do build: o deploy não sai se falharem.
+
+> Pendente: na primeira execução contra a API real, 26 locais dos próximos 60 dias não estavam no `venues.json` (ficam sem pino e sem distância). O Nominatim parou de responder no meio do `--fix`; rodar `pnpm venues:check --fix` de novo mais tarde e conferir as coordenadas antes do commit.
 
 ## 4. Decisões
 
