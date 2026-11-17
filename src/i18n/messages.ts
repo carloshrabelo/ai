@@ -62,6 +62,7 @@ const pt = {
     set: (name: string) => `Conjunto ${name}`,
     allOfSet: (name: string) => `Todos de ${name}`,
     otherStyles: 'Outros estilos',
+    done: 'Ver eventos',
     other: 'Outros',
   },
   location: {
@@ -183,6 +184,7 @@ const en: Messages = {
     set: (name) => `${name} set`,
     allOfSet: (name) => `All of ${name}`,
     otherStyles: 'Other styles',
+    done: 'Show events',
     other: 'Other',
   },
   location: {

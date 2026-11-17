@@ -7,6 +7,7 @@ import { LocationControl } from '../location/LocationControl'
 import { useGenreFilter } from './useGenreFilter'
 import { useI18n } from '../../i18n/useI18n'
 import { genreLabel } from './genreLabel'
+import type { ReactNode } from 'react'
 
 // Todos os gêneros aparecem sempre, com ou sem eventos no período carregado.
 const GROUPED = new Set<GenreFilterValue>(GENRE_GROUPS.flatMap(({ umbrella, genres }) => [umbrella, ...genres]))
@@ -17,12 +18,13 @@ const STANDALONE = FILTER_VALUES.filter((value) => !GROUPED.has(value))
  * Painel "Filtros": os conjuntos (Latinas, Afro, BR), cada um com seus gêneros, e depois os
  * estilos avulsos e "Outros". Todos sempre visíveis. Marcar um conjunto filtra o grupo todo.
  */
-export function GenreFilter() {
+export function GenreFilter({ plain = false }: { plain?: boolean } = {}) {
   const { selected, toggle, clear } = useGenreFilter()
   const { t } = useI18n()
 
   return (
-    <Card variant="panel" as="section" aria-labelledby="genre-filter-title" className="space-y-2">
+    // "plain": sem o card (dentro do drawer, que já tem fundo e bordas).
+    <Container plain={plain}>
       <div className="flex items-center gap-2">
         <SlidersHorizontal className="size-5 text-fg-muted" aria-hidden="true" />
         <h2 id="genre-filter-title" className="flex-1 text-sm font-semibold">
@@ -91,6 +93,18 @@ export function GenreFilter() {
       <div className="border-t border-border pt-4">
         <LocationControl />
       </div>
+    </Container>
+  )
+}
+
+function Container({ plain, children }: { plain: boolean; children: ReactNode }) {
+  return plain ? (
+    <section aria-labelledby="genre-filter-title" className="space-y-2">
+      {children}
+    </section>
+  ) : (
+    <Card variant="panel" as="section" aria-labelledby="genre-filter-title" className="space-y-2">
+      {children}
     </Card>
   )
 }

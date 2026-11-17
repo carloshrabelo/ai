@@ -16,6 +16,8 @@ import { useMediaQuery, XL_QUERY } from '../hooks/useMediaQuery'
 import { SidebarPortal } from '../layouts/SidebarSlot'
 import { DanceHead } from '../seo/DanceHead'
 import { useI18n } from '../i18n/useI18n'
+import { BottomSheet } from '../components/ui/BottomSheet'
+import { Button } from '../components/ui/Button'
 
 /** Rota "/" — eventos de dança. Um feed novo (e estado novo) para cada data inicial. */
 export default function Dance() {
@@ -87,17 +89,20 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
             }
           />
 
-          {/* Até 1279px: a seção de filtros abre aqui, dentro da área fixa, visível em qualquer ponto da lista. */}
+          {/* Até 1279px: os filtros abrem num drawer que sobe de baixo. */}
           {!isXl && filtersOpen && (
-            <div
+            <BottomSheet
               id={filtersId}
-              className="max-h-[65dvh] overflow-y-auto"
-              onKeyDown={(event) => {
-                if (event.key === 'Escape') setFiltersOpen(false)
-              }}
+              label={t.filters.title}
+              onClose={() => setFiltersOpen(false)}
+              footer={
+                <Button className="w-full" onClick={() => setFiltersOpen(false)}>
+                  {t.filters.done}
+                </Button>
+              }
             >
-              <GenreFilter />
-            </div>
+              <GenreFilter plain />
+            </BottomSheet>
           )}
         </div>
 
