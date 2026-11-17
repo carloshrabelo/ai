@@ -18,18 +18,18 @@
 
 | Lista e mapa | Detalhes do evento | Tema escuro com filtro |
 |---|---|---|
-| ![Lista de eventos com filtros na barra lateral e mapa à direita](docs/screenshots/desktop.png) | ![Detalhes do evento em cima e mapa embaixo, com o pino destacado](docs/screenshots/desktop-detalhes.png) | ![Tema escuro com o filtro Latinas ativo](docs/screenshots/desktop-escuro.png) |
+| ![Lista de eventos com filtros na barra lateral e mapa à direita](docs/screenshots/desktop.png) | ![Detalhes do evento aberto pela lista, em cima do mapa com o pino destacado](docs/screenshots/desktop-detalhes.png) | ![Tema escuro com o filtro Latinas ativo](docs/screenshots/desktop-escuro.png) |
 
 ### Celular
 
 | Lista | Filtros | Detalhes | Tema escuro |
 |---|---|---|---|
-| ![Lista de eventos no celular](docs/screenshots/mobile.png) | ![Painel de filtros com os conjuntos Latinas, Afro e BR](docs/screenshots/mobile-filtros.png) | ![Detalhes do evento em tela cheia](docs/screenshots/mobile-detalhes.png) | ![Lista no tema escuro](docs/screenshots/mobile-escuro.png) |
+| ![Lista de eventos no celular](docs/screenshots/mobile.png) | ![Filtros numa folha que sobe de baixo, com os conjuntos Latinas, Afro e BR](docs/screenshots/mobile-filtros.png) | ![Detalhes do evento em tela cheia](docs/screenshots/mobile-detalhes.png) | ![Lista no tema escuro](docs/screenshots/mobile-escuro.png) |
 
 ## Funcionalidades
 
 - **Feed por dia** a partir de hoje, carregado em janelas de 2 semanas com scroll infinito; atalhos Ontem / Hoje / Amanhã, faixa de dias e seletor de data. O dia ativo acompanha a rolagem.
-- **Filtros por estilo**, acumulativos e guardados na URL (`?genres=salsa,forro`). Conjuntos 🇩🇴 **Latinas** (Salsa, Salsa Cubana, Bachata, Merengue), 🇦🇴 **Afro** (Kizomba, Semba, Urban Kiz) e 🇧🇷 **BR** (Forró, Zouk, Samba), mais Swing, West Coast Swing, Tango, Bolero e Outros.
+- **Filtros por estilo** (na barra lateral no desktop; numa folha que sobe de baixo no celular e tablet), acumulativos e guardados na URL (`?genres=salsa,forro`). Conjuntos 🇩🇴 **Latinas** (Salsa, Salsa Cubana, Bachata, Merengue), 🇦🇴 **Afro** (Kizomba, Semba, Urban Kiz) e 🇧🇷 **BR** (Forró, Zouk, Samba), mais Swing, West Coast Swing, Tango, Bolero e Outros.
 - **Mapa** (a partir de 1280px) com os eventos do dia ativo; hover no card destaca o pino e vice-versa.
 - **Detalhes do evento**: na coluna do mapa no desktop, numa página em drawer no celular. Link compartilhável (`/evento/<data>-<nome>-<hash>/`, com página estática), rota no app de navegação do aparelho e "Adicionar ao calendário".
 - **Distância** até cada evento, quando o usuário libera a localização.
@@ -75,7 +75,7 @@ pnpm dev
 | Comando | O que faz |
 |---|---|
 | `pnpm dev` | Servidor de desenvolvimento (sem service worker; use `PWA_DEV=true pnpm dev` para testar o PWA). |
-| `pnpm build` | Checagem de tipos + build de produção. |
+| `pnpm build` | Checagem de tipos + build de produção + páginas estáticas dos eventos (`scripts/prerender.mjs`). |
 | `pnpm preview` | Serve o build localmente. |
 | `pnpm test` / `pnpm test:watch` | Testes (Vitest). |
 | `pnpm lint` | Lint (oxlint). |
@@ -91,14 +91,17 @@ src/
   domain/      modelo DanceEvent, parser de gêneros e do título, regras do filtro
   i18n/        idioma (detecção, escolha salva) e textos pt-BR / en-US
   features/
-    events/    feed, card, detalhes, seleção (eventFocusStore)
+    events/    feed, card, detalhes, seleção (eventFocusStore), calendário (.ics / Google Agenda)
     dates/     atalhos de dia, faixa de dias, navegação por dia
     genres/    painel e estado dos filtros
     map/       mapa (Leaflet)
     location/  localização do usuário, distância, geocodificação, rotas
+    tracking/  eventos adicionados ao calendário e aviso de mudanças
+  seo/         <head> por página, JSON-LD, páginas estáticas (prerender)
+  analytics/   GoatCounter
   components/  layout (header, sidebar, bottom nav) e componentes base (Chip, Card, Button…)
   pages/       Dança (/), Info (/info), Escolas (/escolas, oculta)
-scripts/       venues-check.mjs
+scripts/       prerender.mjs, venues-check.mjs, a11y-check.mjs
 docs/          prints, logo e protótipos de referência
 ```
 
@@ -131,7 +134,7 @@ Para corrigir um ponto, edite as coordenadas no `venues.json`: a busca automáti
 
 ## Deploy
 
-GitHub Pages, pelo workflow `.github/workflows/deploy.yml` a cada push no `main` (lint e testes antes do build).
+GitHub Pages, pelo workflow `.github/workflows/deploy.yml` a cada push no `main` e todo dia às 05:30 UTC, para as páginas dos eventos acompanharem o calendário (lint e testes antes do build).
 
 Em **Settings → Secrets and variables → Actions**:
 
@@ -142,6 +145,8 @@ Em **Settings → Secrets and variables → Actions**:
 | `VITE_GOATCOUNTER_CODE` | Variable | Código do site no GoatCounter (opcional) |
 
 O workflow `.github/workflows/venues.yml` (**Update venues**) roda todo dia às 05:00 UTC e também pode ser disparado manualmente.
+
+O que ainda precisa ser feito ou conferido à mão (chaves, configurações, verificações) está em [`TODO.md`](TODO.md).
 
 ## Planejamento
 
