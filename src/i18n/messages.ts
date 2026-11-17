@@ -6,7 +6,7 @@ import type { Locale } from './locale'
  * Nomes de gêneros são nomes próprios e não são traduzidos, exceto "Outros".
  */
 const pt = {
-  nav: { main: 'Navegação principal', dance: 'Dança', schools: 'Escolas', info: 'Info', sidebar: 'Menu e filtros', mapColumn: 'Mapa e detalhes do evento' },
+  nav: { main: 'Navegação principal', dance: 'Dança', map: 'Mapa', schools: 'Escolas', info: 'Info', sidebar: 'Menu e filtros', mapColumn: 'Mapa e detalhes do evento' },
   routes: { notFound: 'Página não encontrada' },
   dates: {
     shortcuts: 'Atalhos de dia',
@@ -83,6 +83,10 @@ const pt = {
     noLocation: 'sem local no mapa',
     pin: (names: string) => `Ver no mapa: ${names}`,
   },
+  mapPage: {
+    events: 'Eventos do dia',
+    noLocation: 'Sem local no mapa',
+  },
   info: {
     about: 'Sobre',
     aboutText: 'Agenda de práticas, festas e outros eventos de dança. Os eventos vêm do calendário do',
@@ -112,6 +116,8 @@ const pt = {
     infoTitle: 'Info — Lisbon Social Dance',
     infoDescription: 'Sobre o Lisbon Social Dance: de onde vêm os eventos, tema, idioma e instalação do app.',
     schoolsTitle: 'Escolas — Lisbon Social Dance',
+    mapTitle: 'Mapa — Lisbon Social Dance',
+    mapDescription: 'Mapa dos eventos de dança social em Lisboa, dia a dia.',
     notFoundTitle: 'Página não encontrada — Lisbon Social Dance',
   },
   tracking: {
@@ -144,7 +150,7 @@ const pt = {
 export type Messages = typeof pt
 
 const en: Messages = {
-  nav: { main: 'Main navigation', dance: 'Dance', schools: 'Schools', info: 'Info', sidebar: 'Menu and filters', mapColumn: 'Map and event details' },
+  nav: { main: 'Main navigation', dance: 'Dance', map: 'Map', schools: 'Schools', info: 'Info', sidebar: 'Menu and filters', mapColumn: 'Map and event details' },
   routes: { notFound: 'Page not found' },
   dates: {
     shortcuts: 'Day shortcuts',
@@ -221,6 +227,10 @@ const en: Messages = {
     noLocation: 'not on the map',
     pin: (names) => `On the map: ${names}`,
   },
+  mapPage: {
+    events: 'Events of the day',
+    noLocation: 'No location on the map',
+  },
   info: {
     about: 'About',
     aboutText: 'Listings of practices, parties and other dance events. Events come from the calendar of',
@@ -250,6 +260,8 @@ const en: Messages = {
     infoTitle: 'Info — Lisbon Social Dance',
     infoDescription: 'About Lisbon Social Dance: where the events come from, theme, language and installing the app.',
     schoolsTitle: 'Schools — Lisbon Social Dance',
+    mapTitle: 'Map — Lisbon Social Dance',
+    mapDescription: 'Map of social dance events in Lisbon, day by day.',
     notFoundTitle: 'Page not found — Lisbon Social Dance',
   },
   tracking: {

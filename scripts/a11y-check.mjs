@@ -27,6 +27,8 @@ const scenarios = [
   { name: 'celular · lista · escuro', url: '/', w: 390, h: 844, dark: true },
   { name: 'celular · filtros abertos', url: '/', w: 390, h: 844, before: "document.querySelector('button[aria-controls][aria-expanded]').click()" },
   { name: 'celular · detalhes (drawer)', url: '/', w: 390, h: 844, before: "document.querySelectorAll('article h3 button')[1].click()" },
+  { name: 'celular · mapa · claro', url: '/mapa', w: 390, h: 844 },
+  { name: 'tablet · mapa · escuro', url: '/mapa', w: 820, h: 1180, dark: true },
   { name: 'desktop · lista + mapa · claro', url: '/', w: 1440, h: 900 },
   { name: 'desktop · detalhes · escuro', url: '/', w: 1440, h: 900, dark: true, before: "document.querySelectorAll('article h3 button')[1].click()" },
   { name: 'desktop · info', url: '/info', w: 1440, h: 900 },

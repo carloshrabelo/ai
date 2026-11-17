@@ -14,8 +14,8 @@ const pwaInDev = process.env.PWA_DEV === 'true'
 // URL pública, para canonical, Open Graph e sitemap (precisam ser absolutas).
 const siteUrl = process.env.SITE_URL ?? (process.env.GITHUB_PAGES ? 'https://carloshrabelo.github.io/ai/' : 'http://localhost:4173/')
 
-/** Rotas públicas fixas (a agenda e a Info). Escolas está oculta e fica de fora. */
-const PUBLIC_ROUTES = ['', 'info/']
+/** Rotas públicas fixas (agenda, mapa e Info). Escolas está oculta e fica de fora. */
+const PUBLIC_ROUTES = ['', 'mapa/', 'info/']
 
 /**
  * SEO estático (lido por buscadores e redes sociais sem executar JavaScript):

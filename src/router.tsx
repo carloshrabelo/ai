@@ -20,6 +20,13 @@ export const router = createBrowserRouter(
           children: [{ index: true }, { path: 'evento/:slug' }],
         },
         {
+          // Celular e tablet: mapa do dia com os eventos num carrossel.
+          path: 'mapa',
+          loader: eventsLoader,
+          handle: { title: (t) => t.nav.map } satisfies RouteHandle,
+          lazy: { Component: async () => (await import('./pages/MapPage')).default },
+        },
+        {
           path: 'escolas',
           handle: { title: (t) => t.nav.schools } satisfies RouteHandle,
           lazy: { Component: async () => (await import('./pages/Schools')).default },

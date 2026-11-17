@@ -21,7 +21,7 @@ export default function Sidebar({ slotRef }: { slotRef: (element: HTMLElement | 
 
       <nav aria-label={t.nav.main}>
         <ul className="space-y-1">
-          {NAV_ITEMS.map(({ to, label, icon: Icon }) => (
+          {NAV_ITEMS.filter((item) => !item.mobileOnly).map(({ to, label, icon: Icon }) => (
             <li key={to}>
               <NavLink
                 to={to}

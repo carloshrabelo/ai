@@ -13,7 +13,7 @@ import { createServer } from 'vite'
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const outDir = join(root, 'dist')
 const siteUrl = process.env.SITE_URL ?? (process.env.GITHUB_PAGES ? 'https://carloshrabelo.github.io/ai/' : 'http://localhost:4173/')
-const PUBLIC_ROUTES = ['', 'info/']
+const PUBLIC_ROUTES = ['', 'mapa/', 'info/']
 const DAYS_BEFORE = 7
 const DAYS_AFTER = 90
 

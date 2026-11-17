@@ -25,19 +25,27 @@ type Place = { key: string; name: string; coords: Coords; events: DanceEvent[] }
 type Props = {
   events: DanceEvent[]
   onOpenEvent: (slug: string) => void
+  /** Evento em foco, no lugar do aberto nos detalhes (página Mapa: o card visível no carrossel). */
+  activeSlug?: string | null
+  /** Espaço coberto por outros elementos em cima e embaixo do mapa, em px (enquadramento dos pinos). */
+  inset?: { top: number; bottom: number }
+  zoomPosition?: L.ControlPosition
 }
+
+const DEFAULT_INSET = { top: 96, bottom: 40 }
 
 /**
  * Pinos dos eventos (um por local; vários eventos no mesmo local viram um pino com contador).
  * Seleção e hover vêm do eventFocusStore (fonte única, compartilhada com a lista).
  */
-export default function EventsMap({ events, onOpenEvent }: Props) {
+export default function EventsMap({ events, onOpenEvent, activeSlug, inset = DEFAULT_INSET, zoomPosition = 'bottomright' }: Props) {
   const { t, locale } = useI18n()
   const theme = useResolvedTheme()
   const location = useUserLocation()
   const userCoords = location.status === 'granted' ? location.coords : undefined
   const places = useMemo(() => groupByPlace(events), [events])
-  const selectedSlug = useEventFocus((state) => state.selectedSlug)
+  const selectedInStore = useEventFocus((state) => state.selectedSlug)
+  const selectedSlug = activeSlug === undefined ? selectedInStore : activeSlug
   const hover = useEventFocus((state) => state.hover)
   const selectedPlace = places.find((place) => place.events.some((event) => event.slug === selectedSlug))
 
@@ -49,8 +57,8 @@ export default function EventsMap({ events, onOpenEvent }: Props) {
       className={`h-full w-full ${theme === 'dark' ? 'map-dark' : ''}`}
     >
       <TileLayer url={TILES_URL} attribution={ATTRIBUTION} maxZoom={19} />
-      {/* Embaixo: em cima fica o resumo do dia. */}
-      <ZoomControl position="bottomright" />
+      {/* Por padrão embaixo: em cima fica o resumo do dia. */}
+      <ZoomControl position={zoomPosition} />
 
       {places.map((place) => {
         const ids = place.events.map((event) => event.id)
@@ -122,7 +130,11 @@ export default function EventsMap({ events, onOpenEvent }: Props) {
       )}
 
       <InvalidateOnResize />
-      {selectedPlace ? <FocusPlace place={selectedPlace} /> : <FitBounds places={places} userCoords={userCoords} />}
+      {selectedPlace ? (
+        <FocusPlace place={selectedPlace} offsetY={(inset.bottom - inset.top) / 2} />
+      ) : (
+        <FitBounds places={places} userCoords={userCoords} inset={inset} />
+      )}
     </MapContainer>
   )
 }
@@ -138,23 +150,28 @@ function InvalidateOnResize() {
   return null
 }
 
-/** Centra o mapa no local do evento aberto. */
-function FocusPlace({ place }: { place: Place }) {
+/**
+ * Centra o mapa no local do evento aberto. `offsetY` (px) desloca o centro para baixo quando há algo
+ * cobrindo a parte de baixo do mapa (o pino fica no meio da área visível).
+ */
+function FocusPlace({ place, offsetY = 0 }: { place: Place; offsetY?: number }) {
   const map = useMap()
   const { lat, lng } = place.coords
   useEffect(() => {
     // Espera o tamanho novo (detalhes abrindo) antes de centralizar.
     const frame = requestAnimationFrame(() => {
       map.invalidateSize()
-      map.flyTo([lat, lng], Math.max(map.getZoom(), 15), { duration: 0.6 })
+      const zoom = Math.max(map.getZoom(), 15)
+      const center = map.unproject(map.project([lat, lng], zoom).add([0, offsetY]), zoom)
+      map.flyTo(center, zoom, { duration: 0.6 })
     })
     return () => cancelAnimationFrame(frame)
-  }, [map, lat, lng])
+  }, [map, lat, lng, offsetY])
   return null
 }
 
 /** Enquadra os pinos (e a posição do usuário, se houver) sempre que mudam. */
-function FitBounds({ places, userCoords }: { places: Place[]; userCoords?: Coords }) {
+function FitBounds({ places, userCoords, inset }: { places: Place[]; userCoords?: Coords; inset: { top: number; bottom: number } }) {
   const map = useMap()
   const first = useRef(true)
   useEffect(() => {
@@ -164,9 +181,9 @@ function FitBounds({ places, userCoords }: { places: Place[]; userCoords?: Coord
     first.current = false
     if (points.length === 0) map.setView(LISBON, 11, { animate })
     else if (points.length === 1) map.setView(points[0], 14, { animate })
-    // Margem de cima maior: o resumo do dia fica por cima do mapa.
-    else map.fitBounds(points, { paddingTopLeft: [40, 96], paddingBottomRight: [40, 40], maxZoom: 14, animate })
-  }, [map, places, userCoords])
+    // Margens maiores onde há algo por cima do mapa (resumo do dia, carrossel).
+    else map.fitBounds(points, { paddingTopLeft: [40, inset.top], paddingBottomRight: [40, inset.bottom], maxZoom: 14, animate })
+  }, [map, places, userCoords, inset.top, inset.bottom])
   return null
 }
 
