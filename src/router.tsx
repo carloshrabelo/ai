@@ -14,4 +14,4 @@ export const router = createBrowserRouter([
       { path: '*', lazy: { Component: async () => (await import('./pages/NotFound')).default } },
     ],
   },
-])
+], { basename: import.meta.env.BASE_URL })
