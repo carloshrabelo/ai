@@ -9,7 +9,7 @@ import { EventCard, EventCardSkeleton } from './EventCard'
 import { formatDayHeading } from './format'
 import { groupByDay } from './groupByDay'
 
-const GRID = 'grid gap-3 xl:grid-cols-2 xl:gap-4'
+const GRID = 'grid grid-cols-1 gap-3 xl:grid-cols-2 xl:gap-4'
 
 /** Feed de eventos agrupado por dia, com skeleton, erro isolado e scroll infinito. */
 export function EventFeed({ startDate }: { startDate: IsoDate }) {
@@ -62,13 +62,14 @@ function EventFeedContent({ startDate }: { startDate: IsoDate }) {
       )}
 
       {/* Uma grade só: o cabeçalho do dia ocupa a linha inteira e os cards seguem em 2 colunas
-          a partir de `xl`, sem buracos quando um dia tem só 1 evento. */}
+          a partir de `xl`. `data-day` é usado pela navegação por dia (useDayNavigation). */}
       {days.length > 0 && (
         <div className={GRID}>
           {days.map(({ day, events }, index) => (
             <Fragment key={day}>
               <h2
                 id={`day-${day}`}
+                data-day={day}
                 className={`col-span-full text-sm font-semibold text-fg-muted ${index > 0 ? 'pt-3 xl:pt-2' : ''}`}
               >
                 {formatDayHeading(day)}

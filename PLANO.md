@@ -353,12 +353,14 @@ Cada passo é um commit independente que mantém o app funcionando.
 > Feito: `src/features/events/` (`EventCard`, `EventFeed`, `groupByDay`, `format`, `description`). Uma grade só para o feed, com o cabeçalho do dia ocupando a linha inteira. Horários sempre no fuso de Lisboa. "Adicionar ao calendário" abre o `htmlLink` do Google (o `.ics` ficou de fora). Descrição sanitizada com DOMPurify e testada com jsdom; URLs soltas viram links. Já inclui a regra do passo 5 sobre eventos que passam da meia-noite e festivais.
 
 ### Passo 5 — Navegação por data
-- [ ] `DayShortcuts` (Ontem / Hoje / Amanhã / data atual).
-- [ ] `WeekStrip` com rolagem horizontal, dia selecionado destacado e ícone que abre um seletor de data.
-- [ ] Data inicial do feed em `?date=2026-07-11` na URL, para o link ser compartilhável. Sem `?date=`, começa hoje.
-- [ ] Escolher um dia já carregado rola até ele; um dia fora do que foi carregado começa um feed novo a partir dele.
-- [ ] Ao rolar a lista, o dia destacado na faixa da semana acompanha o cabeçalho de dia visível.
+- [x] `DayShortcuts` (Ontem / Hoje / Amanhã / data atual).
+- [x] `WeekStrip` com rolagem horizontal, dia selecionado destacado e ícone que abre um seletor de data.
+- [x] Data inicial do feed em `?date=2026-07-11` na URL, para o link ser compartilhável. Sem `?date=`, começa hoje.
+- [x] Escolher um dia já carregado rola até ele; um dia fora do que foi carregado começa um feed novo a partir dele.
+- [x] Ao rolar a lista, o dia destacado na faixa da semana acompanha o cabeçalho de dia visível.
 - [x] Eventos que passam da meia-noite (ex.: 22:00–04:00) aparecem no dia em que começam; festivais aparecem em todos os dias do intervalo. (feito no passo 4, `groupByDay`)
+
+> Feito: `src/features/dates/` (`DayShortcuts`, `WeekStrip`, `useDayNavigation`). Atalhos e faixa ficam numa área fixa abaixo do header (no `xl+` os atalhos vão para a sidebar). Seletor de data nativo (`<input type="date">`). Testado no navegador: rolar atualiza o dia ativo, clicar num dia carregado rola até ele (sem cobrir pela área fixa), e um dia fora do carregado abre um feed novo via `?date=`.
 
 ### Passo 6 — Filtros por gênero
 - [ ] Painel "Filtro Ativo" com um chip por gênero de `GENRES` que aparece nos eventos carregados (na cor de `genreToPalette`), selecionáveis, e botão "limpar".

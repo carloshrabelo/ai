@@ -1,28 +1,42 @@
-import type { ReactNode } from 'react'
+import { type ReactNode, useRef } from 'react'
 import { useLoaderData } from 'react-router'
 import type { EventsLoaderData } from '../data/eventsLoader'
+import { DayShortcuts } from '../features/dates/DayShortcuts'
+import { useDayNavigation } from '../features/dates/useDayNavigation'
+import { WeekStrip } from '../features/dates/WeekStrip'
 import { EventFeed } from '../features/events/EventFeed'
 import { SidebarPortal } from '../layouts/SidebarSlot'
 
-/**
- * Rota "/" — eventos de dança.
- * Layout do passo 3: as áreas tracejadas são preenchidas nos passos 4 a 7 do PLANO.md.
- */
+/** Rota "/" — eventos de dança. Um feed novo (e estado novo) para cada data inicial. */
 export default function Dance() {
-  const { startDate } = useLoaderData() as EventsLoaderData
+  const { startDate, today } = useLoaderData() as EventsLoaderData
+  return <DanceFeed key={startDate} startDate={startDate} today={today} />
+}
+
+function DanceFeed({ startDate, today }: EventsLoaderData) {
+  const stickyRef = useRef<HTMLDivElement>(null)
+  const { activeDay, selectDay } = useDayNavigation(startDate, stickyRef)
+
+  const shortcuts = <DayShortcuts today={today} activeDay={activeDay} onSelect={selectDay} />
 
   return (
     <div className="flex gap-6">
       <div className="min-w-0 flex-1 space-y-4">
-        <Placeholder className="h-11">Atalhos de dia (passo 5)</Placeholder>
-        <Placeholder className="h-16">Faixa da semana (passo 5)</Placeholder>
+        {/* Fixo logo abaixo do header enquanto a lista rola. */}
+        <div
+          ref={stickyRef}
+          className="sticky top-[calc(3.5rem+env(safe-area-inset-top))] z-[5] -mx-4 space-y-2 bg-bg px-4 py-2 md:-mx-6 md:px-6 xl:-mx-8 xl:px-8"
+        >
+          <div className="xl:hidden">{shortcuts}</div>
+          <WeekStrip startDate={startDate} activeDay={activeDay} onSelect={selectDay} />
+        </div>
 
         {/* Até 1279px os filtros ficam no conteúdo; a partir de `xl`, na sidebar. */}
         <div className="xl:hidden">
           <Placeholder className="h-24">Filtros por gênero (passo 6)</Placeholder>
         </div>
         <SidebarPortal>
-          <Placeholder className="h-11">Atalhos de dia (passo 5)</Placeholder>
+          {shortcuts}
           <Placeholder className="h-40">Filtros por gênero (passo 6)</Placeholder>
         </SidebarPortal>
 

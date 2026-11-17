@@ -27,3 +27,22 @@ export function formatDayHeading(day: IsoDate): string {
   const text = DAY_HEADING.format(lisbonMidnight(day))
   return text.charAt(0).toUpperCase() + text.slice(1)
 }
+
+const WEEKDAY_SHORT = new Intl.DateTimeFormat('pt-BR', { weekday: 'short', timeZone: TIME_ZONE })
+const DAY_OF_MONTH = new Intl.DateTimeFormat('pt-BR', { day: 'numeric', timeZone: TIME_ZONE })
+
+/** "Seg" */
+export function formatWeekdayShort(day: IsoDate): string {
+  const text = WEEKDAY_SHORT.format(lisbonMidnight(day)).replace('.', '')
+  return text.charAt(0).toUpperCase() + text.slice(1)
+}
+
+/** "7" */
+export function formatDayOfMonth(day: IsoDate): string {
+  return DAY_OF_MONTH.format(lisbonMidnight(day))
+}
+
+/** "Qua, 22/09" */
+export function formatShortDay(day: IsoDate): string {
+  return `${formatWeekdayShort(day)}, ${SHORT_DATE.format(lisbonMidnight(day))}`
+}
