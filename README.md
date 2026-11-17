@@ -38,7 +38,6 @@
 - **Português (pt-BR) e inglês (en-US)**: o idioma vem do navegador (qualquer `pt-*` → pt-BR; o resto → en-US) ou é escolhido em Info. Datas, horas, distâncias e listas são formatadas com `Intl`.
 - **Adicionar ao calendário** sem login (Google Agenda preenchido ou `.ics` para Apple/Outlook) e **aviso de mudanças** nos eventos adicionados (horário, local, cancelamento), guardados no aparelho.
 - **Compartilhar** pelo menu do sistema ou copiando o link.
-- **Analytics** sem cookies (GoatCounter): páginas, filtros, datas, eventos abertos, calendário, compartilhamentos e rotas.
 - **PWA**: instalável, abre offline com os últimos eventos carregados e se atualiza sozinho a cada deploy.
 
 ## Dados e créditos
@@ -68,7 +67,6 @@ pnpm dev
 | `VITE_USE_MOCK` | `true` (padrão) usa `src/mocks/events.json`, com as datas deslocadas para perto de hoje; `false` usa a Google Calendar API. |
 | `VITE_GOOGLE_API_KEY` | Chave da Google Calendar API (obrigatória com `VITE_USE_MOCK=false`). Restrinja por *HTTP referrer* no Google Cloud: ela fica visível no JavaScript publicado. |
 | `VITE_MOCK_DELAY_MS` | Atraso artificial do mock, para ver os skeletons. |
-| `VITE_GOATCOUNTER_CODE` | Código do site no [GoatCounter](https://www.goatcounter.com) (analytics sem cookies). Vazio = desligado; em `pnpm dev` fica sempre desligado. |
 
 ### Scripts
 
@@ -98,7 +96,6 @@ src/
     location/  localização do usuário, distância, geocodificação, rotas
     tracking/  eventos adicionados ao calendário e aviso de mudanças
   seo/         <head> por página, JSON-LD, páginas estáticas (prerender)
-  analytics/   GoatCounter
   components/  layout (header, sidebar, bottom nav) e componentes base (Chip, Card, Button…)
   pages/       Dança (/ e /evento/<slug>/), Mapa (/mapa, celular e tablet), Info (/info), Escolas (/escolas, oculta)
 scripts/       prerender.mjs, venues-check.mjs, a11y-check.mjs
@@ -142,7 +139,6 @@ Em **Settings → Secrets and variables → Actions**:
 |---|---|---|
 | `VITE_GOOGLE_API_KEY` | Secret | Chave da Google Calendar API |
 | `VITE_USE_MOCK` | Variable | `false` para usar a API (sem ela, o site publica com o mock) |
-| `VITE_GOATCOUNTER_CODE` | Variable | Código do site no GoatCounter (opcional) |
 
 O workflow `.github/workflows/venues.yml` (**Update venues**) roda todo dia às 05:00 UTC e também pode ser disparado manualmente.
 

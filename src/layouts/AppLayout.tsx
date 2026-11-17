@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react'
-import { Outlet, useLocation, useNavigation } from 'react-router'
+import { useState } from 'react'
+import { Outlet, useNavigation } from 'react-router'
 import BottomNav from '../components/BottomNav'
 import Header from '../components/Header'
 import ReloadPrompt from '../components/ReloadPrompt'
 import Sidebar from '../components/Sidebar'
 import { SidebarSlotContext } from './sidebarSlotContext'
-import { trackPageview } from '../analytics/analytics'
 
 /**
  * Até 1279px: header + conteúdo + bottom nav.
@@ -13,12 +12,6 @@ import { trackPageview } from '../analytics/analytics'
  */
 export default function AppLayout() {
   const navigation = useNavigation()
-  const { pathname } = useLocation()
-
-  // Página vista a cada troca de rota (filtros e data na query não contam como página nova).
-  useEffect(() => {
-    trackPageview(pathname)
-  }, [pathname])
   const [sidebarSlot, setSidebarSlot] = useState<HTMLElement | null>(null)
 
   return (

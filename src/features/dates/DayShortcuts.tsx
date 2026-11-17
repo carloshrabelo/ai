@@ -1,7 +1,6 @@
 import { addDays, type IsoDate } from '../../data/dates'
 import { formatShortDay } from '../events/format'
 import { useI18n } from '../../i18n/useI18n'
-import { trackAction } from '../../analytics/analytics'
 
 type Props = {
   today: IsoDate
@@ -30,7 +29,6 @@ export function DayShortcuts({ today, activeDay, onSelect }: Props) {
           type="button"
           aria-pressed={day === activeDay}
           onClick={() => {
-            trackAction(`data/${label === t.dates.today ? 'hoje' : day < today ? 'ontem' : 'amanha'}`)
             onSelect(day)
           }}
           className={`${ITEM} ${day === activeDay ? 'bg-brand text-brand-fg' : 'bg-surface text-fg-muted hover:text-fg'}`}

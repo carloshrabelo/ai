@@ -6,7 +6,6 @@ import type { DanceEvent } from '../../domain/event'
 import { useI18n } from '../../i18n/useI18n'
 import { eventUrl } from '../../seo/useDocumentHead'
 import { formatDayHeading, formatTimeRange } from './format'
-import { trackAction } from '../../analytics/analytics'
 
 /**
  * Partilhar o evento: no celular abre o menu de compartilhamento do sistema (Web Share API);
@@ -30,7 +29,6 @@ export function ShareButton({ event }: { event: DanceEvent }) {
     if (navigator.share) {
       try {
         await navigator.share({ title: event.title, text, url })
-        trackAction('compartilhar/sistema')
         return
       } catch (error) {
         if ((error as DOMException).name === 'AbortError') return // usuário fechou o menu
@@ -39,7 +37,6 @@ export function ShareButton({ event }: { event: DanceEvent }) {
     try {
       await navigator.clipboard.writeText(url)
       setCopied(true)
-      trackAction('compartilhar/copiar-link')
     } catch {
       window.prompt(t.event.copyLink, url) // sem acesso à área de transferência
     }

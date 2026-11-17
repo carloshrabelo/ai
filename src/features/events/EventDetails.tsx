@@ -18,7 +18,6 @@ import { slugify } from '../../domain/slug'
 import { eventUrl } from '../../seo/useDocumentHead'
 import { untrackEvent, useIsTracked, trackEvent } from '../tracking/trackedEvents'
 import { downloadIcs, googleCalendarUrl } from './calendarLinks'
-import { trackAction } from '../../analytics/analytics'
 
 /** Conteúdo dos detalhes: usado no painel da coluna do mapa (`xl+`) e no drawer (abaixo de `xl`). */
 export function EventDetails({ event, headingId }: { event: DanceEvent; headingId: string }) {
@@ -63,7 +62,6 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
             {directions && (
               <a
                 href={directions.href}
-                onClick={() => trackAction('rota')}
                 {...(directions.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                 className="inline-flex min-h-11 items-center gap-1 font-medium text-brand underline-offset-2 hover:underline"
               >
@@ -90,7 +88,6 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
             rel="noopener noreferrer"
             onClick={() => {
               trackEvent(event)
-              trackAction('calendario/google')
             }}
             className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-brand px-4 text-sm font-medium text-brand-fg hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
           >
@@ -101,7 +98,6 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
             variant="secondary"
             onClick={() => {
               trackEvent(event)
-              trackAction('calendario/ics')
               downloadIcs(event, eventUrl(event.slug), slugify(event.title) || 'evento')
             }}
           >
