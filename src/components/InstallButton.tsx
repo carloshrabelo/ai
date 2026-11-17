@@ -9,7 +9,7 @@ export default function InstallButton() {
   const { prompt: deferred, installed } = useInstallPrompt()
 
   if (installed) {
-    return <p className="text-sm text-emerald-600">{t.info.installed}</p>
+    return <p className="text-sm text-emerald-700 dark:text-emerald-400">{t.info.installed}</p>
   }
 
   if (deferred) {

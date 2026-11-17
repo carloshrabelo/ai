@@ -67,7 +67,7 @@
     --border: #d5e1e5;
     --fg: #0f172a;
     --fg-muted: #475569;
-    --brand: #0e7f8f;
+    --brand: #0b7584; /* 4,67:1 sobre o fundo claro (AA para texto e links) */
     --brand-fg: #ffffff;
     --header: #0e7f8f;
     --header-fg: #ffffff;

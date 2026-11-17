@@ -39,7 +39,7 @@ export default function Info() {
 
       <Card className="flex items-center justify-between">
         <span className="text-sm">{t.info.connection}</span>
-        <span className={`text-sm ${online ? 'text-emerald-600' : 'text-amber-600'}`}>
+        <span className={`text-sm ${online ? 'text-emerald-700 dark:text-emerald-400' : 'text-amber-700 dark:text-amber-400'}`}>
           {online ? t.info.online : t.info.offline}
         </span>
       </Card>

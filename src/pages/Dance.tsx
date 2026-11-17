@@ -15,6 +15,7 @@ import { MapPanel } from '../features/map/MapPanel'
 import { useMediaQuery, XL_QUERY } from '../hooks/useMediaQuery'
 import { SidebarPortal } from '../layouts/SidebarSlot'
 import { DanceHead } from '../seo/DanceHead'
+import { useI18n } from '../i18n/useI18n'
 
 /** Rota "/" — eventos de dança. Um feed novo (e estado novo) para cada data inicial. */
 export default function Dance() {
@@ -51,6 +52,7 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
     [open],
   )
   const isXl = useMediaQuery(XL_QUERY)
+  const { t } = useI18n()
   const [filtersOpen, setFiltersOpen] = useState(false)
   const filtersId = useId()
 
@@ -108,7 +110,7 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
       </div>
 
       {/* A partir de `xl`: coluna do mapa, que divide o espaço com os detalhes quando um evento está aberto. */}
-      <aside className="sticky top-20 hidden h-[calc(100dvh-7rem)] w-90 shrink-0 flex-col gap-4 xl:flex 2xl:w-120">
+      <aside aria-label={t.nav.mapColumn} className="sticky top-20 hidden h-[calc(100dvh-7rem)] w-90 shrink-0 flex-col gap-4 xl:flex 2xl:w-120">
         {isXl && (
           <>
             {/* Sem evento aberto, o mapa ocupa a coluna. Com evento aberto, a coluna se divide por

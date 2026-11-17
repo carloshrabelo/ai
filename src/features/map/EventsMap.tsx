@@ -32,7 +32,7 @@ type Props = {
  * Seleção e hover vêm do eventFocusStore (fonte única, compartilhada com a lista).
  */
 export default function EventsMap({ events, onOpenEvent }: Props) {
-  const { locale } = useI18n()
+  const { t, locale } = useI18n()
   const theme = useResolvedTheme()
   const location = useUserLocation()
   const userCoords = location.status === 'granted' ? location.coords : undefined
@@ -64,6 +64,10 @@ export default function EventsMap({ events, onOpenEvent }: Props) {
             zIndexOffset={state === 'normal' ? 0 : 1000}
             alt={place.events.map((event) => event.title).join(', ')}
             eventHandlers={{
+              // O pino é um botão (role="button"): dá a ele o nome dos eventos para leitores de tela.
+              add: (event) => {
+                event.target.getElement()?.setAttribute('aria-label', t.map.pin(place.events.map((e) => e.title).join(', ')))
+              },
               mouseover: () => eventFocus.hover(ids, 'map'),
               mouseout: () => eventFocus.unhover('map'),
               click: () => {
