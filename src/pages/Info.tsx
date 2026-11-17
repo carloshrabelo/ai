@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { type ReactNode, useEffect, useState } from 'react'
 import InstallButton from '../components/InstallButton'
 import ThemeToggle from '../components/ThemeToggle'
 import { Card } from '../components/ui/Card'
@@ -12,8 +12,12 @@ export default function Info() {
       <Card className="space-y-2">
         <h2 className="text-lg font-semibold">Sobre</h2>
         <p className="text-sm text-fg-muted">
-          Agenda de práticas, festas e outros eventos de dança, com dados de um calendário mantido pelas comunidades
-          de dança.
+          Agenda de práticas, festas e outros eventos de dança. Os eventos vêm do calendário do{' '}
+          <ExternalLink href="https://pasdedeux.pt/">pasdedeux.pt</ExternalLink>, mantido por{' '}
+          <ExternalLink href="https://www.instagram.com/ateterca/">@ateterca</ExternalLink>.
+        </p>
+        <p className="text-sm text-fg-muted">
+          Desenvolvido por <ExternalLink href="https://carloshrabelo.dev/">carloshrabelo.dev</ExternalLink>.
         </p>
       </Card>
 
@@ -34,6 +38,19 @@ export default function Info() {
         <InstallButton />
       </Card>
     </section>
+  )
+}
+
+function ExternalLink({ href, children }: { href: string; children: ReactNode }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="font-medium text-brand underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+    >
+      {children}
+    </a>
   )
 }
 
