@@ -2,47 +2,56 @@ import { useCallback } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import { toSearchString } from '../../domain/genreFilter'
 
-/** Parâmetro do evento aberto nos detalhes: ?event=<id>. */
-export const EVENT_PARAM = 'event'
+/** Parâmetro antigo (?event=<id do Google>), ainda aceito em links compartilhados antes. */
+export const LEGACY_EVENT_PARAM = 'event'
+
+/** /evento/<slug>/ → slug */
+export function slugFromPath(pathname: string): string | null {
+  const match = pathname.match(/^\/evento\/([^/]+)\/?$/)
+  return match ? decodeURIComponent(match[1]) : null
+}
+
+/** Caminho do evento dentro do app (sem o basename). Com barra final, como no GitHub Pages. */
+export const eventPath = (slug: string) => `/evento/${encodeURIComponent(slug)}/`
 
 type OpenedState = { openedFromList?: boolean } | null
 
 /**
- * Evento aberto nos detalhes, guardado na URL (link compartilhável e botão "voltar" do navegador
- * fecha o drawer). Abrir cria uma entrada no histórico; fechar volta para ela quando possível.
+ * Evento aberto nos detalhes, guardado no caminho da URL (/evento/<slug>/): link compartilhável,
+ * página estática gerada no build (SEO) e o "voltar" do navegador fecha o drawer.
+ * Filtros e data (?genres=, ?date=) continuam na query.
  */
 export function useSelectedEvent() {
   const location = useLocation()
   const navigate = useNavigate()
-  const selectedId = new URLSearchParams(location.search).get(EVENT_PARAM)
+  const selectedSlug = slugFromPath(location.pathname)
 
-  const withEvent = useCallback(
-    (id: string | null) => {
-      const params = new URLSearchParams(location.search)
-      if (id) params.set(EVENT_PARAM, id)
-      else params.delete(EVENT_PARAM)
-      return { pathname: location.pathname, search: toSearchString(params) }
-    },
-    [location.pathname, location.search],
-  )
+  const searchWithoutLegacy = useCallback(() => {
+    const params = new URLSearchParams(location.search)
+    params.delete(LEGACY_EVENT_PARAM)
+    return toSearchString(params)
+  }, [location.search])
 
   const open = useCallback(
-    (id: string) => {
-      const alreadyOpen = selectedId !== null
+    (slug: string) => {
+      const alreadyOpen = selectedSlug !== null
       // Trocar de um evento para outro não empilha histórico.
-      navigate(withEvent(id), {
-        replace: alreadyOpen,
-        preventScrollReset: true,
-        state: { openedFromList: alreadyOpen ? (location.state as OpenedState)?.openedFromList : true },
-      })
+      navigate(
+        { pathname: eventPath(slug), search: searchWithoutLegacy() },
+        {
+          replace: alreadyOpen,
+          preventScrollReset: true,
+          state: { openedFromList: alreadyOpen ? (location.state as OpenedState)?.openedFromList : true },
+        },
+      )
     },
-    [navigate, withEvent, selectedId, location.state],
+    [navigate, searchWithoutLegacy, selectedSlug, location.state],
   )
 
   const close = useCallback(() => {
     if ((location.state as OpenedState)?.openedFromList) navigate(-1)
-    else navigate(withEvent(null), { replace: true, preventScrollReset: true })
-  }, [navigate, withEvent, location.state])
+    else navigate({ pathname: '/', search: searchWithoutLegacy() }, { replace: true, preventScrollReset: true })
+  }, [navigate, searchWithoutLegacy, location.state])
 
-  return { selectedId, open, close }
+  return { selectedSlug, open, close }
 }

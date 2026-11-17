@@ -23,7 +23,7 @@ const ICON_LINK =
 
 type Props = {
   event: DanceEvent
-  onOpen: (id: string) => void
+  onOpen: (slug: string) => void
 }
 
 /**
@@ -34,7 +34,7 @@ type Props = {
 export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
   const { t, locale } = useI18n()
   // Só este card re-renderiza quando a seleção ou o hover dele mudam.
-  const selected = useEventFocus((state) => state.selectedId === event.id)
+  const selected = useEventFocus((state) => state.selectedSlug === event.slug)
   const highlighted = useEventFocus((state) => state.hover?.source === 'map' && state.hover.ids.includes(event.id))
   const hover = () => eventFocus.hover([event.id], 'list')
   const unhover = () => eventFocus.unhover('list')
@@ -56,7 +56,7 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
             <button
               type="button"
               aria-current={selected || undefined}
-              onClick={() => onOpen(event.id)}
+              onClick={() => onOpen(event.slug)}
               className={`cursor-pointer text-left outline-none after:absolute after:inset-0 after:rounded-xl focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-brand ${
                 event.status === 'cancelled' ? 'line-through decoration-2' : ''
               }`}
@@ -90,7 +90,7 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
         <Tooltip label={t.event.addToCalendar} className="relative z-10 -mt-2 -mr-2 shrink-0">
           {/* Google Agenda já preenchido; no iPhone, baixa o .ics (Calendário do iOS). */}
           <a
-            href={googleCalendarUrl(event, eventUrl(event.id))}
+            href={googleCalendarUrl(event, eventUrl(event.slug))}
             target="_blank"
             rel="noopener noreferrer"
             aria-label={t.event.addToCalendarFor(event.title)}
@@ -100,7 +100,7 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
               trackAction(`calendario/${detectPlatform() === 'ios' ? 'ics' : 'google'}`)
               if (detectPlatform() === 'ios') {
                 click.preventDefault()
-                downloadIcs(event, eventUrl(event.id), slugify(event.title) || 'evento')
+                downloadIcs(event, eventUrl(event.slug), slugify(event.title) || 'evento')
               }
             }}
           >

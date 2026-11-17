@@ -22,11 +22,11 @@ describe('eventFocus', () => {
   it('selecionar limpa o hover (bug: hover do pino ficava preso depois do clique)', () => {
     eventFocus.hover(['pin-event'], 'map')
     eventFocus.syncSelectedFromUrl('pin-event')
-    expect(eventFocus.getState()).toMatchObject({ selectedId: 'pin-event', hover: null })
+    expect(eventFocus.getState()).toMatchObject({ selectedSlug: 'pin-event', hover: null })
 
     eventFocus.hover(['card-event'], 'list')
     eventFocus.syncSelectedFromUrl('card-event')
-    expect(eventFocus.getState()).toMatchObject({ selectedId: 'card-event', hover: null })
+    expect(eventFocus.getState()).toMatchObject({ selectedSlug: 'card-event', hover: null })
   })
 
   it('guarda de onde a seleção veio', () => {
@@ -43,7 +43,7 @@ describe('eventFocus', () => {
     eventFocus.willSelectFrom('map', 'a')
     eventFocus.syncSelectedFromUrl('a')
     eventFocus.willSelectFrom('list', 'a')
-    expect(eventFocus.getState()).toMatchObject({ selectedId: 'a', selectedFrom: 'list' })
+    expect(eventFocus.getState()).toMatchObject({ selectedSlug: 'a', selectedFrom: 'list' })
   })
 
   it('seleção vinda da URL (link direto, voltar) não tem origem', () => {
@@ -55,13 +55,13 @@ describe('eventFocus', () => {
     eventFocus.willSelectFrom('list', 'a')
     eventFocus.syncSelectedFromUrl('a')
     eventFocus.syncSelectedFromUrl(null)
-    expect(eventFocus.getState()).toMatchObject({ selectedId: null, selectedFrom: null })
+    expect(eventFocus.getState()).toMatchObject({ selectedSlug: null, selectedFrom: null })
   })
 
   it('fechar os detalhes limpa a seleção', () => {
     eventFocus.syncSelectedFromUrl('a')
     eventFocus.syncSelectedFromUrl(null)
-    expect(eventFocus.getState().selectedId).toBeNull()
+    expect(eventFocus.getState().selectedSlug).toBeNull()
   })
 
   it('não avisa os ouvintes quando nada muda', () => {

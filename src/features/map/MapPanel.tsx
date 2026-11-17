@@ -4,7 +4,7 @@ import type { GenreFilterValue } from '../../domain/genreFilter'
 import { formatDayHeading, formatTimeRange } from '../events/format'
 import { useDayEvents } from '../events/useDayEvents'
 import { useEventFocus } from '../events/eventFocusStore'
-import { useEventById } from '../events/useEventById'
+import { useEventBySlug } from '../events/useEventBySlug'
 import { useGeocodedEvents } from '../location/useGeocodedEvents'
 import { useI18n } from '../../i18n/useI18n'
 
@@ -16,7 +16,7 @@ type Props = {
   /** Dia ativo do feed: o mapa mostra os eventos dele. */
   day: IsoDate
   genres: readonly GenreFilterValue[]
-  onOpenEvent: (id: string) => void
+  onOpenEvent: (slug: string) => void
   /** Altura do painel (padrão: coluna inteira). */
   className?: string
 }
@@ -32,8 +32,8 @@ export function MapPanel({
   const { t, locale } = useI18n()
   const { events, isPending } = useDayEvents(startDate, day, genres)
   // O evento aberto aparece no mapa mesmo se for de outro dia ou estiver fora do filtro.
-  const selectedId = useEventFocus((state) => state.selectedId)
-  const selected = useEventById(startDate, selectedId)
+  const selectedSlug = useEventFocus((state) => state.selectedSlug)
+  const selected = useEventBySlug(startDate, selectedSlug)
   const withSelected = useMemo(
     () => (selected && !events.some((event) => event.id === selected.id) ? [...events, selected] : events),
     [events, selected],

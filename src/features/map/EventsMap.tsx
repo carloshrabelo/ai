@@ -24,7 +24,7 @@ type Place = { key: string; name: string; coords: Coords; events: DanceEvent[] }
 
 type Props = {
   events: DanceEvent[]
-  onOpenEvent: (id: string) => void
+  onOpenEvent: (slug: string) => void
 }
 
 /**
@@ -37,9 +37,9 @@ export default function EventsMap({ events, onOpenEvent }: Props) {
   const location = useUserLocation()
   const userCoords = location.status === 'granted' ? location.coords : undefined
   const places = useMemo(() => groupByPlace(events), [events])
-  const selectedId = useEventFocus((state) => state.selectedId)
+  const selectedSlug = useEventFocus((state) => state.selectedSlug)
   const hover = useEventFocus((state) => state.hover)
-  const selectedPlace = places.find((place) => place.events.some((event) => event.id === selectedId))
+  const selectedPlace = places.find((place) => place.events.some((event) => event.slug === selectedSlug))
 
   return (
     <MapContainer
@@ -71,7 +71,7 @@ export default function EventsMap({ events, onOpenEvent }: Props) {
               mouseover: () => eventFocus.hover(ids, 'map'),
               mouseout: () => eventFocus.unhover('map'),
               click: () => {
-                if (place.events.length === 1) onOpenEvent(place.events[0].id)
+                if (place.events.length === 1) onOpenEvent(place.events[0].slug)
               },
             }}
           >
@@ -99,7 +99,7 @@ export default function EventsMap({ events, onOpenEvent }: Props) {
                 <ul className="space-y-1">
                   {place.events.map((event) => (
                     <li key={event.id}>
-                      <button type="button" className="cursor-pointer text-left underline" onClick={() => onOpenEvent(event.id)}>
+                      <button type="button" className="cursor-pointer text-left underline" onClick={() => onOpenEvent(event.slug)}>
                         {event.title}
                       </button>{' '}
                       <span className="tabular-nums">· {formatTimeRange(event, locale)}</span>

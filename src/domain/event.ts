@@ -4,6 +4,7 @@ import type { GCalDateTime, GCalEvent } from '../data/googleCalendar'
 import { confirmedUmbrellas, GENRES, type Genre } from './genres'
 import { genresInText } from './parseGenres'
 import { type EventStatus, parseSummary } from './parseSummary'
+import { eventSlug } from './slug'
 
 export type Venue = {
   /** Texto original do `location` no calendário (chave do venues.json e da geocodificação). */
@@ -17,6 +18,8 @@ export type Venue = {
 
 export type DanceEvent = {
   id: string
+  /** Parte da URL do evento: /evento/<slug>/ (ver domain/slug.ts). */
+  slug: string
   /** Marcado no título do calendário como cancelado ou adiado. */
   status?: EventStatus
   title: string
@@ -52,6 +55,7 @@ export function toDanceEvent(event: GCalEvent): DanceEvent {
 
   return {
     id: event.id,
+    slug: eventSlug({ id: event.id, title, start: toDate(event.start) }),
     ...(status ? { status } : {}),
     title,
     genres,

@@ -12,9 +12,12 @@ export const router = createBrowserRouter(
       ErrorBoundary: ErrorPage,
       children: [
         {
-          index: true,
+          // Agenda e evento aberto (/evento/<slug>/) são a mesma página: a rota pai sem caminho
+          // mantém a Dance montada ao abrir/fechar detalhes.
+          id: 'dance',
           loader: eventsLoader,
           lazy: { Component: async () => (await import('./pages/Dance')).default },
+          children: [{ index: true }, { path: 'evento/:slug' }],
         },
         {
           path: 'escolas',

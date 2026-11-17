@@ -85,7 +85,7 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
         <p className="text-sm font-medium">{t.event.addToCalendar}</p>
         <div className="flex flex-wrap gap-2">
           <a
-            href={googleCalendarUrl(event, eventUrl(event.id))}
+            href={googleCalendarUrl(event, eventUrl(event.slug))}
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => {
@@ -102,7 +102,7 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
             onClick={() => {
               trackEvent(event)
               trackAction('calendario/ics')
-              downloadIcs(event, eventUrl(event.id), slugify(event.title) || 'evento')
+              downloadIcs(event, eventUrl(event.slug), slugify(event.title) || 'evento')
             }}
           >
             <Download className="size-5" aria-hidden="true" />
@@ -150,7 +150,7 @@ function Row({ icon, label, children }: { icon: ReactNode; label: string; childr
   )
 }
 
-/** Enquanto os eventos carregam (ex.: link direto com ?event=). */
+/** Enquanto os eventos carregam (ex.: link direto para /evento/<slug>/). */
 export function EventDetailsSkeleton() {
   const { t } = useI18n()
   return (

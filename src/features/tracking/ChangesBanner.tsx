@@ -8,6 +8,7 @@ import type { Locale } from '../../i18n/locale'
 import type { Messages } from '../../i18n/messages'
 import { useI18n } from '../../i18n/useI18n'
 import { formatDayHeading } from '../events/format'
+import { eventSlug } from '../../domain/slug'
 import { type EventChange, detectChanges, type EventSnapshot } from './changes'
 import { acknowledgeChange, useTrackedSnapshots } from './trackedEvents'
 
@@ -15,7 +16,7 @@ import { acknowledgeChange, useTrackedSnapshots } from './trackedEvents'
  * Aviso no topo da lista quando um evento que a pessoa adicionou ao calendário mudou
  * (horário, local, cancelamento, adiamento) ou saiu do calendário.
  */
-export function ChangesBanner({ startDate, onOpenEvent }: { startDate: IsoDate; onOpenEvent: (id: string) => void }) {
+export function ChangesBanner({ startDate, onOpenEvent }: { startDate: IsoDate; onOpenEvent: (slug: string) => void }) {
   const { t, locale } = useI18n()
   const saved = useTrackedSnapshots()
   const { data } = useInfiniteQuery(eventsInfiniteQueryOptions(startDate))
@@ -46,8 +47,8 @@ export function ChangesBanner({ startDate, onOpenEvent }: { startDate: IsoDate; 
               <strong>{change.title}</strong> {describe(change, t, locale)}
             </p>
             <div className="flex gap-2">
-              {change.kind === 'changed' && (
-                <Button variant="secondary" className="h-9" onClick={() => onOpenEvent(change.id)}>
+              {change.kind === 'changed' && change.after && (
+                <Button variant="secondary" className="h-9" onClick={() => onOpenEvent(slugOf(change.id, change.after!))}>
                   {t.tracking.view}
                 </Button>
               )}
@@ -80,3 +81,6 @@ function describe(change: EventChange, t: Messages, locale: Locale): string {
   if (change.fields.includes('title')) parts.push(t.tracking.renamed(after.title))
   return parts.join('; ')
 }
+
+/** Slug do evento como está agora (o título ou a data podem ter mudado). */
+const slugOf = (id: string, after: EventSnapshot) => eventSlug({ id, title: after.title, start: new Date(after.start) })

@@ -5,6 +5,7 @@ import { groupByDay } from './groupByDay'
 function event(id: string, start: string, end: string, allDay = false): DanceEvent {
   return {
     id,
+    slug: id,
     title: id,
     genres: [],
     rawTag: '',

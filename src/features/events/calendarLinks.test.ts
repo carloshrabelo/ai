@@ -4,6 +4,7 @@ import { googleCalendarUrl, icsContent } from './calendarLinks'
 
 const event: DanceEvent = {
   id: 'abc123',
+  slug: 'abc123',
   title: 'Samba no Mercado',
   genres: ['Samba'],
   rawTag: 'Samba',

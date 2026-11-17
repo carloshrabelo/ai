@@ -4,6 +4,7 @@ import { detectChanges, snapshotOf } from './changes'
 
 const base: DanceEvent = {
   id: 'a',
+  slug: 'a',
   title: 'Samba no Mercado',
   genres: ['Samba'],
   rawTag: 'Samba',

@@ -14,8 +14,8 @@ export type DocumentHead = {
 /** URL absoluta do app ("https://carloshrabelo.github.io/ai/"), em produção e em dev. */
 export const siteUrl = () => new URL(import.meta.env.BASE_URL, window.location.origin).href
 
-/** URL compartilhável de um evento. */
-export const eventUrl = (id: string) => `${siteUrl()}?event=${encodeURIComponent(id)}`
+/** URL compartilhável de um evento (página estática gerada no build). */
+export const eventUrl = (slug: string) => `${siteUrl()}evento/${encodeURIComponent(slug)}/`
 
 function setMeta(attribute: 'name' | 'property', key: string, content: string) {
   let element = document.head.querySelector<HTMLMetaElement>(`meta[${attribute}="${key}"]`)

@@ -5,14 +5,14 @@ import { Card } from '../../components/ui/Card'
 import type { IsoDate } from '../../data/dates'
 import { useModalTransition } from '../../components/ui/useModalTransition'
 import { EventDetails, EventDetailsSkeleton } from './EventDetails'
-import { useEventById } from './useEventById'
+import { useEventBySlug } from './useEventBySlug'
 import { useI18n } from '../../i18n/useI18n'
 
-type ViewProps = { startDate: IsoDate; eventId: string; onClose: () => void }
+type ViewProps = { startDate: IsoDate; slug: string; onClose: () => void }
 
-function DetailsBody({ startDate, eventId, headingId }: { startDate: IsoDate; eventId: string; headingId: string }) {
+function DetailsBody({ startDate, slug, headingId }: { startDate: IsoDate; slug: string; headingId: string }) {
   const { t } = useI18n()
-  const event = useEventById(startDate, eventId)
+  const event = useEventBySlug(startDate, slug)
   if (event === undefined) return <EventDetailsSkeleton />
   if (event === null) {
     return (
@@ -30,7 +30,7 @@ function DetailsBody({ startDate, eventId, headingId }: { startDate: IsoDate; ev
 /** A partir de `xl`: os detalhes ocupam a coluna do mapa. */
 export function EventDetailsPanel({
   startDate,
-  eventId,
+  slug,
   onClose,
   className = 'flex-1',
 }: ViewProps & { className?: string }) {
@@ -40,7 +40,7 @@ export function EventDetailsPanel({
   // Leva o foco para o título ao abrir/trocar de evento.
   useEffect(() => {
     document.getElementById(headingId)?.focus({ preventScroll: true })
-  }, [eventId, headingId])
+  }, [slug, headingId])
 
   return (
     <Card
@@ -56,13 +56,13 @@ export function EventDetailsPanel({
         <p className="text-sm font-semibold text-fg-muted">{t.event.details}</p>
         <IconButton label={t.event.closeDetails} icon={<X className="size-5" aria-hidden="true" />} onClick={onClose} />
       </div>
-      <DetailsBody startDate={startDate} eventId={eventId} headingId={headingId} />
+      <DetailsBody startDate={startDate} slug={slug} headingId={headingId} />
     </Card>
   )
 }
 
 /** Abaixo de `xl`: os detalhes abrem como uma página num drawer que entra pela direita. */
-export function EventDetailsDrawer({ startDate, eventId, onClose }: ViewProps) {
+export function EventDetailsDrawer({ startDate, slug, onClose }: ViewProps) {
   const headingId = useId()
   const dialogRef = useRef<HTMLDialogElement>(null)
   // Entra e sai pela direita, como uma página.
@@ -87,7 +87,7 @@ export function EventDetailsDrawer({ startDate, eventId, onClose }: ViewProps) {
     >
       <DrawerHeader onClose={requestClose} />
       <div className="mx-auto max-w-3xl px-4 py-4 pb-[calc(1rem+env(safe-area-inset-bottom))] md:px-6">
-        <DetailsBody startDate={startDate} eventId={eventId} headingId={headingId} />
+        <DetailsBody startDate={startDate} slug={slug} headingId={headingId} />
       </div>
     </dialog>
   )

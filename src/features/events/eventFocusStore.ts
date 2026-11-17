@@ -4,8 +4,8 @@ import { useSyncExternalStore } from 'react'
 export type HoverSource = 'list' | 'map'
 
 export type EventFocusState = {
-  /** Evento aberto nos detalhes (espelho de ?event= na URL). */
-  selectedId: string | null
+  /** Slug do evento aberto nos detalhes (espelho de /evento/<slug>/ na URL). */
+  selectedSlug: string | null
   /** Onde o evento foi aberto: lista, mapa, ou null (link direto, "voltar" do navegador). */
   selectedFrom: HoverSource | null
   /** Eventos em destaque por hover, e quem originou o destaque. */
@@ -22,7 +22,7 @@ export type EventFocusState = {
  * - A seleção é gravada na URL (link compartilhável, "voltar" fecha); `syncSelectedFromUrl`
  *   traz a URL para cá, e todos os componentes leem daqui.
  */
-const INITIAL: EventFocusState = { selectedId: null, selectedFrom: null, hover: null }
+const INITIAL: EventFocusState = { selectedSlug: null, selectedFrom: null, hover: null }
 let state = INITIAL
 const listeners = new Set<() => void>()
 
@@ -30,7 +30,7 @@ const listeners = new Set<() => void>()
 let pendingSource: HoverSource | null = null
 
 function setState(next: EventFocusState) {
-  if (next.selectedId === state.selectedId && next.selectedFrom === state.selectedFrom && next.hover === state.hover) return
+  if (next.selectedSlug === state.selectedSlug && next.selectedFrom === state.selectedFrom && next.hover === state.hover) return
   state = next
   for (const listener of listeners) listener()
 }
@@ -51,17 +51,17 @@ export const eventFocus = {
    * Avisa de onde vem a seleção que está para acontecer (clique no card ou no pino).
    * Se o evento já está aberto, a URL não muda: atualiza a origem na hora.
    */
-  willSelectFrom(source: HoverSource, id: string) {
-    if (id === state.selectedId) setState({ ...state, selectedFrom: source })
+  willSelectFrom(source: HoverSource, slug: string) {
+    if (slug === state.selectedSlug) setState({ ...state, selectedFrom: source })
     else pendingSource = source
   },
 
-  /** Chamado quando ?event= muda na URL. */
-  syncSelectedFromUrl(selectedId: string | null) {
-    const selectedFrom = selectedId ? pendingSource : null
+  /** Chamado quando o evento aberto muda na URL (/evento/<slug>/). */
+  syncSelectedFromUrl(selectedSlug: string | null) {
+    const selectedFrom = selectedSlug ? pendingSource : null
     pendingSource = null
-    if (selectedId === state.selectedId && selectedFrom === state.selectedFrom) return
-    setState({ selectedId, selectedFrom, hover: null })
+    if (selectedSlug === state.selectedSlug && selectedFrom === state.selectedFrom) return
+    setState({ selectedSlug, selectedFrom, hover: null })
   },
 
   hover(ids: readonly string[], source: HoverSource) {

@@ -4,6 +4,7 @@ import { eventJsonLd, eventListJsonLd, parsePrice } from './eventJsonLd'
 
 const event: DanceEvent = {
   id: 'a',
+  slug: 'a',
   title: 'Festa Mirage',
   genres: ['Kizomba'],
   rawTag: 'Kizomba',

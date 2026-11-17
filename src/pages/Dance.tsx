@@ -7,6 +7,7 @@ import { WeekStrip } from '../features/dates/WeekStrip'
 import { eventFocus, useEventFocus } from '../features/events/eventFocusStore'
 import { EventFeed } from '../features/events/EventFeed'
 import { EventDetailsDrawer, EventDetailsPanel } from '../features/events/SelectedEventView'
+import { useLegacyEventRedirect } from '../features/events/useLegacyEventRedirect'
 import { useSelectedEvent } from '../features/events/useSelectedEvent'
 import { GenreFilter } from '../features/genres/GenreFilter'
 import { GenreFilterButton } from '../features/genres/GenreFilterButton'
@@ -31,29 +32,30 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
   const stickyRef = useRef<HTMLDivElement>(null)
   const { activeDay, selectDay } = useDayNavigation(startDate, stickyRef)
   const { selected: genres } = useGenreFilter()
-  const { selectedId: selectedInUrl, open, close } = useSelectedEvent()
+  const { selectedSlug: selectedInUrl, open, close } = useSelectedEvent()
+  useLegacyEventRedirect(startDate)
 
-  // A URL (?event=) guarda a seleção; o eventFocusStore é a fonte única que lista, mapa e
+  // A URL (/evento/<slug>/) guarda a seleção; o eventFocusStore é a fonte única que lista, mapa e
   // detalhes leem. useLayoutEffect: sincroniza antes da pintura, sem um frame desatualizado.
   useLayoutEffect(() => eventFocus.syncSelectedFromUrl(selectedInUrl), [selectedInUrl])
   useLayoutEffect(() => () => eventFocus.reset(), []) // saindo da página
-  const selectedId = useEventFocus((state) => state.selectedId)
+  const selectedSlug = useEventFocus((state) => state.selectedSlug)
   const fromList = useEventFocus((state) => state.selectedFrom === 'list')
 
   // Abrir pela lista ou pelo mapa: o store guarda a origem (define a ordem mapa/detalhes).
   const openFromList = useCallback(
-    (id: string) => {
-      eventFocus.willSelectFrom('list', id)
+    (slug: string) => {
+      eventFocus.willSelectFrom('list', slug)
       trackAction('evento-aberto/lista')
-      open(id)
+      open(slug)
     },
     [open],
   )
   const openFromMap = useCallback(
-    (id: string) => {
-      eventFocus.willSelectFrom('map', id)
+    (slug: string) => {
+      eventFocus.willSelectFrom('map', slug)
       trackAction('evento-aberto/mapa')
-      open(id)
+      open(slug)
     },
     [open],
   )
@@ -62,13 +64,13 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
   const [filtersOpen, setFiltersOpen] = useState(false)
   const filtersId = useId()
 
-  const detailsProps = { startDate, eventId: selectedId ?? '', onClose: close }
+  const detailsProps = { startDate, slug: selectedSlug ?? '', onClose: close }
 
   const shortcuts = <DayShortcuts today={today} activeDay={activeDay} onSelect={selectDay} />
 
   return (
     <div className="flex gap-6">
-      <DanceHead startDate={startDate} selectedId={selectedId} />
+      <DanceHead startDate={startDate} selectedSlug={selectedSlug} />
       <div className="min-w-0 flex-1 space-y-4">
         {/* Fixo logo abaixo do header enquanto a lista rola. */}
         <div
@@ -127,22 +129,22 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
                 flex-grow (base 0), na ordem visual também no HTML (leitura e Tab seguem a tela):
                 - aberto pela lista: detalhes em cima (2/3) e mapa embaixo (1/3);
                 - aberto pelo mapa ou por link: mapa em cima (2/5) e detalhes embaixo (3/5). */}
-            {selectedId && fromList && <EventDetailsPanel key="details" {...detailsProps} className="grow-2 basis-0" />}
+            {selectedSlug && fromList && <EventDetailsPanel key="details" {...detailsProps} className="grow-2 basis-0" />}
             <MapPanel
               key="map"
               startDate={startDate}
               day={activeDay}
               genres={genres}
               onOpenEvent={openFromMap}
-              className={!selectedId ? 'flex-1' : fromList ? 'grow basis-0' : 'grow-2 basis-0'}
+              className={!selectedSlug ? 'flex-1' : fromList ? 'grow basis-0' : 'grow-2 basis-0'}
             />
-            {selectedId && !fromList && <EventDetailsPanel key="details" {...detailsProps} className="grow-3 basis-0" />}
+            {selectedSlug && !fromList && <EventDetailsPanel key="details" {...detailsProps} className="grow-3 basis-0" />}
           </>
         )}
       </aside>
 
       {/* Abaixo de `xl`: detalhes como página num drawer. */}
-      {!isXl && selectedId && <EventDetailsDrawer startDate={startDate} eventId={selectedId} onClose={close} />}
+      {!isXl && selectedSlug && <EventDetailsDrawer startDate={startDate} slug={selectedSlug} onClose={close} />}
     </div>
   )
 }
