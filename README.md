@@ -22,15 +22,15 @@
 
 ### Celular
 
-| Lista | Filtros | Detalhes | Tema escuro |
-|---|---|---|---|
-| ![Lista de eventos no celular](docs/screenshots/mobile.png) | ![Filtros numa folha que sobe de baixo, com os conjuntos Latinas, Afro e BR](docs/screenshots/mobile-filtros.png) | ![Detalhes do evento em tela cheia](docs/screenshots/mobile-detalhes.png) | ![Lista no tema escuro](docs/screenshots/mobile-escuro.png) |
+| Lista | Filtros | Detalhes | Mapa | Tema escuro |
+|---|---|---|---|---|
+| ![Lista de eventos no celular](docs/screenshots/mobile.png) | ![Filtros numa folha que sobe de baixo, com os conjuntos Latinas, Afro e BR](docs/screenshots/mobile-filtros.png) | ![Detalhes do evento em tela cheia](docs/screenshots/mobile-detalhes.png) | ![Página Mapa: faixa de dias em cima, mapa e carrossel de eventos embaixo](docs/screenshots/mobile-mapa.png) | ![Lista no tema escuro](docs/screenshots/mobile-escuro.png) |
 
 ## Funcionalidades
 
 - **Feed por dia** a partir de hoje, carregado em janelas de 2 semanas com scroll infinito; atalhos Ontem / Hoje / Amanhã, faixa de dias e seletor de data. O dia ativo acompanha a rolagem.
 - **Filtros por estilo** (na barra lateral no desktop; numa folha que sobe de baixo no celular e tablet), acumulativos e guardados na URL (`?genres=salsa,forro`). Conjuntos 🇩🇴 **Latinas** (Salsa, Salsa Cubana, Bachata, Merengue), 🇦🇴 **Afro** (Kizomba, Semba, Urban Kiz) e 🇧🇷 **BR** (Forró, Zouk, Samba), mais Swing, West Coast Swing, Tango, Bolero e Outros.
-- **Mapa** (a partir de 1280px) com os eventos do dia ativo; hover no card destaca o pino e vice-versa.
+- **Mapa** com os eventos do dia: a partir de 1280px, numa coluna ao lado da lista (hover no card destaca o pino e vice-versa); no celular e tablet, na página **Mapa** (`/mapa`), com a faixa de dias em cima e os eventos num carrossel embaixo. O card visível fica em foco no mapa, tocar num pino traz o card dele e tocar no card abre os detalhes.
 - **Detalhes do evento**: na coluna do mapa no desktop, numa página em drawer no celular. Link compartilhável (`/evento/<data>-<nome>-<hash>/`, com página estática), rota no app de navegação do aparelho e "Adicionar ao calendário".
 - **Distância** até cada evento, quando o usuário libera a localização.
 - **Eventos cancelados e adiados** marcados a partir do título do calendário.
@@ -100,7 +100,7 @@ src/
   seo/         <head> por página, JSON-LD, páginas estáticas (prerender)
   analytics/   GoatCounter
   components/  layout (header, sidebar, bottom nav) e componentes base (Chip, Card, Button…)
-  pages/       Dança (/), Info (/info), Escolas (/escolas, oculta)
+  pages/       Dança (/ e /evento/<slug>/), Mapa (/mapa, celular e tablet), Info (/info), Escolas (/escolas, oculta)
 scripts/       prerender.mjs, venues-check.mjs, a11y-check.mjs
 docs/          prints, logo e protótipos de referência
 ```
