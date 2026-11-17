@@ -90,10 +90,10 @@ export const genreToPalette: Record<Genre, GenreColor> = {
 
 /**
  * Gêneros "guarda-chuva": o evento aparece também no filtro dos gêneros incluídos
- * (Latinas → Salsa, Salsa Cubana, Bachata e Merengue; Afro → Kizomba, Semba e Urban Kiz; BR → Forró, Zouk e Samba).
+ * (Latinas → Salsa, Bachata e Merengue; Afro → Kizomba, Semba e Urban Kiz; BR → Forró, Zouk e Samba).
  */
 export const GENRE_INCLUDES: Partial<Record<Genre, readonly Genre[]>> = {
-  Latinas: ['Salsa', 'Salsa Cubana', 'Bachata', 'Merengue'],
+  Latinas: ['Salsa', 'Bachata', 'Merengue'],
   Afro: ['Kizomba', 'Semba', 'Urban Kiz'],
   BR: ['Forró', 'Zouk', 'Samba'],
 }
@@ -105,10 +105,27 @@ export const GENRE_EMOJI: Partial<Record<Genre, string>> = {
   BR: '🇧🇷', // Brasil
 }
 
-/** Conjuntos para os filtros: o gênero "guarda-chuva" e os gêneros dele. */
+/**
+ * Variações de um gênero: evento de Salsa Cubana também é de Salsa (aparece no filtro "Salsa"),
+ * mas evento de Salsa não é de Salsa Cubana.
+ */
+export const GENRE_PARENT: Partial<Record<Genre, Genre>> = {
+  'Salsa Cubana': 'Salsa',
+}
+
+/** Variações de um gênero (Salsa → Salsa Cubana). */
+function variantsOf(genre: Genre): Genre[] {
+  return (Object.entries(GENRE_PARENT) as [Genre, Genre][]).filter(([, parent]) => parent === genre).map(([variant]) => variant)
+}
+
+/**
+ * Conjuntos para a tela de filtros: o gênero "guarda-chuva", os gêneros dele e, logo depois de
+ * cada um, as variações (Salsa → Salsa Cubana). Variação é membro do grupo na tela, mas o
+ * guarda-chuva não a implica: evento "Latinas" não vira Salsa Cubana.
+ */
 export const GENRE_GROUPS = Object.entries(GENRE_INCLUDES).map(([umbrella, genres]) => ({
   umbrella: umbrella as Genre,
-  genres: genres as readonly Genre[],
+  genres: (genres as readonly Genre[]).flatMap((genre) => [genre, ...variantsOf(genre)]),
 }))
 
 /** O gênero é um conjunto (Latinas, Afro, BR)? */
@@ -121,9 +138,11 @@ export const isUmbrella = (genre: Genre) => !!GENRE_INCLUDES[genre]
  * (Os filtros continuam usando todos os gêneros do evento.)
  */
 export function visibleGenres(genres: readonly Genre[]): Genre[] {
+  // Gênero informado, contando a variação como o "pai" (Salsa Cubana conta como Salsa).
+  const covers = (included: Genre) => genres.some((g) => g === included || GENRE_PARENT[g] === included)
   return genres.filter(
     (genre) =>
-      !GENRE_INCLUDES[genre]?.some((included) => genres.includes(included)) &&
+      !GENRE_INCLUDES[genre]?.some(covers) &&
       // Com a variação presente, o gênero "pai" não se repete: Salsa Cubana no lugar de Salsa.
       !genres.some((other) => GENRE_PARENT[other] === genre),
   )
@@ -153,18 +172,11 @@ export function confirmedUmbrellas(tagGenres: readonly Genre[], textGenres: read
   if (umbrellas.length < 2) return [...tagGenres]
   const confirmed = umbrellas.filter(
     (umbrella) =>
-      UMBRELLA_EVIDENCE[umbrella]?.test(text) || GENRE_INCLUDES[umbrella]?.some((genre) => textGenres.includes(genre)),
+      UMBRELLA_EVIDENCE[umbrella]?.test(text) ||
+      GENRE_INCLUDES[umbrella]?.some((genre) => textGenres.some((g) => g === genre || GENRE_PARENT[g] === genre)),
   )
   if (confirmed.length === 0) return [...tagGenres]
   return tagGenres.filter((genre) => !umbrellas.includes(genre) || confirmed.includes(genre))
-}
-
-/**
- * Variações de um gênero: evento de Salsa Cubana também é de Salsa (aparece no filtro "Salsa"),
- * mas evento de Salsa não é de Salsa Cubana.
- */
-export const GENRE_PARENT: Partial<Record<Genre, Genre>> = {
-  'Salsa Cubana': 'Salsa',
 }
 
 /** Gêneros do evento + os incluídos por eles + os "pais" das variações (para filtrar). */

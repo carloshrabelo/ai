@@ -107,6 +107,12 @@ describe('matchesGenres', () => {
     expect(matchesGenres(['Salsa'], ['Salsa Cubana'])).toBe(false)
   })
 
+  it('evento "Latinas" não aparece no filtro Salsa Cubana (só nos de Salsa, Bachata, Merengue)', () => {
+    expect(matchesGenres(['Latinas'], ['Salsa Cubana'])).toBe(false)
+    expect(matchesGenres(['Latinas', 'Afro'], ['Salsa Cubana'])).toBe(false)
+    expect(matchesGenres(['Latinas'], ['Salsa'])).toBe(true)
+  })
+
   it('Urban Kiz faz parte de Afro', () => {
     expect(matchesGenres(['Urban Kiz'], ['Afro'])).toBe(true)
     expect(matchesGenres(['Afro'], ['Urban Kiz'])).toBe(true)
