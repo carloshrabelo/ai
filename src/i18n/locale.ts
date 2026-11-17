@@ -25,6 +25,7 @@ export function detectLocale(languages: readonly string[]): Locale {
 const STORAGE_KEY = 'locale'
 
 function readMode(): LocaleMode {
+  if (!IN_BROWSER) return 'auto'
   try {
     const value = localStorage.getItem(STORAGE_KEY)
     return value === 'pt-BR' || value === 'en-US' ? value : 'auto'
@@ -33,7 +34,10 @@ function readMode(): LocaleMode {
   }
 }
 
-const browserLanguages = () => (navigator.languages?.length ? navigator.languages : [navigator.language])
+const IN_BROWSER = typeof window !== 'undefined' && typeof document !== 'undefined'
+
+const browserLanguages = (): readonly string[] =>
+  typeof navigator === 'undefined' ? [] : navigator.languages?.length ? navigator.languages : [navigator.language]
 
 type LocaleState = { mode: LocaleMode; locale: Locale }
 
@@ -46,15 +50,17 @@ const listeners = new Set<() => void>()
 
 function apply(next: LocaleState) {
   state = next
-  document.documentElement.lang = next.locale
+  if (IN_BROWSER) document.documentElement.lang = next.locale
   for (const listener of listeners) listener()
 }
 apply(state)
 
 // Mudou o idioma do sistema/navegador com o app aberto.
-window.addEventListener('languagechange', () => {
-  if (state.mode === 'auto') apply(resolve('auto'))
-})
+if (IN_BROWSER) {
+  window.addEventListener('languagechange', () => {
+    if (state.mode === 'auto') apply(resolve('auto'))
+  })
+}
 
 export function setLocaleMode(mode: LocaleMode) {
   try {
