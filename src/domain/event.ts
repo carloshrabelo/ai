@@ -1,7 +1,7 @@
 import venues from '../data/venues.json'
 import { lisbonMidnight } from '../data/dates'
 import type { GCalDateTime, GCalEvent } from '../data/googleCalendar'
-import { expandGenres, GENRES, type Genre } from './genres'
+import { GENRES, type Genre } from './genres'
 import { genresInText } from './parseGenres'
 import { parseSummary } from './parseSummary'
 
@@ -41,9 +41,8 @@ export function toDanceEvent(event: GCalEvent): DanceEvent {
   const description = event.description?.trim() || undefined
   // A tag do título é a fonte principal; gêneros citados no título ou na descrição completam
   // (ex.: tag "Bachata & Kizomba" com "70% Bachata / 30% Salsa" na descrição → inclui Salsa).
-  // Não repete o que a tag já inclui: "Latinas" com Salsa na descrição continua só "Latinas".
-  const implied = expandGenres(tagGenres)
-  const textGenres = genresInText(`${title}\n${plainText(description)}`).filter((genre) => !implied.has(genre))
+  // Inclusive os que a tag já implica: "Latinas" com Salsa e Bachata na descrição mostra os três.
+  const textGenres = genresInText(`${title}\n${plainText(description)}`)
   const genres = GENRES.filter((genre) => tagGenres.includes(genre) || textGenres.includes(genre))
 
   return {

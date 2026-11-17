@@ -67,8 +67,13 @@ describe('toDanceEvent', () => {
     expect(event.genres).toEqual(['Salsa', 'Bachata', 'Kizomba'])
   })
 
-  it('"Latinas" não ganha Salsa/Bachata pela descrição (já estão incluídos na tag)', () => {
+  it('"Latinas" com Salsa e Bachata na descrição mostra as três tags', () => {
     const event = toDanceEvent({ ...base, summary: 'Latinas • Dance Night', description: 'Salsa, Bachata e mais' })
+    expect(event.genres).toEqual(['Salsa', 'Bachata', 'Latinas'])
+  })
+
+  it('"Latinas" sem gêneros na descrição fica só com a própria tag', () => {
+    const event = toDanceEvent({ ...base, summary: 'Latinas • Dance Night', description: 'Noite latina' })
     expect(event.genres).toEqual(['Latinas'])
   })
 

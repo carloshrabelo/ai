@@ -281,7 +281,7 @@ Tags com erro de digitação que contêm o nome de outro gênero (como `WEST COA
 
 **Latinas:** gênero próprio (chip coral), mas incluído nos filtros de Salsa e Bachata (`GENRE_INCLUDES`). `AFRO-LATINAS` → Latinas + Kizomba + Semba; `PISTA LATINAS` → Latinas. O filtro "Latinas" mostra só eventos com essa tag.
 
-**Gêneros na descrição:** além da tag, nomes de gêneros citados no título ou na descrição entram nas tags (sem aliases, para evitar falsos positivos como "afro house"; "Latinas" não é procurado em texto). O que a tag já inclui não é repetido (evento "Latinas" com Salsa na descrição continua só "Latinas"). Nos dados reais de 90 dias, 6 títulos ganharam gêneros assim (ex.: "Bachata & Kizomba • Timbre Lisboa" + Salsa).
+**Gêneros na descrição:** além da tag, nomes de gêneros citados no título ou na descrição entram nas tags (sem aliases, para evitar falsos positivos como "afro house"; "Latinas" não é procurado em texto). Vale também para o que a tag já inclui: evento "Latinas" com Salsa e Bachata na descrição mostra as três tags. Nos dados reais de 90 dias, 6 títulos ganharam gêneros assim (ex.: "Bachata & Kizomba • Timbre Lisboa" + Salsa).
 
 **Cores:** cada `GenreColor` vira um par de tokens no `@theme` do Tailwind (`--color-genre-wine`, `--color-genre-wine-fg`…), com valores para o tema claro e para o escuro. O contraste do texto sobre o chip precisa passar em AA nos dois temas. Chip sem gênero (`rawTag`) usa um cinza neutro.
 
