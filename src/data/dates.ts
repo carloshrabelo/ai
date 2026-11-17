@@ -9,10 +9,16 @@ export function isIsoDate(value: string | null | undefined): value is IsoDate {
   return !!value && ISO_DATE.test(value) && !Number.isNaN(Date.parse(`${value}T00:00:00Z`))
 }
 
+const ISO_IN_LISBON = new Intl.DateTimeFormat('en-CA', { timeZone: TIME_ZONE }) // en-CA = YYYY-MM-DD
+
+/** Data de calendário de um instante, no fuso de Lisboa. */
+export function lisbonDate(at: Date): IsoDate {
+  return ISO_IN_LISBON.format(at)
+}
+
 /** Hoje no fuso de Lisboa. */
 export function todayIso(now = new Date()): IsoDate {
-  // en-CA formata como YYYY-MM-DD
-  return new Intl.DateTimeFormat('en-CA', { timeZone: TIME_ZONE }).format(now)
+  return lisbonDate(now)
 }
 
 export function addDays(date: IsoDate, days: number): IsoDate {
