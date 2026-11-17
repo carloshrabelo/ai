@@ -76,6 +76,7 @@ pnpm dev
 | `pnpm test` / `pnpm test:watch` | Testes (Vitest). |
 | `pnpm lint` | Lint (oxlint). |
 | `pnpm venues:check [dias] [--fix]` | Lista os locais dos próximos eventos sem coordenadas; com `--fix`, busca e grava em `src/data/venues.json`. |
+| `pnpm a11y [url]` | Auditoria de acessibilidade (axe-core, WCAG 2.1 AA) nas telas principais; precisa do `pnpm preview` rodando. |
 | `pnpm generate-pwa-assets` | Gera os ícones do PWA a partir de `docs/assets/logo_square.png`. |
 
 ## Estrutura
