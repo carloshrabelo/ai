@@ -98,6 +98,17 @@ const pt = {
     installIos: ['Para instalar: toque em', 'Compartilhar', 'e depois em', 'Adicionar à Tela de Início'],
     version: 'Versão',
   },
+  seo: {
+    homeTitle: 'Lisbon Social Dance — Agenda de dança social em Lisboa',
+    homeDescription:
+      'Práticas, festas e festivais de salsa, bachata, kizomba, forró, swing e outros estilos em Lisboa, com mapa e filtros por estilo.',
+    eventTitle: (title: string, day: string) => `${title} · ${day} — Lisbon Social Dance`,
+    eventNotFoundTitle: 'Evento não encontrado — Lisbon Social Dance',
+    infoTitle: 'Info — Lisbon Social Dance',
+    infoDescription: 'Sobre o Lisbon Social Dance: de onde vêm os eventos, tema, idioma e instalação do app.',
+    schoolsTitle: 'Escolas — Lisbon Social Dance',
+    notFoundTitle: 'Página não encontrada — Lisbon Social Dance',
+  },
   pwa: { offlineReady: 'App pronto para funcionar offline.', close: 'Fechar' },
   schools: { soon: 'Em breve', text: 'A lista de escolas de dança ainda está sendo preparada.' },
   errors: {
@@ -203,6 +214,17 @@ const en: Messages = {
     installed: 'App installed ✓',
     installIos: ['To install: tap', 'Share', 'and then', 'Add to Home Screen'],
     version: 'Version',
+  },
+  seo: {
+    homeTitle: 'Lisbon Social Dance — Social dance events in Lisbon',
+    homeDescription:
+      'Salsa, bachata, kizomba, forró, swing and other social dance practices, parties and festivals in Lisbon, with a map and style filters.',
+    eventTitle: (title, day) => `${title} · ${day} — Lisbon Social Dance`,
+    eventNotFoundTitle: 'Event not found — Lisbon Social Dance',
+    infoTitle: 'Info — Lisbon Social Dance',
+    infoDescription: 'About Lisbon Social Dance: where the events come from, theme, language and installing the app.',
+    schoolsTitle: 'Schools — Lisbon Social Dance',
+    notFoundTitle: 'Page not found — Lisbon Social Dance',
   },
   pwa: { offlineReady: 'App ready to work offline.', close: 'Close' },
   schools: { soon: 'Coming soon', text: 'The list of dance schools is still being prepared.' },

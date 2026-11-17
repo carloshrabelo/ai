@@ -14,6 +14,7 @@ import { useGenreFilter } from '../features/genres/useGenreFilter'
 import { MapPanel } from '../features/map/MapPanel'
 import { useMediaQuery, XL_QUERY } from '../hooks/useMediaQuery'
 import { SidebarPortal } from '../layouts/SidebarSlot'
+import { DanceHead } from '../seo/DanceHead'
 
 /** Rota "/" — eventos de dança. Um feed novo (e estado novo) para cada data inicial. */
 export default function Dance() {
@@ -59,6 +60,7 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
 
   return (
     <div className="flex gap-6">
+      <DanceHead startDate={startDate} selectedId={selectedId} />
       <div className="min-w-0 flex-1 space-y-4">
         {/* Fixo logo abaixo do header enquanto a lista rola. */}
         <div

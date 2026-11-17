@@ -5,11 +5,13 @@ import ThemeToggle from '../components/ThemeToggle'
 import { Card } from '../components/ui/Card'
 import { formatDateTime } from '../features/events/format'
 import { useI18n } from '../i18n/useI18n'
+import { siteUrl, useDocumentHead } from '../seo/useDocumentHead'
 
 /** Rota "/info". */
 export default function Info() {
   const online = useOnline()
   const { t, locale } = useI18n()
+  useDocumentHead({ title: t.seo.infoTitle, description: t.seo.infoDescription, canonical: `${siteUrl()}info/` })
 
   return (
     <section className="mx-auto max-w-2xl space-y-4">

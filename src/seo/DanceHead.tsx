@@ -1,0 +1,51 @@
+import { useInfiniteQuery } from '@tanstack/react-query'
+import { useMemo } from 'react'
+import { type IsoDate, lisbonDate } from '../data/dates'
+import { eventsInfiniteQueryOptions, flattenEvents } from '../data/queries'
+import { visibleGenres } from '../domain/genres'
+import { formatDayHeading, formatTimeRange } from '../features/events/format'
+import { useEventById } from '../features/events/useEventById'
+import { useI18n } from '../i18n/useI18n'
+import { eventJsonLd, eventListJsonLd } from './eventJsonLd'
+import { eventUrl, siteUrl, useDocumentHead } from './useDocumentHead'
+
+/** Quantos eventos entram na lista estruturada da página inicial. */
+const LIST_SIZE = 20
+
+/**
+ * <head> da página Dança: sem evento aberto, a agenda (com a lista dos próximos eventos em
+ * JSON-LD); com evento aberto, título, descrição e Schema.org Event dele. Filtros e data não
+ * mudam a URL canônica (são variações da mesma agenda).
+ */
+export function DanceHead({ startDate, selectedId }: { startDate: IsoDate; selectedId: string | null }) {
+  const { t, locale } = useI18n()
+  const { data } = useInfiniteQuery(eventsInfiniteQueryOptions(startDate))
+  const event = useEventById(startDate, selectedId)
+  const upcoming = useMemo(() => flattenEvents(data?.pages ?? []).slice(0, LIST_SIZE), [data])
+
+  let head
+  if (selectedId && event) {
+    const day = formatDayHeading(lisbonDate(event.start), locale)
+    head = {
+      title: t.seo.eventTitle(event.title, day),
+      description: [visibleGenres(event.genres).join(', '), `${day}, ${formatTimeRange(event, locale)}`, event.venue?.name]
+        .filter(Boolean)
+        .join(' · '),
+      canonical: eventUrl(event.id),
+      jsonLd: eventJsonLd(event, eventUrl(event.id)),
+    }
+  } else if (selectedId && event === null) {
+    // Evento que não existe mais (ou fora das datas carregadas): não indexar; aponta para a agenda.
+    head = { title: t.seo.eventNotFoundTitle, description: t.seo.homeDescription, canonical: siteUrl(), noindex: true }
+  } else {
+    head = {
+      title: t.seo.homeTitle,
+      description: t.seo.homeDescription,
+      canonical: siteUrl(),
+      ...(upcoming.length > 0 ? { jsonLd: eventListJsonLd(upcoming, (e) => eventUrl(e.id)) } : {}),
+    }
+  }
+
+  useDocumentHead(head)
+  return null
+}

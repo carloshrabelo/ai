@@ -115,6 +115,13 @@ O texto de `location` de cada evento é a chave em `src/data/venues.json`. Locai
 
 Para corrigir um ponto, edite as coordenadas no `venues.json`: a busca automática só adiciona locais novos.
 
+## SEO
+
+- Tags fixas no `index.html` (lidas por buscadores e redes sociais sem JavaScript): título, descrição, canonical, `hreflang`, Open Graph e Twitter Card com `public/og-image.jpg`.
+- `<head>` dinâmico por página (`src/seo/`): título e descrição próprios, canonical, `noindex` para 404 e eventos inexistentes, e Schema.org em JSON-LD (`ItemList` na agenda, `DanceEvent` no evento aberto).
+- No build: `sitemap.xml`, `robots.txt` e `info/index.html` (para `/ai/info` responder 200 no GitHub Pages em vez de cair no 404).
+- Limitações de ser SPA no GitHub Pages: o conteúdo dos eventos não está no HTML inicial; o `robots.txt` que vale é o da raiz do domínio; não há redirecionamento 301 (evento removido recebe `noindex` e aponta para a agenda).
+
 ## Deploy
 
 GitHub Pages, pelo workflow `.github/workflows/deploy.yml` a cada push no `main` (lint e testes antes do build).
