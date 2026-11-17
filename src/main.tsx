@@ -5,6 +5,8 @@ import { createRoot } from 'react-dom/client'
 import { RouterProvider } from 'react-router'
 import { persistOptions, queryClient } from './data/queryClient'
 import './index.css'
+// Captura o convite de instalação do PWA assim que o app abre (ver o arquivo).
+import './pwa/installPrompt'
 import { router } from './router'
 
 // Em dev sem PWA_DEV: remove service workers e caches que sobraram de sessões antigas,

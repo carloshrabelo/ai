@@ -23,9 +23,10 @@ export default function Info() {
         </p>
       </Card>
 
-      <Card className="flex flex-wrap items-center justify-between gap-4">
-        <span className="text-sm">Tema</span>
-        <ThemeToggle />
+      {/* Rótulo em cima e botões sempre embaixo, ocupando a largura (não mudam de lugar). */}
+      <Card className="space-y-2">
+        <span className="block text-sm">Tema</span>
+        <ThemeToggle className="w-full" />
       </Card>
 
       <Card className="flex items-center justify-between">
