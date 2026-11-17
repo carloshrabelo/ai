@@ -7,6 +7,7 @@ import { Skeleton } from '../../components/ui/Skeleton'
 import type { IsoDate } from '../../data/dates'
 import { eventsInfiniteQueryOptions, flattenEvents } from '../../data/queries'
 import { GENRES } from '../../domain/genres'
+import { LocationControl } from '../location/LocationControl'
 import { useGenreFilter } from './useGenreFilter'
 
 // Classes literais para o Tailwind gerar.
@@ -62,6 +63,10 @@ export function GenreFilter({ startDate }: { startDate: IsoDate }) {
           ))}
         </div>
       )}
+
+      <div className="border-t border-border pt-4">
+        <LocationControl />
+      </div>
     </Card>
   )
 }

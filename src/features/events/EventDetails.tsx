@@ -5,6 +5,7 @@ import { Skeleton } from '../../components/ui/Skeleton'
 import { lisbonDate } from '../../data/dates'
 import type { DanceEvent } from '../../domain/event'
 import { renderDescription } from './description'
+import { EventDistance } from '../location/EventDistance'
 import { formatDayHeading, formatTimeRange } from './format'
 
 /** Conteúdo dos detalhes: usado no painel da coluna do mapa (`xl+`) e no drawer (abaixo de `xl`). */
@@ -32,7 +33,10 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
         </Row>
         {event.venue && (
           <Row icon={<MapPin className="size-5" aria-hidden="true" />} label="Onde">
-            <span className="block">{event.venue.name}</span>
+            <span className="flex items-baseline justify-between gap-2">
+              {event.venue.name}
+              <EventDistance venue={event.venue} />
+            </span>
             {event.venue.address && <span className="block text-fg-muted">{event.venue.address}</span>}
             {mapsUrl && (
               <a
