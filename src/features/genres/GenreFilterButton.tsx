@@ -1,4 +1,5 @@
 import { SlidersHorizontal } from 'lucide-react'
+import { useI18n } from '../../i18n/useI18n'
 
 type Props = {
   open: boolean
@@ -11,7 +12,8 @@ type Props = {
 
 /** Abre e fecha a seção de filtros. Mostra quantos gêneros estão ativos. */
 export function GenreFilterButton({ open, onToggle, controls, activeCount }: Props) {
-  const label = activeCount > 0 ? `Filtros (${activeCount} ativo${activeCount > 1 ? 's' : ''})` : 'Filtros'
+  const { t } = useI18n()
+  const label = t.filters.button(activeCount)
 
   return (
     <button

@@ -1,31 +1,22 @@
-import { type ThemeMode, useTheme } from '../theme/useTheme'
-
-const OPTIONS: { value: ThemeMode; label: string }[] = [
-  { value: 'light', label: 'Claro' },
-  { value: 'dark', label: 'Escuro' },
-  { value: 'system', label: 'Sistema' },
-]
+import { useI18n } from '../i18n/useI18n'
+import { useTheme } from '../theme/useTheme'
+import { Segmented } from './ui/Segmented'
 
 /** Seletor Claro / Escuro / Sistema. */
 export default function ThemeToggle({ className = '' }: { className?: string }) {
   const { mode, setMode } = useTheme()
-
+  const { t } = useI18n()
   return (
-    <div role="radiogroup" aria-label="Tema" className={`inline-flex rounded-lg bg-surface-muted p-0.5 ${className}`}>
-      {OPTIONS.map((option) => (
-        <button
-          key={option.value}
-          type="button"
-          role="radio"
-          aria-checked={mode === option.value}
-          onClick={() => setMode(option.value)}
-          className={`h-10 min-w-20 flex-1 cursor-pointer rounded-md px-3 text-sm font-medium transition focus-visible:outline-2 focus-visible:outline-brand ${
-            mode === option.value ? 'bg-surface text-fg shadow-sm' : 'text-fg-muted hover:text-fg'
-          }`}
-        >
-          {option.label}
-        </button>
-      ))}
-    </div>
+    <Segmented
+      label={t.info.theme}
+      value={mode}
+      onChange={setMode}
+      className={className}
+      options={[
+        { value: 'light', label: t.info.themeLight },
+        { value: 'dark', label: t.info.themeDark },
+        { value: 'system', label: t.info.themeSystem },
+      ]}
+    />
   )
 }

@@ -35,6 +35,7 @@
 - **Distância** até cada evento, quando o usuário libera a localização.
 - **Eventos cancelados e adiados** marcados a partir do título do calendário.
 - **Tema claro e escuro** (segue o sistema ou escolha manual).
+- **Português (pt-BR) e inglês (en-US)**: o idioma vem do navegador (qualquer `pt-*` → pt-BR; o resto → en-US) ou é escolhido em Info. Datas, horas, distâncias e listas são formatadas com `Intl`.
 - **PWA**: instalável, abre offline com os últimos eventos carregados e se atualiza sozinho a cada deploy.
 
 ## Dados e créditos
@@ -83,6 +84,7 @@ pnpm dev
 src/
   data/        fonte dos eventos (API/mock), datas, TanStack Query, venues.json
   domain/      modelo DanceEvent, parser de gêneros e do título, regras do filtro
+  i18n/        idioma (detecção, escolha salva) e textos pt-BR / en-US
   features/
     events/    feed, card, detalhes, seleção (eventFocusStore)
     dates/     atalhos de dia, faixa de dias, navegação por dia

@@ -12,12 +12,27 @@ export function distanceKm(from: Coords, to: Coords): number {
   return 2 * EARTH_RADIUS_KM * Math.asin(Math.sqrt(a))
 }
 
-const ONE_DECIMAL = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 1, minimumFractionDigits: 1 })
-const INTEGER = new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 0 })
+const formats = new Map<string, Intl.NumberFormat>()
 
-/** "350 m", "8,1 km", "42 km". */
-export function formatDistance(km: number): string {
-  if (km < 1) return `${Math.max(10, Math.round((km * 1000) / 10) * 10)} m`
-  if (km < 10) return `${ONE_DECIMAL.format(km)} km`
-  return `${INTEGER.format(km)} km`
+function unitFormat(locale: string, unit: 'kilometer' | 'meter', fractionDigits: number): Intl.NumberFormat {
+  const key = `${locale}|${unit}|${fractionDigits}`
+  let format = formats.get(key)
+  if (!format) {
+    format = new Intl.NumberFormat(locale, {
+      style: 'unit',
+      unit,
+      unitDisplay: 'short',
+      minimumFractionDigits: fractionDigits,
+      maximumFractionDigits: fractionDigits,
+    })
+    formats.set(key, format)
+  }
+  return format
+}
+
+/** Com Intl no idioma dado. pt-BR: "350 m", "8,1 km", "42 km"; en-US: "350 m", "8.1 km", "42 km". */
+export function formatDistance(km: number, locale: string): string {
+  if (km < 1) return unitFormat(locale, 'meter', 0).format(Math.max(10, Math.round((km * 1000) / 10) * 10))
+  if (km < 10) return unitFormat(locale, 'kilometer', 1).format(km)
+  return unitFormat(locale, 'kilometer', 0).format(km)
 }

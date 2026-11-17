@@ -8,7 +8,9 @@ import { eventsInfiniteQueryOptions, flattenEvents } from '../../data/queries'
 import { type GenreFilterValue, matchesGenres } from '../../domain/genreFilter'
 import { EventCard, EventCardSkeleton } from './EventCard'
 import { lastSearchedDay, shouldPauseFilteredSearch } from './filteredSearch'
-import { formatDayHeading } from './format'
+import { formatDayHeading, formatDayInSentence } from './format'
+import { useI18n } from '../../i18n/useI18n'
+import { genreLabel } from '../genres/genreLabel'
 import { groupByDay } from './groupByDay'
 
 const GRID = 'grid grid-cols-1 gap-3 xl:grid-cols-2 xl:gap-4'
@@ -36,6 +38,8 @@ export function EventFeed(props: FeedProps) {
 }
 
 function EventFeedContent({ startDate, genres, onOpenEvent }: FeedProps) {
+  const { t, locale, orList } = useI18n()
+  const genreNames = orList(genres.map((genre) => genreLabel(genre, t)))
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetchNextPageError } = useSuspenseInfiniteQuery(
     eventsInfiniteQueryOptions(startDate),
   )
@@ -80,8 +84,8 @@ function EventFeedContent({ startDate, genres, onOpenEvent }: FeedProps) {
           <CalendarX className="size-12" aria-hidden="true" />
           <p className="text-sm">
             {genres.length > 0
-              ? `Nenhum evento de ${genres.join(', ')} a partir desta data.`
-              : 'Nenhum evento encontrado a partir desta data.'}
+              ? t.feed.emptyForGenres(genreNames)
+              : t.feed.emptyFromDate}
           </p>
         </div>
       )}
@@ -97,7 +101,7 @@ function EventFeedContent({ startDate, genres, onOpenEvent }: FeedProps) {
                 data-day={day}
                 className={`col-span-full text-sm font-semibold text-fg-muted ${index > 0 ? 'pt-3 xl:pt-2' : ''}`}
               >
-                {formatDayHeading(day)}
+                {formatDayHeading(day, locale)}
               </h2>
               {events.map((event) => (
                 <EventCard key={`${day}-${event.id}`} event={event} onOpen={onOpenEvent} />
@@ -109,7 +113,7 @@ function EventFeedContent({ startDate, genres, onOpenEvent }: FeedProps) {
 
       {isFetchingNextPage && (
         <div className={GRID}>
-          <span className="sr-only">Carregando mais eventos…</span>
+          <span className="sr-only">{t.feed.loadingMore}</span>
           <EventCardSkeleton />
           <EventCardSkeleton className="hidden xl:flex" />
         </div>
@@ -119,32 +123,34 @@ function EventFeedContent({ startDate, genres, onOpenEvent }: FeedProps) {
 
       {isFetchNextPageError ? (
         <div className="flex flex-col items-center gap-2 text-center">
-          <p className="text-sm text-fg-muted">Não foi possível carregar mais eventos.</p>
+          <p className="text-sm text-fg-muted">{t.feed.loadMoreError}</p>
           <Button variant="secondary" onClick={() => fetchNextPage()}>
-            Tentar de novo
+            {t.feed.retry}
           </Button>
         </div>
       ) : paused && !isFetchingNextPage ? (
         <div role="status" className="flex flex-col items-center gap-2 py-4 text-center">
           <SearchX className="size-8 text-fg-muted" aria-hidden="true" />
           <p className="text-sm text-fg-muted">
-            {days.length === 0 ? 'Nenhum evento' : 'Nenhum outro evento'} de {genres.join(', ')} até{' '}
-            {formatDayHeading(lastSearchedDay(data.pages, startDate)).toLowerCase()}.
+            {(days.length === 0 ? t.feed.pausedNone : t.feed.pausedNoOther)(
+              genreNames,
+              formatDayInSentence(lastSearchedDay(data.pages, startDate), locale),
+            )}
           </p>
           <Button variant="secondary" onClick={searchMore}>
-            Buscar mais 2 semanas
+            {t.feed.searchMore}
           </Button>
         </div>
       ) : hasNextPage ? (
         !isFetchingNextPage && (
           <div className="flex justify-center">
             <Button variant="secondary" onClick={() => fetchNextPage()}>
-              Carregar mais 2 semanas
+              {t.feed.loadMore}
             </Button>
           </div>
         )
       ) : (
-        days.length > 0 && <p className="text-center text-sm text-fg-muted">Sem mais eventos por enquanto.</p>
+        days.length > 0 && <p className="text-center text-sm text-fg-muted">{t.feed.noMore}</p>
       )}
     </div>
   )
@@ -152,9 +158,10 @@ function EventFeedContent({ startDate, genres, onOpenEvent }: FeedProps) {
 
 /** Primeiro carregamento: 4 cards no mobile, 6 em 2 colunas a partir de `xl`. */
 function EventFeedSkeleton() {
+  const { t } = useI18n()
   return (
     <div aria-busy="true" className="space-y-2">
-      <span className="sr-only">Carregando eventos…</span>
+      <span className="sr-only">{t.feed.loading}</span>
       <div aria-hidden="true" className="h-5 w-32 animate-pulse rounded-md bg-genre-neutral" />
       <div className={GRID}>
         {Array.from({ length: 6 }, (_, i) => (
@@ -166,10 +173,11 @@ function EventFeedSkeleton() {
 }
 
 function FeedError({ onRetry }: { onRetry: () => void }) {
+  const { t } = useI18n()
   return (
     <div role="alert" className="flex flex-col items-center gap-4 py-12 text-center">
-      <p className="text-sm text-fg-muted">Não foi possível carregar os eventos.</p>
-      <Button onClick={onRetry}>Tentar de novo</Button>
+      <p className="text-sm text-fg-muted">{t.feed.loadError}</p>
+      <Button onClick={onRetry}>{t.feed.retry}</Button>
     </div>
   )
 }

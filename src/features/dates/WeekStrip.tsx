@@ -6,6 +6,7 @@ import { WINDOW_DAYS } from '../../data/config'
 import { addDays, type IsoDate, isIsoDate } from '../../data/dates'
 import { eventsInfiniteQueryOptions } from '../../data/queries'
 import { formatDayHeading, formatDayOfMonth, formatWeekdayShort } from '../events/format'
+import { useI18n } from '../../i18n/useI18n'
 
 type Props = {
   startDate: IsoDate
@@ -17,6 +18,7 @@ type Props = {
 
 /** Botão de calendário + faixa de dias, do início do feed até o fim do que já foi carregado. */
 export function WeekStrip({ startDate, activeDay, onSelect, actions }: Props) {
+  const { t, locale } = useI18n()
   // Só lê o cache (mesma query do feed): a faixa cresce conforme novas janelas chegam.
   const { data } = useInfiniteQuery(eventsInfiniteQueryOptions(startDate))
   const end = data?.pages.at(-1)?.end ?? addDays(startDate, WINDOW_DAYS)
@@ -47,7 +49,7 @@ export function WeekStrip({ startDate, activeDay, onSelect, actions }: Props) {
   return (
     <div className="flex items-center gap-2">
       <IconButton
-        label="Escolher data"
+        label={t.dates.pickDate}
         variant="secondary"
         icon={<CalendarDays className="size-6" aria-hidden="true" />}
         onClick={openPicker}
@@ -67,7 +69,7 @@ export function WeekStrip({ startDate, activeDay, onSelect, actions }: Props) {
 
       <ul
         ref={stripRef}
-        aria-label="Dias"
+        aria-label={t.dates.days}
         className="flex min-w-0 flex-1 snap-x gap-1 overflow-x-auto rounded-lg bg-surface p-1 [scrollbar-width:none]"
       >
         {days.map((day) => {
@@ -77,14 +79,14 @@ export function WeekStrip({ startDate, activeDay, onSelect, actions }: Props) {
               <button
                 type="button"
                 aria-pressed={active}
-                aria-label={formatDayHeading(day)}
+                aria-label={formatDayHeading(day, locale)}
                 onClick={() => onSelect(day)}
                 className={`flex h-12 w-11 cursor-pointer flex-col items-center justify-center rounded-md tabular-nums transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand ${
                   active ? 'bg-brand text-brand-fg' : 'text-fg hover:bg-surface-muted'
                 }`}
               >
-                <span className="text-sm font-semibold">{formatDayOfMonth(day)}</span>
-                <span className={`text-xs ${active ? '' : 'text-fg-muted'}`}>{formatWeekdayShort(day)}</span>
+                <span className="text-sm font-semibold">{formatDayOfMonth(day, locale)}</span>
+                <span className={`text-xs ${active ? '' : 'text-fg-muted'}`}>{formatWeekdayShort(day, locale)}</span>
               </button>
             </li>
           )

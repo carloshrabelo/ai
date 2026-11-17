@@ -1,12 +1,14 @@
 import { useMatches } from 'react-router'
 import { APP_NAME, type RouteHandle } from '../app'
 import logo from '../assets/logo.png'
+import { useI18n } from '../i18n/useI18n'
 
 /** Título da rota atual (handle.title). */
 export default function Header() {
   const matches = useMatches()
+  const { t } = useI18n()
   const handle = matches.at(-1)?.handle as RouteHandle | undefined
-  const title = handle?.title ?? APP_NAME
+  const title = handle?.title?.(t) ?? APP_NAME
 
   return (
     <header className="sticky top-0 z-10 bg-header pt-[env(safe-area-inset-top)] text-header-fg shadow-sm dark:shadow-none">

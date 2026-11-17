@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useRegisterSW } from 'virtual:pwa-register/react'
+import { useI18n } from '../i18n/useI18n'
 
 /** Intervalo entre verificações de versão nova enquanto o app está aberto. */
 const UPDATE_CHECK_MS = 60 * 60_000
@@ -11,6 +12,7 @@ const UPDATE_CHECK_MS = 60 * 60_000
  * fica pronto para uso offline.
  */
 export default function ReloadPrompt() {
+  const { t } = useI18n()
   const {
     offlineReady: [offlineReady, setOfflineReady],
   } = useRegisterSW({
@@ -39,9 +41,9 @@ export default function ReloadPrompt() {
       role="status"
       className="fixed inset-x-4 bottom-[calc(5rem+env(safe-area-inset-bottom))] z-20 flex items-center gap-3 rounded-xl bg-slate-900 p-4 text-sm text-white shadow-lg xl:inset-x-auto xl:right-6 xl:bottom-6 xl:max-w-sm"
     >
-      <span className="flex-1">App pronto para funcionar offline.</span>
+      <span className="flex-1">{t.pwa.offlineReady}</span>
       <button className="min-h-11 cursor-pointer px-2 text-slate-300" onClick={() => setOfflineReady(false)}>
-        Fechar
+        {t.pwa.close}
       </button>
     </div>
   )

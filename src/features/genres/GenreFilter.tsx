@@ -5,6 +5,8 @@ import { FILTER_VALUES, type GenreFilterValue, OTHER_GENRES } from '../../domain
 import { GENRE_GROUPS } from '../../domain/genres'
 import { LocationControl } from '../location/LocationControl'
 import { useGenreFilter } from './useGenreFilter'
+import { useI18n } from '../../i18n/useI18n'
+import { genreLabel } from './genreLabel'
 
 // Todos os gêneros aparecem sempre, com ou sem eventos no período carregado.
 const GROUPED = new Set<GenreFilterValue>(GENRE_GROUPS.flatMap(({ umbrella, genres }) => [umbrella, ...genres]))
@@ -17,14 +19,15 @@ const STANDALONE = FILTER_VALUES.filter((value) => !GROUPED.has(value))
  */
 export function GenreFilter() {
   const { selected, toggle, clear } = useGenreFilter()
+  const { t } = useI18n()
 
   return (
     <Card variant="panel" as="section" aria-labelledby="genre-filter-title" className="space-y-2">
       <div className="flex items-center gap-2">
         <SlidersHorizontal className="size-5 text-fg-muted" aria-hidden="true" />
         <h2 id="genre-filter-title" className="flex-1 text-sm font-semibold">
-          Filtros
-          {selected.length > 0 && <span className="font-normal text-fg-muted"> · {selected.length} ativo{selected.length > 1 ? 's' : ''}</span>}
+          {t.filters.title}
+          {selected.length > 0 && <span className="font-normal text-fg-muted"> · {t.filters.active(selected.length)}</span>}
         </h2>
         {selected.length > 0 && (
           <button
@@ -33,24 +36,24 @@ export function GenreFilter() {
             className="-my-2 -mr-2 inline-flex h-11 cursor-pointer items-center gap-1 rounded-lg px-3 text-sm font-medium text-brand hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-brand"
           >
             <X className="size-4" aria-hidden="true" />
-            Limpar
+            {t.filters.clear}
           </button>
         )}
       </div>
 
       {/* Blocos: título do bloco (chip do conjunto) + linha, e os gêneros embaixo.
           Em painel largo (tablet), 2 colunas; na sidebar e no celular, 1 (container query). */}
-      <div role="group" aria-label="Gêneros" className="@container">
+      <div role="group" aria-label={t.filters.genres} className="@container">
         <div className="grid gap-x-6 gap-y-3 @md:grid-cols-2">
           {GENRE_GROUPS.map(({ umbrella, genres: members }) => (
-            <div key={umbrella} role="group" aria-label={`Conjunto ${umbrella}`} className="space-y-2">
+            <div key={umbrella} role="group" aria-label={t.filters.set(umbrella)} className="space-y-2">
               <div className="flex items-center gap-2">
                 <ToggleChip
                   genre={umbrella}
                   variant="group"
                   pressed={selected.includes(umbrella)}
                   onClick={() => toggle(umbrella)}
-                  title={`Todos de ${umbrella}`}
+                  title={t.filters.allOfSet(umbrella)}
                 />
                 <span aria-hidden="true" className="h-px flex-1 bg-border" />
               </div>
@@ -66,7 +69,7 @@ export function GenreFilter() {
           <div role="group" aria-labelledby="genre-filter-others" className="space-y-2">
             <div className="flex h-8 items-center gap-2">
               <span id="genre-filter-others" className="px-1 text-xs font-semibold tracking-wide text-fg-muted">
-                Outros estilos
+                {t.filters.otherStyles}
               </span>
               <span aria-hidden="true" className="h-px flex-1 bg-border" />
             </div>
@@ -75,7 +78,7 @@ export function GenreFilter() {
                 <ToggleChip
                   key={value}
                   // "Outros" usa o chip neutro, como os eventos sem gênero da lista.
-                  {...(value === OTHER_GENRES ? { label: value } : { genre: value })}
+                  {...(value === OTHER_GENRES ? { label: genreLabel(value, t) } : { genre: value })}
                   pressed={selected.includes(value)}
                   onClick={() => toggle(value)}
                 />

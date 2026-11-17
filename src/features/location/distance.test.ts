@@ -20,12 +20,13 @@ describe('distanceKm', () => {
 
 describe('formatDistance', () => {
   it.each([
-    [0.004, '10 m'],
-    [0.347, '350 m'],
-    [1, '1,0 km'],
-    [8.14, '8,1 km'],
-    [42.4, '42 km'],
-  ])('%d km → %s', (km, expected) => {
-    expect(formatDistance(km)).toBe(expected)
+    [0.004, '10 m', '10 m'],
+    [0.347, '350 m', '350 m'],
+    [1, '1,0 km', '1.0 km'],
+    [8.14, '8,1 km', '8.1 km'],
+    [42.4, '42 km', '42 km'],
+  ])('%d km → pt-BR %s, en-US %s', (km, pt, en) => {
+    expect(formatDistance(km, 'pt-BR')).toBe(pt)
+    expect(formatDistance(km, 'en-US')).toBe(en)
   })
 })

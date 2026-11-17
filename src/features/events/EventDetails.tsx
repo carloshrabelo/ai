@@ -11,9 +11,11 @@ import { navigationLink } from '../location/navigationLink'
 import { useGeocodedVenue } from '../location/useGeocodedEvents'
 import { EventStatusBadge } from './EventStatusBadge'
 import { formatDayHeading, formatTimeRange } from './format'
+import { useI18n } from '../../i18n/useI18n'
 
 /** Conteúdo dos detalhes: usado no painel da coluna do mapa (`xl+`) e no drawer (abaixo de `xl`). */
 export function EventDetails({ event, headingId }: { event: DanceEvent; headingId: string }) {
+  const { t, locale } = useI18n()
   const html = useMemo(() => (event.description ? renderDescription(event.description) : ''), [event.description])
   // App de navegação do aparelho (Android: seletor de apps; iOS: Apple Maps; desktop: Google Maps).
   // Local fora do venues.json: busca as coordenadas para a rota abrir no ponto certo.
@@ -35,12 +37,12 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
       </div>
 
       <dl className="space-y-2 text-sm">
-        <Row icon={<Clock className="size-5" aria-hidden="true" />} label="Quando">
-          <span className="block">{formatDayHeading(lisbonDate(event.start))}</span>
-          <span className="block text-fg-muted tabular-nums">{formatTimeRange(event)}</span>
+        <Row icon={<Clock className="size-5" aria-hidden="true" />} label={t.event.when}>
+          <span className="block">{formatDayHeading(lisbonDate(event.start), locale)}</span>
+          <span className="block text-fg-muted tabular-nums">{formatTimeRange(event, locale)}</span>
         </Row>
         {event.venue && (
-          <Row icon={<MapPin className="size-5" aria-hidden="true" />} label="Onde">
+          <Row icon={<MapPin className="size-5" aria-hidden="true" />} label={t.event.where}>
             <span className="flex items-baseline justify-between gap-2">
               {event.venue.name}
               <EventDistance venue={event.venue} />
@@ -53,13 +55,13 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
                 className="inline-flex min-h-11 items-center gap-1 font-medium text-brand underline-offset-2 hover:underline"
               >
                 <Navigation className="size-4" aria-hidden="true" />
-                Abrir no mapa
+                {t.event.openInMaps}
               </a>
             )}
           </Row>
         )}
         {event.price && (
-          <Row icon={<Ticket className="size-5" aria-hidden="true" />} label="Preço">
+          <Row icon={<Ticket className="size-5" aria-hidden="true" />} label={t.event.price}>
             {event.price}
           </Row>
         )}
@@ -72,11 +74,11 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
         className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-brand px-4 text-sm font-medium text-brand-fg hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
       >
         <CalendarPlus className="size-5" aria-hidden="true" />
-        Adicionar ao calendário
+        {t.event.addToCalendar}
       </a>
 
       {html && (
-        <section aria-label="Descrição" className="border-t border-border pt-4">
+        <section aria-label={t.event.description} className="border-t border-border pt-4">
           <div
             className="text-sm break-words text-fg [&_a]:text-brand [&_a]:underline"
             // Sanitizado em renderDescription (DOMPurify).
@@ -102,9 +104,10 @@ function Row({ icon, label, children }: { icon: ReactNode; label: string; childr
 
 /** Enquanto os eventos carregam (ex.: link direto com ?event=). */
 export function EventDetailsSkeleton() {
+  const { t } = useI18n()
   return (
     <div aria-busy="true" className="space-y-4">
-      <span className="sr-only">Carregando evento…</span>
+      <span className="sr-only">{t.event.loading}</span>
       <Skeleton className="h-8 w-3/4" />
       <div className="flex gap-2">
         <Skeleton rounded="rounded-full" className="h-7 w-16" />

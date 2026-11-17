@@ -1,11 +1,13 @@
 import { NavLink } from 'react-router'
 import { NAV_ITEMS } from './navItems'
+import { useI18n } from '../i18n/useI18n'
 
 /** Barra inferior até 1279px. A partir de `xl`, a navegação fica na Sidebar. */
 export default function BottomNav() {
+  const { t } = useI18n()
   return (
     <nav
-      aria-label="Navegação principal"
+      aria-label={t.nav.main}
       className="fixed inset-x-0 bottom-0 z-10 border-t border-border bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur xl:hidden"
     >
       <ul className="mx-auto flex h-16 max-w-3xl">
@@ -21,7 +23,7 @@ export default function BottomNav() {
               }
             >
               <Icon className="size-6" aria-hidden="true" />
-              {label}
+              {label(t)}
             </NavLink>
           </li>
         ))}

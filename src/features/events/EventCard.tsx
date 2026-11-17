@@ -9,6 +9,7 @@ import { EventDistance } from '../location/EventDistance'
 import { eventFocus, useEventFocus } from './eventFocusStore'
 import { EventStatusBadge } from './EventStatusBadge'
 import { formatTimeRange } from './format'
+import { useI18n } from '../../i18n/useI18n'
 
 const ICON_LINK =
   'relative z-10 inline-flex size-11 shrink-0 items-center justify-center rounded-lg text-fg-muted hover:bg-surface-muted hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand'
@@ -24,6 +25,7 @@ type Props = {
  * Seleção e hover vêm do eventFocusStore (fonte única, compartilhada com o mapa).
  */
 export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
+  const { t, locale } = useI18n()
   // Só este card re-renderiza quando a seleção ou o hover dele mudam.
   const selected = useEventFocus((state) => state.selectedId === event.id)
   const highlighted = useEventFocus((state) => state.hover?.source === 'map' && state.hover.ids.includes(event.id))
@@ -65,13 +67,13 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
           <p className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-fg-muted">
             <span className="flex items-center gap-2 tabular-nums">
               <Clock className="size-5 shrink-0" aria-hidden="true" />
-              <span className="sr-only">Horário: </span>
-              {formatTimeRange(event)}
+              <span className="sr-only">{t.event.time}: </span>
+              {formatTimeRange(event, locale)}
             </span>
             {event.price && (
               <span className="flex min-w-0 items-center gap-2">
                 <Ticket className="size-5 shrink-0" aria-hidden="true" />
-                <span className="sr-only">Preço: </span>
+                <span className="sr-only">{t.event.price}: </span>
                 {event.price}
               </span>
             )}
@@ -81,8 +83,8 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
           href={event.calendarUrl}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label={`Adicionar "${event.title}" ao calendário`}
-          title="Adicionar ao calendário"
+          aria-label={t.event.addToCalendarFor(event.title)}
+          title={t.event.addToCalendar}
           className={`-mt-2 -mr-2 ${ICON_LINK}`}
         >
           <CalendarPlus className="size-5" aria-hidden="true" />

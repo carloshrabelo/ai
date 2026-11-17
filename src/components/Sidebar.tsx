@@ -2,11 +2,13 @@ import { NavLink } from 'react-router'
 import { APP_NAME } from '../app'
 import logo from '../assets/logo.png'
 import { NAV_ITEMS } from './navItems'
+import { useI18n } from '../i18n/useI18n'
 
 const FOCUS = 'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand'
 
 /** Coluna lateral a partir de `xl` (1280px): nome do app, conteúdo da página (slot) e navegação. */
 export default function Sidebar({ slotRef }: { slotRef: (element: HTMLElement | null) => void }) {
+  const { t } = useI18n()
   return (
     <aside className="sticky top-0 hidden h-dvh w-72 shrink-0 flex-col gap-6 overflow-y-auto border-r border-border bg-surface-muted px-4 pb-6 xl:flex">
       <p className="flex h-14 shrink-0 items-center gap-2 px-2 text-lg font-semibold whitespace-nowrap">
@@ -17,7 +19,7 @@ export default function Sidebar({ slotRef }: { slotRef: (element: HTMLElement | 
       {/* Conteúdo da página atual (ex.: atalhos de dia e filtros na rota Dança). */}
       <div ref={slotRef} className="space-y-4 empty:hidden" />
 
-      <nav aria-label="Navegação principal">
+      <nav aria-label={t.nav.main}>
         <ul className="space-y-1">
           {NAV_ITEMS.map(({ to, label, icon: Icon }) => (
             <li key={to}>
@@ -31,7 +33,7 @@ export default function Sidebar({ slotRef }: { slotRef: (element: HTMLElement | 
                 }
               >
                 <Icon className="size-5" aria-hidden="true" />
-                {label}
+                {label(t)}
               </NavLink>
             </li>
           ))}

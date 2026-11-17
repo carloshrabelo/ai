@@ -1,12 +1,14 @@
 import { Link } from 'react-router'
+import { useI18n } from '../i18n/useI18n'
 
 export default function NotFound() {
+  const { t } = useI18n()
   return (
     <section className="space-y-4 py-12 text-center">
       <h2 className="text-2xl font-semibold">404</h2>
-      <p className="text-fg-muted">Página não encontrada.</p>
+      <p className="text-fg-muted">{t.errors.notFound}</p>
       <Link to="/" className="inline-flex min-h-11 items-center font-medium text-brand">
-        Voltar ao início
+        {t.errors.backHome}
       </Link>
     </section>
   )

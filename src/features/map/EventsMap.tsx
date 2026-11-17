@@ -8,6 +8,7 @@ import { visibleGenres } from '../../domain/genres'
 import { useResolvedTheme } from '../../theme/useResolvedTheme'
 import { eventFocus, useEventFocus } from '../events/eventFocusStore'
 import { formatTimeRange } from '../events/format'
+import { useI18n } from '../../i18n/useI18n'
 import type { Coords } from '../location/distance'
 import { useUserLocation } from '../location/userLocation'
 
@@ -31,6 +32,7 @@ type Props = {
  * Seleção e hover vêm do eventFocusStore (fonte única, compartilhada com a lista).
  */
 export default function EventsMap({ events, onOpenEvent }: Props) {
+  const { locale } = useI18n()
   const theme = useResolvedTheme()
   const location = useUserLocation()
   const userCoords = location.status === 'granted' ? location.coords : undefined
@@ -96,7 +98,7 @@ export default function EventsMap({ events, onOpenEvent }: Props) {
                       <button type="button" className="cursor-pointer text-left underline" onClick={() => onOpenEvent(event.id)}>
                         {event.title}
                       </button>{' '}
-                      <span className="tabular-nums">· {formatTimeRange(event)}</span>
+                      <span className="tabular-nums">· {formatTimeRange(event, locale)}</span>
                     </li>
                   ))}
                 </ul>

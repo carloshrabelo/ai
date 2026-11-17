@@ -1,48 +1,54 @@
 import { type ReactNode, useEffect, useState } from 'react'
 import InstallButton from '../components/InstallButton'
+import LanguageToggle from '../components/LanguageToggle'
 import ThemeToggle from '../components/ThemeToggle'
 import { Card } from '../components/ui/Card'
+import { formatDateTime } from '../features/events/format'
+import { useI18n } from '../i18n/useI18n'
 
-const BUILD_TIME = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short' })
-
-/** Rota "/info". Conteúdo completo no passo 8 do PLANO.md. */
+/** Rota "/info". */
 export default function Info() {
   const online = useOnline()
+  const { t, locale } = useI18n()
 
   return (
     <section className="mx-auto max-w-2xl space-y-4">
       <Card className="space-y-2">
-        <h2 className="text-lg font-semibold">Sobre</h2>
+        <h2 className="text-lg font-semibold">{t.info.about}</h2>
         <p className="text-sm text-fg-muted">
-          Agenda de práticas, festas e outros eventos de dança. Os eventos vêm do calendário do{' '}
-          <ExternalLink href="https://pasdedeux.pt/">pasdedeux.pt</ExternalLink>, mantido por{' '}
-          <ExternalLink href="https://www.instagram.com/ateterca/">@ateterca</ExternalLink>.
+          {t.info.aboutText} <ExternalLink href="https://pasdedeux.pt/">pasdedeux.pt</ExternalLink>,{' '}
+          {t.info.maintainedBy} <ExternalLink href="https://www.instagram.com/ateterca/">@ateterca</ExternalLink>.
         </p>
         <p className="text-sm text-fg-muted">
-          Desenvolvido por <ExternalLink href="https://carloshrabelo.dev/">carloshrabelo.dev</ExternalLink>.
+          {t.info.developedBy} <ExternalLink href="https://carloshrabelo.dev/">carloshrabelo.dev</ExternalLink>.
         </p>
       </Card>
 
       {/* Rótulo em cima e botões sempre embaixo, ocupando a largura (não mudam de lugar). */}
       <Card className="space-y-2">
-        <span className="block text-sm">Tema</span>
+        <span className="block text-sm">{t.info.theme}</span>
         <ThemeToggle className="w-full" />
       </Card>
 
+      <Card className="space-y-2">
+        <span className="block text-sm">{t.info.language}</span>
+        <LanguageToggle className="w-full" />
+      </Card>
+
       <Card className="flex items-center justify-between">
-        <span className="text-sm">Conexão</span>
+        <span className="text-sm">{t.info.connection}</span>
         <span className={`text-sm ${online ? 'text-emerald-600' : 'text-amber-600'}`}>
-          {online ? 'Online' : 'Offline'}
+          {online ? t.info.online : t.info.offline}
         </span>
       </Card>
 
       <Card className="space-y-2">
-        <span className="text-sm">Instalar o app</span>
+        <span className="text-sm">{t.info.install}</span>
         <InstallButton />
       </Card>
 
       <p className="text-center text-xs text-fg-muted tabular-nums">
-        Versão {__APP_VERSION__} · {BUILD_TIME.format(new Date(__APP_BUILD_TIME__))}
+        {t.info.version} {__APP_VERSION__} · {formatDateTime(new Date(__APP_BUILD_TIME__), locale)}
       </p>
     </section>
   )

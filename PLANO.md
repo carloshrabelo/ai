@@ -425,7 +425,7 @@ Cada passo é um commit independente que mantém o app funcionando.
 - **Mapa**: Leaflet + tiles do OpenStreetMap.
 - **Coordenadas a partir do nome**: Nominatim + Photon (OSM), na Action diária e no navegador.
 - **Nome do app**: Lisbon Social Dance.
-- **Idioma da interface**: pt-BR. Os textos dos eventos continuam como vêm da API (pt-PT).
+- **Idioma da interface**: pt-BR e en-US (`src/i18n/`). Automático pelo `navigator.languages` (primeiro idioma suportado: `pt-*` → pt-BR, `en-*` → en-US; nenhum → en-US) ou escolhido em Info (salvo no aparelho). Datas, horas, distâncias e listas com `Intl` no idioma ativo (relógio de 24h em pt-BR, 12h em en-US), sempre no fuso de Lisboa. Os textos dos eventos continuam como vêm da API.
 - **Janelas da API**: 2 semanas a partir da data inicial, com mais 2 semanas a cada fim de lista (scroll infinito).
 - **Lista**: feed contínuo agrupado por dia. Escolher um dia rola até ele, ou começa um feed novo a partir dele se ainda não foi carregado.
 - **Fim do feed**: depois de 2 janelas seguidas sem eventos.
