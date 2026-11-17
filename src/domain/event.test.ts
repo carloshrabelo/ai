@@ -58,6 +58,25 @@ describe('toDanceEvent', () => {
     expect(event.end.toISOString()).toBe('2026-08-02T23:00:00.000Z')
   })
 
+  it('gênero citado na descrição entra junto com os da tag', () => {
+    const event = toDanceEvent({
+      ...base,
+      summary: 'Bachata & Kizomba • Timbre Lisboa • 10€',
+      description: '🎧 Sala Bachata : DJ Ornelas<br>(70% Bachata / 30% Salsa)',
+    })
+    expect(event.genres).toEqual(['Salsa', 'Bachata', 'Kizomba'])
+  })
+
+  it('"Latinas" não ganha Salsa/Bachata pela descrição (já estão incluídos na tag)', () => {
+    const event = toDanceEvent({ ...base, summary: 'Latinas • Dance Night', description: 'Salsa, Bachata e mais' })
+    expect(event.genres).toEqual(['Latinas'])
+  })
+
+  it('siglas na descrição não contam ("afro house" não vira Kizomba)', () => {
+    const event = toDanceEvent({ ...base, summary: 'Forró • Baile', description: 'DJ de afro house no intervalo' })
+    expect(event.genres).toEqual(['Forró'])
+  })
+
   it('local desconhecido fica sem coordenadas', () => {
     const event = toDanceEvent({ ...base, location: 'Lugar Novo, Rua X, Lisboa' })
     expect(event.venue).toEqual({ location: 'Lugar Novo, Rua X, Lisboa', name: 'Lugar Novo', address: 'Rua X, Lisboa' })

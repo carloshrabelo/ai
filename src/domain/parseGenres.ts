@@ -38,3 +38,23 @@ export function parseGenres(tag: string): Genre[] {
 
   return GENRES.filter((genre) => found.has(genre))
 }
+
+/** Gêneros que não são procurados em texto corrido (genéricos demais: "músicas latinas"). */
+const NOT_IN_TEXT = new Set<Genre>(['Latinas'])
+
+/**
+ * Gêneros citados pelo nome num texto livre (título, descrição). Sem aliases: siglas como "SBK"
+ * ou "AFRO" em texto corrido dariam falsos positivos ("afro house").
+ * Mesma regra de nome inteiro e do mais longo para o mais curto (West Coast Swing ≠ Swing).
+ */
+export function genresInText(text: string): Genre[] {
+  let upper = text.normalize('NFC').toUpperCase()
+  const found = new Set<Genre>()
+  for (const { genre, pattern } of GENRE_RULES) {
+    if (upper.match(pattern)) {
+      if (!NOT_IN_TEXT.has(genre)) found.add(genre)
+      upper = upper.replace(pattern, ' ')
+    }
+  }
+  return GENRES.filter((genre) => found.has(genre))
+}

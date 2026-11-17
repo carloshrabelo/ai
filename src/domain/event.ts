@@ -1,7 +1,8 @@
 import venues from '../data/venues.json'
 import { lisbonMidnight } from '../data/dates'
 import type { GCalDateTime, GCalEvent } from '../data/googleCalendar'
-import type { Genre } from './genres'
+import { expandGenres, GENRES, type Genre } from './genres'
+import { genresInText } from './parseGenres'
 import { parseSummary } from './parseSummary'
 
 export type Venue = {
@@ -36,8 +37,14 @@ type VenueCoords = { name: string; lat: number; lng: number }
 const VENUES: Record<string, VenueCoords> = venues
 
 export function toDanceEvent(event: GCalEvent): DanceEvent {
-  const { genres, rawTag, title, price } = parseSummary(event.summary)
+  const { genres: tagGenres, rawTag, title, price } = parseSummary(event.summary)
   const description = event.description?.trim() || undefined
+  // A tag do título é a fonte principal; gêneros citados no título ou na descrição completam
+  // (ex.: tag "Bachata & Kizomba" com "70% Bachata / 30% Salsa" na descrição → inclui Salsa).
+  // Não repete o que a tag já inclui: "Latinas" com Salsa na descrição continua só "Latinas".
+  const implied = expandGenres(tagGenres)
+  const textGenres = genresInText(`${title}\n${plainText(description)}`).filter((genre) => !implied.has(genre))
+  const genres = GENRES.filter((genre) => tagGenres.includes(genre) || textGenres.includes(genre))
 
   return {
     id: event.id,
@@ -70,6 +77,11 @@ function toVenue(location: string): Venue {
     address: rest.join(', '),
     ...(known ? { lat: known.lat, lng: known.lng } : {}),
   }
+}
+
+/** HTML da descrição → texto, só para procurar gêneros. */
+function plainText(html: string | undefined): string {
+  return (html ?? '').replace(/<[^>]*>/g, ' ').replaceAll('&amp;', '&').replaceAll('&nbsp;', ' ')
 }
 
 const URL_PATTERN = /https?:\/\/[^\s"'<>]+/g
