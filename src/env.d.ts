@@ -10,3 +10,10 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv
 }
+
+/** Commit do build (7 caracteres) ou "local". Definido em vite.config.ts. */
+declare const __APP_VERSION__: string
+/** Data/hora do build (ISO). */
+declare const __APP_BUILD_TIME__: string
+/** Service worker ligado no `pnpm dev` (PWA_DEV=true). */
+declare const __PWA_IN_DEV__: boolean

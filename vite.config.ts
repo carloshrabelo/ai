@@ -6,14 +6,26 @@ import { VitePWA } from 'vite-plugin-pwa'
 // GitHub Pages serve o projeto em https://<user>.github.io/ai/
 const base = process.env.GITHUB_PAGES ? '/ai/' : '/'
 
+// Service worker no `pnpm dev` só quando pedido (PWA_DEV=true pnpm dev): em dev ele serve cache velho.
+const pwaInDev = process.env.PWA_DEV === 'true'
+
+// Versão exibida na página Info, para saber qual build está carregado.
+const appVersion = (process.env.GITHUB_SHA ?? '').slice(0, 7) || 'local'
+
 // https://vite.dev/config/
 export default defineConfig({
   base,
+  define: {
+    __APP_VERSION__: JSON.stringify(appVersion),
+    __APP_BUILD_TIME__: JSON.stringify(new Date().toISOString()),
+    __PWA_IN_DEV__: JSON.stringify(pwaInDev),
+  },
   plugins: [
     react(),
     tailwindcss(),
     VitePWA({
-      registerType: 'prompt',
+      // Versão nova assume na hora (sem esperar o usuário clicar em "Atualizar").
+      registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon-180x180.png'],
       manifest: {
         name: 'Lisbon Social Dance',
@@ -36,9 +48,12 @@ export default defineConfig({
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2}'],
         navigateFallback: `${base}index.html`,
+        skipWaiting: true,
+        clientsClaim: true,
+        cleanupOutdatedCaches: true,
       },
       devOptions: {
-        enabled: true,
+        enabled: pwaInDev,
         type: 'module',
         navigateFallback: 'index.html',
       },

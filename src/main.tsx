@@ -7,6 +7,18 @@ import { queryClient } from './data/queryClient'
 import './index.css'
 import { router } from './router'
 
+// Em dev sem PWA_DEV: remove service workers e caches que sobraram de sessões antigas,
+// que serviriam arquivos velhos no localhost.
+if (import.meta.env.DEV && !__PWA_IN_DEV__ && 'serviceWorker' in navigator) {
+  void navigator.serviceWorker.getRegistrations().then((registrations) => {
+    if (registrations.length === 0) return
+    void Promise.all([
+      ...registrations.map((registration) => registration.unregister()),
+      caches.keys().then((keys) => Promise.all(keys.map((key) => caches.delete(key)))),
+    ]).then(() => window.location.reload())
+  })
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>

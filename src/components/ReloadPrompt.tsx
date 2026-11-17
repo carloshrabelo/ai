@@ -1,37 +1,46 @@
+import { useEffect } from 'react'
 import { useRegisterSW } from 'virtual:pwa-register/react'
 
-/** Avisa quando o app está pronto para uso offline ou quando há nova versão. */
+/** Intervalo entre verificações de versão nova enquanto o app está aberto. */
+const UPDATE_CHECK_MS = 60 * 60_000
+
+/**
+ * Registra o service worker em modo autoUpdate: quando há versão nova publicada, ela é
+ * instalada e a página recarrega sozinha. Procura versão nova ao abrir, a cada hora e
+ * sempre que o app volta para o primeiro plano. Avisa (por alguns segundos) quando o app
+ * fica pronto para uso offline.
+ */
 export default function ReloadPrompt() {
   const {
     offlineReady: [offlineReady, setOfflineReady],
-    needRefresh: [needRefresh, setNeedRefresh],
-    updateServiceWorker,
-  } = useRegisterSW()
+  } = useRegisterSW({
+    onRegisteredSW(_url, registration) {
+      if (!registration) return
+      const check = () => {
+        if (navigator.onLine) void registration.update()
+      }
+      setInterval(check, UPDATE_CHECK_MS)
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') check()
+      })
+    },
+  })
 
-  if (!offlineReady && !needRefresh) return null
+  useEffect(() => {
+    if (!offlineReady) return
+    const timer = setTimeout(() => setOfflineReady(false), 4000)
+    return () => clearTimeout(timer)
+  }, [offlineReady, setOfflineReady])
 
-  const close = () => {
-    setOfflineReady(false)
-    setNeedRefresh(false)
-  }
+  if (!offlineReady) return null
 
   return (
     <div
-      role="alert"
+      role="status"
       className="fixed inset-x-4 bottom-[calc(5rem+env(safe-area-inset-bottom))] z-20 flex items-center gap-3 rounded-xl bg-slate-900 p-4 text-sm text-white shadow-lg xl:inset-x-auto xl:right-6 xl:bottom-6 xl:max-w-sm"
     >
-      <span className="flex-1">
-        {needRefresh ? 'Nova versão disponível.' : 'App pronto para funcionar offline.'}
-      </span>
-      {needRefresh && (
-        <button
-          className="min-h-11 rounded-lg bg-brand px-4 font-medium"
-          onClick={() => updateServiceWorker(true)}
-        >
-          Atualizar
-        </button>
-      )}
-      <button className="min-h-11 px-2 text-slate-300" onClick={close}>
+      <span className="flex-1">App pronto para funcionar offline.</span>
+      <button className="min-h-11 cursor-pointer px-2 text-slate-300" onClick={() => setOfflineReady(false)}>
         Fechar
       </button>
     </div>

@@ -398,6 +398,7 @@ Cada passo é um commit independente que mantém o app funcionando.
 - [ ] Acessibilidade: chips como `button`/`aria-pressed`, foco visível, contraste dos chips nos dois temas, `aria-busy` nas regiões carregando e `prefers-reduced-motion` nos skeletons.
 - [ ] Conferir com `VITE_MOCK_DELAY_MS=2000` que nenhum elemento pula de lugar quando os dados chegam.
 - [ ] Testar offline: o service worker faz cache do app e o persister do TanStack Query guarda os últimos eventos.
+- [x] Atualização do PWA: `registerType: 'autoUpdate'` com `skipWaiting`/`clientsClaim`. A versão nova assume no recarregamento seguinte ao deploy, e o app procura versão nova a cada hora e ao voltar para o primeiro plano. Service worker desligado no `pnpm dev` (ligar com `PWA_DEV=true`). A página Info mostra a versão (commit) e a data do build.
 - [ ] Script `pnpm venues:check` que lista os `location` vindos da API que ainda não estão em `venues.json`.
 - [ ] `pnpm lint && pnpm test && pnpm build` no workflow antes do deploy.
 

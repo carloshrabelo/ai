@@ -3,6 +3,8 @@ import InstallButton from '../components/InstallButton'
 import ThemeToggle from '../components/ThemeToggle'
 import { Card } from '../components/ui/Card'
 
+const BUILD_TIME = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short' })
+
 /** Rota "/info". Conteúdo completo no passo 8 do PLANO.md. */
 export default function Info() {
   const online = useOnline()
@@ -37,6 +39,10 @@ export default function Info() {
         <span className="text-sm">Instalar o app</span>
         <InstallButton />
       </Card>
+
+      <p className="text-center text-xs text-fg-muted tabular-nums">
+        Versão {__APP_VERSION__} · {BUILD_TIME.format(new Date(__APP_BUILD_TIME__))}
+      </p>
     </section>
   )
 }
