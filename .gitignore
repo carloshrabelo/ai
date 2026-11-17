@@ -25,3 +25,15 @@ dist-ssr
 
 # PWA dev output
 dev-dist
+
+# Env
+.env
+.env.*
+!.env.example
+
+# Testes
+coverage
+
+# Cache
+*.tsbuildinfo
+.cache
