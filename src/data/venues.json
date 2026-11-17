@@ -1,4 +1,9 @@
 {
+  "A Lanchonete - Benfica, Av. Gomes Pereira 104A, 1500-332 Lisboa, Portugal": {
+    "name": "A Lanchonete - Benfica",
+    "lat": 38.745197,
+    "lng": -9.198144
+  },
   "Academia Dramática Familiar 1º de Novembro de 1898 (ADF), R. da Praia de Pedrouços 76, 1400-282 Lisboa, Portugal": {
     "name": "Academia Dramática Familiar 1º de Novembro de 1898 (ADF)",
     "lat": 38.694505,
@@ -8,6 +13,11 @@
     "name": "Aerlis - Associação Empresarial da Região de Lisboa",
     "lat": 38.703296,
     "lng": -9.300812
+  },
+  "Armazém Cultural Lisboa, R. António Pedro 66B, 1000-039 Lisboa, Portugal": {
+    "name": "Armazém Cultural Lisboa",
+    "lat": 38.732673,
+    "lng": -9.135056
   },
   "Av. Luísa Todi 233, Av. Luísa Todi 233, 2900-463 Setúbal, Portugal": {
     "name": "Av. Luísa Todi 233",
@@ -19,20 +29,75 @@
     "lat": 38.955134,
     "lng": -9.410459
   },
+  "Bar Havana, de Armz 5, Doca Alcântara, 1350-353 Lisboa, Portugal": {
+    "name": "Bar Havana",
+    "lat": 38.699687,
+    "lng": -9.178785
+  },
+  "Bar Hawaii, de Armz 1, Doca Alcântara, 1350-353 Lisboa, Portugal": {
+    "name": "Bar Hawaii",
+    "lat": 38.7008,
+    "lng": -9.176189
+  },
   "Beira Mar Atlético Clube de Almada": {
     "name": "Beira Mar Atlético Clube de Almada",
     "lat": 38.679906,
     "lng": -9.152008
+  },
+  "BreakPoint Ericeira, Urbanização Moinhos do Mar Rua 6 Lote C, 2655-319 Ericeira, Portugal": {
+    "name": "BreakPoint Ericeira",
+    "lat": 38.955242,
+    "lng": -9.402078
+  },
+  "BUS - Paragem Cultural, R. Maria 73, 1170-133 Lisboa, Portugal": {
+    "name": "BUS - Paragem Cultural",
+    "lat": 38.724835,
+    "lng": -9.133197
+  },
+  "Casa Amarela, Estrada dos Álamos, 2810-144 Almada, Portugal": {
+    "name": "Casa Amarela",
+    "lat": 38.652558,
+    "lng": -9.152389
+  },
+  "Casa Capitão, Rua do Grilo 119, 1950-146 Lisboa, Portugal": {
+    "name": "Casa Capitão",
+    "lat": 38.730887,
+    "lng": -9.10728
   },
   "Casa de Pedra, Av. Dr. Arlindo Vicente, 1950-079 Lisboa, Portugal": {
     "name": "Casa de Pedra",
     "lat": 38.751852,
     "lng": -9.125493
   },
+  "Complexo Municipal dos Desportos da Cidade de Almada, Alameda de Guerra Junqueiro 35, 2810-075 Almada, Portugal": {
+    "name": "Complexo Municipal dos Desportos da Cidade de Almada",
+    "lat": 38.659425,
+    "lng": -9.159353
+  },
+  "Dança Mais com Camila Delphim, R. Luís Derouet 20A, 1250-248 Lisboa, Portugal": {
+    "name": "Dança Mais com Camila Delphim",
+    "lat": 38.717959,
+    "lng": -9.16296
+  },
+  "Fábrica de Braço de Prata, R. Fábrica de Material de Guerra 1, 1950-128 Lisboa, Portugal": {
+    "name": "Fábrica de Braço de Prata",
+    "lat": 38.743796,
+    "lng": -9.101225
+  },
+  "Flor de Lúpulo, R. Passos Manuel 102C, 1150-053 Lisboa, Portugal": {
+    "name": "Flor de Lúpulo",
+    "lat": 38.729935,
+    "lng": -9.13678
+  },
   "Galeria Antecâmara - Galeria e Rádio, R. de Cabo Verde 17A, 1170-202 Lisboa, Portugal": {
     "name": "Galeria Antecâmara - Galeria e Rádio",
     "lat": 38.725354,
     "lng": -9.131589
+  },
+  "Hall Entrada Estação comboios do Cais do Sodré, PC Duque da Terceira, 1200-161 Lisboa, Portugal": {
+    "name": "Hall Entrada Estação comboios do Cais do Sodré",
+    "lat": 38.705645,
+    "lng": -9.143128
   },
   "Iate Ben, Rua de Gaza 108, 2775-357 Carcavelos, Portugal": {
     "name": "Iate Ben",
@@ -49,6 +114,11 @@
     "lat": 38.705663,
     "lng": -9.143559
   },
+  "Jazzy Dance Studios, Av. Brasília 254, 1200-109 Lisboa, Portugal": {
+    "name": "Jazzy Dance Studios",
+    "lat": 38.705976,
+    "lng": -9.152525
+  },
   "Little Big Apple, R. Prof. Mira Fernandes 10A Lj. B, 1900-381 Lisboa, Portugal": {
     "name": "Little Big Apple",
     "lat": 38.738237,
@@ -58,6 +128,11 @@
     "name": "Mirage Lounge",
     "lat": 38.796647,
     "lng": -9.169594
+  },
+  "Misturado, R. José Estêvão 45A B, 1150-203 Lisboa, Portugal": {
+    "name": "Misturado",
+    "lat": 38.727582,
+    "lng": -9.137332
   },
   "O Melhor Bolo de Chocolate do Mundo, Avenida da Liberdade, Quiosques Liberdade - Posto 4, Rua das Pretas, 1250-145 Lisboa, Portugal": {
     "name": "O Melhor Bolo de Chocolate do Mundo",
@@ -69,6 +144,56 @@
     "lat": 38.524149,
     "lng": -8.892672
   },
+  "R. da Voz do Operário 13, R. da Voz do Operário 13, 1100-620 Lisboa, Portugal": {
+    "name": "R. da Voz do Operário 13",
+    "lat": 38.715546,
+    "lng": -9.129319
+  },
+  "R. dos Fanqueiros 286, R. dos Fanqueiros 286, 1100-226 Lisboa, Portugal": {
+    "name": "R. dos Fanqueiros 286",
+    "lat": 38.711899,
+    "lng": -9.136452
+  },
+  "R. Padre Reis Lima, 1400-399 Lisboa, Portugal": {
+    "name": "R. Padre Reis Lima",
+    "lat": 38.716388,
+    "lng": -9.213838
+  },
+  "R. Serpa Pinto 19, R. Serpa Pinto 19, 1200-443 Lisboa, Portugal": {
+    "name": "R. Serpa Pinto 19",
+    "lat": 38.708862,
+    "lng": -9.141372
+  },
+  "Recreios Desportivos da Trafaria - Casino, R. Guedes Coelho n.º 7, 2825-854 Trafaria, Portugal": {
+    "name": "Recreios Desportivos da Trafaria - Casino",
+    "lat": 38.672598,
+    "lng": -9.231537
+  },
+  "Split Sky Club, R. Guilherme Gomes Fernandes 13, 2900-633 Setúbal, Portugal": {
+    "name": "Split Sky Club",
+    "lat": 38.519928,
+    "lng": -8.901985
+  },
+  "Teatro A Barraca, Largo Santos 2A, 1200-656 Lisboa, Portugal": {
+    "name": "Teatro A Barraca",
+    "lat": 38.707185,
+    "lng": -9.155201
+  },
+  "The Dog House, Rua da Manutenção 38, 1900-319 Lisboa, Portugal": {
+    "name": "The Dog House",
+    "lat": 38.727451,
+    "lng": -9.109635
+  },
+  "Time Out Market Lisboa, Av. 24 de Julho 49, 1200-479 Lisboa, Portugal": {
+    "name": "Time Out Market Lisboa",
+    "lat": 38.707266,
+    "lng": -9.14607
+  },
+  "Time Out Market Lisboa, Mercado da Ribeira, Av. 24 de Julho, 1200-479 Lisboa, Portugal": {
+    "name": "Time Out Market Lisboa",
+    "lat": 38.706994,
+    "lng": -9.145693
+  },
   "Titanic Sur Mer, Cais do Gás, R. da Cintura do Porto de Lisboa, 1200-109 Lisboa, Portugal": {
     "name": "Titanic Sur Mer",
     "lat": 38.705325,
@@ -78,5 +203,10 @@
     "name": "Top Floor Club",
     "lat": 38.770743,
     "lng": -9.092514
+  },
+  "Tropicavana Bar, R. José Pinheiro de Melo 60 D E F, 1700-265 Lisboa, Portugal": {
+    "name": "Tropicavana Bar",
+    "lat": 38.747459,
+    "lng": -9.138844
   }
 }

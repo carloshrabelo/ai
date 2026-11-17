@@ -2,11 +2,13 @@
 // estão em src/data/venues.json. Esses eventos aparecem sem pino no mapa e sem distância.
 //
 // Uso: pnpm venues:check [dias] [--fix]   (padrão: 60 dias a partir de hoje)
-//   --fix  busca as coordenadas dos locais que faltam no Nominatim (OpenStreetMap)
-//          e grava em src/data/venues.json. Confira o resultado antes do commit.
+//   --fix  busca as coordenadas dos locais que faltam (Nominatim e Photon, dados do OpenStreetMap)
+//          e grava em src/data/venues.json. Roda todo dia na Action "Update venues".
+// Saída: 2 quando faltam locais (sem --fix); 0 com --fix, mesmo que alguns não sejam encontrados.
 // Lê VITE_GOOGLE_API_KEY do ambiente ou do .env.local.
 
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
+import { geocodeLocation } from '../src/features/location/geocoding.ts'
 
 const CALENDAR_ID = 'pasdedeux.pt@gmail.com'
 const VENUES_FILE = 'src/data/venues.json'
@@ -69,57 +71,14 @@ for (const [location, count] of missing) console.log(`  (${count}×) ${location}
 
 if (!fix || missing.length === 0) process.exit(missing.length > 0 ? 2 : 0)
 
-// --fix: geocodifica no Nominatim (máx. 1 requisição por segundo, pela política de uso).
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
-
-async function geocode(query) {
-  await sleep(1100)
-  const url = `https://nominatim.openstreetmap.org/search?${new URLSearchParams({ q: query, format: 'json', limit: '5', countrycodes: 'pt' })}`
-  try {
-    const response = await fetch(url, { headers: { 'User-Agent': 'lisbon-social-dance-venues/1.0' } })
-    return response.ok ? await response.json() : []
-  } catch {
-    return [] // rede caiu ou o Nominatim limitou as requisições: tenta de novo mais tarde
-  }
-}
-
-/** Código postal "1200-443" → região "12" (os 2 primeiros dígitos separam Lisboa, Cascais, Algarve…). */
-const postalRegion = (text) => text.match(/\b(\d{2})\d{2}-\d{3}\b/)?.[1]
-
-/** Região postal num resultado do Nominatim, que às vezes vem só com 4 dígitos ("…, Lisboa, 1600, Portugal"). */
-const resultRegion = (label) => label.match(/,\s*(\d{2})\d{2}(?:-\d{3})?\s*,\s*Portugal$/)?.[1]
-
-/** Primeiro resultado na mesma região postal do evento (quando os dois informam o código). */
-function pick(hits, location) {
-  const region = postalRegion(location)
-  const hit = hits.find((h) => !region || !resultRegion(h.display_name) || resultRegion(h.display_name) === region)
-  return hit && { lat: Number(Number(hit.lat).toFixed(6)), lng: Number(Number(hit.lon).toFixed(6)), label: hit.display_name }
-}
-
-/** Formas de buscar, da mais específica para a mais genérica. */
-function queriesFor(location) {
-  const parts = [...new Set(location.split(',').map((part) => part.trim()))] // remove partes repetidas
-  const [name, ...rest] = parts
-  const postal = rest.find((part) => postalRegion(part)) // "1200-443 Lisboa"
-  const city = postal?.replace(/^\d{4}-\d{3}\s*/, '')
-  const street = rest.find((part) => part !== postal && part !== 'Portugal')
-  return [
-    location,
-    rest.length > 1 ? rest.join(', ') : undefined,
-    street && postal ? `${street}, ${postal}` : undefined,
-    street && city ? `${street.replace(/\s+\d+\w*(\s.*)?$/, '')}, ${city}` : undefined, // rua sem número
-    city ? `${name}, ${city}` : `${name}, Portugal`,
-  ].filter(Boolean)
-}
-
+// --fix: para cada consulta, Nominatim e depois Photon (ver src/features/location/geocoding.ts).
 console.log('\nGeocodificando…')
 const notFound = []
 for (const [location] of missing) {
-  let hit
-  for (const query of queriesFor(location)) {
-    hit = pick(await geocode(query), location)
-    if (hit) break
-  }
+  const hit = await geocodeLocation(location, {
+    providers: ['nominatim', 'photon'],
+    userAgent: 'lisbon-social-dance-venues/1.0',
+  })
   const name = location.split(',')[0].trim()
   if (!hit) {
     notFound.push(location)
@@ -127,10 +86,10 @@ for (const [location] of missing) {
     continue
   }
   venues[location] = { name, lat: hit.lat, lng: hit.lng }
-  console.log(`  ✓ ${name} → ${hit.label}`)
+  console.log(`  ✓ [${hit.provider}] ${name} → ${hit.label}`)
 }
 
 const sorted = Object.fromEntries(Object.entries(venues).sort(([a], [b]) => a.localeCompare(b)))
 writeFileSync(VENUES_FILE, `${JSON.stringify(sorted, null, 2)}\n`)
 console.log(`\n${missing.length - notFound.length} adicionados em ${VENUES_FILE}; ${notFound.length} não encontrados.`)
-process.exit(notFound.length > 0 ? 2 : 0)
+// Com --fix, não encontrar alguns locais não é erro (a Action diária tenta de novo amanhã).
