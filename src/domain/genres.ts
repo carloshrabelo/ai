@@ -92,6 +92,35 @@ export function visibleGenres(genres: readonly Genre[]): Genre[] {
   return genres.filter((genre) => !GENRE_INCLUDES[genre]?.some((included) => genres.includes(included)))
 }
 
+/**
+ * Palavras que confirmam um gênero "guarda-chuva" no título/descrição, além dos próprios
+ * subgêneros. Usado para tags compostas como "Afro-Latinas" (ver confirmedUmbrellas).
+ */
+const UMBRELLA_EVIDENCE: Partial<Record<Genre, RegExp>> = {
+  Latinas: /(?<![\p{L}\p{N}])latin(?:a|as|o|os)?(?![\p{L}\p{N}])/iu,
+  Afro: /(?<![\p{L}\p{N}])(?:afro|africana|africanas|african)(?![\p{L}\p{N}])/iu,
+}
+
+/**
+ * Tag composta (vários gêneros "guarda-chuva", ex.: "Afro-Latinas" → Latinas + Afro): mantém só
+ * as partes que o título ou a descrição confirmam (pelo nome ou por um subgênero citado).
+ * Se nenhuma parte é confirmada, mantém todas, para não perder a informação da tag.
+ *
+ * @param tagGenres gêneros vindos da tag
+ * @param textGenres gêneros citados no título/descrição
+ * @param text título + descrição em texto puro
+ */
+export function confirmedUmbrellas(tagGenres: readonly Genre[], textGenres: readonly Genre[], text: string): Genre[] {
+  const umbrellas = tagGenres.filter((genre) => GENRE_INCLUDES[genre])
+  if (umbrellas.length < 2) return [...tagGenres]
+  const confirmed = umbrellas.filter(
+    (umbrella) =>
+      UMBRELLA_EVIDENCE[umbrella]?.test(text) || GENRE_INCLUDES[umbrella]?.some((genre) => textGenres.includes(genre)),
+  )
+  if (confirmed.length === 0) return [...tagGenres]
+  return tagGenres.filter((genre) => !umbrellas.includes(genre) || confirmed.includes(genre))
+}
+
 /** Gêneros do evento + os incluídos por eles (para filtrar). */
 export function expandGenres(genres: readonly Genre[]): Set<Genre> {
   return new Set(genres.flatMap((genre) => [genre, ...(GENRE_INCLUDES[genre] ?? [])]))
