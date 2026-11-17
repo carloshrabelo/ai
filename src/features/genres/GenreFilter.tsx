@@ -71,40 +71,55 @@ export function GenreFilter({ startDate }: { startDate: IsoDate }) {
       ) : available.length === 0 ? (
         <p className="text-sm text-fg-muted">Nenhum gênero nos eventos carregados.</p>
       ) : (
-        <div role="group" aria-label="Gêneros" className="space-y-2">
-          {/* Conjuntos: chip do conjunto | gêneros dele. */}
-          {groups.map(({ umbrella, members }) => (
-            <div key={umbrella} role="group" aria-label={`Conjunto ${umbrella}`} className="flex items-start gap-2">
-              <ToggleChip
-                genre={umbrella}
-                variant="group"
-                pressed={selected.includes(umbrella)}
-                onClick={() => toggle(umbrella)}
-                title={`Todos de ${umbrella}`}
-              />
-              <span aria-hidden="true" className="mt-1 h-6 w-px shrink-0 bg-border" />
-              <div className="flex min-w-0 flex-wrap gap-2">
-                {members.map((genre) => (
-                  <ToggleChip key={genre} genre={genre} pressed={selected.includes(genre)} onClick={() => toggle(genre)} />
-                ))}
+        // Blocos: título do bloco (chip do conjunto) + linha, e os gêneros embaixo.
+        // Em painel largo (tablet), 2 colunas; na sidebar e no celular, 1 (container query).
+        <div role="group" aria-label="Gêneros" className="@container">
+          <div className="grid gap-x-6 gap-y-3 @md:grid-cols-2">
+            {groups.map(({ umbrella, members }) => (
+              <div key={umbrella} role="group" aria-label={`Conjunto ${umbrella}`} className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <ToggleChip
+                    genre={umbrella}
+                    variant="group"
+                    pressed={selected.includes(umbrella)}
+                    onClick={() => toggle(umbrella)}
+                    title={`Todos de ${umbrella}`}
+                  />
+                  <span aria-hidden="true" className="h-px flex-1 bg-border" />
+                </div>
+                {members.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {members.map((genre) => (
+                      <ToggleChip key={genre} genre={genre} pressed={selected.includes(genre)} onClick={() => toggle(genre)} />
+                    ))}
+                  </div>
+                )}
               </div>
-            </div>
-          ))}
+            ))}
 
-          {/* Estilos fora dos conjuntos e "Outros". */}
-          {standalone.length > 0 && (
-            <div className={`flex flex-wrap gap-2 ${groups.length > 0 ? 'border-t border-border pt-2' : ''}`}>
-              {standalone.map((value) => (
-                <ToggleChip
-                  key={value}
-                  // "Outros" usa o chip neutro, como os eventos sem gênero da lista.
-                  {...(value === OTHER_GENRES ? { label: value } : { genre: value })}
-                  pressed={selected.includes(value)}
-                  onClick={() => toggle(value)}
-                />
-              ))}
-            </div>
-          )}
+            {/* Estilos fora dos conjuntos e "Outros". */}
+            {standalone.length > 0 && (
+              <div role="group" aria-labelledby="genre-filter-others" className="space-y-2">
+                <div className="flex h-8 items-center gap-2">
+                  <span id="genre-filter-others" className="px-1 text-xs font-semibold tracking-wide text-fg-muted">
+                    Outros estilos
+                  </span>
+                  <span aria-hidden="true" className="h-px flex-1 bg-border" />
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {standalone.map((value) => (
+                    <ToggleChip
+                      key={value}
+                      // "Outros" usa o chip neutro, como os eventos sem gênero da lista.
+                      {...(value === OTHER_GENRES ? { label: value } : { genre: value })}
+                      pressed={selected.includes(value)}
+                      onClick={() => toggle(value)}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       )}
 

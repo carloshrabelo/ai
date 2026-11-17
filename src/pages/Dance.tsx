@@ -87,7 +87,7 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
           {!isXl && filtersOpen && (
             <div
               id={filtersId}
-              className="max-h-[50dvh] overflow-y-auto"
+              className="max-h-[65dvh] overflow-y-auto"
               onKeyDown={(event) => {
                 if (event.key === 'Escape') setFiltersOpen(false)
               }}
