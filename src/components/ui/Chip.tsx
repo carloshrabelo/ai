@@ -1,5 +1,5 @@
 import type { ButtonHTMLAttributes } from 'react'
-import type { Genre } from '../../domain/genres'
+import { GENRE_EMOJI, type Genre } from '../../domain/genres'
 import { genreColorClasses } from './genreColors'
 
 const BASE = 'inline-flex shrink-0 items-center px-3 text-xs whitespace-nowrap'
@@ -12,9 +12,28 @@ type ChipProps = {
 
 const colorOf = genreColorClasses
 
+/** Texto do chip: bandeira do conjunto (decorativa) + nome. */
+function ChipLabel({ genre, label }: ChipProps) {
+  const emoji = genre ? GENRE_EMOJI[genre] : undefined
+  return (
+    <>
+      {emoji && (
+        <span aria-hidden="true" className="mr-1">
+          {emoji}
+        </span>
+      )}
+      {label ?? genre}
+    </>
+  )
+}
+
 /** Chip só de leitura, 28px de altura. */
 export function Chip({ genre, label }: ChipProps) {
-  return <span className={`${BASE} h-7 rounded-full font-medium ${colorOf(genre)}`}>{label ?? genre}</span>
+  return (
+    <span className={`${BASE} h-7 rounded-full font-medium ${colorOf(genre)}`}>
+      <ChipLabel genre={genre} label={label} />
+    </span>
+  )
 }
 
 type ToggleChipProps = ChipProps &
@@ -37,7 +56,7 @@ export function ToggleChip({ genre, label, pressed, variant = 'genre', className
       className={`${BASE} h-8 cursor-pointer transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${shape} ${state} ${className}`}
       {...props}
     >
-      {label ?? genre}
+      <ChipLabel genre={genre} label={label} />
     </button>
   )
 }

@@ -86,6 +86,13 @@ export const GENRE_INCLUDES: Partial<Record<Genre, readonly Genre[]>> = {
   BR: ['Forró', 'Zouk', 'Samba'],
 }
 
+/** Bandeira de cada conjunto, exibida antes do nome no chip. */
+export const GENRE_EMOJI: Partial<Record<Genre, string>> = {
+  Latinas: '🇩🇴', // República Dominicana
+  Afro: '🇦🇴', // Angola
+  BR: '🇧🇷', // Brasil
+}
+
 /** Conjuntos para os filtros: o gênero "guarda-chuva" e os gêneros dele. */
 export const GENRE_GROUPS = Object.entries(GENRE_INCLUDES).map(([umbrella, genres]) => ({
   umbrella: umbrella as Genre,
