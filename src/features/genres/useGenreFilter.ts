@@ -1,6 +1,8 @@
 import { useCallback, useMemo } from 'react'
 import { useLocation, useNavigate } from 'react-router'
+import { trackAction } from '../../analytics/analytics'
 import {
+  filterSlug,
   GENRES_PARAM,
   type GenreFilterValue,
   genresToParam,
@@ -31,11 +33,18 @@ export function useGenreFilter() {
   )
 
   const toggle = useCallback(
-    (genre: GenreFilterValue) => update(selected.includes(genre) ? selected.filter((g) => g !== genre) : [...selected, genre]),
+    (genre: GenreFilterValue) => {
+      const adding = !selected.includes(genre)
+      if (adding) trackAction(`filtro/${filterSlug(genre)}`)
+      update(adding ? [...selected, genre] : selected.filter((g) => g !== genre))
+    },
     [selected, update],
   )
 
-  const clear = useCallback(() => update([]), [update])
+  const clear = useCallback(() => {
+    trackAction('filtro/limpar')
+    update([])
+  }, [update])
 
   return { selected, toggle, clear }
 }

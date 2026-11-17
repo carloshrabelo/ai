@@ -7,6 +7,7 @@ import { addDays, type IsoDate, isIsoDate } from '../../data/dates'
 import { eventsInfiniteQueryOptions } from '../../data/queries'
 import { formatDayHeading, formatDayOfMonth, formatWeekdayShort } from '../events/format'
 import { useI18n } from '../../i18n/useI18n'
+import { trackAction } from '../../analytics/analytics'
 
 type Props = {
   startDate: IsoDate
@@ -63,7 +64,10 @@ export function WeekStrip({ startDate, activeDay, onSelect, actions }: Props) {
         className="sr-only"
         value={activeDay}
         onChange={(event) => {
-          if (isIsoDate(event.target.value)) onSelect(event.target.value)
+          if (isIsoDate(event.target.value)) {
+            trackAction('data/calendario')
+            onSelect(event.target.value)
+          }
         }}
       />
 
@@ -80,7 +84,10 @@ export function WeekStrip({ startDate, activeDay, onSelect, actions }: Props) {
                 type="button"
                 aria-pressed={active}
                 aria-label={formatDayHeading(day, locale)}
-                onClick={() => onSelect(day)}
+                onClick={() => {
+                  trackAction('data/faixa')
+                  onSelect(day)
+                }}
                 className={`flex h-12 w-11 cursor-pointer flex-col items-center justify-center rounded-md tabular-nums transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand ${
                   active ? 'bg-brand text-brand-fg' : 'text-fg hover:bg-surface-muted'
                 }`}

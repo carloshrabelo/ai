@@ -10,6 +10,7 @@ import './i18n/locale'
 // Captura o convite de instalação do PWA assim que o app abre (ver o arquivo).
 import './pwa/installPrompt'
 import { router } from './router'
+import { initAnalytics } from './analytics/analytics'
 
 // Em dev sem PWA_DEV: remove service workers e caches que sobraram de sessões antigas,
 // que serviriam arquivos velhos no localhost.
@@ -22,6 +23,8 @@ if (import.meta.env.DEV && !__PWA_IN_DEV__ && 'serviceWorker' in navigator) {
     ]).then(() => window.location.reload())
   })
 }
+
+initAnalytics()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

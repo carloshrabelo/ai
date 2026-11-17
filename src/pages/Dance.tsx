@@ -19,6 +19,7 @@ import { useI18n } from '../i18n/useI18n'
 import { BottomSheet } from '../components/ui/BottomSheet'
 import { Button } from '../components/ui/Button'
 import { ChangesBanner } from '../features/tracking/ChangesBanner'
+import { trackAction } from '../analytics/analytics'
 
 /** Rota "/" — eventos de dança. Um feed novo (e estado novo) para cada data inicial. */
 export default function Dance() {
@@ -43,6 +44,7 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
   const openFromList = useCallback(
     (id: string) => {
       eventFocus.willSelectFrom('list', id)
+      trackAction('evento-aberto/lista')
       open(id)
     },
     [open],
@@ -50,6 +52,7 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
   const openFromMap = useCallback(
     (id: string) => {
       eventFocus.willSelectFrom('map', id)
+      trackAction('evento-aberto/mapa')
       open(id)
     },
     [open],
