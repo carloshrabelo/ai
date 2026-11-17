@@ -9,6 +9,7 @@
     "lint": "oxlint",
     "test": "vitest run",
     "test:watch": "vitest",
+    "venues:check": "node scripts/venues-check.mjs",
     "preview": "vite preview --host",
     "generate-pwa-assets": "pwa-assets-generator"
   },
