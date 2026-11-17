@@ -1,8 +1,9 @@
-import { CalendarPlus, ChevronRight, Clock, MapPin } from 'lucide-react'
+import { CalendarPlus, ChevronRight, Clock, MapPin, Ticket } from 'lucide-react'
 import { Card } from '../../components/ui/Card'
 import { Chip } from '../../components/ui/Chip'
 import { Skeleton } from '../../components/ui/Skeleton'
 import type { DanceEvent } from '../../domain/event'
+import { EventDistance } from '../location/EventDistance'
 import { formatTimeRange } from './format'
 
 const ICON_LINK =
@@ -43,9 +44,20 @@ export function EventCard({ event, selected = false, onOpen }: Props) {
               <span className="truncate">{event.venue.name}</span>
             </p>
           )}
-          <p className="flex items-center gap-2 text-sm text-fg-muted tabular-nums">
-            <Clock className="size-5 shrink-0" aria-hidden="true" />
-            {formatTimeRange(event)}
+          {/* Horário e preço na mesma linha; preço longo quebra para a linha de baixo. */}
+          <p className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-fg-muted">
+            <span className="flex items-center gap-2 tabular-nums">
+              <Clock className="size-5 shrink-0" aria-hidden="true" />
+              <span className="sr-only">Horário: </span>
+              {formatTimeRange(event)}
+            </span>
+            {event.price && (
+              <span className="flex min-w-0 items-center gap-2">
+                <Ticket className="size-5 shrink-0" aria-hidden="true" />
+                <span className="sr-only">Preço: </span>
+                {event.price}
+              </span>
+            )}
           </p>
         </div>
         <a
@@ -65,8 +77,8 @@ export function EventCard({ event, selected = false, onOpen }: Props) {
           {event.genres.length > 0
             ? event.genres.map((genre) => <Chip key={genre} genre={genre} />)
             : event.rawTag && <Chip label={event.rawTag} />}
-          {event.price && <Chip label={event.price} />}
         </div>
+        <EventDistance venue={event.venue} />
         <ChevronRight className="size-5 shrink-0 text-fg-muted" aria-hidden="true" />
       </div>
     </Card>
