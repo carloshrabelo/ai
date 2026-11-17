@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { CalendarPlus, ChevronRight, Clock, MapPin, Ticket } from 'lucide-react'
 import { Card } from '../../components/ui/Card'
 import { Chip } from '../../components/ui/Chip'
@@ -13,18 +14,34 @@ type Props = {
   event: DanceEvent
   /** Evento aberto nos detalhes. */
   selected?: boolean
+  /** Pino do evento com o mouse em cima, no mapa. */
+  highlighted?: boolean
   onOpen: (id: string) => void
+  /** Mouse/foco entrou (id) ou saiu (null) do card: destaca o pino no mapa. */
+  onHoverChange?: (id: string | null) => void
 }
 
 /**
  * O card inteiro abre os detalhes (o botão é o título, esticado sobre o card).
  * O link do calendário fica por cima e continua clicável.
  */
-export function EventCard({ event, selected = false, onOpen }: Props) {
+export const EventCard = memo(function EventCard({
+  event,
+  selected = false,
+  highlighted = false,
+  onOpen,
+  onHoverChange,
+}: Props) {
   return (
     <Card
       as="article"
-      className={`relative isolate flex flex-col gap-2 transition-shadow hover:shadow-md ${selected ? 'ring-2 ring-brand' : ''}`}
+      onMouseEnter={() => onHoverChange?.(event.id)}
+      onMouseLeave={() => onHoverChange?.(null)}
+      onFocus={() => onHoverChange?.(event.id)}
+      onBlur={() => onHoverChange?.(null)}
+      className={`relative isolate flex flex-col gap-2 transition-shadow hover:shadow-md ${
+        selected || highlighted ? 'ring-2 ring-brand' : ''
+      }`}
     >
       <div className="flex items-start gap-2">
         <div className="min-w-0 flex-1 space-y-1">
@@ -83,7 +100,7 @@ export function EventCard({ event, selected = false, onOpen }: Props) {
       </div>
     </Card>
   )
-}
+})
 
 /** Mesmas dimensões do EventCard. */
 export function EventCardSkeleton({ className = '' }: { className?: string }) {

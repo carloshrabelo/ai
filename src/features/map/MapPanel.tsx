@@ -1,8 +1,9 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useMemo } from 'react'
 import type { IsoDate } from '../../data/dates'
 import type { Genre } from '../../domain/genres'
 import { formatDayHeading } from '../events/format'
 import { useDayEvents } from '../events/useDayEvents'
+import { useEventById } from '../events/useEventById'
 
 // Leaflet só é baixado a partir de `xl`, quando o mapa aparece.
 const EventsMap = lazy(() => import('./EventsMap'))
@@ -12,18 +13,38 @@ type Props = {
   /** Dia ativo do feed: o mapa mostra os eventos dele. */
   day: IsoDate
   genres: readonly Genre[]
+  selectedId: string | null
+  hoveredId: string | null
   onOpenEvent: (id: string) => void
+  onHoverPlace: (ids: string[] | null) => void
+  /** Altura do painel (padrão: coluna inteira). */
+  className?: string
 }
 
 /** Coluna do mapa (`xl+`): pinos dos eventos do dia ativo, com o filtro de gêneros aplicado. */
-export function MapPanel({ startDate, day, genres, onOpenEvent }: Props) {
+export function MapPanel({
+  startDate,
+  day,
+  genres,
+  selectedId,
+  hoveredId,
+  onOpenEvent,
+  onHoverPlace,
+  className = 'h-full',
+}: Props) {
   const { events, isPending } = useDayEvents(startDate, day, genres)
+  // O evento aberto aparece no mapa mesmo se for de outro dia ou estiver fora do filtro.
+  const selected = useEventById(startDate, selectedId)
+  const mapEvents = useMemo(
+    () => (selected && !events.some((event) => event.id === selected.id) ? [...events, selected] : events),
+    [events, selected],
+  )
   const withoutCoords = events.filter((event) => event.venue?.lat === undefined).length
 
   return (
     <section
       aria-label="Mapa dos eventos do dia"
-      className="relative isolate h-full overflow-hidden rounded-2xl bg-genre-neutral shadow-md dark:border dark:border-border dark:shadow-none"
+      className={`relative isolate min-h-0 overflow-hidden rounded-2xl bg-genre-neutral shadow-md dark:border dark:border-border dark:shadow-none ${className}`}
     >
       {/* Resumo por cima do mapa (Leaflet usa z-index até 1000 dentro do próprio contexto). */}
       <div className="absolute inset-x-2 top-2 z-[1000] rounded-xl bg-surface/95 px-4 py-2 text-sm shadow-sm backdrop-blur">
@@ -40,7 +61,13 @@ export function MapPanel({ startDate, day, genres, onOpenEvent }: Props) {
       </div>
 
       <Suspense fallback={<div aria-hidden="true" className="h-full w-full animate-pulse bg-genre-neutral" />}>
-        <EventsMap events={events} onOpenEvent={onOpenEvent} />
+        <EventsMap
+          events={mapEvents}
+          selectedId={selectedId}
+          hoveredId={hoveredId}
+          onOpenEvent={onOpenEvent}
+          onHoverPlace={onHoverPlace}
+        />
       </Suspense>
     </section>
   )

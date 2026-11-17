@@ -1,7 +1,7 @@
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
-import { useEffect, useMemo } from 'react'
-import { CircleMarker, MapContainer, Marker, Popup, TileLayer, useMap, ZoomControl } from 'react-leaflet'
+import { useEffect, useMemo, useRef } from 'react'
+import { CircleMarker, MapContainer, Marker, Popup, TileLayer, Tooltip, useMap, ZoomControl } from 'react-leaflet'
 import { genreColorClasses } from '../../components/ui/genreColors'
 import type { DanceEvent } from '../../domain/event'
 import { useResolvedTheme } from '../../theme/useResolvedTheme'
@@ -21,15 +21,22 @@ type Place = { key: string; name: string; coords: Coords; events: DanceEvent[] }
 
 type Props = {
   events: DanceEvent[]
+  /** Evento aberto nos detalhes: pino destacado e mapa centrado nele. */
+  selectedId: string | null
+  /** Card com o mouse em cima, na lista: pino destacado. */
+  hoveredId: string | null
   onOpenEvent: (id: string) => void
+  /** Mouse entrou (ids do local) ou saiu (null) de um pino: destaca os cards na lista. */
+  onHoverPlace: (ids: string[] | null) => void
 }
 
 /** Pinos dos eventos (um por local; vários eventos no mesmo local viram um pino com contador). */
-export default function EventsMap({ events, onOpenEvent }: Props) {
+export default function EventsMap({ events, selectedId, hoveredId, onOpenEvent, onHoverPlace }: Props) {
   const theme = useResolvedTheme()
   const location = useUserLocation()
   const userCoords = location.status === 'granted' ? location.coords : undefined
   const places = useMemo(() => groupByPlace(events), [events])
+  const selectedPlace = places.find((place) => place.events.some((event) => event.id === selectedId))
 
   return (
     <MapContainer
@@ -41,32 +48,59 @@ export default function EventsMap({ events, onOpenEvent }: Props) {
       <TileLayer url={TILES_URL} attribution={ATTRIBUTION} maxZoom={19} />
       {/* Embaixo: em cima fica o resumo do dia. */}
       <ZoomControl position="bottomright" />
-      {places.map((place) => (
-        <Marker
-          key={place.key}
-          position={[place.coords.lat, place.coords.lng]}
-          icon={pinIcon(place)}
-          title={place.name}
-          alt={place.name}
-          eventHandlers={place.events.length === 1 ? { click: () => onOpenEvent(place.events[0].id) } : undefined}
-        >
-          {place.events.length > 1 && (
-            <Popup>
-              <p className="mb-1 font-semibold">{place.name}</p>
-              <ul className="space-y-1">
-                {place.events.map((event) => (
-                  <li key={event.id}>
-                    <button type="button" className="cursor-pointer text-left underline" onClick={() => onOpenEvent(event.id)}>
+
+      {places.map((place) => {
+        const ids = place.events.map((event) => event.id)
+        const state = place === selectedPlace ? 'selected' : hoveredId && ids.includes(hoveredId) ? 'hovered' : 'normal'
+        return (
+          <Marker
+            key={place.key}
+            position={[place.coords.lat, place.coords.lng]}
+            icon={pinIcon(place, state)}
+            zIndexOffset={state === 'normal' ? 0 : 1000}
+            alt={place.events.map((event) => event.title).join(', ')}
+            eventHandlers={{
+              mouseover: () => onHoverPlace(ids),
+              mouseout: () => onHoverPlace(null),
+              click: () => {
+                if (place.events.length === 1) onOpenEvent(place.events[0].id)
+              },
+            }}
+          >
+            {/* Hover: título do evento (ou dos eventos do local). */}
+            <Tooltip direction="top" offset={[0, -16]}>
+              {place.events.length === 1 ? (
+                <span className="font-semibold">{place.events[0].title}</span>
+              ) : (
+                <span>
+                  <span className="block font-semibold">{place.name}</span>
+                  {place.events.map((event) => (
+                    <span key={event.id} className="block">
                       {event.title}
-                    </button>{' '}
-                    <span className="tabular-nums">· {formatTimeRange(event)}</span>
-                  </li>
-                ))}
-              </ul>
-            </Popup>
-          )}
-        </Marker>
-      ))}
+                    </span>
+                  ))}
+                </span>
+              )}
+            </Tooltip>
+            {place.events.length > 1 && (
+              <Popup>
+                <p className="mb-1 font-semibold">{place.name}</p>
+                <ul className="space-y-1">
+                  {place.events.map((event) => (
+                    <li key={event.id}>
+                      <button type="button" className="cursor-pointer text-left underline" onClick={() => onOpenEvent(event.id)}>
+                        {event.title}
+                      </button>{' '}
+                      <span className="tabular-nums">· {formatTimeRange(event)}</span>
+                    </li>
+                  ))}
+                </ul>
+              </Popup>
+            )}
+          </Marker>
+        )
+      })}
+
       {userCoords && (
         <CircleMarker
           center={[userCoords.lat, userCoords.lng]}
@@ -75,21 +109,52 @@ export default function EventsMap({ events, onOpenEvent }: Props) {
           pathOptions={{ color: '#2563eb', weight: 4, fillColor: '#ffffff', fillOpacity: 1 }}
         />
       )}
-      <FitBounds places={places} userCoords={userCoords} />
+
+      <InvalidateOnResize />
+      {selectedPlace ? <FocusPlace place={selectedPlace} /> : <FitBounds places={places} userCoords={userCoords} />}
     </MapContainer>
   )
+}
+
+/** O mapa muda de altura quando os detalhes abrem embaixo dele: o Leaflet precisa recalcular. */
+function InvalidateOnResize() {
+  const map = useMap()
+  useEffect(() => {
+    const observer = new ResizeObserver(() => map.invalidateSize())
+    observer.observe(map.getContainer())
+    return () => observer.disconnect()
+  }, [map])
+  return null
+}
+
+/** Centra o mapa no local do evento aberto. */
+function FocusPlace({ place }: { place: Place }) {
+  const map = useMap()
+  const { lat, lng } = place.coords
+  useEffect(() => {
+    // Espera o tamanho novo (detalhes abrindo) antes de centralizar.
+    const frame = requestAnimationFrame(() => {
+      map.invalidateSize()
+      map.flyTo([lat, lng], Math.max(map.getZoom(), 15), { duration: 0.6 })
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [map, lat, lng])
+  return null
 }
 
 /** Enquadra os pinos (e a posição do usuário, se houver) sempre que mudam. */
 function FitBounds({ places, userCoords }: { places: Place[]; userCoords?: Coords }) {
   const map = useMap()
+  const first = useRef(true)
   useEffect(() => {
     const points: L.LatLngTuple[] = places.map((place) => [place.coords.lat, place.coords.lng])
     if (userCoords) points.push([userCoords.lat, userCoords.lng])
-    if (points.length === 0) map.setView(LISBON, 11)
-    else if (points.length === 1) map.setView(points[0], 14)
+    const animate = !first.current
+    first.current = false
+    if (points.length === 0) map.setView(LISBON, 11, { animate })
+    else if (points.length === 1) map.setView(points[0], 14, { animate })
     // Margem de cima maior: o resumo do dia fica por cima do mapa.
-    else map.fitBounds(points, { paddingTopLeft: [40, 96], paddingBottomRight: [40, 40], maxZoom: 14 })
+    else map.fitBounds(points, { paddingTopLeft: [40, 96], paddingBottomRight: [40, 40], maxZoom: 14, animate })
   }, [map, places, userCoords])
   return null
 }
@@ -101,21 +166,38 @@ function groupByPlace(events: DanceEvent[]): Place[] {
     if (venue?.lat === undefined || venue.lng === undefined) continue
     const key = `${venue.lat},${venue.lng}`
     const place = byKey.get(key) ?? { key, name: venue.name, coords: { lat: venue.lat, lng: venue.lng }, events: [] }
-    place.events.push(event)
+    if (!place.events.some((e) => e.id === event.id)) place.events.push(event)
     byKey.set(key, place)
   }
   return [...byKey.values()]
 }
 
+// Classes literais para o Tailwind gerar (o HTML do pino é uma string).
+const PIN_STYLE = {
+  normal: { size: 28, classes: 'size-7 border-2 border-white shadow-md' },
+  hovered: { size: 36, classes: 'size-9 border-[3px] border-white shadow-lg ring-4 ring-brand/60' },
+  selected: { size: 36, classes: 'size-9 border-[3px] border-white shadow-lg ring-4 ring-brand' },
+} as const
+
+// Mesmo ícone para o mesmo visual: trocar o ícone recria o elemento do pino embaixo do mouse.
+const iconCache = new Map<string, L.DivIcon>()
+
 /** Pino redondo na cor do primeiro gênero do primeiro evento, com contador quando há mais de um. */
-function pinIcon(place: Place): L.DivIcon {
+function pinIcon(place: Place, state: keyof typeof PIN_STYLE): L.DivIcon {
+  const { size, classes } = PIN_STYLE[state]
   const colors = genreColorClasses(place.events[0].genres[0])
   const count = place.events.length > 1 ? place.events.length : ''
-  return L.divIcon({
+  const cacheKey = `${state}|${colors}|${count}`
+  const cached = iconCache.get(cacheKey)
+  if (cached) return cached
+  const icon = L.divIcon({
     className: '',
-    iconSize: [28, 28],
-    iconAnchor: [14, 14],
-    popupAnchor: [0, -14],
-    html: `<span class="flex size-7 items-center justify-center rounded-full border-2 border-white text-xs font-semibold shadow-md ${colors}">${count}</span>`,
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+    popupAnchor: [0, -size / 2],
+    tooltipAnchor: [0, 0],
+    html: `<span class="flex items-center justify-center rounded-full text-xs font-semibold ${classes} ${colors}">${count}</span>`,
   })
+  iconCache.set(cacheKey, icon)
+  return icon
 }

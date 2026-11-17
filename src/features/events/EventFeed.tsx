@@ -21,6 +21,9 @@ type FeedProps = {
   /** Evento aberto nos detalhes (destacado na lista). */
   selectedId: string | null
   onOpenEvent: (id: string) => void
+  /** Eventos com o pino em hover no mapa (destacados na lista). */
+  highlightedIds: ReadonlySet<string>
+  onHoverEvent: (id: string | null) => void
 }
 
 export function EventFeed(props: FeedProps) {
@@ -37,7 +40,7 @@ export function EventFeed(props: FeedProps) {
   )
 }
 
-function EventFeedContent({ startDate, genres, selectedId, onOpenEvent }: FeedProps) {
+function EventFeedContent({ startDate, genres, selectedId, onOpenEvent, highlightedIds, onHoverEvent }: FeedProps) {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetchNextPageError } = useSuspenseInfiniteQuery(
     eventsInfiniteQueryOptions(startDate),
   )
@@ -95,7 +98,9 @@ function EventFeedContent({ startDate, genres, selectedId, onOpenEvent }: FeedPr
                   key={`${day}-${event.id}`}
                   event={event}
                   selected={event.id === selectedId}
+                  highlighted={highlightedIds.has(event.id)}
                   onOpen={onOpenEvent}
+                  onHoverChange={onHoverEvent}
                 />
               ))}
             </Fragment>

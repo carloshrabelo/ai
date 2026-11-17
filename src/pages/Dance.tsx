@@ -1,4 +1,4 @@
-import { useId, useRef, useState } from 'react'
+import { useCallback, useId, useMemo, useRef, useState } from 'react'
 import { useLoaderData } from 'react-router'
 import type { EventsLoaderData } from '../data/eventsLoader'
 import { DayShortcuts } from '../features/dates/DayShortcuts'
@@ -27,6 +27,12 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
   const { selectedId, open, close } = useSelectedEvent()
   const isXl = useMediaQuery(XL_QUERY)
   const [filtersOpen, setFiltersOpen] = useState(false)
+
+  // Hover ligando lista e mapa: card em hover destaca o pino; pino em hover destaca os cards do local.
+  const [hoveredCardId, setHoveredCardId] = useState<string | null>(null)
+  const [hoveredPinKey, setHoveredPinKey] = useState('') // ids separados por vírgula (string: evita re-render à toa)
+  const highlightedIds = useMemo(() => new Set(hoveredPinKey ? hoveredPinKey.split(',') : []), [hoveredPinKey])
+  const onHoverPlace = useCallback((ids: string[] | null) => setHoveredPinKey(ids?.join(',') ?? ''), [])
   const filtersId = useId()
 
   const shortcuts = <DayShortcuts today={today} activeDay={activeDay} onSelect={selectDay} />
@@ -76,15 +82,33 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
           <GenreFilter startDate={startDate} />
         </SidebarPortal>
 
-        <EventFeed startDate={startDate} genres={genres} selectedId={selectedId} onOpenEvent={open} />
+        <EventFeed
+          startDate={startDate}
+          genres={genres}
+          selectedId={selectedId}
+          onOpenEvent={open}
+          highlightedIds={highlightedIds}
+          onHoverEvent={setHoveredCardId}
+        />
       </div>
 
-      {/* A partir de `xl`: coluna do mapa, que mostra os detalhes quando um evento está aberto. */}
-      <aside className="sticky top-20 hidden h-[calc(100dvh-7rem)] w-90 shrink-0 xl:block 2xl:w-120">
-        {isXl && selectedId ? (
-          <EventDetailsPanel startDate={startDate} eventId={selectedId} onClose={close} />
-        ) : (
-          isXl && <MapPanel startDate={startDate} day={activeDay} genres={genres} onOpenEvent={open} />
+      {/* A partir de `xl`: coluna do mapa, que divide o espaço com os detalhes quando um evento está aberto. */}
+      <aside className="sticky top-20 hidden h-[calc(100dvh-7rem)] w-90 shrink-0 flex-col gap-4 xl:flex 2xl:w-120">
+        {isXl && (
+          <>
+            {/* Com um evento aberto, o mapa fica em cima e os detalhes embaixo. */}
+            <MapPanel
+              startDate={startDate}
+              day={activeDay}
+              genres={genres}
+              selectedId={selectedId}
+              hoveredId={hoveredCardId}
+              onOpenEvent={open}
+              onHoverPlace={onHoverPlace}
+              className={selectedId ? 'h-2/5 shrink-0' : 'h-full'}
+            />
+            {selectedId && <EventDetailsPanel startDate={startDate} eventId={selectedId} onClose={close} />}
+          </>
         )}
       </aside>
 

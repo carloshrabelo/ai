@@ -1,20 +1,10 @@
-import { useInfiniteQuery } from '@tanstack/react-query'
 import { ArrowLeft, CalendarX, X } from 'lucide-react'
-import { type ReactNode, useEffect, useId, useMemo, useRef } from 'react'
+import { type ReactNode, useEffect, useId, useRef } from 'react'
 import { IconButton } from '../../components/ui/Button'
 import { Card } from '../../components/ui/Card'
 import type { IsoDate } from '../../data/dates'
-import { eventsInfiniteQueryOptions, flattenEvents } from '../../data/queries'
 import { EventDetails, EventDetailsSkeleton } from './EventDetails'
-
-/** Evento pelo id, a partir do cache do feed. undefined enquanto carrega; null se não existe. */
-function useEventById(startDate: IsoDate, id: string) {
-  const { data, isPending } = useInfiniteQuery(eventsInfiniteQueryOptions(startDate))
-  return useMemo(() => {
-    if (isPending) return undefined
-    return flattenEvents(data?.pages ?? []).find((event) => event.id === id) ?? null
-  }, [data, isPending, id])
-}
+import { useEventById } from './useEventById'
 
 type ViewProps = { startDate: IsoDate; eventId: string; onClose: () => void }
 
@@ -48,7 +38,7 @@ export function EventDetailsPanel({ startDate, eventId, onClose }: ViewProps) {
       variant="panel"
       as="section"
       aria-labelledby={headingId}
-      className="h-full overflow-x-hidden overflow-y-auto"
+      className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto"
       onKeyDown={(event) => {
         if (event.key === 'Escape') onClose()
       }}
