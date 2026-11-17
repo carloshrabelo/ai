@@ -3,6 +3,7 @@ import { CalendarPlus, ChevronRight, Clock, MapPin, Ticket } from 'lucide-react'
 import { Card } from '../../components/ui/Card'
 import { Chip } from '../../components/ui/Chip'
 import { Skeleton } from '../../components/ui/Skeleton'
+import { Tooltip } from '../../components/ui/Tooltip'
 import type { DanceEvent } from '../../domain/event'
 import { visibleGenres } from '../../domain/genres'
 import { EventDistance } from '../location/EventDistance'
@@ -79,16 +80,18 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
             )}
           </p>
         </div>
-        <a
-          href={event.calendarUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={t.event.addToCalendarFor(event.title)}
-          title={t.event.addToCalendar}
-          className={`-mt-2 -mr-2 ${ICON_LINK}`}
-        >
-          <CalendarPlus className="size-5" aria-hidden="true" />
-        </a>
+        {/* Tooltip visível: o ícone sozinho não é óbvio para todo mundo. */}
+        <Tooltip label={t.event.addToCalendar} className="relative z-10 -mt-2 -mr-2 shrink-0">
+          <a
+            href={event.calendarUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={t.event.addToCalendarFor(event.title)}
+            className={ICON_LINK}
+          >
+            <CalendarPlus className="size-5" aria-hidden="true" />
+          </a>
+        </Tooltip>
       </div>
 
       <div className="flex items-center gap-2">
