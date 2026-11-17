@@ -391,7 +391,7 @@ Cada passo é um commit independente que mantém o app funcionando.
 - [ ] Skeleton curto no lugar da distância enquanto a geolocalização responde.
 
 ### Passo 8 — Escolas e Info
-- [x] Escolas: página "Em breve".
+- [x] Escolas: página "Em breve". A aba está oculta na navegação até existir uma fonte de dados (a rota `/escolas` continua existindo).
 - [x] Info: sobre o projeto, fonte dos dados (calendário do [pasdedeux.pt](https://pasdedeux.pt/), mantido por [@ateterca](https://www.instagram.com/ateterca/)), autoria ([carloshrabelo.dev](https://carloshrabelo.dev/)), seletor de tema, status da conexão e botão de instalar o PWA.
 
 ### Passo 9 — Qualidade e deploy
