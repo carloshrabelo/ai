@@ -25,7 +25,12 @@ function DetailsBody({ startDate, eventId, headingId }: { startDate: IsoDate; ev
 }
 
 /** A partir de `xl`: os detalhes ocupam a coluna do mapa. */
-export function EventDetailsPanel({ startDate, eventId, onClose }: ViewProps) {
+export function EventDetailsPanel({
+  startDate,
+  eventId,
+  onClose,
+  className = 'flex-1',
+}: ViewProps & { className?: string }) {
   const headingId = useId()
 
   // Leva o foco para o título ao abrir/trocar de evento.
@@ -38,7 +43,7 @@ export function EventDetailsPanel({ startDate, eventId, onClose }: ViewProps) {
       variant="panel"
       as="section"
       aria-labelledby={headingId}
-      className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto"
+      className={`min-h-0 overflow-x-hidden overflow-y-auto ${className}`}
       onKeyDown={(event) => {
         if (event.key === 'Escape') onClose()
       }}

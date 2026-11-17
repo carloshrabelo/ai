@@ -32,7 +32,7 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
   useLayoutEffect(() => eventFocus.syncSelectedFromUrl(selectedInUrl), [selectedInUrl])
   useLayoutEffect(() => () => eventFocus.reset(), []) // saindo da página
   const selectedId = useEventFocus((state) => state.selectedId)
-  const selectedFrom = useEventFocus((state) => state.selectedFrom)
+  const fromList = useEventFocus((state) => state.selectedFrom === 'list')
 
   // Abrir pela lista ou pelo mapa: o store guarda a origem (define a ordem mapa/detalhes).
   const openFromList = useCallback(
@@ -52,6 +52,8 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
   const isXl = useMediaQuery(XL_QUERY)
   const [filtersOpen, setFiltersOpen] = useState(false)
   const filtersId = useId()
+
+  const detailsProps = { startDate, eventId: selectedId ?? '', onClose: close }
 
   const shortcuts = <DayShortcuts today={today} activeDay={activeDay} onSelect={selectDay} />
 
@@ -104,23 +106,23 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
       </div>
 
       {/* A partir de `xl`: coluna do mapa, que divide o espaço com os detalhes quando um evento está aberto. */}
-      <aside
-        className={`sticky top-20 hidden h-[calc(100dvh-7rem)] w-90 shrink-0 gap-4 xl:flex 2xl:w-120 ${
-          selectedFrom === 'list' ? 'flex-col-reverse' : 'flex-col'
-        }`}
-      >
+      <aside className="sticky top-20 hidden h-[calc(100dvh-7rem)] w-90 shrink-0 flex-col gap-4 xl:flex 2xl:w-120">
         {isXl && (
           <>
-            {/* Com um evento aberto, a coluna se divide: aberto pela lista, detalhes em cima e mapa
-                embaixo (flex-col-reverse); pelo mapa ou por link, mapa em cima e detalhes embaixo. */}
+            {/* Sem evento aberto, o mapa ocupa a coluna. Com evento aberto, a coluna se divide por
+                flex-grow (base 0), na ordem visual também no HTML (leitura e Tab seguem a tela):
+                - aberto pela lista: detalhes em cima (2/3) e mapa embaixo (1/3);
+                - aberto pelo mapa ou por link: mapa em cima (2/5) e detalhes embaixo (3/5). */}
+            {selectedId && fromList && <EventDetailsPanel key="details" {...detailsProps} className="grow-2 basis-0" />}
             <MapPanel
+              key="map"
               startDate={startDate}
               day={activeDay}
               genres={genres}
               onOpenEvent={openFromMap}
-              className={selectedId ? 'h-2/5 shrink-0' : 'h-full'}
+              className={!selectedId ? 'flex-1' : fromList ? 'grow basis-0' : 'grow-2 basis-0'}
             />
-            {selectedId && <EventDetailsPanel startDate={startDate} eventId={selectedId} onClose={close} />}
+            {selectedId && !fromList && <EventDetailsPanel key="details" {...detailsProps} className="grow-3 basis-0" />}
           </>
         )}
       </aside>
