@@ -31,7 +31,7 @@
 - **Feed por dia** a partir de hoje, carregado em janelas de 2 semanas com scroll infinito; atalhos Ontem / Hoje / Amanhã, faixa de dias e seletor de data. O dia ativo acompanha a rolagem.
 - **Filtros por estilo**, acumulativos e guardados na URL (`?genres=salsa,forro`). Conjuntos 🇩🇴 **Latinas** (Salsa, Salsa Cubana, Bachata, Merengue), 🇦🇴 **Afro** (Kizomba, Semba, Urban Kiz) e 🇧🇷 **BR** (Forró, Zouk, Samba), mais Swing, West Coast Swing, Tango, Bolero e Outros.
 - **Mapa** (a partir de 1280px) com os eventos do dia ativo; hover no card destaca o pino e vice-versa.
-- **Detalhes do evento**: na coluna do mapa no desktop, numa página em drawer no celular. Link compartilhável (`?event=…`), rota no app de navegação do aparelho e "Adicionar ao calendário".
+- **Detalhes do evento**: na coluna do mapa no desktop, numa página em drawer no celular. Link compartilhável (`/evento/<data>-<nome>-<hash>/`, com página estática), rota no app de navegação do aparelho e "Adicionar ao calendário".
 - **Distância** até cada evento, quando o usuário libera a localização.
 - **Eventos cancelados e adiados** marcados a partir do título do calendário.
 - **Tema claro e escuro** (segue o sistema ou escolha manual).
@@ -125,7 +125,9 @@ Para corrigir um ponto, edite as coordenadas no `venues.json`: a busca automáti
 - Tags fixas no `index.html` (lidas por buscadores e redes sociais sem JavaScript): título, descrição, canonical, `hreflang`, Open Graph e Twitter Card com `public/og-image.jpg`.
 - `<head>` dinâmico por página (`src/seo/`): título e descrição próprios, canonical, `noindex` para 404 e eventos inexistentes, e Schema.org em JSON-LD (`ItemList` na agenda, `DanceEvent` no evento aberto).
 - No build: `sitemap.xml`, `robots.txt` e `info/index.html` (para `/ai/info` responder 200 no GitHub Pages em vez de cair no 404).
-- Limitações de ser SPA no GitHub Pages: o conteúdo dos eventos não está no HTML inicial; o `robots.txt` que vale é o da raiz do domínio; não há redirecionamento 301 (evento removido recebe `noindex` e aponta para a agenda).
+- Páginas estáticas (SSG, `scripts/prerender.mjs` depois do `vite build`): uma por evento em `evento/<slug>/index.html` (de 1 semana atrás a 90 dias à frente), com título, descrição, canonical, Open Graph, JSON-LD e o conteúdo do evento no HTML; a agenda (`index.html`) traz a lista dos próximos eventos com links; o `sitemap.xml` inclui os eventos futuros. No navegador, o React substitui esse conteúdo pelo app. O deploy roda todo dia para as páginas acompanharem o calendário. Se a API falhar no build, saem só as páginas fixas.
+- Slug do evento: dia de Lisboa + título + hash curto do id do Google (`src/domain/slug.ts`), sempre o mesmo para o mesmo evento. Links antigos (`?event=<id>`) são redirecionados para o novo endereço.
+- Limitações do GitHub Pages: o `robots.txt` que vale é o da raiz do domínio; não há redirecionamento 301 (evento removido recebe `noindex` e aponta para a agenda).
 
 ## Deploy
 
