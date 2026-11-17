@@ -13,7 +13,7 @@ App **"Eventos Futuros"**: agenda de eventos de dança, em tema claro (teal) e e
 | **Mobile 375px** | Header com título + ícone de filtros · atalhos de dia (Ontem / Hoje / Amanhã / data) · faixa da semana com ícone de calendário · painel "Filtro Ativo" com chips de gênero · lista de cards · bottom nav (Dança, Escolas, Info) |
 | **Tablet 768px** | Igual ao mobile, com mais espaço |
 | **Desktop 1280px** | 3 colunas: sidebar (atalhos de dia, filtros, navegação) · grade de cards em 2 colunas · mapa com pinos dos eventos |
-| **Large 1920px+** | Igual ao desktop, mas a sidebar mostra a navegação em árvore (Dança → Bachata, Salsa, Kizomba…) |
+| **Large 1920px+** | Igual ao desktop. O protótipo mostra os gêneros em árvore na sidebar, mas isso foi removido: os gêneros já estão nos filtros |
 
 **Card de evento:** título, local, horário (`20:30 - 01:00`), chips de gênero coloridos, distância (`8.1KM`), ícone "adicionar ao calendário" e seta para expandir.
 
@@ -144,7 +144,6 @@ Tudo que **não** depende da API aparece imediatamente: header, título, navega�
 |---|---|---|
 | `EventCard` / `EventList` | `EventCardSkeleton` repetido (4 no mobile, 6 em `xl+`, em 2 colunas) | Mesma altura e espaçamento do card real: barra do título, linha do local, linha do horário e 2–3 pílulas de chip |
 | Painel "Filtro Ativo" (chips de gênero) | 5–6 pílulas cinzas de larguras variadas | Os chips vêm dos gêneros presentes nos eventos |
-| Árvore de gêneros na sidebar (`2xl`) | 5 linhas curtas | Mesma origem dos chips |
 | Mapa (`xl+`) | Retângulo com a cor de fundo do mapa | Os tiles carregam à parte. Os pinos só entram quando os eventos chegam |
 | Próxima janela (fim da lista) | 2 `EventCardSkeleton` abaixo do último card enquanto `isFetchingNextPage` | Não substitui a lista: os eventos já carregados continuam visíveis |
 | Distância no card | Pílula curta no lugar de `8.1KM` | Depende da geolocalização, não da API: o resto do card já aparece |
@@ -328,7 +327,8 @@ Cada passo é um commit independente que mantém o app funcionando.
 - [x] Trocar `--color-brand` (índigo) pelo teal do protótipo; definir tokens de superfície e texto, e os tokens das 11 cores de `genreToPalette` (fundo + texto, claro e escuro).
 - [x] Tema escuro: seguir o sistema (`prefers-color-scheme`) + seletor manual (Claro / Escuro / Sistema) salvo em `localStorage`. Tailwind v4: `@custom-variant dark` baseado em `data-theme`.
 - [x] Atualizar `theme_color` e `background_color` do PWA em `vite.config.ts`.
-- [ ] Nome e ícones do PWA (aguardando o nome do app).
+- [x] Nome do PWA: "Lisbon Social Dance" (`short_name`: "Lisbon Dance").
+- [ ] Ícones do PWA com a identidade do app.
 
 > Feito: tokens semânticos em `src/index.css` (`bg-surface`, `text-fg-muted`, `bg-genre-*`…), contraste AA conferido em todos os pares de texto. Tema por `data-theme` no `<html>`, aplicado antes do primeiro paint por um script no `index.html`. Componentes base em `src/components/ui/` (`Chip`, `ToggleChip`, `Card`, `Button`, `IconButton`). Seletor de tema provisoriamente em Ajustes.
 
@@ -336,7 +336,7 @@ Cada passo é um commit independente que mantém o app funcionando.
 - [x] Rotas: `/` (Dança), `/escolas`, `/info`. Remover `Settings` (o seletor de tema vai para Info ou para o header).
 - [x] `BottomNav` com Dança / Escolas / Info até 1279px.
 - [x] A partir de `xl` (1280px): sidebar com atalhos de dia, filtros e navegação; área central; coluna do mapa.
-- [x] A partir de `2xl`/1920px: navegação em árvore com os gêneros na sidebar.
+- [ ] ~~A partir de `2xl`/1920px: navegação em árvore com os gêneros na sidebar.~~ Removido: duplicava os filtros.
 
 **Pronto quando:** nos 4 tamanhos, a posição dos elementos corresponde ao protótipo (o que fica onde), usando os "Padrões visuais". Medidas exatas do protótipo não importam.
 
@@ -373,7 +373,7 @@ Cada passo é um commit independente que mantém o app funcionando.
 - [x] Painel "Filtro Ativo" com um chip por gênero de `GENRES` que aparece nos eventos carregados (na cor de `genreToPalette`), selecionáveis, e botão "limpar".
 - [x] Estado em `?genres=salsa,kizomba` (slug do gênero; um evento aparece se tiver **qualquer** gênero selecionado).
 - [ ] ~~Ícone de filtros do header abre o painel como *bottom sheet* no mobile.~~ Não feito: o painel fica no conteúdo, como no protótipo.
-- [x] Skeleton de chips no painel de filtros e na árvore de gêneros da sidebar (`2xl`).
+- [x] Skeleton de chips no painel de filtros.
 
 **Regras da URL (`?genres=`), em `src/domain/genreFilter.ts`:**
 - Filtro **acumulativo**: cada gênero marcado soma; um evento aparece se tiver qualquer um deles. Evento sem gênero some quando há filtro.
@@ -381,7 +381,7 @@ Cada passo é um commit independente que mantém o app funcionando.
 - Sanitização no loader: cada valor vai para caixa baixa, sem acento, com espaços virando `-` (`Forró` → `forro`, `West Coast Swing` → `west-coast-swing`). O que não bate com nenhum gênero depois disso é removido; repetidos também. Se nada sobra, o parâmetro sai da URL.
 - A URL corrigida substitui a atual (`replace`), sem criar entrada no histórico. Filtrar também não cria entrada nem rola a página.
 
-> Feito: `src/features/genres/` (`GenreFilter`, `useGenreFilter`). A árvore de gêneros da sidebar (`2xl`) usa o mesmo filtro. Testado no navegador, inclusive com o caminho `/ai/` do GitHub Pages.
+> Feito: `src/features/genres/` (`GenreFilter`, `useGenreFilter`). Testado no navegador, inclusive com o caminho `/ai/` do GitHub Pages.
 
 ### Passo 7 — Mapa e distância
 - [ ] **Leaflet + OpenStreetMap** (`react-leaflet`): gratuito, sem chave de API, funciona no GitHub Pages. Tiles escuros (CARTO Dark Matter) no tema escuro.
@@ -406,6 +406,7 @@ Cada passo é um commit independente que mantém o app funcionando.
 **Tomadas:**
 - **Busca de dados**: TanStack Query + Google Calendar API.
 - **Geocodificação**: Nominatim (OpenStreetMap).
+- **Nome do app**: Lisbon Social Dance.
 - **Idioma da interface**: pt-BR. Os textos dos eventos continuam como vêm da API (pt-PT).
 - **Janelas da API**: 2 semanas a partir da data inicial, com mais 2 semanas a cada fim de lista (scroll infinito).
 - **Lista**: feed contínuo agrupado por dia. Escolher um dia rola até ele, ou começa um feed novo a partir dele se ainda não foi carregado.
@@ -415,7 +416,6 @@ Cada passo é um commit independente que mantém o app funcionando.
 - **Datas do mock**: relativas a hoje (`Date.now`). O arquivo `events.json` não muda; as datas são deslocadas em dias inteiros ao carregar, mantendo o horário de Lisboa, de forma que hoje tenha eventos e a semana anterior e a seguinte tenham pelo menos 3 dias com eventos cada. Quando possível, mantém o dia da semana.
 
 **Em aberto:**
-1. **Nome do app**: "Eventos Futuros", como no protótipo, ou outro? (manifest do PWA hoje diz "Meu WebApp")
-2. **Chave da API**: criar a chave própria no Google Cloud (até lá, `VITE_USE_MOCK=true`).
-3. **Escolas**: existe uma fonte de dados prevista?
-4. **Mapa**: OpenStreetMap (recomendado, grátis) ou Google Maps (precisa de chave e faturação)?
+1. **Chave da API**: criar a chave própria no Google Cloud (até lá, `VITE_USE_MOCK=true`).
+2. **Escolas**: existe uma fonte de dados prevista?
+3. **Mapa**: OpenStreetMap (recomendado, grátis) ou Google Maps (precisa de chave e faturação)?

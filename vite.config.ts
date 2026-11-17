@@ -16,9 +16,9 @@ export default defineConfig({
       registerType: 'prompt',
       includeAssets: ['favicon.ico', 'icon.svg', 'apple-touch-icon-180x180.png'],
       manifest: {
-        name: 'Meu WebApp',
-        short_name: 'WebApp',
-        description: 'Aplicação React mobile first com suporte a PWA',
+        name: 'Lisbon Social Dance',
+        short_name: 'Lisbon Dance',
+        description: 'Agenda de práticas, festas e eventos de dança social em Lisboa',
         lang: 'pt-BR',
         theme_color: '#0e7f8f',
         background_color: '#e8f0f2',
