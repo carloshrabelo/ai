@@ -54,6 +54,8 @@ jobs:
           # Mock até a variável do repositório VITE_USE_MOCK ser "false" (Settings → Secrets and variables → Actions)
           VITE_USE_MOCK: ${{ vars.VITE_USE_MOCK || 'true' }}
           VITE_GOOGLE_API_KEY: ${{ secrets.VITE_GOOGLE_API_KEY }}
+          # Código do site no GoatCounter (variável do repositório); vazio = analytics desligado
+          VITE_GOATCOUNTER_CODE: ${{ vars.VITE_GOATCOUNTER_CODE }}
 
       - uses: actions/upload-pages-artifact@v3
         with:

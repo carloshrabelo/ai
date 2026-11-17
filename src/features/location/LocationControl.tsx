@@ -2,6 +2,7 @@ import { LocateFixed, RefreshCw } from 'lucide-react'
 import { Button } from '../../components/ui/Button'
 import { requestLocation, useUserLocation } from './userLocation'
 import { useI18n } from '../../i18n/useI18n'
+import { trackAction } from '../../analytics/analytics'
 
 /** Liga as distâncias nos cards (e a posição no mapa). Só pede a localização quando clicado. */
 export function LocationControl() {
@@ -38,6 +39,7 @@ export function LocationControl() {
             variant="secondary"
             className="w-full"
             onClick={() => {
+              trackAction('distancias')
               requestLocation()
             }}
             disabled={location.status === 'pending'}

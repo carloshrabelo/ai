@@ -1,5 +1,6 @@
 import { lazy, Suspense, useCallback, useEffect, useId, useRef, useState } from 'react'
 import { Navigate, useLoaderData, useLocation, useNavigate, useSearchParams } from 'react-router'
+import { trackAction } from '../analytics/analytics'
 import { BottomSheet } from '../components/ui/BottomSheet'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
@@ -104,6 +105,7 @@ function DayMap({ startDate }: { startDate: IsoDate }) {
 
   /** Pino tocado: traz o card do evento para o centro do carrossel. */
   const showCard = useCallback((slug: string) => {
+    trackAction('mapa/pino')
     setActiveSlug(slug)
     carouselRef.current
       ?.querySelector<HTMLElement>(`[data-slug="${CSS.escape(slug)}"]`)
@@ -113,6 +115,7 @@ function DayMap({ startDate }: { startDate: IsoDate }) {
   /** Card tocado: abre os detalhes (o "voltar" fecha e retorna ao mapa no mesmo dia). */
   const openEvent = useCallback(
     (slug: string) => {
+      trackAction('evento-aberto/mapa-pagina')
       const params = new URLSearchParams(searchParams)
       params.delete(DAY_PARAM)
       navigate({ pathname: eventPath(slug), search: toSearchString(params) }, { state: { openedFromList: true } })
