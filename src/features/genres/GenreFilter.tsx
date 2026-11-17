@@ -11,6 +11,10 @@ import { expandGenres, GENRE_GROUPS } from '../../domain/genres'
 import { LocationControl } from '../location/LocationControl'
 import { useGenreFilter } from './useGenreFilter'
 
+// Estilos que ficam sempre nos filtros, mesmo sem eventos no período carregado
+// (os outros só aparecem quando há eventos deles).
+const ALWAYS_SHOWN = new Set<GenreFilterValue>(['Tango', 'Bolero'])
+
 // Classes literais para o Tailwind gerar.
 const SKELETON_WIDTHS = ['w-16', 'w-20', 'w-14', 'w-18', 'w-12', 'w-16']
 
@@ -30,7 +34,7 @@ export function GenreFilter({ startDate }: { startDate: IsoDate }) {
     const present = new Set<GenreFilterValue>(events.flatMap((event) => [...expandGenres(event.genres)]))
     // "Outros": eventos cujo gênero não está na lista.
     if (events.some((event) => event.genres.length === 0)) present.add(OTHER_GENRES)
-    return FILTER_VALUES.filter((value) => present.has(value) || selected.includes(value))
+    return FILTER_VALUES.filter((value) => present.has(value) || ALWAYS_SHOWN.has(value) || selected.includes(value))
   }, [data, selected])
 
   // Conjuntos com algum gênero disponível; o resto vai para a linha dos estilos avulsos.
