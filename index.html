@@ -10,7 +10,19 @@
     <link rel="icon" href="/icon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png" />
 
-    <meta name="theme-color" content="#4f46e5" />
+    <meta name="theme-color" content="#0e7f8f" />
+    <script>
+      // Aplica o tema antes do primeiro paint (mesma lógica de src/theme/useTheme.ts).
+      ;(function () {
+        var mode = 'system'
+        try {
+          mode = localStorage.getItem('theme') || 'system'
+        } catch (e) {}
+        var dark = mode === 'dark' || (mode !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches)
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light'
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', dark ? '#14162b' : '#0e7f8f')
+      })()
+    </script>
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />

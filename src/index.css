@@ -1,17 +1,112 @@
 @import "tailwindcss";
 
-@theme {
-  --color-brand: #4f46e5;
+/* Tema escuro controlado por <html data-theme="dark">, definido em index.html e useTheme. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/*
+ * Tokens semânticos. As cores reais ficam nas variáveis abaixo e trocam com o tema;
+ * as utilities (bg-surface, text-fg-muted, bg-genre-wine…) apontam para elas.
+ * Contraste de texto verificado em AA (≥ 4.5) nos dois temas.
+ */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-border: var(--border);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-brand: var(--brand);
+  --color-brand-fg: var(--brand-fg);
+  --color-header: var(--header);
+  --color-header-fg: var(--header-fg);
+
+  --color-genre-neutral: var(--genre-neutral);
+  --color-genre-neutral-fg: var(--genre-neutral-fg);
+  --color-genre-wine: var(--genre-wine);
+  --color-genre-wine-fg: #ffffff;
+  --color-genre-pink: #c2306f;
+  --color-genre-pink-fg: #ffffff;
+  --color-genre-brown: var(--genre-brown);
+  --color-genre-brown-fg: #ffffff;
+  --color-genre-dark-blue: var(--genre-dark-blue);
+  --color-genre-dark-blue-fg: #ffffff;
+  --color-genre-red: #c62828;
+  --color-genre-red-fg: #ffffff;
+  --color-genre-yellow: #f2c230;
+  --color-genre-yellow-fg: #2b2100;
+  --color-genre-dark-green: var(--genre-dark-green);
+  --color-genre-dark-green-fg: #ffffff;
+  --color-genre-light-blue: #7cc8f0;
+  --color-genre-light-blue-fg: #0b2a3c;
+  --color-genre-orange: #e8742a;
+  --color-genre-orange-fg: #2a1300;
+  --color-genre-purple: #7e3fb8;
+  --color-genre-purple-fg: #ffffff;
+  --color-genre-teal: #0b7d72;
+  --color-genre-teal-fg: #ffffff;
 }
 
 @layer base {
+  :root {
+    color-scheme: light;
+    --bg: #e8f0f2;
+    --surface: #ffffff;
+    --surface-muted: #f3f7f8;
+    --border: #d5e1e5;
+    --fg: #0f172a;
+    --fg-muted: #475569;
+    --brand: #0e7f8f;
+    --brand-fg: #ffffff;
+    --header: #0e7f8f;
+    --header-fg: #ffffff;
+
+    --genre-neutral: #e2e8f0;
+    --genre-neutral-fg: #334155;
+    --genre-wine: #8e2445;
+    --genre-brown: #8a5a2b;
+    --genre-dark-blue: #1e3a8a;
+    --genre-dark-green: #166534;
+  }
+
+  [data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #14162b;
+    --surface: #23264a;
+    --surface-muted: #1c1f3d;
+    --border: rgb(255 255 255 / 0.1);
+    --fg: #eef0ff;
+    --fg-muted: #a3a8d0;
+    --brand: #22c3d6;
+    --brand-fg: #0b1020;
+    --header: #14162b;
+    --header-fg: #eef0ff;
+
+    /* Cores escuras demais sobre o fundo azul-marinho ficam um tom mais claras. */
+    --genre-neutral: #3a3e66;
+    --genre-neutral-fg: #e2e4ff;
+    --genre-wine: #b0345c;
+    --genre-brown: #9c6a38;
+    --genre-dark-blue: #3557c4;
+    --genre-dark-green: #1a7f45;
+  }
+
   html {
     -webkit-tap-highlight-color: transparent;
     -webkit-text-size-adjust: 100%;
   }
 
   body {
-    @apply bg-white text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100;
+    @apply bg-bg text-fg antialiased;
     overscroll-behavior: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
