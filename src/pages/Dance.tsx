@@ -5,6 +5,8 @@ import { DayShortcuts } from '../features/dates/DayShortcuts'
 import { useDayNavigation } from '../features/dates/useDayNavigation'
 import { WeekStrip } from '../features/dates/WeekStrip'
 import { EventFeed } from '../features/events/EventFeed'
+import { GenreFilter } from '../features/genres/GenreFilter'
+import { useGenreFilter } from '../features/genres/useGenreFilter'
 import { SidebarPortal } from '../layouts/SidebarSlot'
 
 /** Rota "/" — eventos de dança. Um feed novo (e estado novo) para cada data inicial. */
@@ -16,6 +18,7 @@ export default function Dance() {
 function DanceFeed({ startDate, today }: EventsLoaderData) {
   const stickyRef = useRef<HTMLDivElement>(null)
   const { activeDay, selectDay } = useDayNavigation(startDate, stickyRef)
+  const { selected: genres } = useGenreFilter()
 
   const shortcuts = <DayShortcuts today={today} activeDay={activeDay} onSelect={selectDay} />
 
@@ -33,14 +36,14 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
 
         {/* Até 1279px os filtros ficam no conteúdo; a partir de `xl`, na sidebar. */}
         <div className="xl:hidden">
-          <Placeholder className="h-24">Filtros por gênero (passo 6)</Placeholder>
+          <GenreFilter startDate={startDate} />
         </div>
         <SidebarPortal>
           {shortcuts}
-          <Placeholder className="h-40">Filtros por gênero (passo 6)</Placeholder>
+          <GenreFilter startDate={startDate} />
         </SidebarPortal>
 
-        <EventFeed startDate={startDate} />
+        <EventFeed startDate={startDate} genres={genres} />
       </div>
 
       <aside className="sticky top-20 hidden h-[calc(100dvh-7rem)] w-90 shrink-0 xl:block 2xl:w-120">

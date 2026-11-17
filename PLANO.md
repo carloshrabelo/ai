@@ -363,10 +363,18 @@ Cada passo é um commit independente que mantém o app funcionando.
 > Feito: `src/features/dates/` (`DayShortcuts`, `WeekStrip`, `useDayNavigation`). Atalhos e faixa ficam numa área fixa abaixo do header (no `xl+` os atalhos vão para a sidebar). Seletor de data nativo (`<input type="date">`). Testado no navegador: rolar atualiza o dia ativo, clicar num dia carregado rola até ele (sem cobrir pela área fixa), e um dia fora do carregado abre um feed novo via `?date=`.
 
 ### Passo 6 — Filtros por gênero
-- [ ] Painel "Filtro Ativo" com um chip por gênero de `GENRES` que aparece nos eventos carregados (na cor de `genreToPalette`), selecionáveis, e botão "limpar".
-- [ ] Estado em `?genres=salsa,kizomba` (slug do gênero; um evento aparece se tiver **qualquer** gênero selecionado).
-- [ ] Ícone de filtros do header abre o painel como *bottom sheet* no mobile.
-- [ ] Skeleton de chips no painel de filtros e na árvore de gêneros da sidebar (`2xl`).
+- [x] Painel "Filtro Ativo" com um chip por gênero de `GENRES` que aparece nos eventos carregados (na cor de `genreToPalette`), selecionáveis, e botão "limpar".
+- [x] Estado em `?genres=salsa,kizomba` (slug do gênero; um evento aparece se tiver **qualquer** gênero selecionado).
+- [ ] ~~Ícone de filtros do header abre o painel como *bottom sheet* no mobile.~~ Não feito: o painel fica no conteúdo, como no protótipo.
+- [x] Skeleton de chips no painel de filtros e na árvore de gêneros da sidebar (`2xl`).
+
+**Regras da URL (`?genres=`), em `src/domain/genreFilter.ts`:**
+- Filtro **acumulativo**: cada gênero marcado soma; um evento aparece se tiver qualquer um deles. Evento sem gênero some quando há filtro.
+- "Limpar" remove o parâmetro.
+- Sanitização no loader: cada valor vai para caixa baixa, sem acento, com espaços virando `-` (`Forró` → `forro`, `West Coast Swing` → `west-coast-swing`). O que não bate com nenhum gênero depois disso é removido; repetidos também. Se nada sobra, o parâmetro sai da URL.
+- A URL corrigida substitui a atual (`replace`), sem criar entrada no histórico. Filtrar também não cria entrada nem rola a página.
+
+> Feito: `src/features/genres/` (`GenreFilter`, `useGenreFilter`). A árvore de gêneros da sidebar (`2xl`) usa o mesmo filtro. Testado no navegador, inclusive com o caminho `/ai/` do GitHub Pages.
 
 ### Passo 7 — Mapa e distância
 - [ ] **Leaflet + OpenStreetMap** (`react-leaflet`): gratuito, sem chave de API, funciona no GitHub Pages. Tiles escuros (CARTO Dark Matter) no tema escuro.

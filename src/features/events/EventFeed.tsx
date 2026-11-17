@@ -5,6 +5,8 @@ import { ErrorBoundary } from '../../components/ErrorBoundary'
 import { Button } from '../../components/ui/Button'
 import type { IsoDate } from '../../data/dates'
 import { eventsInfiniteQueryOptions, flattenEvents } from '../../data/queries'
+import { matchesGenres } from '../../domain/genreFilter'
+import type { Genre } from '../../domain/genres'
 import { EventCard, EventCardSkeleton } from './EventCard'
 import { formatDayHeading } from './format'
 import { groupByDay } from './groupByDay'
@@ -12,13 +14,19 @@ import { groupByDay } from './groupByDay'
 const GRID = 'grid grid-cols-1 gap-3 xl:grid-cols-2 xl:gap-4'
 
 /** Feed de eventos agrupado por dia, com skeleton, erro isolado e scroll infinito. */
-export function EventFeed({ startDate }: { startDate: IsoDate }) {
+type FeedProps = {
+  startDate: IsoDate
+  /** Gêneros do filtro (vazio = todos). */
+  genres: readonly Genre[]
+}
+
+export function EventFeed({ startDate, genres }: FeedProps) {
   return (
     <QueryErrorResetBoundary>
       {({ reset }) => (
         <ErrorBoundary onReset={reset} fallback={({ reset }) => <FeedError onRetry={reset} />}>
           <Suspense fallback={<EventFeedSkeleton />}>
-            <EventFeedContent startDate={startDate} />
+            <EventFeedContent startDate={startDate} genres={genres} />
           </Suspense>
         </ErrorBoundary>
       )}
@@ -26,15 +34,16 @@ export function EventFeed({ startDate }: { startDate: IsoDate }) {
   )
 }
 
-function EventFeedContent({ startDate }: { startDate: IsoDate }) {
+function EventFeedContent({ startDate, genres }: FeedProps) {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetchNextPageError } = useSuspenseInfiniteQuery(
     eventsInfiniteQueryOptions(startDate),
   )
 
   const days = useMemo(() => {
     const rangeEnd = data.pages.at(-1)?.end ?? startDate
-    return groupByDay(flattenEvents(data.pages), startDate, rangeEnd)
-  }, [data.pages, startDate])
+    const events = flattenEvents(data.pages).filter((event) => matchesGenres(event.genres, genres))
+    return groupByDay(events, startDate, rangeEnd)
+  }, [data.pages, startDate, genres])
 
   // Sentinela ~600px antes do fim da lista: busca mais 2 semanas antes de o usuário chegar lá.
   // Se depois da busca ele continuar visível (poucos eventos), o observer dispara de novo.
@@ -57,7 +66,11 @@ function EventFeedContent({ startDate }: { startDate: IsoDate }) {
       {days.length === 0 && !hasNextPage && (
         <div className="flex flex-col items-center gap-2 py-12 text-center text-fg-muted">
           <CalendarX className="size-12" aria-hidden="true" />
-          <p className="text-sm">Nenhum evento encontrado a partir desta data.</p>
+          <p className="text-sm">
+            {genres.length > 0
+              ? `Nenhum evento de ${genres.join(', ')} a partir desta data.`
+              : 'Nenhum evento encontrado a partir desta data.'}
+          </p>
         </div>
       )}
 
