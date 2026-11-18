@@ -1,4 +1,4 @@
-import { BookUser, ChevronRight, Shapes, SpellCheck, type LucideIcon, Megaphone, Tag, TicketX } from 'lucide-react'
+import { BookUser, ChevronRight, Shapes, SpellCheck, type LucideIcon, UsersRound, Megaphone, Tag, TicketX } from 'lucide-react'
 import { Link } from 'react-router'
 import { Card } from '../../components/ui/Card'
 import { siteUrl, useDocumentHead } from '../../seo/useDocumentHead'
@@ -60,6 +60,12 @@ const SECTIONS: Section[] = [
         title: 'Promotores: redes, locais e estilos',
         description: 'Um registro por perfil, com as redes sociais, os locais e os estilos dos eventos e o último evento.',
         icon: BookUser,
+      },
+      {
+        to: '/teste/envolvidos',
+        title: 'Envolvidos por grupo',
+        description: 'Promotores, professores, DJs, locais e outros, com foto (ou iniciais) e o @ de cada um.',
+        icon: UsersRound,
       },
       {
         to: '/review',

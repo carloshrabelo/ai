@@ -76,11 +76,11 @@ describe('collectPromoters', () => {
 describe('mergePromoters', () => {
   const entry = (over: Partial<PromoterEntry> = {}): PromoterEntry => ({ role: 'promoter', socials: {}, venues: [], genres: [], lastSeen: '2026-01-01', ...over })
 
-  it('mantém o que estava (nome, papel, redes), acrescenta o novo e avança lastSeen', () => {
+  it('mantém o que estava (nome, foto, papel, redes), acrescenta o novo e avança lastSeen', () => {
     const merged = mergePromoters(
       {
         zeta: entry({ venues: ['A'] }),
-        baiao: entry({ name: 'Espaço Baião', role: 'teacher', socials: { facebook: 'https://facebook.com/manual' }, venues: ['A'], genres: ['Forró'], lastSeen: '2026-10-01' }),
+        baiao: entry({ name: 'Espaço Baião', photo: 'promoters/baiao.webp', role: 'teacher', socials: { facebook: 'https://facebook.com/manual' }, venues: ['A'], genres: ['Forró'], lastSeen: '2026-10-01' }),
       },
       {
         baiao: entry({ socials: { instagram: 'https://www.instagram.com/baiao/', facebook: 'https://facebook.com/auto' }, venues: ['B', 'A'], genres: ['Samba'], lastSeen: '2026-11-01' }),
@@ -89,6 +89,7 @@ describe('mergePromoters', () => {
     expect(Object.keys(merged)).toEqual(['baiao', 'zeta'])
     expect(merged.baiao).toEqual({
       name: 'Espaço Baião',
+      photo: 'promoters/baiao.webp',
       role: 'teacher',
       socials: { instagram: 'https://www.instagram.com/baiao/', facebook: 'https://facebook.com/manual' },
       venues: ['A', 'B'],

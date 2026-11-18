@@ -14,6 +14,11 @@ export type SocialKind = (typeof SOCIAL_KINDS)[number]
 export type PromoterEntry = {
   /** Nome para exibição, preenchido à mão (o script não mexe). */
   name?: string
+  /**
+   * Foto do perfil, preenchida à mão: caminho em public/ ("promoters/perfil.webp") ou URL. O script
+   * não mexe; sem foto, as telas mostram as iniciais.
+   */
+  photo?: string
   /** Papel deduzido na primeira vez (ver `roleOf`); corrigível à mão, o script não muda depois. */
   role: Role
   /** Grafias erradas deste perfil vistas no calendário ("dale.eventss"), preenchidas à mão. */
@@ -130,6 +135,7 @@ function combine(base: PromoterEntry, extra: PromoterEntry): PromoterEntry {
   const aliases = [...new Set([...(base.aliases ?? []), ...(extra.aliases ?? [])])]
   return {
     ...(base.name ? { name: base.name } : extra.name ? { name: extra.name } : {}),
+    ...(base.photo ? { photo: base.photo } : extra.photo ? { photo: extra.photo } : {}),
     role: base.role,
     ...(aliases.length > 0 ? { aliases } : {}),
     socials: { ...extra.socials, ...base.socials },
@@ -140,7 +146,7 @@ function combine(base: PromoterEntry, extra: PromoterEntry): PromoterEntry {
 }
 
 /**
- * Junta o que foi encontrado agora com o arquivo: não apaga ninguém; nome, papel, redes e aliases já
+ * Junta o que foi encontrado agora com o arquivo: não apaga ninguém; nome, foto, papel, redes e aliases já
  * gravados (inclusive à mão) ficam; locais e estilos novos entram depois dos já conhecidos; lastSeen
  * avança. Um perfil listado em `aliases` de outro é incorporado a ele (e sai do arquivo).
  */
