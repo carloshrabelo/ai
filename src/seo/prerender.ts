@@ -2,10 +2,8 @@
 // sem executar JavaScript. Ao abrir no navegador, o React substitui o conteúdo de #root pelo app.
 // Roda no Node (via Vite ssrLoadModule): nada de window/document aqui.
 
-import { WINDOW_DAYS } from '../data/config'
-import { addDays, type IsoDate, lisbonDate, lisbonMidnight } from '../data/dates'
-import { fetchEvents } from '../data/googleCalendar'
-import { type DanceEvent, toDanceEvent } from '../domain/event'
+import { type IsoDate, lisbonDate } from '../data/dates'
+import type { DanceEvent } from '../domain/event'
 import { visibleGenres } from '../domain/genres'
 import { formatDayHeading, formatTimeRange } from '../features/events/format'
 import { MESSAGES } from '../i18n/messages'
@@ -18,16 +16,7 @@ const t = MESSAGES[LOCALE]
 /** Quantos eventos entram na lista da página inicial. */
 const HOME_LIST_SIZE = 40
 
-/** Eventos de [from, to), janela a janela (como o app busca), sem repetidos. */
-export async function loadEvents(from: IsoDate, to: IsoDate): Promise<DanceEvent[]> {
-  const byId = new Map<string, DanceEvent>()
-  for (let start = from; start < to; start = addDays(start, WINDOW_DAYS)) {
-    const end = addDays(start, WINDOW_DAYS) < to ? addDays(start, WINDOW_DAYS) : to
-    const items = await fetchEvents({ timeMin: lisbonMidnight(start), timeMax: lisbonMidnight(end) })
-    for (const item of items) if (!byId.has(item.id)) byId.set(item.id, toDanceEvent(item))
-  }
-  return [...byId.values()].sort((a, b) => a.start.getTime() - b.start.getTime())
-}
+export { loadEvents } from '../data/loadEvents'
 
 export const eventPagePath = (event: DanceEvent) => `evento/${event.slug}/`
 
