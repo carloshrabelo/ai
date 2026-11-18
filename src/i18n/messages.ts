@@ -82,6 +82,7 @@ const pt = {
     withoutLocation: (n: number) => `${n} sem local no mapa`,
     noLocation: 'sem local no mapa',
     pin: (names: string) => `Ver no mapa: ${names}`,
+    fit: 'Enquadrar todos os eventos',
   },
   mapPage: {
     events: 'Eventos do dia',
@@ -226,6 +227,7 @@ const en: Messages = {
     withoutLocation: (n) => `${n} not on the map`,
     noLocation: 'not on the map',
     pin: (names) => `On the map: ${names}`,
+    fit: 'Fit all events',
   },
   mapPage: {
     events: 'Events of the day',

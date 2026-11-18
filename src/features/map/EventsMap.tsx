@@ -1,6 +1,8 @@
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
+import { Focus } from 'lucide-react'
 import { useEffect, useMemo, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { CircleMarker, MapContainer, Marker, Popup, TileLayer, Tooltip, useMap, ZoomControl } from 'react-leaflet'
 import { genreColorClasses } from '../../components/ui/genreColors'
 import type { DanceEvent } from '../../domain/event'
@@ -30,6 +32,11 @@ type Props = {
   /** Espaço coberto por outros elementos em cima e embaixo do mapa, em px (enquadramento dos pinos). */
   inset?: { top: number; bottom: number }
   zoomPosition?: L.ControlPosition
+  /**
+   * Centrar o mapa no evento selecionado (padrão). Com `false` (página Mapa), o mapa fica sempre
+   * enquadrado e a seleção só destaca o pino.
+   */
+  focusSelected?: boolean
 }
 
 const DEFAULT_INSET = { top: 96, bottom: 40 }
@@ -38,7 +45,14 @@ const DEFAULT_INSET = { top: 96, bottom: 40 }
  * Pinos dos eventos (um por local; vários eventos no mesmo local viram um pino com contador).
  * Seleção e hover vêm do eventFocusStore (fonte única, compartilhada com a lista).
  */
-export default function EventsMap({ events, onOpenEvent, activeSlug, inset = DEFAULT_INSET, zoomPosition = 'bottomright' }: Props) {
+export default function EventsMap({
+  events,
+  onOpenEvent,
+  activeSlug,
+  inset = DEFAULT_INSET,
+  zoomPosition = 'bottomright',
+  focusSelected = true,
+}: Props) {
   const { t, locale } = useI18n()
   const theme = useResolvedTheme()
   const location = useUserLocation()
@@ -59,6 +73,7 @@ export default function EventsMap({ events, onOpenEvent, activeSlug, inset = DEF
       <TileLayer url={TILES_URL} attribution={ATTRIBUTION} maxZoom={19} />
       {/* Por padrão embaixo: em cima fica o resumo do dia. */}
       <ZoomControl position={zoomPosition} />
+      <FitControl position={zoomPosition} label={t.map.fit} places={places} userCoords={userCoords} inset={inset} />
 
       {places.map((place) => {
         const ids = place.events.map((event) => event.id)
@@ -130,7 +145,7 @@ export default function EventsMap({ events, onOpenEvent, activeSlug, inset = DEF
       )}
 
       <InvalidateOnResize />
-      {selectedPlace ? (
+      {focusSelected && selectedPlace ? (
         <FocusPlace place={selectedPlace} offsetY={(inset.bottom - inset.top) / 2} />
       ) : (
         <FitBounds places={places} userCoords={userCoords} inset={inset} />
@@ -170,21 +185,62 @@ function FocusPlace({ place, offsetY = 0 }: { place: Place; offsetY?: number }) 
   return null
 }
 
-/** Enquadra os pinos (e a posição do usuário, se houver) sempre que mudam. */
-function FitBounds({ places, userCoords, inset }: { places: Place[]; userCoords?: Coords; inset: { top: number; bottom: number } }) {
+type Inset = { top: number; bottom: number }
+type FitProps = { places: Place[]; userCoords?: Coords; inset: Inset }
+
+/** Mostra todos os pinos (e a posição do usuário, se houver). */
+function fitAll(map: L.Map, { places, userCoords, inset }: FitProps, animate: boolean) {
+  const points: L.LatLngTuple[] = places.map((place) => [place.coords.lat, place.coords.lng])
+  if (userCoords) points.push([userCoords.lat, userCoords.lng])
+  if (points.length === 0) map.setView(LISBON, 11, { animate })
+  else if (points.length === 1) map.setView(points[0], 14, { animate })
+  // Margens maiores onde há algo por cima do mapa (resumo do dia, carrossel).
+  else map.fitBounds(points, { paddingTopLeft: [40, inset.top], paddingBottomRight: [40, inset.bottom], maxZoom: 14, animate })
+}
+
+/** Enquadra os pinos sempre que mudam. */
+function FitBounds({ places, userCoords, inset }: FitProps) {
   const map = useMap()
   const first = useRef(true)
   useEffect(() => {
-    const points: L.LatLngTuple[] = places.map((place) => [place.coords.lat, place.coords.lng])
-    if (userCoords) points.push([userCoords.lat, userCoords.lng])
-    const animate = !first.current
+    fitAll(map, { places, userCoords, inset: { top: inset.top, bottom: inset.bottom } }, !first.current)
     first.current = false
-    if (points.length === 0) map.setView(LISBON, 11, { animate })
-    else if (points.length === 1) map.setView(points[0], 14, { animate })
-    // Margens maiores onde há algo por cima do mapa (resumo do dia, carrossel).
-    else map.fitBounds(points, { paddingTopLeft: [40, inset.top], paddingBottomRight: [40, inset.bottom], maxZoom: 14, animate })
   }, [map, places, userCoords, inset.top, inset.bottom])
   return null
+}
+
+/** Botão "enquadrar" (junto do zoom, no visual dos controles do Leaflet): volta a mostrar todos os pinos. */
+function FitControl({ position, label, ...fit }: FitProps & { position: L.ControlPosition; label: string }) {
+  const map = useMap()
+  // O React renderiza o botão dentro do contêiner do controle (portal).
+  const container = useMemo(() => {
+    const div = L.DomUtil.create('div', 'leaflet-bar leaflet-control')
+    L.DomEvent.disableClickPropagation(div)
+    return div
+  }, [])
+  useEffect(() => {
+    const control = new L.Control({ position })
+    control.onAdd = () => container
+    control.addTo(map)
+    return () => {
+      control.remove()
+    }
+  }, [map, position, container])
+  return createPortal(
+    <button
+      type="button"
+      aria-label={label}
+      title={label}
+      onClick={() => {
+        map.stop()
+        fitAll(map, fit, true)
+      }}
+      className="flex size-[30px] cursor-pointer items-center justify-center rounded-[2px] bg-white text-black hover:bg-[#f4f4f4] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+    >
+      <Focus className="size-4" aria-hidden="true" />
+    </button>,
+    container,
+  )
 }
 
 function groupByPlace(events: DanceEvent[]): Place[] {

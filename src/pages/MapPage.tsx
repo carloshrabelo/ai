@@ -48,7 +48,15 @@ function DayMap({ startDate }: { startDate: IsoDate }) {
   const carouselTitleId = useId()
 
   useDocumentHead({ title: t.seo.mapTitle, description: t.seo.mapDescription, canonical: `${siteUrl()}mapa/` })
-  useEffect(() => () => eventFocus.reset(), [])
+  // Saindo da página, limpa só o hover. A seleção não é desta página: um reset aqui roda depois de a
+  // agenda ler o evento da URL (/evento/<slug>/) e fecharia os detalhes recém-abertos.
+  useEffect(
+    () => () => {
+      eventFocus.unhover('list')
+      eventFocus.unhover('map')
+    },
+    [],
+  )
 
   const dayParam = searchParams.get(DAY_PARAM)
   const day: IsoDate = isIsoDate(dayParam) && dayParam >= startDate ? dayParam : startDate
@@ -161,6 +169,7 @@ function DayMap({ startDate }: { startDate: IsoDate }) {
             activeSlug={active}
             inset={{ top: 40, bottom: carouselHeight + 24 }}
             zoomPosition="topright"
+            focusSelected={false}
           />
         </Suspense>
 
