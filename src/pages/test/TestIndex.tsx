@@ -1,4 +1,4 @@
-import { BookUser, ChevronRight, SpellCheck, type LucideIcon, Megaphone, Tag, TicketX } from 'lucide-react'
+import { BookUser, ChevronRight, Shapes, SpellCheck, type LucideIcon, Megaphone, Tag, TicketX } from 'lucide-react'
 import { Link } from 'react-router'
 import { Card } from '../../components/ui/Card'
 import { siteUrl, useDocumentHead } from '../../seo/useDocumentHead'
@@ -9,6 +9,18 @@ type Section = { title: string; description: string; tools: Tool[] }
 /** Ferramentas da área de teste, por seção. Página nova: criar em src/pages/test/, registrar a rota
  *  em src/router.tsx (dentro de "teste") e acrescentar aqui. */
 const SECTIONS: Section[] = [
+  {
+    title: 'Visual',
+    description: 'Opções de interface para escolher antes de mudar o app.',
+    tools: [
+      {
+        to: '/teste/icones',
+        title: 'Ícones e nomes',
+        description: 'Sugestões de ícone para Dança e para o filtro, e de nome e ícone para Info, com prévia.',
+        icon: Shapes,
+      },
+    ],
+  },
   {
     title: 'Dicionários de tradução',
     description: 'Textos que vêm do calendário e são traduzidos no app (src/i18n/).',
