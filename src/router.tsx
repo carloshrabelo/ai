@@ -32,6 +32,12 @@ export const router = createBrowserRouter(
           lazy: { Component: async () => (await import('./pages/Schools')).default },
         },
         {
+          // Outros calendários, grupos do WhatsApp e Instagram (espelho de pasdedeux.pt/outros.html).
+          path: 'comunidade',
+          handle: { title: (t) => t.nav.community } satisfies RouteHandle,
+          lazy: { Component: async () => (await import('./pages/Community')).default },
+        },
+        {
           path: 'info',
           handle: { title: (t) => t.nav.info } satisfies RouteHandle,
           lazy: { Component: async () => (await import('./pages/Info')).default },
