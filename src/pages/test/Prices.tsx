@@ -1,5 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
+import { ArrowLeft } from 'lucide-react'
 import { useMemo, useState } from 'react'
+import { Link } from 'react-router'
 import { Button } from '../../components/ui/Button'
 import { Card } from '../../components/ui/Card'
 import { addDays, type IsoDate, isIsoDate, todayIso } from '../../data/dates'
@@ -64,6 +66,10 @@ export default function Prices() {
 
   return (
     <section className="mx-auto max-w-5xl space-y-4">
+      <Link to="/teste" className="inline-flex items-center gap-1 text-sm font-medium text-brand hover:underline">
+        <ArrowLeft className="size-4" aria-hidden="true" />
+        Teste
+      </Link>
       <Card className="space-y-3">
         <h2 className="text-lg font-semibold">Preços dos eventos</h2>
         <div className="flex flex-wrap items-end gap-3 text-sm">

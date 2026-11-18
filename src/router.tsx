@@ -36,13 +36,23 @@ export const router = createBrowserRouter(
           handle: { title: (t) => t.nav.info } satisfies RouteHandle,
           lazy: { Component: async () => (await import('./pages/Info')).default },
         },
-        // Páginas de teste, só com VITE_TEST_PAGES=true (fora disso, nem entram no build).
+        // Área de teste (/teste e ferramentas), só com VITE_TEST_PAGES=true (fora disso, nem entra no build).
         ...(import.meta.env.VITE_TEST_PAGES === 'true'
           ? [
               {
-                path: 'teste/precos',
-                handle: { title: () => 'Preços (teste)' } satisfies RouteHandle,
-                lazy: { Component: async () => (await import('./pages/test/Prices')).default },
+                path: 'teste',
+                children: [
+                  {
+                    index: true,
+                    handle: { title: () => 'Teste' } satisfies RouteHandle,
+                    lazy: { Component: async () => (await import('./pages/test/TestIndex')).default },
+                  },
+                  {
+                    path: 'precos',
+                    handle: { title: () => 'Preços (teste)' } satisfies RouteHandle,
+                    lazy: { Component: async () => (await import('./pages/test/Prices')).default },
+                  },
+                ],
               },
             ]
           : []),
