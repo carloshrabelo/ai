@@ -8,6 +8,7 @@ import { visibleGenres } from '../domain/genres'
 import { formatDayHeading, formatTimeRange } from '../features/events/format'
 import { MESSAGES } from '../i18n/messages'
 import { eventJsonLd, eventListJsonLd } from './eventJsonLd'
+import { translatePrice } from '../i18n/price'
 
 /** As páginas estáticas saem em pt-BR (o idioma do index.html). */
 const LOCALE = 'pt-BR'
@@ -35,7 +36,7 @@ export function renderEventPage(template: string, event: DanceEvent, siteUrl: st
     <p><time datetime="${event.start.toISOString()}">${escapeHtml(when)}</time></p>
     ${event.status === 'cancelled' ? `<p><strong>${escapeHtml(t.event.cancelled)}</strong></p>` : ''}
     ${genres ? `<p>${escapeHtml(genres)}</p>` : ''}
-    ${event.price ? `<p>${escapeHtml(event.price)}</p>` : ''}
+    ${event.price ? `<p>${escapeHtml(translatePrice(event.price, LOCALE))}</p>` : ''}
     ${event.venue ? `<address>${escapeHtml([event.venue.name, event.venue.address].filter(Boolean).join(', '))}</address>` : ''}
     ${event.description ? `<div>${paragraphs(event.description)}</div>` : ''}
   </article>

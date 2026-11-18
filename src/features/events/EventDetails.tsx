@@ -18,6 +18,7 @@ import { slugify } from '../../domain/slug'
 import { eventUrl } from '../../seo/useDocumentHead'
 import { untrackEvent, useIsTracked, trackEvent } from '../tracking/trackedEvents'
 import { downloadIcs, googleCalendarUrl } from './calendarLinks'
+import { translatePrice } from '../../i18n/price'
 
 /** Conteúdo dos detalhes: usado no painel da coluna do mapa (`xl+`) e no drawer (abaixo de `xl`). */
 export function EventDetails({ event, headingId }: { event: DanceEvent; headingId: string }) {
@@ -73,7 +74,7 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
         )}
         {event.price && (
           <Row icon={<Ticket className="size-5" aria-hidden="true" />} label={t.event.price}>
-            {event.price}
+            {translatePrice(event.price, locale)}
           </Row>
         )}
       </dl>
