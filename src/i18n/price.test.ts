@@ -25,6 +25,7 @@ const CASES: [raw: string, pt: string, en: string][] = [
   ['20€ ou 15€ (alunos)', '20€ ou 15€ (alunos)', '€20 or €15 (students)'],
   ['7€ ou 9€ (porta)', '7€ ou 9€ (porta)', '€7 or €9 (at the door)'],
   ['Pago (5€?)', 'Pago (5€?)', 'Paid (€5?)'],
+  ['10€ com bebida', '10€ com bebida', '€10 with a drink'],
 ]
 
 describe('translatePrice', () => {

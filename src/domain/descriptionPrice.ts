@@ -1,5 +1,5 @@
 // Preço lido da descrição, quando o título não traz preço (`Tag • Nome` sem o terceiro trecho).
-// Tabela de valores numa linha ("12€ | 10€") ou entrada gratuita. Para revisar: /teste/sem-preco (VITE_TEST_PAGES=true).
+// Tabela de valores numa linha ("12€ | 10€"), valor com bebida ("10€ com bebida") ou entrada gratuita. Para revisar: /teste/sem-preco (VITE_TEST_PAGES=true).
 
 /** Preço exibido para entrada gratuita (o tradutor de src/i18n/price.ts faz o en-US: "Free"). */
 export const FREE_PRICE = 'Gratuito'
@@ -51,6 +51,23 @@ function priceTable(line: string): string | undefined {
   return amounts.map(([amount]) => amount).join(' | ')
 }
 
+/** Preço exibido quando o valor inclui bebida. */
+const WITH_DRINK = (amount: string) => `${amount} com bebida`
+
+// "gets you … a beer", "includes a drink", "inclui uma bebida", "com cerveja".
+const INCLUDES_DRINK = /\b(?:gets you|includes?|including|inclui|com|with)\b.*\b(?:beer|drinks?|bebidas?|cervejas?)\b/iu
+
+/**
+ * Um valor só, que inclui bebida: "€10 gets you the class and a beer/ soft drink" → "10€ com bebida".
+ */
+function priceWithDrink(line: string): string | undefined {
+  const found = [...line.matchAll(EURO)]
+  if (found.length !== 1) return undefined
+  const [match] = found
+  const after = line.slice((match.index ?? 0) + match[0].length)
+  return INCLUDES_DRINK.test(after) ? WITH_DRINK(`${match[1] ?? match[2]}€`) : undefined
+}
+
 /** HTML da descrição → linhas de texto. */
 function lines(html: string): string[] {
   return html
@@ -67,8 +84,8 @@ export function priceFromDescription(html: string | undefined): string | undefin
   if (!html) return undefined
   const textLines = lines(html)
   for (const line of textLines) {
-    const table = priceTable(line)
-    if (table) return table
+    const price = priceTable(line) ?? priceWithDrink(line)
+    if (price) return price
   }
   const normalized = normalize(textLines.join('\n'))
   return FREE_PHRASES.some((phrase) => phrase.test(normalized)) ? FREE_PRICE : undefined

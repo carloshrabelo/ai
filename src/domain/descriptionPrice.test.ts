@@ -44,4 +44,16 @@ describe('priceFromDescription', () => {
   it.each(['Aula 10€ | Festa', 'Rua X | Lisboa', '10€ ou 12€ | 5€ e 7€'])('não é tabela de valores: %s', (text) => {
     expect(priceFromDescription(text)).toBeUndefined()
   })
+
+  it.each([
+    ['€10 gets you the class and a beer/ soft dri', '10€ com bebida'],
+    ['€10 gets you the class and a beer/ soft drink', '10€ com bebida'],
+    ['Entrada 8€, inclui uma bebida', '8€ com bebida'],
+  ])('valor com bebida: %s', (text, price) => {
+    expect(priceFromDescription(text)).toBe(price)
+  })
+
+  it.each(['Drinks from 2€ at the bar', '5€ class, 10€ with a beer'])('não é valor com bebida: %s', (text) => {
+    expect(priceFromDescription(text)).toBeUndefined()
+  })
 })

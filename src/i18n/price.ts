@@ -32,6 +32,7 @@ const TO_ENGLISH: Rule[] = [
   [W('Pago'), 'Paid'],
   [W('Gratuito'), 'Free'],
   [W('bebida incluída'), 'drink included'],
+  [W('com bebida'), 'with a drink'],
   [W('consumo mínimo'), 'minimum spend'],
   [W('acesso à'), 'access to'],
   [W('alunos'), 'students'],
