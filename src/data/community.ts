@@ -6,7 +6,7 @@ export type CommunityLink = { name: string; url: string; detail?: string }
 
 /** Agendas de outras comunidades. */
 export const OTHER_CALENDARS: CommunityLink[] = [
-  { name: 'Latinas', url: 'https://www.salsalisboa.com/', detail: 'salsalisboa.com' },
+  { name: 'Latinas', url: 'https://salsalisbon.com/', detail: 'salsalisbon.com' },
   { name: 'West Coast Swing', url: 'http://tinyurl.com/wcsportugalschedule', detail: 'WCS Portugal' },
   { name: 'Dancing Events', url: 'https://chat.whatsapp.com/GChrQA4ENBW2MLH25rBTnv', detail: 'WhatsApp' },
   {
