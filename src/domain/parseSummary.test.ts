@@ -25,6 +25,23 @@ describe('parseSummary', () => {
     expect(parsed.price).toBe('13€ ou 17€ ou 20€')
   })
 
+  it('trechos a mais entram no nome; o preço é o último', () => {
+    expect(parseSummary('Forró • Forró do Coreto • Despedida Camila Alves • 12€ ou 17€ ou 17€ ou 20€')).toMatchObject({
+      title: 'Forró do Coreto • Despedida Camila Alves',
+      price: '12€ ou 17€ ou 17€ ou 20€',
+    })
+  })
+
+  it('último trecho que não parece preço é parte do nome', () => {
+    const parsed = parseSummary('Forró • No Mercado • Turmalina Parahyba Forró Festa')
+    expect(parsed.title).toBe('No Mercado • Turmalina Parahyba Forró Festa')
+    expect(parsed.price).toBeUndefined()
+  })
+
+  it.each(['Pago', 'Paid', 'Free', 'Contribuição Voluntaria', 'Doaçao', 'Pago (5€?)', '5€ ou Gratuito'])('reconhece preço sem valor: %s', (price) => {
+    expect(parseSummary(`Salsa • Noite • ${price}`).price).toBe(price)
+  })
+
   it('tag sem gênero conhecido mantém rawTag', () => {
     expect(parseSummary('Fusão • The Fusion Social • 5€')).toMatchObject({ genres: [], rawTag: 'Fusão' })
   })

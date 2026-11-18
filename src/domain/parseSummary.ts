@@ -15,6 +15,10 @@ export type ParsedSummary = {
 
 const SEPARATOR = /\s+•\s+/
 
+// O último trecho só é preço se parecer preço: valor em euros ou uma palavra de preço. Sem isso,
+// é parte do nome ("Forró • No Mercado • Turmalina Parahyba Forró Festa").
+const PRICE_LIKE = /€|\beur(os?)?\b|(?<!\p{L})(pago|paid|free|gr[aá]tis|gratuit[oa]|contribui[cç][aã]o|doa[cç][aã]o|donation)(?!\p{L})/iu
+
 // Prefixo de situação, com variações e erros de digitação vistos no calendário
 // ("Cancelado", "Cancelada", "CANCELADO", "Cancrlado", "Cancelled", "Postponed", "Adiado").
 const STATUS_PREFIX = /^\s*[([]\s*(canc\w*|postponed|adiad[oa])\s*[)\]]\s*/i
@@ -28,6 +32,8 @@ function readStatus(summary: string): { status?: EventStatus; rest: string } {
 
 /**
  * "Tag • Nome • Preço" → partes. O preço é opcional; sem " • ", tudo é título.
+ * Trechos a mais entram no nome ("Tag • Festa • Despedida X • 12€" → nome "Festa • Despedida X"),
+ * e o último trecho só vira preço se parecer preço (PRICE_LIKE).
  * Um prefixo de situação ("(Cancelado)", "[Postponed]") vira `status` e sai do texto.
  */
 export function parseSummary(summary: string | undefined): ParsedSummary {
@@ -43,13 +49,15 @@ export function parseSummary(summary: string | undefined): ParsedSummary {
   }
 
   const [rawTag, ...rest] = parts
-  const price = rest.length > 1 ? rest.slice(1).join(' • ') : undefined
+  const last = rest.at(-1) ?? ''
+  const price = rest.length > 1 && PRICE_LIKE.test(last) ? last : undefined
+  const title = (price ? rest.slice(0, -1) : rest).join(' • ')
 
   return {
     ...withStatus,
     genres: parseGenres(rawTag),
     rawTag,
-    title: rest[0],
+    title,
     ...(price ? { price } : {}),
   }
 }
