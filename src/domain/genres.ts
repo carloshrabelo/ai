@@ -50,42 +50,47 @@ export const ALIAS: Record<string, string> = {
 }
 
 export type GenreColor =
-  | 'wine'
-  | 'pink'
-  | 'brown'
-  | 'dark-blue'
+  | 'dr-navy'
   | 'red'
-  | 'yellow'
-  | 'dark-green'
+  | 'wine'
+  | 'royal-blue'
   | 'light-blue'
-  | 'orange'
-  | 'purple'
-  | 'teal'
-  | 'coral'
+  | 'black-gold'
+  | 'gold'
+  | 'rust'
+  | 'chocolate'
+  | 'br-yellow'
+  | 'green'
   | 'lime'
-  | 'indigo'
-  | 'emerald'
-  | 'cyan'
-  | 'rose'
+  | 'teal'
+  | 'purple'
+  | 'magenta'
+  | 'orange'
+  | 'lavender'
 
+/**
+ * Cor de cada gênero, por família: Latinas no vermelho e azul da República Dominicana; Afro no
+ * preto, amarelo e terracota de Angola; BR no verde e amarelo do Brasil; os outros nas cores que
+ * sobram (roxo, magenta, laranja, lavanda). Valores em src/index.css (--color-genre-*).
+ */
 export const genreToPalette: Record<Genre, GenreColor> = {
-  Bachata: 'wine',
-  Bolero: 'pink',
-  Forró: 'brown',
-  Kizomba: 'dark-blue',
+  Latinas: 'dr-navy',
   Salsa: 'red',
-  Samba: 'yellow',
-  Semba: 'dark-green',
-  Swing: 'light-blue',
-  Tango: 'orange',
-  Zouk: 'purple',
-  'West Coast Swing': 'teal',
-  Latinas: 'coral',
-  Afro: 'lime',
-  Merengue: 'indigo',
-  BR: 'emerald',
-  'Urban Kiz': 'cyan',
-  'Salsa Cubana': 'rose',
+  'Salsa Cubana': 'wine',
+  Bachata: 'royal-blue',
+  Merengue: 'light-blue',
+  Afro: 'black-gold',
+  Kizomba: 'gold',
+  Semba: 'rust',
+  'Urban Kiz': 'chocolate',
+  BR: 'br-yellow',
+  Samba: 'green',
+  Forró: 'lime',
+  Zouk: 'teal',
+  Swing: 'purple',
+  Tango: 'magenta',
+  'West Coast Swing': 'orange',
+  Bolero: 'lavender',
 }
 
 /**

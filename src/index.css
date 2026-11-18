@@ -22,40 +22,60 @@
 
   --color-genre-neutral: var(--genre-neutral);
   --color-genre-neutral-fg: var(--genre-neutral-fg);
-  --color-genre-wine: var(--genre-wine);
-  --color-genre-wine-fg: #ffffff;
-  --color-genre-pink: #c2306f;
-  --color-genre-pink-fg: #ffffff;
-  --color-genre-brown: var(--genre-brown);
-  --color-genre-brown-fg: #ffffff;
-  --color-genre-dark-blue: var(--genre-dark-blue);
-  --color-genre-dark-blue-fg: #ffffff;
+  /* Latinas: azul da bandeira dominicana */
+  --color-genre-dr-navy: var(--genre-dr-navy);
+  --color-genre-dr-navy-fg: #ffffff;
+  /* Salsa: vermelho dominicano (também contadores e "cancelado") */
   --color-genre-red: #c62828;
   --color-genre-red-fg: #ffffff;
-  --color-genre-yellow: #f2c230;
-  --color-genre-yellow-fg: #2b2100;
-  --color-genre-dark-green: var(--genre-dark-green);
-  --color-genre-dark-green-fg: #ffffff;
-  --color-genre-light-blue: #7cc8f0;
-  --color-genre-light-blue-fg: #0b2a3c;
-  --color-genre-orange: #e8742a;
-  --color-genre-orange-fg: #2a1300;
-  --color-genre-purple: #7e3fb8;
-  --color-genre-purple-fg: #ffffff;
-  --color-genre-teal: #0b7d72;
-  --color-genre-teal-fg: #ffffff;
-  --color-genre-coral: #ff7a5c;
-  --color-genre-coral-fg: #2a0d07;
+  /* Salsa Cubana */
+  --color-genre-wine: var(--genre-wine);
+  --color-genre-wine-fg: #ffffff;
+  /* Bachata */
+  --color-genre-royal-blue: var(--genre-royal-blue);
+  --color-genre-royal-blue-fg: #ffffff;
+  /* Merengue */
+  --color-genre-light-blue: #9cc3eb;
+  --color-genre-light-blue-fg: #0b2a4a;
+  /* Afro: preto e amarelo de Angola */
+  --color-genre-black-gold: var(--genre-black-gold);
+  --color-genre-black-gold-fg: #ffcb00;
+  /* Kizomba */
+  --color-genre-gold: #ffcb00;
+  --color-genre-gold-fg: #1c1c1c;
+  /* Semba: terracota */
+  --color-genre-rust: #b4441c;
+  --color-genre-rust-fg: #ffffff;
+  /* Urban Kiz */
+  --color-genre-chocolate: var(--genre-chocolate);
+  --color-genre-chocolate-fg: #ffffff;
+  /* BR: amarelo e verde do Brasil */
+  --color-genre-br-yellow: #ffdf00;
+  --color-genre-br-yellow-fg: #00502a;
+  /* Samba */
+  --color-genre-green: #007a2f;
+  --color-genre-green-fg: #ffffff;
+  /* Forró */
   --color-genre-lime: #84cc16;
   --color-genre-lime-fg: #1a2e05;
-  --color-genre-indigo: #4f46e5;
-  --color-genre-indigo-fg: #ffffff;
-  --color-genre-emerald: #047857;
-  --color-genre-emerald-fg: #ffffff;
-  --color-genre-cyan: #0e7490;
-  --color-genre-cyan-fg: #ffffff;
-  --color-genre-rose: #be123c;
-  --color-genre-rose-fg: #ffffff;
+  /* Zouk */
+  --color-genre-teal: #0f766e;
+  --color-genre-teal-fg: #ffffff;
+  /* Swing */
+  --color-genre-purple: var(--genre-purple);
+  --color-genre-purple-fg: #ffffff;
+  /* Tango */
+  --color-genre-magenta: #c2306f;
+  --color-genre-magenta-fg: #ffffff;
+  /* West Coast Swing */
+  --color-genre-orange: #e8742a;
+  --color-genre-orange-fg: #2a1300;
+  /* Bolero */
+  --color-genre-lavender: #c4b5fd;
+  --color-genre-lavender-fg: #2e1065;
+  /* Amarelo de aviso (mudanças no evento, "adiado"); não é cor de gênero. */
+  --color-genre-yellow: #f2c230;
+  --color-genre-yellow-fg: #2b2100;
 }
 
 @layer base {
@@ -74,10 +94,12 @@
 
     --genre-neutral: #e2e8f0;
     --genre-neutral-fg: #334155;
-    --genre-wine: #8e2445;
-    --genre-brown: #8a5a2b;
-    --genre-dark-blue: #1e3a8a;
-    --genre-dark-green: #166534;
+    --genre-dr-navy: #002d62;
+    --genre-wine: #8e1b3a;
+    --genre-royal-blue: #1d4ed8;
+    --genre-black-gold: #1c1c1c;
+    --genre-chocolate: #5d3a1a;
+    --genre-purple: #7e3fb8;
   }
 
   [data-theme="dark"] {
@@ -93,13 +115,16 @@
     --header: #14162b;
     --header-fg: #eef0ff;
 
-    /* Cores escuras demais sobre o fundo azul-marinho ficam um tom mais claras. */
+    /* Cores escuras demais sobre o fundo azul-marinho ficam um tom mais claras (o preto do Afro vira
+       chumbo, mantendo o texto amarelo). */
     --genre-neutral: #3a3e66;
     --genre-neutral-fg: #e2e4ff;
+    --genre-dr-navy: #2f5597;
     --genre-wine: #b0345c;
-    --genre-brown: #9c6a38;
-    --genre-dark-blue: #3557c4;
-    --genre-dark-green: #1a7f45;
+    --genre-royal-blue: #3b6fe0;
+    --genre-black-gold: #454545;
+    --genre-chocolate: #8a5a2b;
+    --genre-purple: #8f52c9;
   }
 
   html {
