@@ -1,4 +1,4 @@
-import { ChevronRight, type LucideIcon, Tag } from 'lucide-react'
+import { ChevronRight, type LucideIcon, Tag, TicketX } from 'lucide-react'
 import { Link } from 'react-router'
 import { Card } from '../../components/ui/Card'
 import { siteUrl, useDocumentHead } from '../../seo/useDocumentHead'
@@ -18,6 +18,12 @@ const SECTIONS: Section[] = [
         title: 'Preços',
         description: 'Preços distintos dos eventos, com a versão em pt-BR e en-US e o que ficou sem tradução.',
         icon: Tag,
+      },
+      {
+        to: '/teste/sem-preco',
+        title: 'Eventos sem preço',
+        description: 'Eventos sem preço no título, com o trecho da descrição que cita valor, quando houver.',
+        icon: TicketX,
       },
     ],
   },

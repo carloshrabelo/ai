@@ -1,17 +1,10 @@
-import { useQuery } from '@tanstack/react-query'
-import { ArrowLeft } from 'lucide-react'
 import { useMemo, useState } from 'react'
-import { Link } from 'react-router'
 import { Button } from '../../components/ui/Button'
 import { Card } from '../../components/ui/Card'
-import { addDays, type IsoDate, isIsoDate, todayIso } from '../../data/dates'
-import { loadEvents } from '../../data/loadEvents'
 import { normalizePrice, translatePrice } from '../../i18n/price'
 import { siteUrl, useDocumentHead } from '../../seo/useDocumentHead'
-
-/** Período padrão: 3 meses para trás e 6 para frente. */
-const DAYS_BEFORE = 90
-const DAYS_AFTER = 180
+import { BackToTest, RangeFields } from './shared'
+import { useEventsInRange } from './useEventsInRange'
 
 type PriceRow = { price: string; count: number; pt: string; en: string; untranslated: boolean }
 
@@ -22,17 +15,8 @@ type PriceRow = { price: string; count: number; pt: string; en: string; untransl
  */
 export default function Prices() {
   useDocumentHead({ title: 'Preços (teste)', description: 'Lista de preços dos eventos', canonical: `${siteUrl()}teste/precos`, noindex: true })
-  const today = todayIso()
-  const [from, setFrom] = useState<IsoDate>(addDays(today, -DAYS_BEFORE))
-  const [to, setTo] = useState<IsoDate>(addDays(today, DAYS_AFTER))
+  const { query, ...range } = useEventsInRange()
   const [copied, setCopied] = useState<string | null>(null)
-
-  const query = useQuery({
-    queryKey: ['test-prices', from, to],
-    queryFn: ({ signal }) => loadEvents(from, to, signal),
-    enabled: from < to,
-    staleTime: Infinity,
-  })
 
   const { rows, withPrice, untranslated } = useMemo(() => {
     const counts = new Map<string, number>()
@@ -66,16 +50,10 @@ export default function Prices() {
 
   return (
     <section className="mx-auto max-w-5xl space-y-4">
-      <Link to="/teste" className="inline-flex items-center gap-1 text-sm font-medium text-brand hover:underline">
-        <ArrowLeft className="size-4" aria-hidden="true" />
-        Teste
-      </Link>
+      <BackToTest />
       <Card className="space-y-3">
         <h2 className="text-lg font-semibold">Preços dos eventos</h2>
-        <div className="flex flex-wrap items-end gap-3 text-sm">
-          <DateField label="De" value={from} onChange={setFrom} />
-          <DateField label="Até" value={to} onChange={setTo} />
-        </div>
+        <RangeFields {...range} />
         <p className="text-sm text-fg-muted">
           {query.isPending
             ? 'Carregando eventos…'
@@ -133,19 +111,5 @@ export default function Prices() {
         </Card>
       )}
     </section>
-  )
-}
-
-function DateField({ label, value, onChange }: { label: string; value: IsoDate; onChange: (value: IsoDate) => void }) {
-  return (
-    <label className="flex flex-col gap-1">
-      <span className="text-fg-muted">{label}</span>
-      <input
-        type="date"
-        value={value}
-        onChange={(e) => isIsoDate(e.target.value) && onChange(e.target.value)}
-        className="h-11 rounded-lg border border-border bg-surface px-3"
-      />
-    </label>
   )
 }
