@@ -67,6 +67,11 @@ export const router = createBrowserRouter(
                     handle: { title: () => 'Diretório de promotores (teste)' } satisfies RouteHandle,
                     lazy: { Component: async () => (await import('./pages/test/PromoterDirectory')).default },
                   },
+                  {
+                    path: 'aliases',
+                    handle: { title: () => 'Revisão de aliases (teste)' } satisfies RouteHandle,
+                    lazy: { Component: async () => (await import('./pages/test/AliasReview')).default },
+                  },
                 ],
               },
             ]

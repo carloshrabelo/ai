@@ -1,4 +1,4 @@
-import { BookUser, ChevronRight, type LucideIcon, Megaphone, Tag, TicketX } from 'lucide-react'
+import { BookUser, ChevronRight, SpellCheck, type LucideIcon, Megaphone, Tag, TicketX } from 'lucide-react'
 import { Link } from 'react-router'
 import { Card } from '../../components/ui/Card'
 import { siteUrl, useDocumentHead } from '../../seo/useDocumentHead'
@@ -48,6 +48,12 @@ const SECTIONS: Section[] = [
         title: 'Promotores: redes, locais e estilos',
         description: 'Um registro por perfil, com as redes sociais, os locais e os estilos dos eventos e o último evento.',
         icon: BookUser,
+      },
+      {
+        to: '/teste/aliases',
+        title: 'Revisão de aliases',
+        description: 'Eventos que citam um perfil com a grafia errada, com a grafia certa e o link do evento no Google Agenda.',
+        icon: SpellCheck,
       },
     ],
   },
