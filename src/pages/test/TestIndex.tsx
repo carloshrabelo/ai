@@ -50,9 +50,9 @@ const SECTIONS: Section[] = [
         icon: BookUser,
       },
       {
-        to: '/teste/aliases',
-        title: 'Revisão de aliases',
-        description: 'Eventos que citam um perfil com a grafia errada, com a grafia certa e o link do evento no Google Agenda.',
+        to: '/review',
+        title: 'Revisão do texto dos eventos (pública)',
+        description: 'Ortografia e perfis escritos errado, com o texto corrigido para copiar e o link do Google Agenda.',
         icon: SpellCheck,
       },
     ],

@@ -36,6 +36,13 @@ export const router = createBrowserRouter(
           handle: { title: (t) => t.nav.info } satisfies RouteHandle,
           lazy: { Component: async () => (await import('./pages/Info')).default },
         },
+        {
+          // Revisão do texto dos eventos (ortografia e perfis escritos errado): pública, mas sem link
+          // no app nem no sitemap, e com noindex.
+          path: 'review',
+          handle: { title: () => 'Revisão' } satisfies RouteHandle,
+          lazy: { Component: async () => (await import('./pages/Review')).default },
+        },
         // Área de teste (/teste e ferramentas), só com VITE_TEST_PAGES=true (fora disso, nem entra no build).
         ...(import.meta.env.VITE_TEST_PAGES === 'true'
           ? [
@@ -66,11 +73,6 @@ export const router = createBrowserRouter(
                     path: 'diretorio-promotores',
                     handle: { title: () => 'Diretório de promotores (teste)' } satisfies RouteHandle,
                     lazy: { Component: async () => (await import('./pages/test/PromoterDirectory')).default },
-                  },
-                  {
-                    path: 'aliases',
-                    handle: { title: () => 'Revisão de aliases (teste)' } satisfies RouteHandle,
-                    lazy: { Component: async () => (await import('./pages/test/AliasReview')).default },
                   },
                 ],
               },
