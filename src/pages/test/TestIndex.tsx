@@ -1,4 +1,4 @@
-import { BookUser, ChevronRight, Funnel, Shapes, SpellCheck, type LucideIcon, Megaphone, Tag, TicketX } from 'lucide-react'
+import { BookUser, ChevronRight, Shapes, SpellCheck, type LucideIcon, Megaphone, Tag, TicketX } from 'lucide-react'
 import { Link } from 'react-router'
 import { Card } from '../../components/ui/Card'
 import { siteUrl, useDocumentHead } from '../../seo/useDocumentHead'
@@ -18,12 +18,6 @@ const SECTIONS: Section[] = [
         title: 'Ícones e nomes',
         description: 'Sugestões de ícone para Dança e para o filtro, e de nome e ícone para Mapa e Sobre, com prévia.',
         icon: Shapes,
-      },
-      {
-        to: '/teste/filtros',
-        title: 'Filtros no computador',
-        description: 'Filtros na sidebar ou numa barra horizontal no topo da lista (uma linha com rolagem ou várias linhas).',
-        icon: Funnel,
       },
     ],
   },
