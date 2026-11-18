@@ -1,4 +1,4 @@
-import { SlidersHorizontal, X } from 'lucide-react'
+import { Funnel, X } from 'lucide-react'
 import { Card } from '../../components/ui/Card'
 import { ToggleChip } from '../../components/ui/Chip'
 import { FILTER_VALUES, type GenreFilterValue, OTHER_GENRES } from '../../domain/genreFilter'
@@ -26,7 +26,7 @@ export function GenreFilter({ plain = false }: { plain?: boolean } = {}) {
     // "plain": sem o card (dentro do drawer, que já tem fundo e bordas).
     <Container plain={plain}>
       <div className="flex items-center gap-2">
-        <SlidersHorizontal className="size-5 text-fg-muted" aria-hidden="true" />
+        <Funnel className="size-5 text-fg-muted" aria-hidden="true" />
         <h2 id="genre-filter-title" className="flex-1 text-sm font-semibold">
           {t.filters.title}
           {selected.length > 0 && <span className="font-normal text-fg-muted"> · {t.filters.active(selected.length)}</span>}

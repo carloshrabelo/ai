@@ -1,4 +1,4 @@
-import { SlidersHorizontal } from 'lucide-react'
+import { Funnel } from 'lucide-react'
 import { useI18n } from '../../i18n/useI18n'
 
 type Props = {
@@ -27,7 +27,7 @@ export function GenreFilterButton({ open, onToggle, controls, activeCount }: Pro
         open ? 'border-brand bg-brand text-brand-fg' : 'border-border bg-surface text-fg hover:bg-surface-muted'
       }`}
     >
-      <SlidersHorizontal className="size-6" aria-hidden="true" />
+      <Funnel className="size-6" aria-hidden="true" />
       {activeCount > 0 && (
         <span
           aria-hidden="true"

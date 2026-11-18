@@ -6,7 +6,7 @@ import type { Locale } from './locale'
  * Nomes de gêneros são nomes próprios e não são traduzidos, exceto "Outros".
  */
 const pt = {
-  nav: { main: 'Navegação principal', dance: 'Dança', map: 'Mapa', schools: 'Escolas', info: 'Info', sidebar: 'Menu e filtros', mapColumn: 'Mapa e detalhes do evento' },
+  nav: { main: 'Navegação principal', dance: 'Dança', map: 'Mapa', schools: 'Escolas', info: 'Sobre', sidebar: 'Menu e filtros', mapColumn: 'Mapa e detalhes do evento' },
   routes: { notFound: 'Página não encontrada' },
   dates: {
     shortcuts: 'Atalhos de dia',
@@ -151,7 +151,7 @@ const pt = {
 export type Messages = typeof pt
 
 const en: Messages = {
-  nav: { main: 'Main navigation', dance: 'Dance', map: 'Map', schools: 'Schools', info: 'Info', sidebar: 'Menu and filters', mapColumn: 'Map and event details' },
+  nav: { main: 'Main navigation', dance: 'Dance', map: 'Map', schools: 'Schools', info: 'About', sidebar: 'Menu and filters', mapColumn: 'Map and event details' },
   routes: { notFound: 'Page not found' },
   dates: {
     shortcuts: 'Day shortcuts',

@@ -1,4 +1,4 @@
-import { FlaskConical, Info, type LucideIcon, Map as MapIcon, Music } from 'lucide-react'
+import { Disc3, FlaskConical, Info, type LucideIcon, Map as MapIcon } from 'lucide-react'
 import type { Messages } from '../i18n/messages'
 
 export type NavItem = {
@@ -11,7 +11,7 @@ export type NavItem = {
 
 // "Escolas" (/escolas) está oculta até existir uma fonte de dados. A rota continua existindo.
 export const NAV_ITEMS: NavItem[] = [
-  { to: '/', label: (t) => t.nav.dance, icon: Music },
+  { to: '/', label: (t) => t.nav.dance, icon: Disc3 },
   { to: '/mapa', label: (t) => t.nav.map, icon: MapIcon, mobileOnly: true },
   { to: '/info', label: (t) => t.nav.info, icon: Info },
   // Área de teste (/teste), só com VITE_TEST_PAGES=true. Ferramenta interna: rótulo sem tradução.
