@@ -1,3 +1,5 @@
+import { eventPagePath } from '../domain/agenda'
+import type { Genre } from '../domain/genres'
 import { useEffect } from 'react'
 
 export type DocumentHead = {
@@ -15,7 +17,7 @@ export type DocumentHead = {
 export const siteUrl = () => new URL(import.meta.env.BASE_URL, window.location.origin).href
 
 /** URL compartilhável de um evento (página estática gerada no build). */
-export const eventUrl = (slug: string) => `${siteUrl()}evento/${encodeURIComponent(slug)}/`
+export const eventUrl = (event: { slug: string; genres: readonly Genre[] }) => `${siteUrl()}${eventPagePath(event)}`
 
 function setMeta(attribute: 'name' | 'property', key: string, content: string) {
   let element = document.head.querySelector<HTMLMetaElement>(`meta[${attribute}="${key}"]`)

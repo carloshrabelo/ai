@@ -90,7 +90,7 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
         <Tooltip label={t.event.addToCalendar} className="relative z-10 -mt-2 -mr-2 shrink-0">
           {/* Google Agenda já preenchido; no iPhone, baixa o .ics (Calendário do iOS). */}
           <a
-            href={googleCalendarUrl(event, eventUrl(event.slug))}
+            href={googleCalendarUrl(event, eventUrl(event))}
             target="_blank"
             rel="noopener noreferrer"
             aria-label={t.event.addToCalendarFor(event.title)}
@@ -99,7 +99,7 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
               trackEvent(event)
               if (detectPlatform() === 'ios') {
                 click.preventDefault()
-                downloadIcs(event, eventUrl(event.slug), slugify(event.title) || 'evento')
+                downloadIcs(event, eventUrl(event), slugify(event.title) || 'evento')
               }
             }}
           >

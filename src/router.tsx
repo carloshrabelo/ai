@@ -20,6 +20,15 @@ export const router = createBrowserRouter(
           children: [{ index: true }, { path: 'evento/:slug' }],
         },
         {
+          // Danças tradicionais europeias no país todo: a mesma página da Dança, com a outra agenda.
+          path: 'tradicionais',
+          id: 'tradicionais',
+          loader: eventsLoader,
+          handle: { title: (t) => t.nav.tradicionais } satisfies RouteHandle,
+          lazy: { Component: async () => (await import('./pages/Tradicionais')).default },
+          children: [{ index: true }, { path: 'evento/:slug' }],
+        },
+        {
           // Celular e tablet: mapa do dia com os eventos num carrossel.
           path: 'mapa',
           loader: eventsLoader,

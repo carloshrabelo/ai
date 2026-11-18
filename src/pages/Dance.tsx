@@ -1,4 +1,4 @@
-import { useCallback, useId, useLayoutEffect, useRef, useState } from 'react'
+import { useCallback, useId, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useLoaderData } from 'react-router'
 import type { EventsLoaderData } from '../data/eventsLoader'
 import { DayShortcuts } from '../features/dates/DayShortcuts'
@@ -19,21 +19,36 @@ import { MapPanel } from '../features/map/MapPanel'
 import { useMediaQuery, XL_QUERY } from '../hooks/useMediaQuery'
 import { SidebarPortal } from '../layouts/SidebarSlot'
 import { DanceHead } from '../seo/DanceHead'
+import type { Agenda } from '../domain/agenda'
+import type { GenreFilterValue } from '../domain/genreFilter'
+import { AgendaContext, useAgenda } from '../features/agenda/agendaContext'
 import { useI18n } from '../i18n/useI18n'
 import { BottomSheet } from '../components/ui/BottomSheet'
 import { Button } from '../components/ui/Button'
 import { ChangesBanner } from '../features/tracking/ChangesBanner'
 
-/** Rota "/" — eventos de dança. Um feed novo (e estado novo) para cada data inicial. */
-export default function Dance() {
+/**
+ * Rota "/" — eventos de dança. Um feed novo (e estado novo) para cada data inicial.
+ * A mesma página serve a agenda de danças tradicionais (/tradicionais, ver Tradicionais.tsx).
+ */
+export default function Dance({ agenda = 'dance' }: { agenda?: Agenda }) {
   const { startDate, today } = useLoaderData() as EventsLoaderData
-  return <DanceFeed key={startDate} startDate={startDate} today={today} />
+  return (
+    <AgendaContext value={agenda}>
+      <DanceFeed key={startDate} startDate={startDate} today={today} />
+    </AgendaContext>
+  )
 }
 
 function DanceFeed({ startDate, today }: EventsLoaderData) {
   const stickyRef = useRef<HTMLDivElement>(null)
   const { activeDay, selectDay } = useDayNavigation(startDate, stickyRef)
-  const { selected: genres } = useGenreFilter()
+  const agenda = useAgenda()
+  // Tradicionais: um gênero só, sem filtro (o feed usa o próprio gênero como filtro fixo, e a busca
+  // automática pausa depois de semanas sem eventos dele).
+  const { selected } = useGenreFilter()
+  const genres = useMemo<GenreFilterValue[]>(() => (agenda === 'tradicionais' ? ['Tradicionais'] : selected), [agenda, selected])
+  const showFilters = agenda === 'dance'
   const { selectedSlug: selectedInUrl, open, close } = useSelectedEvent()
   useLegacyEventRedirect(startDate)
 
@@ -85,20 +100,22 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
             activeDay={activeDay}
             onSelect={selectDay}
             actions={
-              <GenreFilterButton
-                open={filtersOpen}
-                onToggle={() => setFiltersOpen((value) => !value)}
-                controls={filtersId}
-                activeCount={genres.length}
-              />
+              showFilters && (
+                <GenreFilterButton
+                  open={filtersOpen}
+                  onToggle={() => setFiltersOpen((value) => !value)}
+                  controls={filtersId}
+                  activeCount={genres.length}
+                />
+              )
             }
           />
 
           {/* A partir de `xl`: popover logo abaixo da faixa de dias. */}
-          {isXl && filtersOpen && <GenreFilterPopover id={filtersId} onClose={closeFilters} />}
+          {showFilters && isXl && filtersOpen && <GenreFilterPopover id={filtersId} onClose={closeFilters} />}
 
           {/* Até 1279px: os filtros abrem num drawer que sobe de baixo. */}
-          {!isXl && filtersOpen && (
+          {showFilters && !isXl && filtersOpen && (
             <BottomSheet
               id={filtersId}
               label={t.filters.title}

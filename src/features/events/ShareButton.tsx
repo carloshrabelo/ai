@@ -22,7 +22,7 @@ export function ShareButton({ event }: { event: DanceEvent }) {
   }, [copied])
 
   const share = async () => {
-    const url = eventUrl(event.slug)
+    const url = eventUrl(event)
     const when = `${formatDayHeading(lisbonDate(event.start), locale)}, ${formatTimeRange(event, locale)}`
     const text = [event.title, when, event.venue?.name].filter(Boolean).join(' · ')
 

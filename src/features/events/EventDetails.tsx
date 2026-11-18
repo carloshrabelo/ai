@@ -84,7 +84,7 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
         <p className="text-sm font-medium">{t.event.addToCalendar}</p>
         <div className="flex flex-wrap gap-2">
           <a
-            href={googleCalendarUrl(event, eventUrl(event.slug))}
+            href={googleCalendarUrl(event, eventUrl(event))}
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => {
@@ -99,7 +99,7 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
             variant="secondary"
             onClick={() => {
               trackEvent(event)
-              downloadIcs(event, eventUrl(event.slug), slugify(event.title) || 'evento')
+              downloadIcs(event, eventUrl(event), slugify(event.title) || 'evento')
             }}
           >
             <Download className="size-5" aria-hidden="true" />
