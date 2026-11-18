@@ -1,4 +1,4 @@
-import { ChevronRight, type LucideIcon, Tag, TicketX } from 'lucide-react'
+import { ChevronRight, type LucideIcon, Megaphone, Tag, TicketX } from 'lucide-react'
 import { Link } from 'react-router'
 import { Card } from '../../components/ui/Card'
 import { siteUrl, useDocumentHead } from '../../seo/useDocumentHead'
@@ -24,6 +24,18 @@ const SECTIONS: Section[] = [
         title: 'Eventos sem preço',
         description: 'Eventos sem preço no título, com o trecho da descrição que cita valor, quando houver.',
         icon: TicketX,
+      },
+    ],
+  },
+  {
+    title: 'Promotores',
+    description: 'Quem organiza cada evento, lido da descrição (src/domain/promoters.ts).',
+    tools: [
+      {
+        to: '/teste/promotores',
+        title: 'Responsáveis pelos eventos',
+        description: 'Perfis do Instagram e "Organização: …" citados nos eventos, por promotor ou por evento.',
+        icon: Megaphone,
       },
     ],
   },
