@@ -21,6 +21,10 @@ const FREE_PHRASES: RegExp[] = [
   new RegExp(`\\bfree\\s+(?:entry|entrance|admission)\\b${NOT_PARTIAL}`, 'iu'),
   // "𝐏𝐫𝐢𝐜𝐞: Free!", "Preço: grátis"
   new RegExp(`\\b(?:price|pre[cç]o)\\s*:?\\s*${FREE}\\b${NOT_PARTIAL}`, 'iu'),
+  // "FREE TO ATTEND."
+  new RegExp(`\\bfree\\s+to\\s+attend\\b${NOT_PARTIAL}`, 'iu'),
+  // "🎟️ FREE COMMUNITY EVENT"
+  /\bfree\s+community\b/iu,
 ]
 
 /**

@@ -12,6 +12,9 @@ describe('priceFromDescription', () => {
     'Preço: grátis',
     'Entrada livre para todos',
     'Free entry for everyone!',
+    'FREE TO ATTEND.',
+    '🎟️ FREE COMMUNITY EVENT',
+    '🎟️ FREE COMMUNITY',
   ])('entrada gratuita: %s', (text) => {
     expect(priceFromDescription(text)).toBe('Gratuito')
   })
@@ -21,6 +24,7 @@ describe('priceFromDescription', () => {
     'Entrada grátis até às 22h',
     'Entrada grátis para sócios',
     'Free class before the party',
+    'Free to attend until 22h',
     'Entrada 5€',
     'Dança livre a noite toda',
     '',
