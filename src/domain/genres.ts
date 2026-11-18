@@ -14,6 +14,7 @@ export const GENRES = [
   'Tango',
   'West Coast Swing',
   'Bolero',
+  'Tradicionais',
   'Samba',
   'BR',
 ] as const
@@ -47,6 +48,13 @@ export const ALIAS: Record<string, string> = {
   FORRO: 'FORRÓ',
   SWINGADO: '',
   SHAG: 'SWING',
+  // Danças tradicionais europeias (calendário europeias.agenda@gmail.com).
+  'DANÇAS TRADICIONAIS EUROPEIAS': 'TRADICIONAIS',
+  'DANÇAS TRADICIONAIS': 'TRADICIONAIS',
+  'DANÇAS EUROPEIAS': 'TRADICIONAIS',
+  'BALL-TRAD': 'TRADICIONAIS',
+  'BAL FOLK': 'TRADICIONAIS',
+  BALFOLK: 'TRADICIONAIS',
 }
 
 export type GenreColor =
@@ -67,11 +75,12 @@ export type GenreColor =
   | 'magenta'
   | 'orange'
   | 'lavender'
+  | 'olive'
 
 /**
  * Cor de cada gênero, por família: Latinas no vermelho e azul da República Dominicana; Afro no
  * preto, amarelo e terracota de Angola; BR no verde e amarelo do Brasil; os outros nas cores que
- * sobram (roxo, magenta, laranja, lavanda). Valores em src/index.css (--color-genre-*).
+ * sobram (roxo, magenta, laranja, lavanda, oliva). Valores em src/index.css (--color-genre-*).
  */
 export const genreToPalette: Record<Genre, GenreColor> = {
   Latinas: 'dr-navy',
@@ -91,6 +100,7 @@ export const genreToPalette: Record<Genre, GenreColor> = {
   Tango: 'magenta',
   'West Coast Swing': 'orange',
   Bolero: 'lavender',
+  Tradicionais: 'olive',
 }
 
 /**

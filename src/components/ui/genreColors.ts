@@ -20,6 +20,7 @@ const COLOR_CLASSES: Record<GenreColor | 'neutral', string> = {
   magenta: 'bg-genre-magenta text-genre-magenta-fg',
   orange: 'bg-genre-orange text-genre-orange-fg',
   lavender: 'bg-genre-lavender text-genre-lavender-fg',
+  olive: 'bg-genre-olive text-genre-olive-fg',
 }
 
 /** Classes de cor do gênero (ou neutras quando não há gênero). */

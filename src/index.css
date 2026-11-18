@@ -73,6 +73,9 @@
   /* Bolero */
   --color-genre-lavender: #c4b5fd;
   --color-genre-lavender-fg: #2e1065;
+  /* Tradicionais (danças europeias) */
+  --color-genre-olive: #556b2f;
+  --color-genre-olive-fg: #ffffff;
   /* Amarelo de aviso (mudanças no evento, "adiado"); não é cor de gênero. */
   --color-genre-yellow: #f2c230;
   --color-genre-yellow-fg: #2b2100;

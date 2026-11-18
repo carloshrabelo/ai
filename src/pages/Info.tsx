@@ -22,6 +22,17 @@ export default function Info() {
           {t.info.maintainedBy} <ExternalLink href="https://www.instagram.com/ateterca/">@ateterca</ExternalLink>.
         </p>
         <p className="text-sm text-fg-muted">
+          {t.info.moreCalendars}{' '}
+          <ExternalLink href="https://calendar.google.com/calendar/embed?src=agendatangolx%40gmail.com&ctz=Europe%2FLisbon">
+            agendatangolx
+          </ExternalLink>{' '}
+          {t.info.and}{' '}
+          <ExternalLink href="https://calendar.google.com/calendar/embed?src=europeias.agenda%40gmail.com&ctz=Europe%2FLisbon">
+            europeias.agenda
+          </ExternalLink>
+          .
+        </p>
+        <p className="text-sm text-fg-muted">
           {t.info.developedBy} <ExternalLink href="https://carloshrabelo.dev/">carloshrabelo.dev</ExternalLink>.
         </p>
       </Card>

@@ -43,6 +43,7 @@
 ## Dados e créditos
 
 - Eventos do calendário público do [pasdedeux.pt](https://pasdedeux.pt/), mantido por [@ateterca](https://www.instagram.com/ateterca/), lidos pela Google Calendar API.
+- Também os calendários públicos de tango (`agendatangolx@gmail.com`) e de danças tradicionais europeias (`europeias.agenda@gmail.com`). Cada um tem um adaptador (`src/domain/calendarSources.ts`) que converte o evento para o formato do principal (tag, nome e preço no título; local; hora).
 - Mapa e coordenadas: © colaboradores do [OpenStreetMap](https://www.openstreetmap.org/copyright) (tiles do OSM, Nominatim e Photon).
 - Desenvolvido por [carloshrabelo.dev](https://carloshrabelo.dev/).
 

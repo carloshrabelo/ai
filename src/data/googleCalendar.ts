@@ -1,3 +1,4 @@
+import { fromTangoLx, fromTradicionais, TANGO_CALENDAR_ID, TRADICIONAIS_CALENDAR_ID } from '../domain/calendarSources'
 import { CALENDAR_ID, GOOGLE_API_KEY, MOCK_DELAY_MS, USE_MOCK } from './config'
 import { lisbonMidnight, todayIso } from './dates'
 import { shiftMockEvents } from './mockDates'
@@ -29,23 +30,52 @@ export type FetchEventsParams = {
   signal?: AbortSignal
 }
 
-const API_URL = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(CALENDAR_ID)}/events`
+/**
+ * Calendários lidos: o principal (pasdedeux.pt) e outros públicos, cada um com um adaptador que
+ * converte o evento para o formato do principal (ver src/domain/calendarSources.ts).
+ */
+const SOURCES: { calendarId: string; adapt?: (event: GCalEvent) => GCalEvent }[] = [
+  { calendarId: CALENDAR_ID },
+  { calendarId: TRADICIONAIS_CALENDAR_ID, adapt: fromTradicionais },
+  { calendarId: TANGO_CALENDAR_ID, adapt: fromTangoLx },
+]
 
 /** Eventos que se sobrepõem a [timeMin, timeMax), ordenados pelo início. */
 export function fetchEvents(params: FetchEventsParams): Promise<GCalEvent[]> {
-  return USE_MOCK ? fetchMockEvents(params) : fetchApiEvents(params)
+  return USE_MOCK ? fetchMockEvents(params) : fetchAllCalendars(params)
 }
 
 // ---------------------------------------------------------------------------
 // API
 
-async function fetchApiEvents({ timeMin, timeMax, signal }: FetchEventsParams): Promise<GCalEvent[]> {
+/**
+ * Todos os calendários em paralelo, juntos e ordenados pelo início. Se um calendário extra falhar,
+ * a agenda segue com os outros; só o principal derruba a busca.
+ */
+async function fetchAllCalendars(params: FetchEventsParams): Promise<GCalEvent[]> {
+  const results = await Promise.allSettled(
+    SOURCES.map(async ({ calendarId, adapt }) => {
+      const items = await fetchApiEvents(calendarId, params)
+      return adapt ? items.map(adapt) : items
+    }),
+  )
+  const [main] = results
+  if (main.status === 'rejected') throw main.reason
+  const items: GCalEvent[] = []
+  results.forEach((result, index) => {
+    if (result.status === 'fulfilled') items.push(...result.value)
+    else if (!params.signal?.aborted) console.warn(`Calendário ${SOURCES[index].calendarId} indisponível:`, result.reason)
+  })
+  return items.sort((a, b) => startOf(a).getTime() - startOf(b).getTime())
+}
+
+async function fetchApiEvents(calendarId: string, { timeMin, timeMax, signal }: FetchEventsParams): Promise<GCalEvent[]> {
   const items: GCalEvent[] = []
   let pageToken: string | undefined
 
   // A API pagina dentro da janela: segue o nextPageToken até o fim.
   do {
-    const url = new URL(API_URL)
+    const url = new URL(`https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events`)
     url.search = new URLSearchParams({
       key: GOOGLE_API_KEY,
       singleEvents: 'true',
