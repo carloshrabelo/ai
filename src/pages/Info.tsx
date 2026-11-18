@@ -23,9 +23,7 @@ export default function Info() {
         </p>
         <p className="text-sm text-fg-muted">
           {t.info.moreCalendars}{' '}
-          <ExternalLink href="https://calendar.google.com/calendar/embed?src=agendatangolx%40gmail.com&ctz=Europe%2FLisbon">
-            agendatangolx
-          </ExternalLink>{' '}
+          <ExternalLink href="https://www.tangolx.com/">tangolx.com</ExternalLink>{' '}
           {t.info.and}{' '}
           <ExternalLink href="https://calendar.google.com/calendar/embed?src=europeias.agenda%40gmail.com&ctz=Europe%2FLisbon">
             europeias.agenda
