@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Outlet, useNavigation } from 'react-router'
 import BottomNav from '../components/BottomNav'
 import Header from '../components/Header'
@@ -12,12 +12,14 @@ import { SidebarSlotContext } from './sidebarSlotContext'
  */
 export default function AppLayout() {
   const navigation = useNavigation()
-  const [sidebarSlot, setSidebarSlot] = useState<HTMLElement | null>(null)
+  const [top, setTop] = useState<HTMLElement | null>(null)
+  const [bottom, setBottom] = useState<HTMLElement | null>(null)
+  const slots = useMemo(() => ({ top, bottom }), [top, bottom])
 
   return (
-    <SidebarSlotContext value={sidebarSlot}>
+    <SidebarSlotContext value={slots}>
       <div className="min-h-dvh xl:flex">
-        <Sidebar slotRef={setSidebarSlot} />
+        <Sidebar slotRef={setTop} bottomSlotRef={setBottom} />
 
         <div className="flex min-w-0 flex-1 flex-col">
           <Header />

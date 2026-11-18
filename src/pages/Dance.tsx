@@ -73,10 +73,11 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
     <div className="flex gap-6">
       <DanceHead startDate={startDate} selectedSlug={selectedSlug} />
       <div className="min-w-0 flex-1 space-y-4">
-        {/* Fixo logo abaixo do header enquanto a lista rola. */}
+        {/* Fixo logo abaixo do header enquanto a lista rola. flex + gap (e não space-y): o popover de
+            filtros, absoluto, não muda o espaçamento dos outros ao abrir. */}
         <div
           ref={stickyRef}
-          className="sticky top-[calc(3.5rem+env(safe-area-inset-top))] z-[5] -mx-4 space-y-2 bg-bg px-4 py-2 md:-mx-6 md:px-6 xl:-mr-6 xl:-ml-8 xl:pr-6 xl:pl-8"
+          className="sticky top-[calc(3.5rem+env(safe-area-inset-top))] z-[5] -mx-4 flex flex-col gap-2 bg-bg px-4 py-2 md:-mx-6 md:px-6 xl:-mr-6 xl:-ml-8 xl:pr-6 xl:pl-8"
         >
           <div className="xl:hidden">{shortcuts}</div>
           <WeekStrip
@@ -115,6 +116,8 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
 
         <SidebarPortal>
           {shortcuts}
+        </SidebarPortal>
+        <SidebarPortal position="bottom">
           <Card variant="panel">
             <LocationControl />
           </Card>

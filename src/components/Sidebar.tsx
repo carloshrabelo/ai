@@ -7,7 +7,9 @@ import { useI18n } from '../i18n/useI18n'
 const FOCUS = 'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand'
 
 /** Coluna lateral a partir de `xl` (1280px): nome do app, conteúdo da página (slot) e navegação. */
-export default function Sidebar({ slotRef }: { slotRef: (element: HTMLElement | null) => void }) {
+type SlotRef = (element: HTMLElement | null) => void
+
+export default function Sidebar({ slotRef, bottomSlotRef }: { slotRef: SlotRef; bottomSlotRef: SlotRef }) {
   const { t } = useI18n()
   return (
     <aside aria-label={t.nav.sidebar} className="sticky top-0 hidden h-dvh w-72 shrink-0 flex-col gap-6 overflow-y-auto border-r border-border bg-surface-muted px-4 pb-6 xl:flex">
@@ -39,6 +41,9 @@ export default function Sidebar({ slotRef }: { slotRef: (element: HTMLElement | 
           ))}
         </ul>
       </nav>
+
+      {/* Conteúdo da página no fim da coluna (ex.: distâncias na rota Dança). */}
+      <div ref={bottomSlotRef} className="mt-auto space-y-4 empty:hidden" />
     </aside>
   )
 }
