@@ -1,4 +1,4 @@
-import { expandGenres, GENRE_INCLUDES, GENRES, type Genre, genreSlug } from './genres'
+import { expandGenres, GENRE_GROUPS, GENRE_INCLUDES, GENRES, type Genre, genreSlug } from './genres'
 
 /** Nome do parâmetro na URL: ?genres=salsa,west-coast-swing,outros */
 export const GENRES_PARAM = 'genres'
@@ -28,11 +28,40 @@ export function normalizeSlug(text: string): string {
     .replace(/-+/g, '-')
 }
 
+/** Estilo → conjunto que o inclui (Salsa, Salsa Cubana → Latinas). */
+const UMBRELLA_OF = new Map<GenreFilterValue, Genre>(
+  GENRE_GROUPS.flatMap(({ umbrella, genres }) => genres.map((genre) => [genre, umbrella] as const)),
+)
+
+/**
+ * Conjunto marcado que já inclui este estilo, se houver. Com "Latinas" marcada, Salsa, Bachata etc.
+ * aparecem marcados e bloqueados no filtro: o conjunto já traz o grupo todo.
+ */
+export function coveringUmbrella(value: GenreFilterValue, selected: readonly GenreFilterValue[]): Genre | undefined {
+  const umbrella = UMBRELLA_OF.get(value)
+  return umbrella && selected.includes(umbrella) ? umbrella : undefined
+}
+
+/** Tira os estilos já incluídos num conjunto marcado ("latinas,salsa" → "latinas"). */
+function withoutCovered(values: readonly GenreFilterValue[]): GenreFilterValue[] {
+  return values.filter((value) => !coveringUmbrella(value, values))
+}
+
+/**
+ * Marca ou desmarca uma opção. Marcar um conjunto tira os estilos dele que estavam marcados
+ * (redundantes); estilo incluído num conjunto marcado não muda (fica bloqueado).
+ */
+export function toggleFilter(selected: readonly GenreFilterValue[], value: GenreFilterValue): GenreFilterValue[] {
+  if (coveringUmbrella(value, selected)) return [...selected]
+  return selected.includes(value) ? selected.filter((item) => item !== value) : withoutCovered([...selected, value])
+}
+
 const BY_SLUG = new Map(FILTER_VALUES.map((value) => [filterSlug(value), value]))
 
 /**
  * Valor cru do parâmetro → opções válidas, sem repetição, na ordem de FILTER_VALUES.
- * Cada item é normalizado (caixa baixa, sem acento); o que não bate com nenhuma opção é descartado.
+ * Cada item é normalizado (caixa baixa, sem acento); o que não bate com nenhuma opção é descartado,
+ * e estilos incluídos num conjunto também marcado saem ("latinas,salsa" → Latinas).
  */
 export function parseGenresParam(raw: string | null): GenreFilterValue[] {
   if (!raw) return []
@@ -42,12 +71,12 @@ export function parseGenresParam(raw: string | null): GenreFilterValue[] {
       .map((part) => BY_SLUG.get(normalizeSlug(part)))
       .filter((value): value is GenreFilterValue => !!value),
   )
-  return FILTER_VALUES.filter((value) => found.has(value))
+  return withoutCovered(FILTER_VALUES.filter((value) => found.has(value)))
 }
 
 /** Opções → valor canônico do parâmetro ('' quando vazio). */
 export function genresToParam(values: readonly GenreFilterValue[]): string {
-  return FILTER_VALUES.filter((value) => values.includes(value)).map(filterSlug).join(',')
+  return withoutCovered(FILTER_VALUES.filter((value) => values.includes(value))).map(filterSlug).join(',')
 }
 
 /**

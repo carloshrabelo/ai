@@ -1,8 +1,8 @@
-import { Funnel, X } from 'lucide-react'
+import { Funnel, FunnelX } from 'lucide-react'
 import { Card } from '../../components/ui/Card'
 import { ToggleChip } from '../../components/ui/Chip'
 import { FILTER_VALUES, type GenreFilterValue, OTHER_GENRES } from '../../domain/genreFilter'
-import { GENRE_GROUPS } from '../../domain/genres'
+import { type Genre, GENRE_GROUPS } from '../../domain/genres'
 import { LocationControl } from '../location/LocationControl'
 import { useGenreFilter } from './useGenreFilter'
 import { useI18n } from '../../i18n/useI18n'
@@ -37,7 +37,7 @@ export function GenreFilter({ plain = false }: { plain?: boolean } = {}) {
             onClick={clear}
             className="-my-2 -mr-2 inline-flex h-11 cursor-pointer items-center gap-1 rounded-lg px-3 text-sm font-medium text-brand hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-brand"
           >
-            <X className="size-4" aria-hidden="true" />
+            <FunnelX className="size-4" aria-hidden="true" />
             {t.filters.clear}
           </button>
         )}
@@ -61,7 +61,7 @@ export function GenreFilter({ plain = false }: { plain?: boolean } = {}) {
               </div>
               <div className="flex flex-wrap gap-2">
                 {members.map((genre) => (
-                  <ToggleChip key={genre} genre={genre} pressed={selected.includes(genre)} onClick={() => toggle(genre)} />
+                  <MemberChip key={genre} genre={genre} umbrella={umbrella} selected={selected} onToggle={toggle} />
                 ))}
               </div>
             </div>
@@ -106,5 +106,33 @@ function Container({ plain, children }: { plain: boolean; children: ReactNode })
     <Card variant="panel" as="section" aria-labelledby="genre-filter-title" className="space-y-2">
       {children}
     </Card>
+  )
+}
+
+/**
+ * Estilo de um conjunto. Com o conjunto marcado, aparece marcado e bloqueado ("Incluído em Latinas"):
+ * o conjunto já traz o grupo todo.
+ */
+function MemberChip({
+  genre,
+  umbrella,
+  selected,
+  onToggle,
+}: {
+  genre: Genre
+  umbrella: Genre
+  selected: readonly GenreFilterValue[]
+  onToggle: (genre: GenreFilterValue) => void
+}) {
+  const { t } = useI18n()
+  const locked = selected.includes(umbrella)
+  return (
+    <ToggleChip
+      genre={genre}
+      pressed={locked || selected.includes(genre)}
+      disabled={locked}
+      title={locked ? t.filters.includedIn(umbrella) : undefined}
+      onClick={() => onToggle(genre)}
+    />
   )
 }

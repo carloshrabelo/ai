@@ -5,6 +5,7 @@ import {
   type GenreFilterValue,
   genresToParam,
   parseGenresParam,
+  toggleFilter,
   toSearchString,
 } from '../../domain/genreFilter'
 
@@ -31,10 +32,7 @@ export function useGenreFilter() {
   )
 
   const toggle = useCallback(
-    (genre: GenreFilterValue) => {
-      const adding = !selected.includes(genre)
-      update(adding ? [...selected, genre] : selected.filter((g) => g !== genre))
-    },
+    (genre: GenreFilterValue) => update(toggleFilter(selected, genre)),
     [selected, update],
   )
 

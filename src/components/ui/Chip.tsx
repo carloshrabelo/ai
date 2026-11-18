@@ -53,7 +53,7 @@ export function ToggleChip({ genre, label, pressed, variant = 'genre', className
     <button
       type="button"
       aria-pressed={pressed}
-      className={`${BASE} h-8 cursor-pointer transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${shape} ${state} ${className}`}
+      className={`${BASE} h-8 cursor-pointer transition-colors disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${shape} ${state} ${className}`}
       {...props}
     >
       <ChipLabel genre={genre} label={label} />

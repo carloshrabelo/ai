@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { canonicalGenresSearch, genresToParam, matchesGenres, normalizeSlug, parseGenresParam } from './genreFilter'
+import { canonicalGenresSearch, coveringUmbrella, genresToParam, matchesGenres, normalizeSlug, parseGenresParam, toggleFilter } from './genreFilter'
 
 describe('normalizeSlug', () => {
   it.each([
@@ -149,5 +149,28 @@ describe('matchesGenres', () => {
 
   it('evento sem gênero some quando há filtro', () => {
     expect(matchesGenres([], ['Salsa'])).toBe(false)
+  })
+})
+
+describe('conjunto marcado inclui os estilos dele', () => {
+  it('marcar o conjunto tira os estilos dele já marcados; os de outros conjuntos ficam', () => {
+    expect(toggleFilter(['Salsa', 'Bachata', 'Kizomba'], 'Latinas')).toEqual(['Kizomba', 'Latinas'])
+  })
+
+  it('estilo incluído num conjunto marcado fica bloqueado (não muda)', () => {
+    expect(toggleFilter(['Latinas'], 'Salsa')).toEqual(['Latinas'])
+    expect(toggleFilter(['Latinas'], 'Salsa Cubana')).toEqual(['Latinas'])
+    expect(coveringUmbrella('Salsa Cubana', ['Latinas'])).toBe('Latinas')
+    expect(coveringUmbrella('Kizomba', ['Latinas'])).toBeUndefined()
+  })
+
+  it('desmarcar o conjunto libera os estilos', () => {
+    expect(toggleFilter(['Latinas'], 'Latinas')).toEqual([])
+    expect(toggleFilter([], 'Salsa')).toEqual(['Salsa'])
+  })
+
+  it('link antigo "latinas,salsa" vira só Latinas', () => {
+    expect(parseGenresParam('latinas,salsa,kizomba')).toEqual(['Latinas', 'Kizomba'])
+    expect(genresToParam(['Salsa', 'Latinas'])).toBe('latinas')
   })
 })
