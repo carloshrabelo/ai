@@ -69,6 +69,11 @@
     "lat": 38.751852,
     "lng": -9.125493
   },
+  "Casa do Concelho de Tomar, R. Flores do Lima 8, 1700-196 Lisboa, Portugal": {
+    "name": "Casa do Concelho de Tomar",
+    "lat": 38.748133,
+    "lng": -9.145282
+  },
   "Complexo Municipal dos Desportos da Cidade de Almada, Alameda de Guerra Junqueiro 35, 2810-075 Almada, Portugal": {
     "name": "Complexo Municipal dos Desportos da Cidade de Almada",
     "lat": 38.659425,
@@ -168,6 +173,11 @@
     "name": "Recreios Desportivos da Trafaria - Casino",
     "lat": 38.672598,
     "lng": -9.231537
+  },
+  "Smile & Move, Rua Túlipas 52, 2775-668 Carcavelos": {
+    "name": "Smile & Move",
+    "lat": 38.684175,
+    "lng": -9.329564
   },
   "Split Sky Club, R. Guilherme Gomes Fernandes 13, 2900-633 Setúbal, Portugal": {
     "name": "Split Sky Club",
