@@ -28,7 +28,8 @@ export default function Info() {
           <ExternalLink href="https://calendar.google.com/calendar/embed?src=europeias.agenda%40gmail.com&ctz=Europe%2FLisbon">
             europeias.agenda
           </ExternalLink>
-          .
+          {' '}
+          ({t.info.maintainedBy} Luís Manuel Guerra).
         </p>
         <p className="text-sm text-fg-muted">
           {t.info.developedBy} <ExternalLink href="https://carloshrabelo.dev/">carloshrabelo.dev</ExternalLink>.
