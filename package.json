@@ -10,6 +10,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "venues:check": "node scripts/venues-check.mjs",
+    "promoters:update": "node scripts/promoters-update.mjs",
     "a11y": "node scripts/a11y-check.mjs",
     "preview": "vite preview --host",
     "generate-pwa-assets": "pwa-assets-generator"

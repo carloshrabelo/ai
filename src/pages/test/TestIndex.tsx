@@ -1,4 +1,4 @@
-import { ChevronRight, type LucideIcon, Megaphone, Tag, TicketX } from 'lucide-react'
+import { BookUser, ChevronRight, type LucideIcon, Megaphone, Tag, TicketX } from 'lucide-react'
 import { Link } from 'react-router'
 import { Card } from '../../components/ui/Card'
 import { siteUrl, useDocumentHead } from '../../seo/useDocumentHead'
@@ -36,6 +36,18 @@ const SECTIONS: Section[] = [
         title: 'Responsáveis pelos eventos',
         description: 'Perfis do Instagram e "Organização: …" citados nos eventos, por promotor ou por evento.',
         icon: Megaphone,
+      },
+    ],
+  },
+  {
+    title: 'Diretório de promotores',
+    description: 'src/data/promoters.json, atualizado todo dia pela Action "Update promoters" (pnpm promoters:update).',
+    tools: [
+      {
+        to: '/teste/diretorio-promotores',
+        title: 'Promotores: redes, locais e estilos',
+        description: 'Um registro por perfil, com as redes sociais, os locais e os estilos dos eventos e o último evento.',
+        icon: BookUser,
       },
     ],
   },

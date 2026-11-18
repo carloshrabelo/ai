@@ -5,16 +5,19 @@ import { Segmented } from '../../components/ui/Segmented'
 import { lisbonDate } from '../../data/dates'
 import type { DanceEvent } from '../../domain/event'
 import { visibleGenres } from '../../domain/genres'
-import { type EventPromoters, extractPromoters } from '../../domain/promoters'
+import { mainRole } from '../../domain/promoterDirectory'
+import { type EventPromoters, extractPromoters, type Role, ROLES } from '../../domain/promoters'
 import { formatDayHeading, formatTimeRange } from '../../features/events/format'
 import { eventPath } from '../../features/events/useSelectedEvent'
 import { siteUrl, useDocumentHead } from '../../seo/useDocumentHead'
+import type { RoleFilter } from './roleLabels'
+import { RoleSelect, RoleTag } from './roles'
 import { BackToTest, RangeFields } from './shared'
 import { useEventsInRange } from './useEventsInRange'
 
 type View = 'promoters' | 'events'
 type EventRow = { event: DanceEvent; summary: string } & EventPromoters
-type PromoterRow = { handle: string; events: DanceEvent[]; titles: number; genres: string[]; venues: string[] }
+type PromoterRow = { handle: string; role: Role; events: DanceEvent[]; titles: number; genres: string[]; venues: string[] }
 
 const TH = 'px-4 py-2 font-medium'
 const TD = 'px-4 py-2 align-top'
@@ -41,6 +44,7 @@ export default function Promoters() {
   const [search, setSearch] = useState('')
   const [onlyMissing, setOnlyMissing] = useState(false)
   const [expanded, setExpanded] = useState<string | null>(null)
+  const [role, setRole] = useState<RoleFilter>('promoter')
 
   const eventRows = useMemo<EventRow[]>(
     () =>
@@ -53,13 +57,19 @@ export default function Promoters() {
   )
 
   const promoterRows = useMemo<PromoterRow[]>(() => {
-    const byHandle = new Map<string, DanceEvent[]>()
-    for (const { event, handles } of eventRows) {
-      for (const handle of handles) byHandle.set(handle, [...(byHandle.get(handle) ?? []), event])
+    const byHandle = new Map<string, { events: DanceEvent[]; roles: Map<Role, number> }>()
+    for (const { event, mentions } of eventRows) {
+      for (const mention of mentions) {
+        const entry = byHandle.get(mention.handle) ?? { events: [] as DanceEvent[], roles: new Map<Role, number>() }
+        entry.events.push(event)
+        entry.roles.set(mention.role, (entry.roles.get(mention.role) ?? 0) + 1)
+        byHandle.set(mention.handle, entry)
+      }
     }
     return [...byHandle]
-      .map(([handle, events]) => ({
+      .map(([handle, { events, roles }]) => ({
         handle,
+        role: mainRole(roles),
         events,
         titles: new Set(events.map((event) => event.title)).size,
         genres: top(events.flatMap((event) => visibleGenres(event.genres)), 3),
@@ -68,14 +78,19 @@ export default function Promoters() {
       .sort((a, b) => b.events.length - a.events.length || a.handle.localeCompare(b.handle))
   }, [eventRows])
 
-  const missing = eventRows.filter((row) => row.handles.length === 0 && !row.organizedBy).length
+  // Sem responsável: nenhum perfil em "Mais info" nem frase de organização.
+  const hasPromoter = (row: EventRow) => row.mentions.some((mention) => mention.role === 'promoter') || !!row.organizedBy
+  const missing = eventRows.filter((row) => !hasPromoter(row)).length
+  const roleCounts = Object.fromEntries(ROLES.map((r) => [r, promoterRows.filter((row) => row.role === r).length])) as Record<Role, number>
   const term = search.trim().toLowerCase()
   const matches = (...texts: (string | undefined)[]) => !term || texts.some((text) => text?.toLowerCase().includes(term))
 
-  const visiblePromoters = promoterRows.filter((row) => matches(row.handle, ...row.events.map((event) => event.title)))
+  const visiblePromoters = promoterRows.filter(
+    (row) => (role === 'all' || row.role === role) && matches(row.handle, ...row.events.map((event) => event.title)),
+  )
   const visibleEvents = eventRows.filter(
     (row) =>
-      (!onlyMissing || (row.handles.length === 0 && !row.organizedBy)) && matches(row.summary, row.organizedBy, ...row.handles),
+      (!onlyMissing || !hasPromoter(row)) && matches(row.summary, row.organizedBy, ...row.mentions.map((mention) => mention.handle)),
   )
 
   return (
@@ -109,6 +124,7 @@ export default function Promoters() {
             aria-label="Buscar perfil ou evento"
             className="h-11 min-w-0 flex-1 rounded-lg border border-border bg-surface px-3 text-sm"
           />
+          {view === 'promoters' && <RoleSelect value={role} onChange={setRole} counts={roleCounts} />}
           {view === 'events' && (
             <label className="flex items-center gap-2 text-sm">
               <input type="checkbox" checked={onlyMissing} onChange={(e) => setOnlyMissing(e.target.checked)} className="size-4" />
@@ -167,7 +183,7 @@ export default function Promoters() {
                 </tr>
               </thead>
               <tbody>
-                {visibleEvents.map(({ event, summary, handles, organizedBy }) => (
+                {visibleEvents.map(({ event, summary, mentions, organizedBy }) => (
                   <tr key={event.id} className="border-b border-border last:border-0">
                     <td className={`${TD} whitespace-nowrap tabular-nums`}>
                       {formatDayHeading(lisbonDate(event.start), 'pt-BR')}
@@ -179,15 +195,21 @@ export default function Promoters() {
                       </Link>
                     </td>
                     <td className={TD}>
-                      {handles.length === 0 && !organizedBy ? (
+                      {mentions.length === 0 && !organizedBy ? (
                         <span className="text-fg-muted">—</span>
                       ) : (
                         <div className="flex flex-wrap gap-x-3 gap-y-1">
-                          {handles.map((handle) => (
-                            <a key={handle} href={instagramUrl(handle)} target="_blank" rel="noreferrer" className={LINK}>
-                              @{handle}
-                            </a>
-                          ))}
+                          {/* Promotores primeiro; os outros com o papel ao lado. */}
+                          {[...mentions]
+                            .sort((a, b) => ROLES.indexOf(a.role) - ROLES.indexOf(b.role))
+                            .map((mention) => (
+                              <span key={mention.handle} className="inline-flex items-center gap-1">
+                                <a href={instagramUrl(mention.handle)} target="_blank" rel="noreferrer" className={LINK}>
+                                  @{mention.handle}
+                                </a>
+                                {mention.role !== 'promoter' && <RoleTag role={mention.role} />}
+                              </span>
+                            ))}
                           {organizedBy && <span className="text-fg-muted">Organização: {organizedBy}</span>}
                         </div>
                       )}
@@ -212,6 +234,7 @@ function PromoterTableRow({ row, isOpen, onToggle }: { row: PromoterRow; isOpen:
           <button type="button" aria-expanded={isOpen} onClick={onToggle} className="cursor-pointer text-left font-medium">
             {isOpen ? '▾' : '▸'} @{row.handle}
           </button>{' '}
+          <RoleTag role={row.role} />{' '}
           <a href={instagramUrl(row.handle)} target="_blank" rel="noreferrer" className="text-xs text-brand hover:underline">
             Instagram
           </a>

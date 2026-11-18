@@ -1,0 +1,1085 @@
+{
+  "almacalena.lisboa": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/almacalena.lisboa/"
+    },
+    "venues": [
+      "Campo das Cebolas"
+    ],
+    "genres": [
+      "Salsa"
+    ],
+    "lastSeen": "2026-08-20"
+  },
+  "arrozestudios": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/arrozestudios/"
+    },
+    "venues": [
+      "Arroz Estúdios"
+    ],
+    "genres": [
+      "Bachata",
+      "Kizomba",
+      "Salsa",
+      "Semba"
+    ],
+    "lastSeen": "2026-09-18"
+  },
+  "bachata_community_lisbon": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/bachata_community_lisbon/"
+    },
+    "venues": [
+      "Casa Amarela",
+      "Parque Urbano da Costa de Caparica",
+      "Smile & Move",
+      "Tropicavana Bar"
+    ],
+    "genres": [
+      "Bachata",
+      "Salsa"
+    ],
+    "lastSeen": "2026-11-27"
+  },
+  "baiao.vintage": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/baiao.vintage/"
+    },
+    "venues": [
+      "Teatro A Barraca"
+    ],
+    "genres": [
+      "Forró"
+    ],
+    "lastSeen": "2026-12-02"
+  },
+  "barracuda_da_costa": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/barracuda_da_costa/"
+    },
+    "venues": [
+      "Barracuda"
+    ],
+    "genres": [
+      "Forró"
+    ],
+    "lastSeen": "2026-10-25"
+  },
+  "breakpoint.ericeira": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/breakpoint.ericeira/"
+    },
+    "venues": [
+      "BreakPoint Ericeira"
+    ],
+    "genres": [
+      "Bachata",
+      "Latinas",
+      "Kizomba",
+      "Salsa",
+      "Salsa Cubana",
+      "Semba",
+      "Urban Kiz"
+    ],
+    "lastSeen": "2026-11-28"
+  },
+  "bus.paragem.cultural": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/bus.paragem.cultural/"
+    },
+    "venues": [
+      "BUS - Paragem Cultural"
+    ],
+    "genres": [
+      "Salsa"
+    ],
+    "lastSeen": "2026-11-25"
+  },
+  "carlarendall": {
+    "role": "other",
+    "socials": {
+      "instagram": "https://www.instagram.com/carlarendall/"
+    },
+    "venues": [
+      "The Dog House"
+    ],
+    "genres": [
+      "Kizomba",
+      "Urban Kiz",
+      "Zouk"
+    ],
+    "lastSeen": "2026-12-04"
+  },
+  "copoalto": {
+    "role": "venue",
+    "socials": {
+      "instagram": "https://www.instagram.com/copoalto/"
+    },
+    "venues": [
+      "Copo Alto"
+    ],
+    "genres": [
+      "Salsa Cubana"
+    ],
+    "lastSeen": "2026-08-26"
+  },
+  "dale.eventss": {
+    "role": "promoter",
+    "aliases": [
+      "dale.events"
+    ],
+    "socials": {
+      "instagram": "https://www.instagram.com/dale.eventss/"
+    },
+    "venues": [
+      "Bar Havana",
+      "Bar Hawaii"
+    ],
+    "genres": [
+      "Bachata",
+      "Salsa"
+    ],
+    "lastSeen": "2026-11-21"
+  },
+  "dalebachata.pt": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/dalebachata.pt/"
+    },
+    "venues": [
+      "Bar Havana",
+      "Bar Hawaii"
+    ],
+    "genres": [
+      "Bachata",
+      "Salsa"
+    ],
+    "lastSeen": "2026-11-21"
+  },
+  "dalemamboeuropa": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/dalemamboeuropa/"
+    },
+    "venues": [
+      "Oliva | Restaurante Português e Galego",
+      "Casa da Praia",
+      "Armazém Cultural Lisboa"
+    ],
+    "genres": [
+      "Salsa",
+      "Bachata",
+      "Salsa Cubana"
+    ],
+    "lastSeen": "2026-11-21"
+  },
+  "dalesalsa.pt": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/dalesalsa.pt/"
+    },
+    "venues": [
+      "Bar Havana",
+      "Bar Hawaii"
+    ],
+    "genres": [
+      "Bachata",
+      "Salsa"
+    ],
+    "lastSeen": "2026-11-21"
+  },
+  "dancanapraia.ericeira": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/dancanapraia.ericeira/"
+    },
+    "venues": [
+      "Praia do Matadouro"
+    ],
+    "genres": [
+      "Bachata",
+      "Salsa Cubana"
+    ],
+    "lastSeen": "2026-10-22"
+  },
+  "dancasdomundo.eu": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/dancasdomundo.eu/"
+    },
+    "venues": [
+      "Casa do Concelho de Tomar"
+    ],
+    "genres": [
+      "Bachata",
+      "Forró",
+      "Kizomba",
+      "Salsa"
+    ],
+    "lastSeen": "2026-11-20"
+  },
+  "dance.com.gabriel": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/dance.com.gabriel/"
+    },
+    "venues": [
+      "Time Out Market Lisboa"
+    ],
+    "genres": [
+      "Samba"
+    ],
+    "lastSeen": "2026-11-17"
+  },
+  "dance.sync.pt": {
+    "role": "other",
+    "socials": {
+      "instagram": "https://www.instagram.com/dance.sync.pt/"
+    },
+    "venues": [
+      "The Dog House"
+    ],
+    "genres": [
+      "Kizomba",
+      "Urban Kiz",
+      "Zouk"
+    ],
+    "lastSeen": "2026-12-04"
+  },
+  "dancersclub.lx": {
+    "role": "other",
+    "socials": {
+      "instagram": "https://www.instagram.com/dancersclub.lx/"
+    },
+    "venues": [
+      "The Dog House"
+    ],
+    "genres": [
+      "Kizomba",
+      "Urban Kiz",
+      "Zouk"
+    ],
+    "lastSeen": "2026-12-04"
+  },
+  "dani.bahamondes_": {
+    "role": "dj",
+    "socials": {
+      "instagram": "https://www.instagram.com/dani.bahamondes_/"
+    },
+    "venues": [
+      "Armazém Cultural Lisboa",
+      "Copo Alto",
+      "Oliva | Restaurante Português e Galego"
+    ],
+    "genres": [
+      "Salsa Cubana",
+      "Salsa"
+    ],
+    "lastSeen": "2026-11-21"
+  },
+  "dansundayoficial": {
+    "role": "promoter",
+    "aliases": [
+      "dancesundayoficial"
+    ],
+    "socials": {
+      "instagram": "https://www.instagram.com/dansundayoficial/"
+    },
+    "venues": [
+      "Jazzy Dance Studios"
+    ],
+    "genres": [
+      "Bachata",
+      "Kizomba",
+      "Salsa",
+      "Semba",
+      "Zouk"
+    ],
+    "lastSeen": "2026-11-15"
+  },
+  "dcasty": {
+    "role": "teacher",
+    "socials": {
+      "instagram": "https://www.instagram.com/dcasty/"
+    },
+    "venues": [
+      "Jazzy Dance Studios"
+    ],
+    "genres": [
+      "Salsa Cubana"
+    ],
+    "lastSeen": "2026-08-29"
+  },
+  "diogopto": {
+    "role": "dj",
+    "socials": {
+      "instagram": "https://www.instagram.com/diogopto/"
+    },
+    "venues": [],
+    "genres": [
+      "Bachata",
+      "Kizomba",
+      "Salsa"
+    ],
+    "lastSeen": "2026-08-29"
+  },
+  "djay.marto": {
+    "role": "dj",
+    "socials": {
+      "instagram": "https://www.instagram.com/djay.marto/"
+    },
+    "venues": [
+      "The Dog House"
+    ],
+    "genres": [
+      "Kizomba",
+      "Urban Kiz",
+      "Zouk"
+    ],
+    "lastSeen": "2026-12-04"
+  },
+  "djmacalak": {
+    "role": "dj",
+    "socials": {
+      "instagram": "https://www.instagram.com/djmacalak/"
+    },
+    "venues": [],
+    "genres": [
+      "Bachata",
+      "Kizomba",
+      "Salsa"
+    ],
+    "lastSeen": "2026-08-29"
+  },
+  "djr1do": {
+    "role": "dj",
+    "socials": {
+      "instagram": "https://www.instagram.com/djr1do/"
+    },
+    "venues": [
+      "The Dog House"
+    ],
+    "genres": [
+      "Kizomba",
+      "Urban Kiz",
+      "Zouk"
+    ],
+    "lastSeen": "2026-12-04"
+  },
+  "e.g.setubal": {
+    "role": "other",
+    "socials": {
+      "instagram": "https://www.instagram.com/e.g.setubal/"
+    },
+    "venues": [
+      "Sociedade Musical Recreativa União Setubalense"
+    ],
+    "genres": [
+      "Samba"
+    ],
+    "lastSeen": "2026-10-17"
+  },
+  "espacobaiao": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/espacobaiao/"
+    },
+    "venues": [
+      "O Melhor Bolo de Chocolate do Mundo",
+      "Teatro A Barraca",
+      "Fábrica do Braço de Prata",
+      "Time Out Market Lisboa",
+      "Titanic Sur Mer",
+      "Bartô",
+      "Feira da Luz",
+      "Jardim de Paço de Arcos"
+    ],
+    "genres": [
+      "Forró"
+    ],
+    "lastSeen": "2027-05-16"
+  },
+  "estudio8escola": {
+    "role": "other",
+    "socials": {
+      "instagram": "https://www.instagram.com/estudio8escola/"
+    },
+    "venues": [
+      "BreakPoint Ericeira"
+    ],
+    "genres": [
+      "Salsa Cubana"
+    ],
+    "lastSeen": "2026-09-05"
+  },
+  "festaalocubanolisboa": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/festaalocubanolisboa/"
+    },
+    "venues": [
+      "Jazzy Dance Studios"
+    ],
+    "genres": [
+      "Salsa Cubana"
+    ],
+    "lastSeen": "2026-12-26"
+  },
+  "festivalsaborlatino": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/festivalsaborlatino/"
+    },
+    "venues": [
+      "IDB Rooftop by Mīrārī"
+    ],
+    "genres": [
+      "Latinas"
+    ],
+    "lastSeen": "2026-08-29"
+  },
+  "flyclubmontijo": {
+    "role": "other",
+    "socials": {
+      "instagram": "https://www.instagram.com/flyclubmontijo/"
+    },
+    "venues": [
+      "Fly Club"
+    ],
+    "genres": [
+      "Kizomba"
+    ],
+    "lastSeen": "2026-11-07"
+  },
+  "forro_de_rabeca": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/forro_de_rabeca/"
+    },
+    "venues": [
+      "MUSA da Praia"
+    ],
+    "genres": [
+      "Forró"
+    ],
+    "lastSeen": "2026-09-05"
+  },
+  "forro.vinyl": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/forro.vinyl/"
+    },
+    "venues": [
+      "B.Leza Club"
+    ],
+    "genres": [
+      "Forró"
+    ],
+    "lastSeen": "2026-10-16"
+  },
+  "forrodocoreto.lisboa": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/forrodocoreto.lisboa/"
+    },
+    "venues": [
+      "Quiosque Mustarda São Bento",
+      "Dança Mais com Camila Delphim"
+    ],
+    "genres": [
+      "Forró"
+    ],
+    "lastSeen": "2026-09-10"
+  },
+  "forronomiradouro": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/forronomiradouro/"
+    },
+    "venues": [
+      "A Lanchonete - Benfica",
+      "Miradouro da Graça"
+    ],
+    "genres": [
+      "Forró"
+    ],
+    "lastSeen": "2026-11-21"
+  },
+  "forrozinho_no_sul": {
+    "role": "other",
+    "socials": {
+      "instagram": "https://www.instagram.com/forrozinho_no_sul/"
+    },
+    "venues": [],
+    "genres": [
+      "Forró"
+    ],
+    "lastSeen": "2026-09-05"
+  },
+  "freedom_dancestudio": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/freedom_dancestudio/"
+    },
+    "venues": [
+      "BreakPoint Ericeira"
+    ],
+    "genres": [
+      "Bachata",
+      "Latinas",
+      "Kizomba",
+      "Salsa",
+      "Salsa Cubana",
+      "Semba",
+      "Urban Kiz"
+    ],
+    "lastSeen": "2026-11-28"
+  },
+  "freedomdance.events": {
+    "role": "other",
+    "socials": {
+      "instagram": "https://www.instagram.com/freedomdance.events/"
+    },
+    "venues": [
+      "BreakPoint Ericeira",
+      "Balagan Ericeira"
+    ],
+    "genres": [
+      "Salsa",
+      "Bachata",
+      "Latinas",
+      "Kizomba",
+      "Semba",
+      "Urban Kiz"
+    ],
+    "lastSeen": "2026-12-11"
+  },
+  "girodancas": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/girodancas/"
+    },
+    "venues": [
+      "Quiosque Mustarda São Bento",
+      "R. dos Fanqueiros 286"
+    ],
+    "genres": [
+      "Samba"
+    ],
+    "lastSeen": "2026-11-22"
+  },
+  "isavxla": {
+    "role": "other",
+    "socials": {
+      "instagram": "https://www.instagram.com/isavxla/"
+    },
+    "venues": [
+      "Oliva | Restaurante Português e Galego"
+    ],
+    "genres": [
+      "Salsa"
+    ],
+    "lastSeen": "2026-08-28"
+  },
+  "joao.fanha": {
+    "role": "other",
+    "socials": {
+      "instagram": "https://www.instagram.com/joao.fanha/"
+    },
+    "venues": [
+      "BreakPoint Ericeira"
+    ],
+    "genres": [
+      "Salsa Cubana"
+    ],
+    "lastSeen": "2026-09-05"
+  },
+  "ksuh_oh": {
+    "role": "dj",
+    "socials": {
+      "instagram": "https://www.instagram.com/ksuh_oh/"
+    },
+    "venues": [
+      "Oliva | Restaurante Português e Galego"
+    ],
+    "genres": [
+      "Salsa"
+    ],
+    "lastSeen": "2026-10-23"
+  },
+  "la.ferp4rra": {
+    "role": "teacher",
+    "socials": {
+      "instagram": "https://www.instagram.com/la.ferp4rra/"
+    },
+    "venues": [
+      "Armazém Cultural Lisboa",
+      "Copo Alto"
+    ],
+    "genres": [
+      "Salsa Cubana"
+    ],
+    "lastSeen": "2026-11-21"
+  },
+  "la.salsa.del.pueblo": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/la.salsa.del.pueblo/"
+    },
+    "venues": [
+      "BUS - Paragem Cultural"
+    ],
+    "genres": [
+      "Salsa"
+    ],
+    "lastSeen": "2026-11-25"
+  },
+  "larosariowurlitzer": {
+    "role": "dj",
+    "socials": {
+      "instagram": "https://www.instagram.com/larosariowurlitzer/"
+    },
+    "venues": [
+      "Musa da Bica"
+    ],
+    "genres": [
+      "Salsa"
+    ],
+    "lastSeen": "2026-10-16"
+  },
+  "latinnightsericeira": {
+    "role": "other",
+    "socials": {
+      "instagram": "https://www.instagram.com/latinnightsericeira/"
+    },
+    "venues": [
+      "BreakPoint Ericeira"
+    ],
+    "genres": [
+      "Bachata"
+    ],
+    "lastSeen": "2026-08-29"
+  },
+  "lets_dance.pt": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/lets_dance.pt/"
+    },
+    "venues": [
+      "Top Floor Club"
+    ],
+    "genres": [
+      "Bachata",
+      "Kizomba",
+      "Salsa",
+      "Semba",
+      "Urban Kiz"
+    ],
+    "lastSeen": "2026-10-16"
+  },
+  "ma.tuta": {
+    "role": "other",
+    "socials": {
+      "instagram": "https://www.instagram.com/ma.tuta/"
+    },
+    "venues": [
+      "Musa de Marvila"
+    ],
+    "genres": [
+      "Forró"
+    ],
+    "lastSeen": "2026-08-29"
+  },
+  "miragelounge.odivelas": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/miragelounge.odivelas/"
+    },
+    "venues": [
+      "Mirage Lounge"
+    ],
+    "genres": [
+      "Kizomba"
+    ],
+    "lastSeen": "2027-05-14"
+  },
+  "mr.gadiiii": {
+    "role": "teacher",
+    "socials": {
+      "instagram": "https://www.instagram.com/mr.gadiiii/"
+    },
+    "venues": [
+      "Armazém Cultural Lisboa"
+    ],
+    "genres": [
+      "Salsa Cubana"
+    ],
+    "lastSeen": "2026-11-21"
+  },
+  "mude.cafeteria": {
+    "role": "venue",
+    "socials": {
+      "instagram": "https://www.instagram.com/mude.cafeteria/"
+    },
+    "venues": [
+      "]Mude[ Cafeteria"
+    ],
+    "genres": [
+      "Bachata",
+      "Salsa"
+    ],
+    "lastSeen": "2026-11-06"
+  },
+  "musademarvila": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/musademarvila/"
+    },
+    "venues": [
+      "Musa de Marvila"
+    ],
+    "genres": [
+      "Forró"
+    ],
+    "lastSeen": "2026-08-29"
+  },
+  "obidosdance": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/obidosdance/"
+    },
+    "venues": [
+      "Centro cultural social e Recreativo Alherense"
+    ],
+    "genres": [
+      "Latinas"
+    ],
+    "lastSeen": "2026-10-31"
+  },
+  "oldnewspt": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/oldnewspt/"
+    },
+    "venues": [
+      "Quiosque Alto do Santo"
+    ],
+    "genres": [],
+    "lastSeen": "2026-09-25"
+  },
+  "oliva_lisboa": {
+    "role": "venue",
+    "socials": {
+      "instagram": "https://www.instagram.com/oliva_lisboa/"
+    },
+    "venues": [
+      "Oliva | Restaurante Português e Galego"
+    ],
+    "genres": [
+      "Salsa"
+    ],
+    "lastSeen": "2026-10-23"
+  },
+  "only.cubancl": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/only.cubancl/"
+    },
+    "venues": [
+      "Oliva | Restaurante Português e Galego",
+      "Asha's Place Lisbon",
+      "Copo Alto"
+    ],
+    "genres": [
+      "Salsa",
+      "Salsa Cubana"
+    ],
+    "lastSeen": "2026-10-23"
+  },
+  "orobertoval": {
+    "role": "other",
+    "socials": {
+      "instagram": "https://www.instagram.com/orobertoval/"
+    },
+    "venues": [
+      "Jazzy Dance Studios"
+    ],
+    "genres": [
+      "Salsa Cubana"
+    ],
+    "lastSeen": "2026-12-26"
+  },
+  "paulofilipe77": {
+    "role": "dj",
+    "socials": {
+      "instagram": "https://www.instagram.com/paulofilipe77/"
+    },
+    "venues": [],
+    "genres": [
+      "Bachata",
+      "Kizomba",
+      "Salsa"
+    ],
+    "lastSeen": "2026-08-29"
+  },
+  "portugalsocialevents": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/portugalsocialevents/"
+    },
+    "venues": [
+      "O Bom O Mau e O Vilão"
+    ],
+    "genres": [
+      "Bachata",
+      "Salsa"
+    ],
+    "lastSeen": "2026-08-22"
+  },
+  "quiosquelasganas": {
+    "role": "venue",
+    "socials": {
+      "instagram": "https://www.instagram.com/quiosquelasganas/"
+    },
+    "venues": [
+      "Quiosque Las Ganas"
+    ],
+    "genres": [
+      "Afro",
+      "Salsa"
+    ],
+    "lastSeen": "2026-08-22"
+  },
+  "riconlatino.pt": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/riconlatino.pt/"
+    },
+    "venues": [
+      "Cinnamon Indian Tapas Bar"
+    ],
+    "genres": [
+      "Bachata",
+      "Merengue",
+      "Salsa"
+    ],
+    "lastSeen": "2026-10-22"
+  },
+  "rolezouk": {
+    "role": "other",
+    "socials": {
+      "instagram": "https://www.instagram.com/rolezouk/"
+    },
+    "venues": [
+      "The Dog House"
+    ],
+    "genres": [
+      "Kizomba",
+      "Urban Kiz",
+      "Zouk"
+    ],
+    "lastSeen": "2026-12-04"
+  },
+  "roteiro.zoukbrasileiro": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/roteiro.zoukbrasileiro/"
+    },
+    "venues": [
+      "Stellae Studio | Escola de Dança Yoga e Pilates",
+      "The Dog House"
+    ],
+    "genres": [
+      "Zouk",
+      "Kizomba",
+      "Urban Kiz"
+    ],
+    "lastSeen": "2026-12-04"
+  },
+  "salsaconsol": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/salsaconsol/"
+    },
+    "venues": [
+      "Campo das Cebolas"
+    ],
+    "genres": [
+      "Salsa"
+    ],
+    "lastSeen": "2026-08-20"
+  },
+  "sambadegafieiralisboa": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/sambadegafieiralisboa/"
+    },
+    "venues": [
+      "Hall Entrada Estação comboios do Cais do Sodré",
+      "Time Out Market Lisboa",
+      "Quiosque Mustarda São Bento",
+      "R. dos Fanqueiros 286"
+    ],
+    "genres": [
+      "Samba"
+    ],
+    "lastSeen": "2026-11-28"
+  },
+  "schiaffo.pt": {
+    "role": "other",
+    "socials": {
+      "instagram": "https://www.instagram.com/schiaffo.pt/"
+    },
+    "venues": [
+      "Barracuda"
+    ],
+    "genres": [
+      "Forró"
+    ],
+    "lastSeen": "2026-10-25"
+  },
+  "setubailas_associacao": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/setubailas_associacao/"
+    },
+    "venues": [
+      "Split Sky Club"
+    ],
+    "genres": [
+      "Bachata",
+      "Kizomba",
+      "Salsa"
+    ],
+    "lastSeen": "2026-12-19"
+  },
+  "sofiaylosdinos": {
+    "role": "teacher",
+    "socials": {
+      "instagram": "https://www.instagram.com/sofiaylosdinos/"
+    },
+    "venues": [
+      "Armazém Cultural Lisboa"
+    ],
+    "genres": [
+      "Salsa Cubana"
+    ],
+    "lastSeen": "2026-11-21"
+  },
+  "stellae_studio_pt": {
+    "role": "other",
+    "socials": {
+      "instagram": "https://www.instagram.com/stellae_studio_pt/"
+    },
+    "venues": [
+      "Stellae Studio | Escola de Dança Yoga e Pilates"
+    ],
+    "genres": [
+      "Zouk"
+    ],
+    "lastSeen": "2026-10-10"
+  },
+  "timeoutmarketlisboa": {
+    "role": "other",
+    "socials": {
+      "instagram": "https://www.instagram.com/timeoutmarketlisboa/"
+    },
+    "venues": [
+      "Time Out Market Lisboa"
+    ],
+    "genres": [
+      "West Coast Swing"
+    ],
+    "lastSeen": "2026-08-21"
+  },
+  "tormalinapbforrofest": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/tormalinapbforrofest/"
+    },
+    "venues": [
+      "Titanic Sur Mer",
+      "Time Out Market Lisboa"
+    ],
+    "genres": [
+      "Forró"
+    ],
+    "lastSeen": "2026-11-08"
+  },
+  "tropicavana_bar": {
+    "role": "promoter",
+    "aliases": [
+      "tropicavana.bar"
+    ],
+    "socials": {
+      "instagram": "https://www.instagram.com/tropicavana_bar/"
+    },
+    "venues": [
+      "Tropicavana Bar"
+    ],
+    "genres": [
+      "Bachata",
+      "Salsa",
+      "Merengue",
+      "Kizomba",
+      "Salsa Cubana",
+      "Latinas"
+    ],
+    "lastSeen": "2026-12-01"
+  },
+  "udancesocialset": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/udancesocialset/"
+    },
+    "venues": [
+      "U Dance School"
+    ],
+    "genres": [
+      "Bachata",
+      "Kizomba",
+      "Salsa",
+      "Zouk",
+      "Semba"
+    ],
+    "lastSeen": "2026-11-08"
+  },
+  "vacubalisboa": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/vacubalisboa/"
+    },
+    "venues": [
+      "Jardim São Bento",
+      "Oliva | Restaurante Português e Galego"
+    ],
+    "genres": [
+      "Salsa"
+    ],
+    "lastSeen": "2026-10-23"
+  },
+  "wajirosdelisboa": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/wajirosdelisboa/"
+    },
+    "venues": [
+      "Arroz Estúdios"
+    ],
+    "genres": [
+      "Bachata",
+      "Kizomba",
+      "Salsa",
+      "Semba"
+    ],
+    "lastSeen": "2026-09-18"
+  }
+}

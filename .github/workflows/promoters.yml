@@ -1,0 +1,51 @@
+name: Update promoters
+
+# Uma vez por dia: acrescenta ao src/data/promoters.json os promotores citados nos eventos
+# (perfis do Instagram, redes, locais e estilos). O site ainda não usa o arquivo (só a área de teste),
+# então não há deploy.
+on:
+  schedule:
+    - cron: '15 5 * * *' # 05:15 UTC, depois do Update venues
+  workflow_dispatch:
+
+concurrency:
+  group: promoters
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.9.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Atualizar promotores
+        run: pnpm promoters:update
+        env:
+          VITE_GOOGLE_API_KEY: ${{ secrets.VITE_GOOGLE_API_KEY }}
+
+      - name: Commit do promoters.json
+        run: |
+          if git diff --quiet -- src/data/promoters.json; then
+            echo "Sem mudanças."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/promoters.json
+          git commit -m "Update promoters from calendar events"
+          # O Update venues pode ter feito push antes: traz e reaplica.
+          git pull --rebase
+          git push
