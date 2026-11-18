@@ -7,6 +7,7 @@ import {
   CircleEllipsis,
   CircleHelp,
   CircleUserRound,
+  Compass,
   Copy,
   Disc3,
   Ellipsis,
@@ -15,19 +16,27 @@ import {
   Funnel,
   Heart,
   HeartHandshake,
+  Earth,
   Info,
+  LocateFixed,
   ListFilter,
   type LucideIcon,
   Map as MapIcon,
+  MapPin,
+  MapPinned,
   Menu,
   Music,
+  Navigation,
   Music2,
   Palette,
   PartyPopper,
   PersonStanding,
+  Radar,
+  Route,
   Settings,
   Settings2,
   Shapes,
+  Signpost,
   SlidersHorizontal,
   SlidersVertical,
   Sparkles,
@@ -41,14 +50,17 @@ import { Card } from '../../components/ui/Card'
 import { siteUrl, useDocumentHead } from '../../seo/useDocumentHead'
 import { BackToTest } from './shared'
 
-type Option = { name: string; icon: LucideIcon; note: string }
-type NameOption = { pt: string; en: string; note: string }
+/** `current`: o que o app usa hoje (marcado como "atual" e escolhido de início). */
+type Option = { name: string; icon: LucideIcon; note: string; current?: boolean }
+type NameOption = { pt: string; en: string; note: string; current?: boolean }
+
+const currentIndex = (options: { current?: boolean }[]) => Math.max(0, options.findIndex((option) => option.current))
 
 const DANCE: Option[] = [
-  { name: 'Music', icon: Music, note: 'Atual. Genérico: lembra app de música.' },
+  { name: 'Music', icon: Music, note: 'Anterior. Genérico: lembra app de música.' },
   { name: 'Footprints', icon: Footprints, note: 'Passos de dança; não confunde com player de música.' },
   { name: 'PartyPopper', icon: PartyPopper, note: 'Festa, evento social.' },
-  { name: 'Disc3', icon: Disc3, note: 'Vinil / DJ: noite, pista.' },
+  { name: 'Disc3', icon: Disc3, note: 'Vinil / DJ: noite, pista.', current: true },
   { name: 'CalendarHeart', icon: CalendarHeart, note: 'Agenda (o que a tela é) com afeto.' },
   { name: 'CalendarDays', icon: CalendarDays, note: 'Agenda, direto ao ponto.' },
   { name: 'Users', icon: Users, note: 'Pessoas, comunidade, social.' },
@@ -61,8 +73,8 @@ const DANCE: Option[] = [
 ]
 
 const FILTER: Option[] = [
-  { name: 'SlidersHorizontal', icon: SlidersHorizontal, note: 'Atual. Padrão de "ajustes de filtro".' },
-  { name: 'Funnel', icon: Funnel, note: 'Funil: o símbolo mais reconhecido de filtro.' },
+  { name: 'SlidersHorizontal', icon: SlidersHorizontal, note: 'Anterior. Padrão de "ajustes de filtro".' },
+  { name: 'Funnel', icon: Funnel, note: 'Funil: o símbolo mais reconhecido de filtro.', current: true },
   { name: 'ListFilter', icon: ListFilter, note: 'Filtro de lista, mais leve.' },
   { name: 'SlidersVertical', icon: SlidersVertical, note: 'Variação vertical do atual.' },
   { name: 'Tags', icon: Tags, note: 'Estilos como etiquetas (o filtro é por estilo).' },
@@ -72,16 +84,16 @@ const FILTER: Option[] = [
 ]
 
 const INFO_NAMES: NameOption[] = [
-  { pt: 'Info', en: 'Info', note: 'Atual. Curto, mas vago.' },
+  { pt: 'Info', en: 'Info', note: 'Anterior. Curto, mas vago.' },
   { pt: 'Mais', en: 'More', note: 'Padrão de apps para "o resto": sobre, tema, idioma, instalar.' },
   { pt: 'Ajustes', en: 'Settings', note: 'O que a tela mais tem: tema, idioma, instalar.' },
-  { pt: 'Sobre', en: 'About', note: 'Foca no texto sobre o app e o calendário.' },
+  { pt: 'Sobre', en: 'About', note: 'Foca no texto sobre o app e o calendário.', current: true },
   { pt: 'Menu', en: 'Menu', note: 'Genérico; combina com o ícone de menu.' },
   { pt: 'App', en: 'App', note: 'Tudo sobre o app (versão, instalar, tema).' },
 ]
 
 const INFO_ICONS: Option[] = [
-  { name: 'Info', icon: Info, note: 'Atual. Combina com "Info" e "Sobre".' },
+  { name: 'Info', icon: Info, note: 'Combina com "Info" e "Sobre".', current: true },
   { name: 'Ellipsis', icon: Ellipsis, note: 'Combina com "Mais".' },
   { name: 'CircleEllipsis', icon: CircleEllipsis, note: '"Mais" com o mesmo peso visual dos outros.' },
   { name: 'Menu', icon: Menu, note: 'Combina com "Menu".' },
@@ -90,6 +102,27 @@ const INFO_ICONS: Option[] = [
   { name: 'CircleUserRound', icon: CircleUserRound, note: 'Conta/perfil (o app não tem login).' },
   { name: 'CircleHelp', icon: CircleHelp, note: 'Ajuda / dúvidas.' },
   { name: 'Heart', icon: Heart, note: 'Sobre / quem faz.' },
+]
+
+const MAP_NAMES: NameOption[] = [
+  { pt: 'Mapa', en: 'Map', note: 'Direto: o que a tela é.', current: true },
+  { pt: 'Perto', en: 'Nearby', note: 'Foca no uso: o que tem perto de mim.' },
+  { pt: 'Onde', en: 'Where', note: 'Curto; pergunta que o mapa responde.' },
+  { pt: 'Locais', en: 'Venues', note: 'Os lugares dos eventos do dia.' },
+  { pt: 'Explorar', en: 'Explore', note: 'Convite a descobrir; mais vago.' },
+]
+
+const MAP_ICONS: Option[] = [
+  { name: 'Map', icon: MapIcon, note: 'Mapa dobrado: o padrão.', current: true },
+  { name: 'MapPinned', icon: MapPinned, note: 'Mapa com pino: lugares dos eventos.' },
+  { name: 'MapPin', icon: MapPin, note: 'Só o pino: local, endereço.' },
+  { name: 'Compass', icon: Compass, note: 'Bússola: explorar, orientar-se.' },
+  { name: 'Navigation', icon: Navigation, note: 'Seta de navegação: "ir até lá".' },
+  { name: 'LocateFixed', icon: LocateFixed, note: 'Mira: minha localização, perto de mim.' },
+  { name: 'Earth', icon: Earth, note: 'Globo; amplo demais para uma cidade.' },
+  { name: 'Route', icon: Route, note: 'Rota entre pontos: como chegar.' },
+  { name: 'Signpost', icon: Signpost, note: 'Placa de direção: onde ir.' },
+  { name: 'Radar', icon: Radar, note: 'Radar: o que acontece por perto.' },
 ]
 
 const nameOf = (options: Option[], index: number) => options[index].name
@@ -101,10 +134,12 @@ const nameOf = (options: Option[], index: number) => options[index].name
  */
 export default function Icons() {
   useDocumentHead({ title: 'Ícones (teste)', description: 'Sugestões de ícones e nomes', canonical: `${siteUrl()}teste/icones`, noindex: true })
-  const [dance, setDance] = useState(0)
-  const [filter, setFilter] = useState(0)
-  const [infoName, setInfoName] = useState(0)
-  const [infoIcon, setInfoIcon] = useState(0)
+  const [dance, setDance] = useState(() => currentIndex(DANCE))
+  const [filter, setFilter] = useState(() => currentIndex(FILTER))
+  const [infoName, setInfoName] = useState(() => currentIndex(INFO_NAMES))
+  const [infoIcon, setInfoIcon] = useState(() => currentIndex(INFO_ICONS))
+  const [mapName, setMapName] = useState(() => currentIndex(MAP_NAMES))
+  const [mapIcon, setMapIcon] = useState(() => currentIndex(MAP_ICONS))
   const [copied, setCopied] = useState(false)
   // Acordeon: um grupo de opções aberto por vez (fechado, mostra só a escolha).
   const [openGroup, setOpenGroup] = useState<string | null>('dance')
@@ -112,7 +147,7 @@ export default function Icons() {
 
   const nav = [
     { label: 'Dança', icon: DANCE[dance].icon, active: true },
-    { label: 'Mapa', icon: MapIcon, active: false },
+    { label: MAP_NAMES[mapName].pt, icon: MAP_ICONS[mapIcon].icon, active: false },
     { label: INFO_NAMES[infoName].pt, icon: INFO_ICONS[infoIcon].icon, active: false },
   ]
   const FilterIcon = FILTER[filter].icon
@@ -122,6 +157,7 @@ export default function Icons() {
       [
         `Dança: ${nameOf(DANCE, dance)}`,
         `Filtro: ${nameOf(FILTER, filter)}`,
+        `Mapa: "${MAP_NAMES[mapName].pt}" / "${MAP_NAMES[mapName].en}", ícone ${nameOf(MAP_ICONS, mapIcon)}`,
         `Info: "${INFO_NAMES[infoName].pt}" / "${INFO_NAMES[infoName].en}", ícone ${nameOf(INFO_ICONS, infoIcon)}`,
       ].join('\n'),
     )
@@ -157,7 +193,7 @@ export default function Icons() {
           <Preview title="Menu lateral (computador)">
             <ul className="w-52 space-y-1 rounded-lg bg-surface-muted p-2">
               {nav
-                .filter(({ label }) => label !== 'Mapa')
+                .filter((_, index) => index !== 1) // o mapa só aparece na barra inferior
                 .map(({ label, icon: Icon, active }) => (
                   <li
                     key={label}
@@ -211,25 +247,27 @@ export default function Icons() {
         open={openGroup === 'filter'}
         onToggle={toggle('filter')}
       />
-      <Accordion
-        title="Nome no lugar de “Info”"
-        chosen={<span className="font-semibold">{INFO_NAMES[infoName].pt}</span>}
+      <NameChoices
+        title="Nome do Mapa"
+        hint="Aba só do celular e tablet: mapa do dia com os eventos num carrossel."
+        options={MAP_NAMES}
+        value={mapName}
+        onChange={setMapName}
+        open={openGroup === 'mapName'}
+        onToggle={toggle('mapName')}
+      />
+      <IconChoices title="Ícone do Mapa" options={MAP_ICONS} value={mapIcon} onChange={setMapIcon} open={openGroup === 'mapIcon'} onToggle={toggle('mapIcon')} />
+      <NameChoices
+        title="Nome de Sobre (antes Info)"
+        hint="A tela tem: sobre o app e o calendário, tema, idioma, conexão, instalar e versão."
+        options={INFO_NAMES}
+        value={infoName}
+        onChange={setInfoName}
         open={openGroup === 'infoName'}
         onToggle={toggle('infoName')}
-      >
-        <p className="text-sm text-fg-muted">A tela tem: sobre o app e o calendário, tema, idioma, conexão, instalar e versão.</p>
-        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-          {INFO_NAMES.map((option, index) => (
-            <ChoiceButton key={option.pt} selected={index === infoName} onClick={() => setInfoName(index)} current={index === 0}>
-              <span className="font-semibold">{option.pt}</span>
-              <span className="text-fg-muted"> / {option.en}</span>
-              <span className="mt-1 block text-xs text-fg-muted">{option.note}</span>
-            </ChoiceButton>
-          ))}
-        </div>
-      </Accordion>
+      />
       <IconChoices
-        title="Ícone de Info"
+        title="Ícone de Sobre"
         options={INFO_ICONS}
         value={infoIcon}
         onChange={setInfoIcon}
@@ -288,21 +326,33 @@ function Accordion({
   )
 }
 
-function IconChoices({
-  title,
-  options,
-  value,
-  onChange,
-  open,
-  onToggle,
-}: {
+type ChoicesProps<T> = {
   title: string
-  options: Option[]
+  options: T[]
   value: number
   onChange: (index: number) => void
   open: boolean
   onToggle: () => void
-}) {
+}
+
+function NameChoices({ title, hint, options, value, onChange, open, onToggle }: ChoicesProps<NameOption> & { hint: string }) {
+  return (
+    <Accordion title={title} chosen={<span className="font-semibold">{options[value].pt}</span>} open={open} onToggle={onToggle}>
+      <p className="text-sm text-fg-muted">{hint}</p>
+      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        {options.map((option, index) => (
+          <ChoiceButton key={option.pt} selected={index === value} onClick={() => onChange(index)} current={!!option.current}>
+            <span className="font-semibold">{option.pt}</span>
+            <span className="text-fg-muted"> / {option.en}</span>
+            <span className="mt-1 block text-xs text-fg-muted">{option.note}</span>
+          </ChoiceButton>
+        ))}
+      </div>
+    </Accordion>
+  )
+}
+
+function IconChoices({ title, options, value, onChange, open, onToggle }: ChoicesProps<Option>) {
   const { icon: Chosen, name: chosenName } = options[value]
   return (
     <Accordion
@@ -317,8 +367,8 @@ function IconChoices({
       onToggle={onToggle}
     >
       <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-        {options.map(({ name, icon: Icon, note }, index) => (
-          <ChoiceButton key={name} selected={index === value} onClick={() => onChange(index)} current={index === 0}>
+        {options.map(({ name, icon: Icon, note, current }, index) => (
+          <ChoiceButton key={name} selected={index === value} onClick={() => onChange(index)} current={!!current}>
             <span className="flex items-start gap-3">
               <Icon className="size-7 shrink-0" aria-hidden="true" />
               <span>

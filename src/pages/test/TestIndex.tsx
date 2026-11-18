@@ -16,7 +16,7 @@ const SECTIONS: Section[] = [
       {
         to: '/teste/icones',
         title: 'Ícones e nomes',
-        description: 'Sugestões de ícone para Dança e para o filtro, e de nome e ícone para Info, com prévia.',
+        description: 'Sugestões de ícone para Dança e para o filtro, e de nome e ícone para Mapa e Sobre, com prévia.',
         icon: Shapes,
       },
     ],
