@@ -31,4 +31,17 @@ describe('priceFromDescription', () => {
   ])('não é gratuito: %s', (text) => {
     expect(priceFromDescription(text)).toBeUndefined()
   })
+
+  it.each([
+    ['💵 12€ | 10€ para alunos Swing n’ Smile', '12€ | 10€'],
+    ['(1 class: 15€ | 2 classes: 20€)', '15€ | 20€'],
+    ['Aula<br>💵 12€ | 10€ para alunos<br>Entrada grátis', '12€ | 10€'],
+    ['<p>Preços</p><p>€8 | €10</p>', '8€ | 10€'],
+  ])('tabela de valores: %s', (text, price) => {
+    expect(priceFromDescription(text)).toBe(price)
+  })
+
+  it.each(['Aula 10€ | Festa', 'Rua X | Lisboa', '10€ ou 12€ | 5€ e 7€'])('não é tabela de valores: %s', (text) => {
+    expect(priceFromDescription(text)).toBeUndefined()
+  })
 })
