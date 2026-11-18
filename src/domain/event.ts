@@ -3,6 +3,7 @@ import { lisbonMidnight } from '../data/dates'
 import type { GCalDateTime, GCalEvent } from '../data/googleCalendar'
 import { confirmedUmbrellas, GENRES, type Genre } from './genres'
 import { genresInText } from './parseGenres'
+import { priceFromDescription } from './descriptionPrice'
 import { type EventStatus, parseSummary } from './parseSummary'
 import { eventSlug } from './slug'
 
@@ -42,8 +43,10 @@ type VenueCoords = { name: string; lat: number; lng: number }
 const VENUES: Record<string, VenueCoords> = venues
 
 export function toDanceEvent(event: GCalEvent): DanceEvent {
-  const { genres: tagGenres, rawTag, title, price, status } = parseSummary(event.summary)
+  const { genres: tagGenres, rawTag, title, price: titlePrice, status } = parseSummary(event.summary)
   const description = event.description?.trim() || undefined
+  // Sem preço no título, procura na descrição ("Entrada grátis", "Free entry"…).
+  const price = titlePrice ?? priceFromDescription(plainText(description))
   // A tag do título é a fonte principal; gêneros citados no título ou na descrição completam
   // (ex.: tag "Bachata & Kizomba" com "70% Bachata / 30% Salsa" na descrição → inclui Salsa).
   // Inclusive os que a tag já implica: "Latinas" com Salsa e Bachata na descrição mostra os três.
