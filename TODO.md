@@ -58,7 +58,48 @@ O analytics está pronto, mas fica fora do `main` até ser configurado. A branch
 - [ ] Revisar tags novas que caem em **Outros** e, se fizer sentido, criar estilo ou alias em `src/domain/genres.ts`.
 - [ ] **Escolas** (aba oculta): definir de onde viriam os dados antes de reativá-la.
 
-## 7. Opcional
+## 7. Fotos dos perfis (promotores, DJs, professores) — branch `feature/promoter-photos`
+
+Preencher `photo` em `src/data/promoters.json` com a foto de perfil do Instagram, automaticamente (hoje aparece só em `/teste/envolvidos`; sem foto, iniciais). O código está na branch, fora do `main` até ser configurado:
+
+- `pnpm ig:token <token curto> [perfil de teste]` (`scripts/ig-token.mjs`): troca o token curto por um de ~60 dias e grava `IG_ACCESS_TOKEN` e `IG_USER_ID` no `.env.local`.
+- `pnpm promoters:photos [máximo] [--force]` (`scripts/promoters-photos.mjs`): baixa as fotos para `public/promoters/<perfil>.jpg` e preenche `photo` (e `name`, se vazio).
+
+Usa a **Instagram Graph API oficial (Business Discovery)**. O endpoint interno `web_profile_info` foi descartado: exige login, é contra os termos do Instagram e respondeu 429 já no primeiro perfil. Limitação: o Business Discovery só enxerga **contas profissionais** (comerciais ou de criador); contas pessoais (alguns DJs e professores) ficam com as iniciais ou com foto à mão.
+
+**Conta do Instagram (uma vez)**
+
+- [ ] Ter uma conta do Instagram **profissional** (comercial ou criador): Instagram → Configurações → Tipo de conta e ferramentas. Pode ser uma conta só para isso.
+- [ ] Ligar essa conta a uma **Página do Facebook**: na Página → Configurações → Contas vinculadas → Instagram.
+
+**App no Meta (uma vez)**
+
+- [ ] Em [developers.facebook.com](https://developers.facebook.com) → Meus apps → **Criar app** → tipo **Empresa** (Business).
+- [ ] Em Configurações → Básico, copiar o **ID do app** e a **Chave secreta** para o `.env.local` (`META_APP_ID=…`, `META_APP_SECRET=…`).
+- [ ] Adicionar o produto **Instagram Graph API** (Instagram com login pelo Facebook) ao app.
+- [ ] Em modo de desenvolvimento, o app só funciona para quem tem papel nele: a conta do Facebook que gera o token precisa ser administradora do app. Para uso só nosso, basta; a revisão do Meta só é necessária para outras pessoas usarem.
+
+**Token (a cada ~60 dias)**
+
+- [ ] No [Explorador da Graph API](https://developers.facebook.com/tools/explorer): escolher o app, token de **Usuário**, adicionar as permissões `instagram_basic`, `pages_show_list`, `pages_read_engagement` e `business_management`, clicar em **Generate Access Token** e autorizar a Página ligada ao Instagram.
+- [ ] Copiar o token curto (vale ~1 hora) e rodar `pnpm ig:token <token curto> espacobaiao`. Deve terminar com "3. Teste com @espacobaiao: ok".
+- [ ] Anotar quando vence (o script mostra a data) e repetir antes disso.
+
+**Buscar as fotos**
+
+- [ ] Testar com poucos perfis: `pnpm promoters:photos 3`; depois todos: `pnpm promoters:photos`. No fim ele lista quem não foi encontrado (conta pessoal ou @ errado) e quem não tem foto.
+- [ ] Conferir em `/teste/envolvidos`.
+- [ ] Perfis que pedirem para não aparecer: `"photo": false` no `promoters.json` (o script pula).
+- [ ] Commitar `public/promoters/*.jpg` e o `promoters.json`, e fazer o merge da branch.
+
+**Depois (opcional)**
+
+- [ ] Automatizar: secrets `IG_ACCESS_TOKEN` e `IG_USER_ID` no GitHub e `pnpm promoters:photos` na Action diária `.github/workflows/promoters.yml`, commitando também `public/promoters/`.
+- [ ] Token que não vence: **usuário do sistema** (Meta Business Suite → Configurações do negócio → Usuários do sistema), em vez de renovar o de 60 dias.
+- [ ] Atualizar fotos de tempos em tempos com `--force` (ex.: uma vez por mês).
+- [ ] Usar no app: decidir onde a foto aparece (card do evento, bloco "Organização" nos detalhes, página de promotores), reduzir as imagens (ex.: 96×96 WebP) e manter o `"photo": false` para quem pedir para sair.
+
+## 8. Opcional
 
 - [ ] Domínio próprio (GitHub Pages → *Custom domain*): aí `robots.txt` e `sitemap.xml` passam a valer na raiz. Atualizar `SITE_URL` no build e o referer da chave do Google.
 - [ ] Virtualização da lista de eventos, se a lista ficar longa demais.
