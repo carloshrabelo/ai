@@ -43,46 +43,43 @@ export const router = createBrowserRouter(
           handle: { title: () => 'Revisão' } satisfies RouteHandle,
           lazy: { Component: async () => (await import('./pages/Review')).default },
         },
-        // Área de teste (/teste e ferramentas), só com VITE_TEST_PAGES=true (fora disso, nem entra no build).
-        ...(import.meta.env.VITE_TEST_PAGES === 'true'
-          ? [
-              {
-                path: 'teste',
-                children: [
-                  {
-                    index: true,
-                    handle: { title: () => 'Teste' } satisfies RouteHandle,
-                    lazy: { Component: async () => (await import('./pages/test/TestIndex')).default },
-                  },
-                  {
-                    path: 'precos',
-                    handle: { title: () => 'Preços (teste)' } satisfies RouteHandle,
-                    lazy: { Component: async () => (await import('./pages/test/Prices')).default },
-                  },
-                  {
-                    path: 'sem-preco',
-                    handle: { title: () => 'Sem preço (teste)' } satisfies RouteHandle,
-                    lazy: { Component: async () => (await import('./pages/test/NoPrice')).default },
-                  },
-                  {
-                    path: 'promotores',
-                    handle: { title: () => 'Promotores (teste)' } satisfies RouteHandle,
-                    lazy: { Component: async () => (await import('./pages/test/Promoters')).default },
-                  },
-                  {
-                    path: 'icones',
-                    handle: { title: () => 'Ícones (teste)' } satisfies RouteHandle,
-                    lazy: { Component: async () => (await import('./pages/test/Icons')).default },
-                  },
-                  {
-                    path: 'diretorio-promotores',
-                    handle: { title: () => 'Diretório de promotores (teste)' } satisfies RouteHandle,
-                    lazy: { Component: async () => (await import('./pages/test/PromoterDirectory')).default },
-                  },
-                ],
-              },
-            ]
-          : []),
+        // Área de teste (/teste e ferramentas): pública para quem tem o link, mas sem link no app (o
+        // item "Teste" do menu só aparece com VITE_TEST_PAGES=true) e com noindex.
+        {
+          path: 'teste',
+          children: [
+            {
+              index: true,
+              handle: { title: () => 'Teste' } satisfies RouteHandle,
+              lazy: { Component: async () => (await import('./pages/test/TestIndex')).default },
+            },
+            {
+              path: 'precos',
+              handle: { title: () => 'Preços (teste)' } satisfies RouteHandle,
+              lazy: { Component: async () => (await import('./pages/test/Prices')).default },
+            },
+            {
+              path: 'sem-preco',
+              handle: { title: () => 'Sem preço (teste)' } satisfies RouteHandle,
+              lazy: { Component: async () => (await import('./pages/test/NoPrice')).default },
+            },
+            {
+              path: 'promotores',
+              handle: { title: () => 'Promotores (teste)' } satisfies RouteHandle,
+              lazy: { Component: async () => (await import('./pages/test/Promoters')).default },
+            },
+            {
+              path: 'icones',
+              handle: { title: () => 'Ícones (teste)' } satisfies RouteHandle,
+              lazy: { Component: async () => (await import('./pages/test/Icons')).default },
+            },
+            {
+              path: 'diretorio-promotores',
+              handle: { title: () => 'Diretório de promotores (teste)' } satisfies RouteHandle,
+              lazy: { Component: async () => (await import('./pages/test/PromoterDirectory')).default },
+            },
+          ],
+        },
         {
           path: '*',
           handle: { title: (t) => t.routes.notFound } satisfies RouteHandle,

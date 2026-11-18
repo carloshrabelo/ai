@@ -72,7 +72,7 @@ const SECTIONS: Section[] = [
 ]
 
 /**
- * Área de teste (/teste, só com VITE_TEST_PAGES=true): índice das ferramentas internas, usadas para
+ * Área de teste (/teste, pública mas sem link no app): índice das ferramentas internas, usadas para
  * revisar dados e configurações. Sem i18n: não é para o público.
  */
 export default function TestIndex() {
@@ -80,8 +80,9 @@ export default function TestIndex() {
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <p className="text-sm text-fg-muted">
-        Área interna, visível só com <code className="rounded bg-surface-muted px-1">VITE_TEST_PAGES=true</code> no{' '}
-        <code className="rounded bg-surface-muted px-1">.env.local</code>. Não vai para o site publicado.
+        Área interna: aberta para quem tem o link, mas sem link no app (o item “Teste” do menu só aparece com{' '}
+        <code className="rounded bg-surface-muted px-1">VITE_TEST_PAGES=true</code> no{' '}
+        <code className="rounded bg-surface-muted px-1">.env.local</code>) e fora dos buscadores.
       </p>
       {SECTIONS.map((section) => (
         <section key={section.title} className="space-y-2">

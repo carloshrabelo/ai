@@ -9,7 +9,7 @@ import { useEventsInRange } from './useEventsInRange'
 type PriceRow = { price: string; count: number; pt: string; en: string; untranslated: boolean }
 
 /**
- * Página de teste (/teste/precos, só com VITE_TEST_PAGES=true): todos os preços distintos dos
+ * Página de teste (/teste/precos, pública mas sem link no app): todos os preços distintos dos
  * eventos do período e a tradução de cada um (src/i18n/price.ts), para revisar e completar o
  * dicionário. Sem i18n: é ferramenta interna.
  */

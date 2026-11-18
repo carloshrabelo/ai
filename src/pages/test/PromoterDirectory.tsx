@@ -31,7 +31,7 @@ const TD = 'px-4 py-2 align-top'
 const isGenre = (value: string): value is Genre => (GENRES as readonly string[]).includes(value)
 
 /**
- * Página de teste (/teste/diretorio-promotores, só com VITE_TEST_PAGES=true): o conteúdo de
+ * Página de teste (/teste/diretorio-promotores, pública mas sem link no app): o conteúdo de
  * src/data/promoters.json, atualizado todo dia pela Action "Update promoters"
  * (scripts/promoters-update.mjs): papel (promotor, DJ, professor, local, outro), redes sociais, locais
  * e estilos de cada perfil, e os perfis que parecem o mesmo escrito de outro jeito.

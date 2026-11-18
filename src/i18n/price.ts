@@ -3,7 +3,7 @@ import type { Locale } from './locale'
 // O preço vem do título do evento no calendário (`Tag • Nome • Preço`), escrito à mão em
 // português, com variações e erros de digitação. A tradução é por partes (não por frase inteira):
 // os mesmos pedaços se repetem em combinações diferentes ("7€ ou 10€ (bebida incluída)").
-// Texto desconhecido fica como veio. Lista completa para revisar: /teste/precos (VITE_TEST_PAGES).
+// Texto desconhecido fica como veio. Lista completa para revisar: /teste/precos.
 
 type Rule = [pattern: RegExp, replacement: string]
 

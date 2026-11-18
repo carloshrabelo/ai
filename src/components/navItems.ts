@@ -14,6 +14,7 @@ export const NAV_ITEMS: NavItem[] = [
   { to: '/', label: (t) => t.nav.dance, icon: Disc3 },
   { to: '/mapa', label: (t) => t.nav.map, icon: Compass, mobileOnly: true },
   { to: '/info', label: (t) => t.nav.info, icon: Info },
-  // Área de teste (/teste), só com VITE_TEST_PAGES=true. Ferramenta interna: rótulo sem tradução.
+  // Link para a área de teste (/teste) só com VITE_TEST_PAGES=true (local). As páginas existem no site
+  // publicado para quem tem o link, mas não se chega lá pelo app. Ferramenta interna: rótulo sem tradução.
   ...(import.meta.env.VITE_TEST_PAGES === 'true' ? [{ to: '/teste', label: () => 'Teste', icon: FlaskConical }] : []),
 ]

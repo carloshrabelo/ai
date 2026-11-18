@@ -128,7 +128,7 @@ const MAP_ICONS: Option[] = [
 const nameOf = (options: Option[], index: number) => options[index].name
 
 /**
- * Página de teste (/teste/icones, só com VITE_TEST_PAGES=true): opções de ícone para "Dança" e para
+ * Página de teste (/teste/icones, pública mas sem link no app): opções de ícone para "Dança" e para
  * o botão de filtro, e de nome e ícone para "Info", com prévia na barra inferior, no menu lateral e
  * no botão de filtro.
  */

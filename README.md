@@ -67,7 +67,7 @@ pnpm dev
 | `VITE_USE_MOCK` | `true` (padrão) usa `src/mocks/events.json`, com as datas deslocadas para perto de hoje; `false` usa a Google Calendar API. |
 | `VITE_GOOGLE_API_KEY` | Chave da Google Calendar API (obrigatória com `VITE_USE_MOCK=false`). Restrinja por *HTTP referrer* no Google Cloud: ela fica visível no JavaScript publicado. |
 | `VITE_MOCK_DELAY_MS` | Atraso artificial do mock, para ver os skeletons. |
-| `VITE_TEST_PAGES` | `true` liga as páginas de teste escondidas (só local, não configure no deploy): `/teste` (link "Teste" no menu) reúne as ferramentas internas, como `/teste/precos`, que lista os preços distintos dos eventos e a tradução de cada um. |
+| `VITE_TEST_PAGES` | `true` mostra o link "Teste" no menu (só local, não configure no deploy). A área `/teste`, com as ferramentas internas (como `/teste/precos`, que lista os preços distintos dos eventos e a tradução de cada um), existe também no site publicado para quem tem o link, sem link no app e com noindex. |
 
 ### Scripts
 
