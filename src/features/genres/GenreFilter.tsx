@@ -77,12 +77,22 @@ export function GenreFilter({ plain = false }: { plain?: boolean } = {}) {
               className="-my-2 -ml-2 flex h-11 w-[calc(100%+0.5rem)] cursor-pointer items-center gap-2 rounded-lg px-2 text-left hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-brand"
             >
               <Funnel className="size-5 shrink-0 text-fg-muted" aria-hidden="true" />
-              <span className="flex-1">{title}</span>
+              <span className="flex flex-1 items-center gap-2">
+                {t.filters.title}
+                {/* Quantos ativos num badge, como no botão de filtro do celular. */}
+                {selected.length > 0 && (
+                  <span className="inline-flex size-5 items-center justify-center rounded-full bg-genre-red text-xs font-semibold text-genre-red-fg tabular-nums">
+                    <span aria-hidden="true">{selected.length}</span>
+                    <span className="sr-only">{t.filters.active(selected.length)}</span>
+                  </span>
+                )}
+              </span>
               <ChevronDown className={`size-5 shrink-0 text-fg-muted transition-transform ${open ? 'rotate-180' : ''}`} aria-hidden="true" />
             </button>
           </h2>
         )}
-        {selected.length > 0 && (
+        {/* Na sidebar, "Limpar" fica dentro do painel aberto. */}
+        {plain && selected.length > 0 && (
           <button
             type="button"
             onClick={clear}
@@ -96,6 +106,16 @@ export function GenreFilter({ plain = false }: { plain?: boolean } = {}) {
 
       {open && (
         <div id={bodyId} className="space-y-2">
+          {!plain && selected.length > 0 && (
+            <button
+              type="button"
+              onClick={clear}
+              className="-my-1 -ml-2 inline-flex h-11 cursor-pointer items-center gap-1 rounded-lg px-2 text-sm font-medium text-brand hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-brand"
+            >
+              <X className="size-4" aria-hidden="true" />
+              {t.filters.clear}
+            </button>
+          )}
           {/* Blocos: título do bloco (chip do conjunto) + linha, e os gêneros embaixo.
               Em painel largo (tablet), 2 colunas; na sidebar e no celular, 1 (container query). */}
           <div role="group" aria-label={t.filters.genres} className="@container">
