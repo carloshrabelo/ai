@@ -2,9 +2,7 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import { type IsoDate, lisbonDate } from '../data/dates'
 import { eventsInfiniteQueryOptions, flattenEvents } from '../data/queries'
-import { agendaOf } from '../domain/agenda'
 import { visibleGenres } from '../domain/genres'
-import { useAgenda } from '../features/agenda/agendaContext'
 import { formatDayHeading, formatTimeRange } from '../features/events/format'
 import { useEventBySlug } from '../features/events/useEventBySlug'
 import { useI18n } from '../i18n/useI18n'
@@ -21,18 +19,9 @@ const LIST_SIZE = 20
  */
 export function DanceHead({ startDate, selectedSlug }: { startDate: IsoDate; selectedSlug: string | null }) {
   const { t, locale } = useI18n()
-  const agenda = useAgenda()
   const { data } = useInfiniteQuery(eventsInfiniteQueryOptions(startDate))
   const event = useEventBySlug(startDate, selectedSlug)
-  const upcoming = useMemo(
-    () => flattenEvents(data?.pages ?? []).filter((item) => agendaOf(item.genres) === agenda).slice(0, LIST_SIZE),
-    [data, agenda],
-  )
-  // Agenda da página: dança (/) ou danças tradicionais (/tradicionais/).
-  const home =
-    agenda === 'tradicionais'
-      ? { title: t.seo.tradicionaisTitle, description: t.seo.tradicionaisDescription, canonical: `${siteUrl()}tradicionais/` }
-      : { title: t.seo.homeTitle, description: t.seo.homeDescription, canonical: siteUrl() }
+  const upcoming = useMemo(() => flattenEvents(data?.pages ?? []).slice(0, LIST_SIZE), [data])
 
   let head
   if (selectedSlug && event) {
@@ -42,16 +31,18 @@ export function DanceHead({ startDate, selectedSlug }: { startDate: IsoDate; sel
       description: [visibleGenres(event.genres).join(', '), `${day}, ${formatTimeRange(event, locale)}`, event.venue?.name]
         .filter(Boolean)
         .join(' · '),
-      canonical: eventUrl(event),
-      jsonLd: eventJsonLd(event, eventUrl(event)),
+      canonical: eventUrl(event.slug),
+      jsonLd: eventJsonLd(event, eventUrl(event.slug)),
     }
   } else if (selectedSlug && event === null) {
     // Evento que não existe mais (ou fora das datas carregadas): não indexar; aponta para a agenda.
-    head = { title: t.seo.eventNotFoundTitle, description: home.description, canonical: home.canonical, noindex: true }
+    head = { title: t.seo.eventNotFoundTitle, description: t.seo.homeDescription, canonical: siteUrl(), noindex: true }
   } else {
     head = {
-      ...home,
-      ...(upcoming.length > 0 ? { jsonLd: eventListJsonLd(upcoming, (e) => eventUrl(e)) } : {}),
+      title: t.seo.homeTitle,
+      description: t.seo.homeDescription,
+      canonical: siteUrl(),
+      ...(upcoming.length > 0 ? { jsonLd: eventListJsonLd(upcoming, (e) => eventUrl(e.slug)) } : {}),
     }
   }
 

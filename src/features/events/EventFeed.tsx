@@ -5,9 +5,7 @@ import { ErrorBoundary } from '../../components/ErrorBoundary'
 import { Button } from '../../components/ui/Button'
 import type { IsoDate } from '../../data/dates'
 import { eventsInfiniteQueryOptions, flattenEvents } from '../../data/queries'
-import { agendaOf } from '../../domain/agenda'
 import { type GenreFilterValue, matchesGenres } from '../../domain/genreFilter'
-import { useAgenda } from '../agenda/agendaContext'
 import { EventCard, EventCardSkeleton } from './EventCard'
 import { lastSearchedDay, shouldPauseFilteredSearch } from './filteredSearch'
 import { formatDayHeading, formatDayInSentence } from './format'
@@ -41,7 +39,6 @@ export function EventFeed(props: FeedProps) {
 
 function EventFeedContent({ startDate, genres, onOpenEvent }: FeedProps) {
   const { t, locale, orList } = useI18n()
-  const agenda = useAgenda()
   const genreNames = orList(genres.map((genre) => genreLabel(genre, t)))
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetchNextPageError } = useSuspenseInfiniteQuery(
     eventsInfiniteQueryOptions(startDate),
@@ -49,9 +46,9 @@ function EventFeedContent({ startDate, genres, onOpenEvent }: FeedProps) {
 
   const days = useMemo(() => {
     const rangeEnd = data.pages.at(-1)?.end ?? startDate
-    const events = flattenEvents(data.pages).filter((event) => agendaOf(event.genres) === agenda && matchesGenres(event.genres, genres))
+    const events = flattenEvents(data.pages).filter((event) => matchesGenres(event.genres, genres))
     return groupByDay(events, startDate, rangeEnd)
-  }, [data.pages, startDate, genres, agenda])
+  }, [data.pages, startDate, genres])
 
   // Com filtro ativo, a busca automática para depois de 3 janelas seguidas sem resultado.
   // "Buscar mais" libera mais 3 a partir dali; trocar o filtro recomeça a contagem.

@@ -1,19 +1,18 @@
 import { useCallback } from 'react'
 import { useLocation, useNavigate } from 'react-router'
-import { AGENDA_BASE, type Agenda, agendaFromPath } from '../../domain/agenda'
 import { toSearchString } from '../../domain/genreFilter'
 
 /** Parâmetro antigo (?event=<id do Google>), ainda aceito em links compartilhados antes. */
 export const LEGACY_EVENT_PARAM = 'event'
 
-/** /evento/<slug>/ ou /tradicionais/evento/<slug>/ → slug */
+/** /evento/<slug>/ → slug */
 export function slugFromPath(pathname: string): string | null {
-  const match = pathname.match(/^(?:\/tradicionais)?\/evento\/([^/]+)\/?$/)
+  const match = pathname.match(/^\/evento\/([^/]+)\/?$/)
   return match ? decodeURIComponent(match[1]) : null
 }
 
-/** Caminho do evento dentro do app (sem o basename), na agenda dele. Com barra final, como no GitHub Pages. */
-export const eventPath = (slug: string, agenda: Agenda = 'dance') => `${AGENDA_BASE[agenda]}/evento/${encodeURIComponent(slug)}/`
+/** Caminho do evento dentro do app (sem o basename). Com barra final, como no GitHub Pages. */
+export const eventPath = (slug: string) => `/evento/${encodeURIComponent(slug)}/`
 
 type OpenedState = { openedFromList?: boolean } | null
 
@@ -26,8 +25,6 @@ export function useSelectedEvent() {
   const location = useLocation()
   const navigate = useNavigate()
   const selectedSlug = slugFromPath(location.pathname)
-  // Abrir e fechar ficam na agenda da página (/ ou /tradicionais).
-  const agenda = agendaFromPath(location.pathname)
 
   const searchWithoutLegacy = useCallback(() => {
     const params = new URLSearchParams(location.search)
@@ -40,7 +37,7 @@ export function useSelectedEvent() {
       const alreadyOpen = selectedSlug !== null
       // Trocar de um evento para outro não empilha histórico.
       navigate(
-        { pathname: eventPath(slug, agenda), search: searchWithoutLegacy() },
+        { pathname: eventPath(slug), search: searchWithoutLegacy() },
         {
           replace: alreadyOpen,
           preventScrollReset: true,
@@ -48,13 +45,13 @@ export function useSelectedEvent() {
         },
       )
     },
-    [navigate, searchWithoutLegacy, selectedSlug, location.state, agenda],
+    [navigate, searchWithoutLegacy, selectedSlug, location.state],
   )
 
   const close = useCallback(() => {
     if ((location.state as OpenedState)?.openedFromList) navigate(-1)
-    else navigate({ pathname: AGENDA_BASE[agenda] || '/', search: searchWithoutLegacy() }, { replace: true, preventScrollReset: true })
-  }, [navigate, searchWithoutLegacy, location.state, agenda])
+    else navigate({ pathname: '/', search: searchWithoutLegacy() }, { replace: true, preventScrollReset: true })
+  }, [navigate, searchWithoutLegacy, location.state])
 
   return { selectedSlug, open, close }
 }

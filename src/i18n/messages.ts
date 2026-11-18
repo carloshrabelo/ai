@@ -6,7 +6,7 @@ import type { Locale } from './locale'
  * Nomes de gêneros são nomes próprios e não são traduzidos, exceto "Outros".
  */
 const pt = {
-  nav: { main: 'Navegação principal', dance: 'Dança', tradicionais: 'Tradicionais', map: 'Explorar', schools: 'Escolas', info: 'Sobre', sidebar: 'Menu e filtros', mapColumn: 'Mapa e detalhes do evento' },
+  nav: { main: 'Navegação principal', dance: 'Dança', map: 'Explorar', schools: 'Escolas', info: 'Sobre', sidebar: 'Menu e filtros', mapColumn: 'Mapa e detalhes do evento' },
   routes: { notFound: 'Página não encontrada' },
   dates: {
     shortcuts: 'Atalhos de dia',
@@ -117,8 +117,6 @@ const pt = {
       'Práticas, festas e festivais de salsa, bachata, kizomba, forró, swing e outros estilos em Lisboa, com mapa e filtros por estilo.',
     eventTitle: (title: string, day: string) => `${title} · ${day} — Lisbon Social Dance`,
     eventNotFoundTitle: 'Evento não encontrado — Lisbon Social Dance',
-    tradicionaisTitle: 'Danças tradicionais — Lisbon Social Dance',
-    tradicionaisDescription: 'Bailes folk, balfolk e danças tradicionais europeias em Portugal, com mapa e detalhes de cada evento.',
     infoTitle: 'Info — Lisbon Social Dance',
     infoDescription: 'Sobre o Lisbon Social Dance: de onde vêm os eventos, tema, idioma e instalação do app.',
     schoolsTitle: 'Escolas — Lisbon Social Dance',
@@ -156,7 +154,7 @@ const pt = {
 export type Messages = typeof pt
 
 const en: Messages = {
-  nav: { main: 'Main navigation', dance: 'Dance', tradicionais: 'Folk', map: 'Explore', schools: 'Schools', info: 'About', sidebar: 'Menu and filters', mapColumn: 'Map and event details' },
+  nav: { main: 'Main navigation', dance: 'Dance', map: 'Explore', schools: 'Schools', info: 'About', sidebar: 'Menu and filters', mapColumn: 'Map and event details' },
   routes: { notFound: 'Page not found' },
   dates: {
     shortcuts: 'Day shortcuts',
@@ -267,8 +265,6 @@ const en: Messages = {
       'Salsa, bachata, kizomba, forró, swing and other social dance practices, parties and festivals in Lisbon, with a map and style filters.',
     eventTitle: (title, day) => `${title} · ${day} — Lisbon Social Dance`,
     eventNotFoundTitle: 'Event not found — Lisbon Social Dance',
-    tradicionaisTitle: 'Traditional dances — Lisbon Social Dance',
-    tradicionaisDescription: 'Folk balls, balfolk and European traditional dances across Portugal, with a map and event details.',
     infoTitle: 'Info — Lisbon Social Dance',
     infoDescription: 'About Lisbon Social Dance: where the events come from, theme, language and installing the app.',
     schoolsTitle: 'Schools — Lisbon Social Dance',

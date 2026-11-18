@@ -43,7 +43,7 @@
 ## Dados e créditos
 
 - Eventos do calendário público do [pasdedeux.pt](https://pasdedeux.pt/), mantido por [@ateterca](https://www.instagram.com/ateterca/), lidos pela Google Calendar API.
-- Também os calendários públicos de tango (`agendatangolx@gmail.com`, da agenda do [tangolx.com](https://www.tangolx.com/)) e de danças tradicionais europeias (`europeias.agenda@gmail.com`, mantido por Luís Manuel Guerra). Cada um tem um adaptador (`src/domain/calendarSources.ts`) que converte o evento para o formato do principal (tag, nome e preço no título; local; hora). Os eventos de danças tradicionais ficam numa agenda própria, `/tradicionais` (país todo), com o mesmo formato da Dança (`src/domain/agenda.ts`).
+- Também os calendários públicos de tango (`agendatangolx@gmail.com`, da agenda do [tangolx.com](https://www.tangolx.com/)) e de danças tradicionais europeias (`europeias.agenda@gmail.com`, mantido por Luís Manuel Guerra), na mesma lista. Cada um tem um adaptador (`src/domain/calendarSources.ts`) que converte o evento para o formato do principal (tag, nome e preço no título; local; hora). As danças tradicionais incluem eventos fora de Lisboa.
 - Mapa e coordenadas: © colaboradores do [OpenStreetMap](https://www.openstreetmap.org/copyright) (tiles do OSM, Nominatim e Photon).
 - Desenvolvido por [carloshrabelo.dev](https://carloshrabelo.dev/).
 

@@ -1,4 +1,3 @@
-import { agendaOf } from '../../domain/agenda'
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import type { IsoDate } from '../../data/dates'
@@ -20,6 +19,6 @@ export function useLegacyEventRedirect(startDate: IsoDate) {
     if (!legacyId || event === undefined) return
     const params = new URLSearchParams(location.search)
     params.delete(LEGACY_EVENT_PARAM)
-    navigate({ pathname: event ? eventPath(event.slug, agendaOf(event.genres)) : '/', search: toSearchString(params) }, { replace: true })
+    navigate({ pathname: event ? eventPath(event.slug) : '/', search: toSearchString(params) }, { replace: true })
   }, [legacyId, event, location.search, navigate])
 }

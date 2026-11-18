@@ -12,8 +12,7 @@ import type { ReactNode } from 'react'
 // Todos os gêneros aparecem sempre, com ou sem eventos no período carregado.
 const GROUPED = new Set<GenreFilterValue>(GENRE_GROUPS.flatMap(({ umbrella, genres }) => [umbrella, ...genres]))
 /** Estilos fora dos conjuntos, e "Outros" por último. */
-// Sem "Tradicionais": esses eventos ficam na agenda própria (/tradicionais).
-const STANDALONE = FILTER_VALUES.filter((value) => !GROUPED.has(value) && value !== 'Tradicionais')
+const STANDALONE = FILTER_VALUES.filter((value) => !GROUPED.has(value))
 
 /**
  * Painel "Filtros": os conjuntos (Latinas, Afro, BR), cada um com seus gêneros, e depois os

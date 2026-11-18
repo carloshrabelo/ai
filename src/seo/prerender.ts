@@ -4,7 +4,6 @@
 
 import { type IsoDate, lisbonDate } from '../data/dates'
 import type { DanceEvent } from '../domain/event'
-import { eventPagePath } from '../domain/agenda'
 import { visibleGenres } from '../domain/genres'
 import { formatDayHeading, formatTimeRange } from '../features/events/format'
 import { MESSAGES } from '../i18n/messages'
@@ -20,7 +19,7 @@ const HOME_LIST_SIZE = 40
 
 export { loadEvents } from '../data/loadEvents'
 
-export { eventPagePath } from '../domain/agenda'
+export const eventPagePath = (event: DanceEvent) => `evento/${event.slug}/`
 
 /** Página de um evento: <head> próprio (título, descrição, canonical, Open Graph, JSON-LD) e conteúdo. */
 export function renderEventPage(template: string, event: DanceEvent, siteUrl: string): string {

@@ -1,6 +1,5 @@
 // Gera as páginas estáticas depois do `vite build` (SEO sem servidor: GitHub Pages):
-//   dist/evento/<slug>/index.html  — uma por evento (de 1 semana atrás a 90 dias à frente); os de
-//                                    danças tradicionais em dist/tradicionais/evento/<slug>/
+//   dist/evento/<slug>/index.html  — uma por evento (de 1 semana atrás a 90 dias à frente)
 //   dist/index.html                — agenda com a lista dos próximos eventos
 //   dist/404.html                  — fallback de SPA (cópia do index.html original)
 //   dist/sitemap.xml               — rotas fixas + eventos futuros
@@ -14,7 +13,7 @@ import { createServer } from 'vite'
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const outDir = join(root, 'dist')
 const siteUrl = process.env.SITE_URL ?? (process.env.GITHUB_PAGES ? 'https://carloshrabelo.github.io/ai/' : 'http://localhost:4173/')
-const PUBLIC_ROUTES = ['', 'tradicionais/', 'mapa/', 'info/']
+const PUBLIC_ROUTES = ['', 'mapa/', 'info/']
 const DAYS_BEFORE = 7
 const DAYS_AFTER = 90
 
@@ -39,9 +38,8 @@ const vite = await createServer({
 })
 
 try {
-  const { eventPagePath, loadEvents, renderEventPage, renderHomePage, renderSitemap } = await vite.ssrLoadModule('/src/seo/prerender.ts')
+  const { loadEvents, renderEventPage, renderHomePage, renderSitemap } = await vite.ssrLoadModule('/src/seo/prerender.ts')
   const { addDays, todayIso } = await vite.ssrLoadModule('/src/data/dates.ts')
-  const { agendaOf } = await vite.ssrLoadModule('/src/domain/agenda.ts')
 
   const template = readFileSync(join(outDir, 'index.html'), 'utf8')
   writeFileSync(join(outDir, '404.html'), template)
@@ -55,15 +53,13 @@ try {
   }
 
   for (const event of events) {
-    const dir = join(outDir, decodeURIComponent(eventPagePath(event)))
+    const dir = join(outDir, 'evento', event.slug)
     mkdirSync(dir, { recursive: true })
     writeFileSync(join(dir, 'index.html'), renderEventPage(template, event, siteUrl))
   }
 
   const upcoming = events.filter((event) => event.end.getTime() > Date.now())
-  // A página inicial é a agenda de dança: sem os eventos de danças tradicionais (/tradicionais).
-  const home = upcoming.filter((event) => agendaOf(event.genres) === 'dance')
-  writeFileSync(join(outDir, 'index.html'), renderHomePage(template, home, siteUrl))
+  writeFileSync(join(outDir, 'index.html'), renderHomePage(template, upcoming, siteUrl))
   writeFileSync(join(outDir, 'sitemap.xml'), renderSitemap(siteUrl, PUBLIC_ROUTES, upcoming, today))
 
   console.log(`prerender: ${events.length} páginas de evento, ${upcoming.length} no sitemap.`)

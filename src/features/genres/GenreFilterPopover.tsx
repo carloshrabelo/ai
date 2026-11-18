@@ -9,8 +9,7 @@ import { useGenreFilter } from './useGenreFilter'
 
 const GROUPED = new Set<GenreFilterValue>(GENRE_GROUPS.flatMap(({ umbrella, genres }) => [umbrella, ...genres]))
 /** Estilos fora dos conjuntos, e "Outros" por último. */
-// Sem "Tradicionais": esses eventos ficam na agenda própria (/tradicionais).
-const STANDALONE = FILTER_VALUES.filter((value) => !GROUPED.has(value) && value !== 'Tradicionais')
+const STANDALONE = FILTER_VALUES.filter((value) => !GROUPED.has(value))
 
 /** Título da coluna (chip do conjunto ou "Outros estilos") com uma linha até o fim. */
 function ColumnHeader({ children }: { children: ReactNode }) {
