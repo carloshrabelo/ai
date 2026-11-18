@@ -105,18 +105,18 @@ const INFO_ICONS: Option[] = [
 ]
 
 const MAP_NAMES: NameOption[] = [
-  { pt: 'Mapa', en: 'Map', note: 'Direto: o que a tela é.', current: true },
+  { pt: 'Mapa', en: 'Map', note: 'Anterior. Direto: o que a tela é.' },
   { pt: 'Perto', en: 'Nearby', note: 'Foca no uso: o que tem perto de mim.' },
   { pt: 'Onde', en: 'Where', note: 'Curto; pergunta que o mapa responde.' },
   { pt: 'Locais', en: 'Venues', note: 'Os lugares dos eventos do dia.' },
-  { pt: 'Explorar', en: 'Explore', note: 'Convite a descobrir; mais vago.' },
+  { pt: 'Explorar', en: 'Explore', note: 'Convite a descobrir; mais vago.', current: true },
 ]
 
 const MAP_ICONS: Option[] = [
-  { name: 'Map', icon: MapIcon, note: 'Mapa dobrado: o padrão.', current: true },
+  { name: 'Map', icon: MapIcon, note: 'Anterior. Mapa dobrado: o padrão.' },
   { name: 'MapPinned', icon: MapPinned, note: 'Mapa com pino: lugares dos eventos.' },
   { name: 'MapPin', icon: MapPin, note: 'Só o pino: local, endereço.' },
-  { name: 'Compass', icon: Compass, note: 'Bússola: explorar, orientar-se.' },
+  { name: 'Compass', icon: Compass, note: 'Bússola: explorar, orientar-se.', current: true },
   { name: 'Navigation', icon: Navigation, note: 'Seta de navegação: "ir até lá".' },
   { name: 'LocateFixed', icon: LocateFixed, note: 'Mira: minha localização, perto de mim.' },
   { name: 'Earth', icon: Earth, note: 'Globo; amplo demais para uma cidade.' },
