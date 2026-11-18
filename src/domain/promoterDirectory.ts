@@ -15,10 +15,11 @@ export type PromoterEntry = {
   /** Nome para exibição, preenchido à mão (o script não mexe). */
   name?: string
   /**
-   * Foto do perfil, preenchida à mão: caminho em public/ ("promoters/perfil.webp") ou URL. O script
-   * não mexe; sem foto, as telas mostram as iniciais.
+   * Foto do perfil: caminho em public/ ("promoters/perfil.jpg") ou URL, à mão ou pelo
+   * `pnpm promoters:photos`. `false`: sem foto, por pedido (o script não busca). Sem foto, as telas
+   * mostram as iniciais. O `promoters:update` não mexe.
    */
-  photo?: string
+  photo?: string | false
   /** Papel deduzido na primeira vez (ver `roleOf`); corrigível à mão, o script não muda depois. */
   role: Role
   /** Grafias erradas deste perfil vistas no calendário ("dale.eventss"), preenchidas à mão. */
@@ -135,7 +136,7 @@ function combine(base: PromoterEntry, extra: PromoterEntry): PromoterEntry {
   const aliases = [...new Set([...(base.aliases ?? []), ...(extra.aliases ?? [])])]
   return {
     ...(base.name ? { name: base.name } : extra.name ? { name: extra.name } : {}),
-    ...(base.photo ? { photo: base.photo } : extra.photo ? { photo: extra.photo } : {}),
+    ...(base.photo !== undefined ? { photo: base.photo } : extra.photo !== undefined ? { photo: extra.photo } : {}),
     role: base.role,
     ...(aliases.length > 0 ? { aliases } : {}),
     socials: { ...extra.socials, ...base.socials },
