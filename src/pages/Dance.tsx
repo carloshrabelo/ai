@@ -10,7 +10,11 @@ import { EventDetailsDrawer, EventDetailsPanel } from '../features/events/Select
 import { useLegacyEventRedirect } from '../features/events/useLegacyEventRedirect'
 import { useSelectedEvent } from '../features/events/useSelectedEvent'
 import { GenreFilter } from '../features/genres/GenreFilter'
+import { GenreFilterBar } from '../features/genres/GenreFilterBar'
 import { GenreFilterButton } from '../features/genres/GenreFilterButton'
+import { loadFilterLayout } from '../features/genres/filterLayout'
+import { LocationControl } from '../features/location/LocationControl'
+import { Card } from '../components/ui/Card'
 import { useGenreFilter } from '../features/genres/useGenreFilter'
 import { MapPanel } from '../features/map/MapPanel'
 import { useMediaQuery, XL_QUERY } from '../hooks/useMediaQuery'
@@ -59,6 +63,9 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
   const isXl = useMediaQuery(XL_QUERY)
   const { t } = useI18n()
   const [filtersOpen, setFiltersOpen] = useState(false)
+  // Teste de layout (/teste/filtros): no computador, filtros numa barra no topo da lista.
+  const [filterLayout] = useState(loadFilterLayout)
+  const filtersInMain = isXl && filterLayout !== 'sidebar'
   const filtersId = useId()
 
   const detailsProps = { startDate, slug: selectedSlug ?? '', onClose: close }
@@ -92,6 +99,8 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
             }
           />
 
+          {filtersInMain && <GenreFilterBar wrap={filterLayout === 'wrap'} />}
+
           {/* Até 1279px: os filtros abrem num drawer que sobe de baixo. */}
           {!isXl && filtersOpen && (
             <BottomSheet
@@ -111,7 +120,13 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
 
         <SidebarPortal>
           {shortcuts}
-          <GenreFilter />
+          {filtersInMain ? (
+            <Card variant="panel">
+              <LocationControl />
+            </Card>
+          ) : (
+            <GenreFilter />
+          )}
         </SidebarPortal>
 
         <ChangesBanner startDate={startDate} onOpenEvent={openFromList} />
