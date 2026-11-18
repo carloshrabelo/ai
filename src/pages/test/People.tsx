@@ -42,7 +42,7 @@ function initials(handle: string, name?: string): string {
 /**
  * Página de teste (/teste/envolvidos, pública mas sem link no app): todo mundo de
  * src/data/promoters.json separado por papel (promotores, professores, DJs, locais, outros), com a
- * foto (campo `photo`: à mão ou `pnpm promoters:photos`) ou as iniciais, e o @ com link para o Instagram.
+ * foto (campo `photo`, à mão) ou as iniciais, e o @ com link para o Instagram.
  */
 export default function People() {
   useDocumentHead({ title: 'Envolvidos (teste)', description: 'Promotores, professores e DJs', canonical: `${siteUrl()}teste/envolvidos`, noindex: true })
