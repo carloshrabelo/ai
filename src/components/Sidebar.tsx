@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router'
+import { Link, NavLink } from 'react-router'
 import { APP_NAME } from '../app'
 import logo from '../assets/logo.png'
 import { NAV_ITEMS } from './navItems'
@@ -6,7 +6,7 @@ import { useI18n } from '../i18n/useI18n'
 
 const FOCUS = 'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand'
 
-/** Coluna lateral a partir de `xl` (1280px): nome do app, conteúdo da página (slot) e navegação. */
+/** Coluna lateral a partir de `xl` (1280px): logo, conteúdo da página (slot) e navegação. */
 type SlotRef = (element: HTMLElement | null) => void
 
 export default function Sidebar({ slotRef, bottomSlotRef }: { slotRef: SlotRef; bottomSlotRef: SlotRef }) {
@@ -16,10 +16,17 @@ export default function Sidebar({ slotRef, bottomSlotRef }: { slotRef: SlotRef; 
       aria-label={t.nav.sidebar}
       className="sticky top-0 hidden h-dvh w-72 shrink-0 flex-col gap-6 overflow-y-auto border-r border-border bg-surface-muted px-4 pb-6 xl:flex"
     >
-      <p className="flex h-14 shrink-0 items-center gap-2 px-2 text-lg font-semibold whitespace-nowrap">
-        <img src={logo} alt="" width={48} height={40} className="h-10 w-auto shrink-0" />
-        {APP_NAME}
-      </p>
+      {/* Só a logo: o nome do app já está no título do header, ao lado. Leva para a agenda. */}
+      <div className="flex h-14 shrink-0 items-center px-2">
+        <Link
+          to="/"
+          aria-label={APP_NAME}
+          title={APP_NAME}
+          className={`rounded-lg ${FOCUS.replace('-outline-offset-2', 'outline-offset-2')}`}
+        >
+          <img src={logo} alt="" width={48} height={40} className="h-11 w-auto" />
+        </Link>
+      </div>
 
       {/* Conteúdo da página atual (ex.: atalhos de dia e filtros na rota Dança). */}
       <div ref={slotRef} className="space-y-4 empty:hidden" />
