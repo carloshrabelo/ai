@@ -50,7 +50,7 @@ export function WeekStrip({ startDate, activeDay, onSelect, actions }: Props) {
     <div className="flex items-center gap-2">
       <IconButton
         label={t.dates.pickDate}
-        variant="secondary"
+        variant="tool"
         icon={<CalendarSearch className="size-6" aria-hidden="true" />}
         onClick={openPicker}
         className="h-14"

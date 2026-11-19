@@ -1,4 +1,5 @@
 import { Funnel } from 'lucide-react'
+import { TOOL, TOOL_ACTIVE, TOOL_IDLE } from '../../components/ui/Button'
 import { useI18n } from '../../i18n/useI18n'
 
 type Props = {
@@ -23,8 +24,8 @@ export function GenreFilterButton({ open, onToggle, controls, activeCount }: Pro
       aria-label={label}
       title={label}
       onClick={onToggle}
-      className={`relative inline-flex h-14 w-11 shrink-0 cursor-pointer items-center justify-center rounded-lg border transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${
-        open ? 'border-brand bg-brand text-brand-fg' : 'border-border bg-surface text-fg hover:bg-surface-muted'
+      className={`relative inline-flex h-14 w-11 shrink-0 cursor-pointer items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${TOOL} ${
+        open ? TOOL_ACTIVE : TOOL_IDLE
       }`}
     >
       <Funnel className="size-6" aria-hidden="true" />
