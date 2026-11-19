@@ -99,7 +99,33 @@ Usa a **Instagram Graph API oficial (Business Discovery)**. O endpoint interno `
 - [ ] Atualizar fotos de tempos em tempos com `--force` (ex.: uma vez por mês).
 - [ ] Usar no app: decidir onde a foto aparece (card do evento, bloco "Organização" nos detalhes, página de promotores), reduzir as imagens (ex.: 96×96 WebP) e manter o `"photo": false` para quem pedir para sair.
 
-## 8. Opcional
+## 8. Refatoração do código — o que falta
+
+Já feito (commits `167c348` a `c587708`, no `main`):
+- Helpers comuns em `src/lib` (`htmlToText`, `levenshtein`, `formatEuro`, `storage`) e o hook `usePersistentState`.
+- `src/data` dividido em `src/api` (busca e cache), `src/content` (JSON e textos estáticos) e `src/lib/dates.ts`; `domain` não importa mais de `api`.
+- Preço em `src/domain/price` e `src/features/price`; código só de teste em `src/pages/test/price`.
+- Revisão dividida em `src/features/review` (regras puras com testes, hook da ortografia, componentes); período em `src/features/range`.
+- Registro único de calendários (`CALENDARS` em `src/domain/calendarSources.ts`).
+- Textos em `src/i18n/messages/pt.ts` e `en.ts`, com os rótulos de preço.
+- Páginas de teste agrupadas (`price/`, `promoters/`, `visual/`); `src/prototypes` removido.
+- Scripts em TypeScript (`scripts/*.ts` + `scripts/lib`), checados pelo `tsconfig.node.json`; o `venues:check` lê os três calendários (antes só o principal).
+
+**Falta:**
+
+- [ ] **Push.** O `main` tem os commits da refatoração só localmente. Depois do push, a Action *Update venues* passa a geocodificar os ~32 locais de tango e danças tradicionais que estavam de fora.
+- [ ] **Lint mais rigoroso** (`.oxlintrc.json`):
+  - [ ] Ligar `react/exhaustive-deps` e corrigir os avisos.
+  - [ ] Modo com tipos: `pnpm add -D oxlint-tsgolint`, rodar `oxlint --type-aware` e ligar `typescript/no-floating-promises` e `typescript/no-misused-promises` (fila do LanguageTool, `fetchNextPage`, cópias para a área de transferência). Corrigir com `await` ou `void` explícito, e trocar o `lint` no `package.json` (o CI usa esse script).
+- [ ] **Testes de ponta a ponta (Playwright)**:
+  - [ ] `pnpm add -D @playwright/test @axe-core/playwright`; `playwright.config.ts` com `webServer` em modo mock (`VITE_USE_MOCK=true VITE_TEST_PAGES=false pnpm dev --port <porta>`): dados fixos, sem chave.
+  - [ ] Fluxos: lista carrega; filtro (popover no desktop, drawer no celular; conjunto marcado bloqueia os estilos; "Limpar"); abrir e fechar detalhes (URL `/evento/<slug>/`); barra inferior no celular (Dança, Explorar, Comunidade, Sobre); preço em chips (rótulo e grupo); `/review` carrega.
+  - [ ] Acessibilidade com `@axe-core/playwright` nas telas principais, nos dois temas, e remover `scripts/a11y-check.mjs` (último script em `.mjs`) e o `axe-core` do `ignoreDependencies` do `knip.json`.
+  - [ ] No CI (`.github/workflows/deploy.yml`): `pnpm exec playwright install --with-deps chromium` e `pnpm e2e` antes do build.
+- [ ] **README, seção "Estrutura"**: ainda descreve `src/data` e os scripts `.mjs`. Atualizar para `src/api`, `src/content`, `src/lib`, `src/domain/price`, `src/features/{price,review,range}`, `src/pages/test/{price,promoters,visual}` e `scripts/*.ts` + `scripts/lib`.
+- [ ] **Branch `feature/promoter-photos`**: foi criada antes da refatoração; ao retomar, fazer rebase no `main` (os caminhos mudaram: `src/data/promoters.json` → `src/content/promoters.json`, scripts em `.ts`).
+
+## 9. Opcional
 
 - [ ] Domínio próprio (GitHub Pages → *Custom domain*): aí `robots.txt` e `sitemap.xml` passam a valer na raiz. Atualizar `SITE_URL` no build e o referer da chave do Google.
 - [ ] Virtualização da lista de eventos, se a lista ficar longa demais.
