@@ -37,6 +37,9 @@ function setState(next: EventFocusState) {
 
 const sameIds = (a: readonly string[], b: readonly string[]) => a.length === b.length && a.every((id, i) => id === b[i])
 
+/** Aparelho com mouse/trackpad (hover de verdade). Fora do navegador (testes), considera que sim. */
+const canHover = () => typeof window === 'undefined' || !window.matchMedia || window.matchMedia('(hover: hover)').matches
+
 export const eventFocus = {
   getState: () => state,
 
@@ -65,6 +68,9 @@ export const eventFocus = {
   },
 
   hover(ids: readonly string[], source: HoverSource) {
+    // Tela de toque não tem hover de verdade: o toque gera "mouseover" sem "mouseout" e o destaque
+    // (pulso no mapa) ficava preso. Lá, só o selecionado é destacado.
+    if (!canHover()) return
     if (ids.length === 0) return eventFocus.unhover(source)
     if (state.hover?.source === source && sameIds(state.hover.ids, ids)) return
     setState({ ...state, hover: { ids, source } })

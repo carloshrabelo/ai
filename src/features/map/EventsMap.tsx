@@ -154,6 +154,8 @@ function Pins({ places, selectedPlace, onOpenEvent }: { places: Place[]; selecte
   const map = useMap()
   const [zoom, setZoom] = useState(() => map.getZoom())
   useMapEvent('zoomend', () => setZoom(map.getZoom()))
+  // Mudou o zoom (botões, pinça, roda, grupo aberto): os pinos se reagrupam e o hover do mapa sai.
+  useMapEvent('zoomstart', () => eventFocus.unhover('map'))
   const clusters = useMemo(() => clusterPlaces(places, map, zoom), [places, map, zoom])
   return clusters.map((cluster) =>
     cluster.places.length === 1 ? (
