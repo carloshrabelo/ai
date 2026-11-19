@@ -82,11 +82,7 @@ function EventFeedContent({ startDate, genres, onOpenEvent }: FeedProps) {
       {days.length === 0 && !hasNextPage && (
         <div className="flex flex-col items-center gap-2 py-12 text-center text-fg-muted">
           <CalendarX className="size-12" aria-hidden="true" />
-          <p className="text-sm">
-            {genres.length > 0
-              ? t.feed.emptyForGenres(genreNames)
-              : t.feed.emptyFromDate}
-          </p>
+          <p className="text-sm">{genres.length > 0 ? t.feed.emptyForGenres(genreNames) : t.feed.emptyFromDate}</p>
         </div>
       )}
 

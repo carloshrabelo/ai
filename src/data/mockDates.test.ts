@@ -9,7 +9,17 @@ const startDay = (e: GCalEvent) => e.start.date ?? lisbonDate(new Date(e.start.d
 
 describe('shiftMockEvents', () => {
   // Uma data para cada dia da semana, mais datas no inverno e no verão.
-  const todays = ['2026-11-16', '2026-11-17', '2026-11-18', '2026-11-19', '2026-11-20', '2026-11-21', '2026-11-22', '2027-03-28', '2027-08-15']
+  const todays = [
+    '2026-11-16',
+    '2026-11-17',
+    '2026-11-18',
+    '2026-11-19',
+    '2026-11-20',
+    '2026-11-21',
+    '2026-11-22',
+    '2027-03-28',
+    '2027-08-15',
+  ]
 
   it.each(todays)('hoje = %s: há eventos na semana passada, hoje e na próxima', (today) => {
     const days = shiftMockEvents(items, today).map(startDay)
@@ -31,7 +41,8 @@ describe('shiftMockEvents', () => {
   it('desloca em dias inteiros: horários e durações não mudam', () => {
     const shifted = shiftMockEvents(items, '2026-11-17')
     shifted.forEach((event, i) => {
-      const duration = (e: GCalEvent) => new Date(e.end.dateTime ?? e.end.date!).getTime() - new Date(e.start.dateTime ?? e.start.date!).getTime()
+      const duration = (e: GCalEvent) =>
+        new Date(e.end.dateTime ?? e.end.date!).getTime() - new Date(e.start.dateTime ?? e.start.date!).getTime()
       expect(Math.abs(duration(event) - duration(items[i]))).toBeLessThanOrEqual(3_600_000) // ±1h de mudança de horário
     })
   })

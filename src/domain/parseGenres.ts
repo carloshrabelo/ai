@@ -13,9 +13,7 @@ const ALIAS_RULES = Object.keys(ALIAS)
   .sort(byLengthDesc)
   .map((key) => ({ pattern: wholeTerm(key), replacement: ` ${ALIAS[key]} ` }))
 
-const GENRE_RULES = [...GENRES]
-  .sort(byLengthDesc)
-  .map((genre) => ({ genre, pattern: wholeTerm(genre.toUpperCase()) }))
+const GENRE_RULES = [...GENRES].sort(byLengthDesc).map((genre) => ({ genre, pattern: wholeTerm(genre.toUpperCase()) }))
 
 /**
  * Tag do evento (1º trecho do summary) → gêneros de GENRES, na ordem de GENRES.

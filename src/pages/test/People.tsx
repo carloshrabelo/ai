@@ -45,7 +45,12 @@ function initials(handle: string, name?: string): string {
  * foto (campo `photo`, à mão) ou as iniciais, e o @ com link para o Instagram.
  */
 export default function People() {
-  useDocumentHead({ title: 'Envolvidos (teste)', description: 'Promotores, professores e DJs', canonical: `${siteUrl()}teste/envolvidos`, noindex: true })
+  useDocumentHead({
+    title: 'Envolvidos (teste)',
+    description: 'Promotores, professores e DJs',
+    canonical: `${siteUrl()}teste/envolvidos`,
+    noindex: true,
+  })
   const [search, setSearch] = useState('')
   const term = search.trim().toLowerCase()
 
@@ -54,7 +59,9 @@ export default function People() {
   )
   const groups = ORDER.map((role) => ({
     role,
-    people: visible.filter(([, entry]) => entry.role === role).sort(([a, x], [b, y]) => y.lastSeen.localeCompare(x.lastSeen) || a.localeCompare(b)),
+    people: visible
+      .filter(([, entry]) => entry.role === role)
+      .sort(([a, x], [b, y]) => y.lastSeen.localeCompare(x.lastSeen) || a.localeCompare(b)),
   })).filter(({ people }) => people.length > 0)
   const withPhoto = DIRECTORY.filter(([, entry]) => entry.photo).length
 
@@ -64,9 +71,9 @@ export default function People() {
       <Card className="space-y-3">
         <h2 className="text-lg font-semibold">Envolvidos</h2>
         <p className="text-sm text-fg-muted">
-          Perfis citados nos eventos (src/data/promoters.json), separados por papel, dos mais recentes para os mais antigos. {DIRECTORY.length}{' '}
-          perfis, {withPhoto} com foto. Foto: campo <code className="rounded bg-surface-muted px-1">photo</code> do perfil, com um
-          caminho em <code className="rounded bg-surface-muted px-1">public/</code> (ex.: promoters/perfil.webp) ou uma URL.
+          Perfis citados nos eventos (src/data/promoters.json), separados por papel, dos mais recentes para os mais antigos.{' '}
+          {DIRECTORY.length} perfis, {withPhoto} com foto. Foto: campo <code className="rounded bg-surface-muted px-1">photo</code> do
+          perfil, com um caminho em <code className="rounded bg-surface-muted px-1">public/</code> (ex.: promoters/perfil.webp) ou uma URL.
         </p>
         <input
           type="search"

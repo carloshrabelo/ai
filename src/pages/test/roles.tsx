@@ -2,7 +2,15 @@ import { type Role, ROLES } from '../../domain/promoters'
 import { ROLE_LABEL, type RoleFilter } from './roleLabels'
 
 /** Filtro por papel (promotor, DJ, professor…), com a contagem de cada um. */
-export function RoleSelect({ value, onChange, counts }: { value: RoleFilter; onChange: (value: RoleFilter) => void; counts: Record<Role, number> }) {
+export function RoleSelect({
+  value,
+  onChange,
+  counts,
+}: {
+  value: RoleFilter
+  onChange: (value: RoleFilter) => void
+  counts: Record<Role, number>
+}) {
   return (
     <select
       value={value}

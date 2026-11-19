@@ -31,10 +31,7 @@ export function useGenreFilter() {
     [navigate, pathname, search],
   )
 
-  const toggle = useCallback(
-    (genre: GenreFilterValue) => update(toggleFilter(selected, genre)),
-    [selected, update],
-  )
+  const toggle = useCallback((genre: GenreFilterValue) => update(toggleFilter(selected, genre)), [selected, update])
 
   const clear = useCallback(() => {
     update([])

@@ -13,10 +13,5 @@ const VARIANTS = {
 
 /** Superfície padrão: p-4, sombra no claro, borda sutil e sem sombra no escuro. */
 export function Card({ as: Tag = 'div', variant = 'card', className = '', ...props }: CardProps) {
-  return (
-    <Tag
-      className={`bg-surface p-4 dark:border dark:border-border dark:shadow-none ${VARIANTS[variant]} ${className}`}
-      {...props}
-    />
-  )
+  return <Tag className={`bg-surface p-4 dark:border dark:border-border dark:shadow-none ${VARIANTS[variant]} ${className}`} {...props} />
 }

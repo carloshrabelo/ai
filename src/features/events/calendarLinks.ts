@@ -6,11 +6,14 @@ import type { DanceEvent } from '../../domain/event'
 // evento dentro do calendário do pasdedeux, em branco para quem não o segue.
 
 /** 20261117T200000Z */
-const utcStamp = (date: Date) => date.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')
+const utcStamp = (date: Date) =>
+  date
+    .toISOString()
+    .replace(/[-:]/g, '')
+    .replace(/\.\d{3}/, '')
 
 /** Data de Lisboa sem separadores (dia inteiro): 20261117 */
-const lisbonDay = (date: Date) =>
-  new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Lisbon' }).format(date).replace(/-/g, '')
+const lisbonDay = (date: Date) => new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Lisbon' }).format(date).replace(/-/g, '')
 
 function plainText(html: string | undefined): string {
   return (html ?? '')

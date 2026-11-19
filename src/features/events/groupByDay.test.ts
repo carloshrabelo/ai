@@ -17,8 +17,7 @@ function event(id: string, start: string, end: string, allDay = false): DanceEve
   }
 }
 
-const days = (result: ReturnType<typeof groupByDay>) =>
-  result.map(({ day, events }) => `${day}: ${events.map((e) => e.id).join(',')}`)
+const days = (result: ReturnType<typeof groupByDay>) => result.map(({ day, events }) => `${day}: ${events.map((e) => e.id).join(',')}`)
 
 describe('groupByDay', () => {
   it('evento que passa da meia-noite aparece só no dia em que começa', () => {

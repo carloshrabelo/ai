@@ -26,8 +26,7 @@ export default function InstallButton() {
   if (isIOS()) {
     return (
       <p className="text-sm text-fg-muted">
-        {t.info.installIos[0]} <strong>{t.info.installIos[1]}</strong> {t.info.installIos[2]}{' '}
-        <strong>{t.info.installIos[3]}</strong>.
+        {t.info.installIos[0]} <strong>{t.info.installIos[1]}</strong> {t.info.installIos[2]} <strong>{t.info.installIos[3]}</strong>.
       </p>
     )
   }

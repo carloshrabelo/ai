@@ -30,7 +30,7 @@ describe('parseGenres', () => {
       ['Afro-Latino', ['Latinas', 'Afro']],
       ['Urban Kiz', ['Urban Kiz']],
       ['UrbanKiz', ['Urban Kiz']],
-      ['Latinas & Africanas & Rock n\' Roll', ['Latinas', 'Afro']],
+      ["Latinas & Africanas & Rock n' Roll", ['Latinas', 'Afro']],
       ['SBKZ', ['Zouk', 'Salsa', 'Bachata', 'Kizomba']],
       ['SBK', ['Salsa', 'Bachata', 'Kizomba']],
       ['WCS', ['West Coast Swing']],

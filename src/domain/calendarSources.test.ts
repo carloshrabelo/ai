@@ -42,7 +42,10 @@ describe('fromTangoLx', () => {
 
   it('travessões no local; entrada vazia não vai para o título; sem hora fica dia inteiro', () => {
     const event = fromTangoLx(
-      base({ summary: '(Cancelado) Milonga X', description: '<p>Where: Teatro A Barraca—Bar A Barraca—Largo de Santos, 2, Lisboa<br>Entrance: <br>DJ:</p>' }),
+      base({
+        summary: '(Cancelado) Milonga X',
+        description: '<p>Where: Teatro A Barraca—Bar A Barraca—Largo de Santos, 2, Lisboa<br>Entrance: <br>DJ:</p>',
+      }),
     )
     expect(event.summary).toBe('(Cancelado) Tango • Milonga X')
     expect(event.location).toBe('Teatro A Barraca, Bar A Barraca, Largo de Santos, 2, Lisboa')
@@ -50,7 +53,9 @@ describe('fromTangoLx', () => {
   })
 
   it('" - " no nome do local fica ("BUS - Paragem Cultural")', () => {
-    const event = fromTangoLx(base({ summary: 'La Orillera', description: 'Where: BUS - Paragem Cultural,  R. Maria 73, 1170-133 Lisboa, Portugal' }))
+    const event = fromTangoLx(
+      base({ summary: 'La Orillera', description: 'Where: BUS - Paragem Cultural,  R. Maria 73, 1170-133 Lisboa, Portugal' }),
+    )
     expect(event.location).toBe('BUS - Paragem Cultural, R. Maria 73, 1170-133 Lisboa, Portugal')
   })
 
@@ -77,7 +82,9 @@ describe('fromTradicionais', () => {
     expect(fromTradicionais(base({ summary: 'Tertúlia Folk | Porto', location: 'A Beneficência Familiar - ASM do Porto' })).location).toBe(
       'A Beneficência Familiar - ASM do Porto',
     )
-    const omatrad = fromTradicionais(base({ summary: 'OMATRAD FOLK | 22 NOVEMBR0 | AVEIRO', location: 'OMA - Oficina de Música de Aveiro' }))
+    const omatrad = fromTradicionais(
+      base({ summary: 'OMATRAD FOLK | 22 NOVEMBR0 | AVEIRO', location: 'OMA - Oficina de Música de Aveiro' }),
+    )
     expect(omatrad.summary).toBe('Tradicionais • OMATRAD FOLK')
     expect(omatrad.location).toBe('OMA - Oficina de Música de Aveiro')
   })

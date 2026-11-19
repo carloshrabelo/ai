@@ -58,7 +58,14 @@ const STREET = /^(r\.|rua|av\.|avenida|largo|lg\.|praça|pç\.|travessa|tv\.|est
 
 /** Formas de buscar um `location`, da mais específica para a mais genérica. */
 export function queriesFor(location: string): string[] {
-  const parts = [...new Set(location.split(',').map((part) => part.trim()).filter(Boolean))] // sem partes repetidas
+  const parts = [
+    ...new Set(
+      location
+        .split(',')
+        .map((part) => part.trim())
+        .filter(Boolean),
+    ),
+  ] // sem partes repetidas
   const [name = '', ...rest] = parts
   const postal = rest.find((part) => postalRegion(part)) // "1200-443 Lisboa"
   const city = postal?.replace(/^\d{4}-\d{3}\s*/, '')

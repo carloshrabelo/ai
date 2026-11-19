@@ -22,13 +22,7 @@ type Props = {
 }
 
 /** Coluna do mapa (`xl+`): pinos dos eventos do dia ativo, com o filtro de gêneros aplicado. */
-export function MapPanel({
-  startDate,
-  day,
-  genres,
-  onOpenEvent,
-  className = 'h-full',
-}: Props) {
+export function MapPanel({ startDate, day, genres, onOpenEvent, className = 'h-full' }: Props) {
   const { t, locale } = useI18n()
   const { events, isPending } = useDayEvents(startDate, day, genres)
   // O evento aberto aparece no mapa mesmo se for de outro dia ou estiver fora do filtro.

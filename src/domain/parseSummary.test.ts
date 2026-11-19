@@ -38,9 +38,12 @@ describe('parseSummary', () => {
     expect(parsed.price).toBeUndefined()
   })
 
-  it.each(['Pago', 'Paid', 'Free', 'Contribuição Voluntaria', 'Doaçao', 'Pago (5€?)', '5€ ou Gratuito'])('reconhece preço sem valor: %s', (price) => {
-    expect(parseSummary(`Salsa • Noite • ${price}`).price).toBe(price)
-  })
+  it.each(['Pago', 'Paid', 'Free', 'Contribuição Voluntaria', 'Doaçao', 'Pago (5€?)', '5€ ou Gratuito'])(
+    'reconhece preço sem valor: %s',
+    (price) => {
+      expect(parseSummary(`Salsa • Noite • ${price}`).price).toBe(price)
+    },
+  )
 
   it('tag sem gênero conhecido mantém rawTag', () => {
     expect(parseSummary('Fusão • The Fusion Social • 5€')).toMatchObject({ genres: [], rawTag: 'Fusão' })

@@ -10,7 +10,17 @@ import promoters from '../data/promoters.json'
 import venues from '../data/venues.json'
 import type { DanceEvent } from '../domain/event'
 import type { PromoterDirectory } from '../domain/promoterDirectory'
-import { aliasIssues, applyFixes, type Fix, IGNORED_WORDS, type Issue, type PlainText, spellingIssues, toPlain, type ToolMatch } from '../domain/spelling'
+import {
+  aliasIssues,
+  applyFixes,
+  type Fix,
+  IGNORED_WORDS,
+  type Issue,
+  type PlainText,
+  spellingIssues,
+  toPlain,
+  type ToolMatch,
+} from '../domain/spelling'
 import { formatShortDay, formatTimeRange } from '../features/events/format'
 import { eventPath } from '../features/events/useSelectedEvent'
 import { siteUrl, useDocumentHead } from '../seo/useDocumentHead'
@@ -280,7 +290,12 @@ export default function Review() {
               <ul className="flex flex-wrap gap-x-3 gap-y-1 text-sm">
                 {group.events.map((event) => (
                   <li key={event.id}>
-                    <a href={event.calendarUrl} target="_blank" rel="noreferrer" className={`${LINK} inline-flex items-center gap-1 tabular-nums`}>
+                    <a
+                      href={event.calendarUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={`${LINK} inline-flex items-center gap-1 tabular-nums`}
+                    >
                       {when(event)}
                       <ExternalLink className="size-3" aria-hidden="true" />
                     </a>
@@ -316,7 +331,11 @@ export default function Review() {
                     flash(`${group.key}|title`)
                   }}
                 >
-                  {copied === `${group.key}|title` ? <Check className="size-4" aria-hidden="true" /> : <Copy className="size-4" aria-hidden="true" />}
+                  {copied === `${group.key}|title` ? (
+                    <Check className="size-4" aria-hidden="true" />
+                  ) : (
+                    <Copy className="size-4" aria-hidden="true" />
+                  )}
                   Copiar título corrigido
                 </Button>
               )}
@@ -370,8 +389,14 @@ function IssueRow({
   onChange: (value: string | null) => void
   onIgnore?: () => void
 }) {
-  const before = text.slice(Math.max(0, issue.offset - 40), issue.offset).replace(/^\S*\s/, '…').replaceAll('\n', ' ')
-  const after = text.slice(issue.offset + issue.length, issue.offset + issue.length + 40).replace(/\s\S*$/, '…').replaceAll('\n', ' ')
+  const before = text
+    .slice(Math.max(0, issue.offset - 40), issue.offset)
+    .replace(/^\S*\s/, '…')
+    .replaceAll('\n', ' ')
+  const after = text
+    .slice(issue.offset + issue.length, issue.offset + issue.length + 40)
+    .replace(/\s\S*$/, '…')
+    .replaceAll('\n', ' ')
   const prefix = issue.kind === 'alias' ? '@' : ''
   return (
     <li className="flex flex-wrap items-center gap-x-3 gap-y-1">

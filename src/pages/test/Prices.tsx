@@ -14,7 +14,12 @@ type PriceRow = { price: string; count: number; pt: string; en: string; untransl
  * dicionário. Sem i18n: é ferramenta interna.
  */
 export default function Prices() {
-  useDocumentHead({ title: 'Preços (teste)', description: 'Lista de preços dos eventos', canonical: `${siteUrl()}teste/precos`, noindex: true })
+  useDocumentHead({
+    title: 'Preços (teste)',
+    description: 'Lista de preços dos eventos',
+    canonical: `${siteUrl()}teste/precos`,
+    noindex: true,
+  })
   const { query, ...range } = useEventsInRange()
   const [copied, setCopied] = useState<string | null>(null)
 
@@ -45,8 +50,7 @@ export default function Prices() {
   }
   const asList = () => rows.map((row) => row.price).join('\n')
   // Dicionário atual: preço original → texto em cada idioma.
-  const asJson = () =>
-    JSON.stringify(Object.fromEntries(rows.map((row) => [row.price, { 'pt-BR': row.pt, 'en-US': row.en }])), null, 2)
+  const asJson = () => JSON.stringify(Object.fromEntries(rows.map((row) => [row.price, { 'pt-BR': row.pt, 'en-US': row.en }])), null, 2)
 
   return (
     <section className="mx-auto max-w-5xl space-y-4">

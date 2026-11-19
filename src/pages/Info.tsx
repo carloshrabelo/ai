@@ -18,17 +18,14 @@ export default function Info() {
       <Card className="space-y-2">
         <h2 className="text-lg font-semibold">{t.info.about}</h2>
         <p className="text-sm text-fg-muted">
-          {t.info.aboutText} <ExternalLink href="https://pasdedeux.pt/">pasdedeux.pt</ExternalLink>,{' '}
-          {t.info.maintainedBy} <ExternalLink href="https://www.instagram.com/ateterca/">@ateterca</ExternalLink>.
+          {t.info.aboutText} <ExternalLink href="https://pasdedeux.pt/">pasdedeux.pt</ExternalLink>, {t.info.maintainedBy}{' '}
+          <ExternalLink href="https://www.instagram.com/ateterca/">@ateterca</ExternalLink>.
         </p>
         <p className="text-sm text-fg-muted">
-          {t.info.moreCalendars}{' '}
-          <ExternalLink href="https://www.tangolx.com/">tangolx.com</ExternalLink>{' '}
-          {t.info.and}{' '}
+          {t.info.moreCalendars} <ExternalLink href="https://www.tangolx.com/">tangolx.com</ExternalLink> {t.info.and}{' '}
           <ExternalLink href="https://calendar.google.com/calendar/embed?src=europeias.agenda%40gmail.com&ctz=Europe%2FLisbon">
             europeias.agenda
-          </ExternalLink>
-          {' '}
+          </ExternalLink>{' '}
           ({t.info.maintainedBy} Luís Manuel Guerra).
         </p>
         <p className="text-sm text-fg-muted">

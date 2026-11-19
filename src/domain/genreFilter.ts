@@ -76,7 +76,9 @@ export function parseGenresParam(raw: string | null): GenreFilterValue[] {
 
 /** Opções → valor canônico do parâmetro ('' quando vazio). */
 export function genresToParam(values: readonly GenreFilterValue[]): string {
-  return withoutCovered(FILTER_VALUES.filter((value) => values.includes(value))).map(filterSlug).join(',')
+  return withoutCovered(FILTER_VALUES.filter((value) => values.includes(value)))
+    .map(filterSlug)
+    .join(',')
 }
 
 /**

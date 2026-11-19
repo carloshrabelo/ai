@@ -101,7 +101,10 @@ export default function TestIndex() {
                   <Icon className="size-6 shrink-0 text-brand" aria-hidden="true" />
                   <div className="min-w-0 flex-1">
                     <h3 className="font-semibold">
-                      <Link to={to} className="outline-none after:absolute after:inset-0 after:rounded-xl focus-visible:after:outline-2 focus-visible:after:outline-brand">
+                      <Link
+                        to={to}
+                        className="outline-none after:absolute after:inset-0 after:rounded-xl focus-visible:after:outline-2 focus-visible:after:outline-brand"
+                      >
                         {title}
                       </Link>
                     </h3>

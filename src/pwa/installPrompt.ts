@@ -12,8 +12,7 @@ type InstallState = {
 }
 
 const isStandalone = () =>
-  window.matchMedia('(display-mode: standalone)').matches ||
-  (navigator as Navigator & { standalone?: boolean }).standalone === true
+  window.matchMedia('(display-mode: standalone)').matches || (navigator as Navigator & { standalone?: boolean }).standalone === true
 
 /**
  * O navegador dispara `beforeinstallprompt` uma vez, logo ao abrir o app. A página Info carrega

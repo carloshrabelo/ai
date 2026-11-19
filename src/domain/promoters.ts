@@ -118,16 +118,23 @@ export function extractPromoters(description: string | undefined): EventPromoter
     else if (onlyHandlesBefore && lineBefore.trim() && previous?.lineStart === lineStart) role = previous.role
     else if (onlyHandlesBefore && !lineBefore.trim()) {
       const fromAbove = roleOf(key, `${previousLine} `)
-      role = fromAbove === 'other' && previous && previous.lineStart < lineStart && previous.lineStart >= text.lastIndexOf('\n', lineStart - 2) + 1
-        ? previous.role
-        : fromAbove
+      role =
+        fromAbove === 'other' &&
+        previous &&
+        previous.lineStart < lineStart &&
+        previous.lineStart >= text.lastIndexOf('\n', lineStart - 2) + 1
+          ? previous.role
+          : fromAbove
     } else role = roleOf(key, lineBefore)
     previous = { role, lineStart }
     // Citado duas vezes no mesmo evento: "promotor" vale mais que os outros papéis.
     if (!mentions.has(key) || role === 'promoter') mentions.set(key, role)
   }
 
-  const organizedBy = text.match(ORGANIZED_BY)?.[1].trim().replace(/[.!]+$/, '')
+  const organizedBy = text
+    .match(ORGANIZED_BY)?.[1]
+    .trim()
+    .replace(/[.!]+$/, '')
   return {
     mentions: [...mentions].map(([handle, role]) => ({ handle, role })),
     ...(organizedBy ? { organizedBy } : {}),

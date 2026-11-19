@@ -7,8 +7,7 @@ export const FREE_PRICE = 'Gratuito'
 const FREE = '(?:gr[aá]tis|gratuit[ao]|livre|free)'
 // Gratuidade parcial não conta: "Free entry until 23h", "Entrada grátis antes das 22h", "… para sócios".
 // "Para todos" / "for everyone" continua gratuito.
-const NOT_PARTIAL =
-  '(?!\\s+(?:at[eé]|until|till|before|antes)(?!\\p{L}))(?!\\s+(?:para|for)\\s+(?!tod[oa]s|everyone|all)\\p{L})'
+const NOT_PARTIAL = '(?!\\s+(?:at[eé]|until|till|before|antes)(?!\\p{L}))(?!\\s+(?:para|for)\\s+(?!tod[oa]s|everyone|all)\\p{L})'
 
 /**
  * Dicionário de frases de entrada gratuita, comparadas com o texto já sem formatação (ver
@@ -32,7 +31,10 @@ const FREE_PHRASES: RegExp[] = [
  * ("💸FREE") viram espaço.
  */
 function normalize(text: string): string {
-  return text.normalize('NFKC').replace(/[^\p{L}\p{N}\s:]/gu, ' ').replace(/\s+/g, ' ')
+  return text
+    .normalize('NFKC')
+    .replace(/[^\p{L}\p{N}\s:]/gu, ' ')
+    .replace(/\s+/g, ' ')
 }
 
 // Valor em euros: "12€", "12 €", "€12", "7,50€".

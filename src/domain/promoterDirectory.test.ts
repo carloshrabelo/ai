@@ -55,9 +55,24 @@ describe('collectPromoters', () => {
   it('junta locais, estilos e redes por perfil', () => {
     const found = collectPromoters(
       [
-        event({ description: 'Mais info: @espacobaiao', venue: venue('Teatro A Barraca'), genres: ['Forró'], links: ['https://facebook.com/espacobaiao'] }),
-        event({ description: 'Mais info: @espacobaiao', venue: venue('Teatro A Barraca'), genres: ['Forró'], start: new Date('2026-12-01T20:00:00Z') }),
-        event({ description: 'Mais info: @espacobaiao @djay.marto', venue: venue('Mercado'), genres: ['Forró', 'Samba'], links: ['https://facebook.com/outro'] }),
+        event({
+          description: 'Mais info: @espacobaiao',
+          venue: venue('Teatro A Barraca'),
+          genres: ['Forró'],
+          links: ['https://facebook.com/espacobaiao'],
+        }),
+        event({
+          description: 'Mais info: @espacobaiao',
+          venue: venue('Teatro A Barraca'),
+          genres: ['Forró'],
+          start: new Date('2026-12-01T20:00:00Z'),
+        }),
+        event({
+          description: 'Mais info: @espacobaiao @djay.marto',
+          venue: venue('Mercado'),
+          genres: ['Forró', 'Samba'],
+          links: ['https://facebook.com/outro'],
+        }),
       ],
       day,
     )
@@ -74,16 +89,36 @@ describe('collectPromoters', () => {
 })
 
 describe('mergePromoters', () => {
-  const entry = (over: Partial<PromoterEntry> = {}): PromoterEntry => ({ role: 'promoter', socials: {}, venues: [], genres: [], lastSeen: '2026-01-01', ...over })
+  const entry = (over: Partial<PromoterEntry> = {}): PromoterEntry => ({
+    role: 'promoter',
+    socials: {},
+    venues: [],
+    genres: [],
+    lastSeen: '2026-01-01',
+    ...over,
+  })
 
   it('mantém o que estava (nome, foto, papel, redes), acrescenta o novo e avança lastSeen', () => {
     const merged = mergePromoters(
       {
         zeta: entry({ venues: ['A'] }),
-        baiao: entry({ name: 'Espaço Baião', photo: 'promoters/baiao.webp', role: 'teacher', socials: { facebook: 'https://facebook.com/manual' }, venues: ['A'], genres: ['Forró'], lastSeen: '2026-10-01' }),
+        baiao: entry({
+          name: 'Espaço Baião',
+          photo: 'promoters/baiao.webp',
+          role: 'teacher',
+          socials: { facebook: 'https://facebook.com/manual' },
+          venues: ['A'],
+          genres: ['Forró'],
+          lastSeen: '2026-10-01',
+        }),
       },
       {
-        baiao: entry({ socials: { instagram: 'https://www.instagram.com/baiao/', facebook: 'https://facebook.com/auto' }, venues: ['B', 'A'], genres: ['Samba'], lastSeen: '2026-11-01' }),
+        baiao: entry({
+          socials: { instagram: 'https://www.instagram.com/baiao/', facebook: 'https://facebook.com/auto' },
+          venues: ['B', 'A'],
+          genres: ['Samba'],
+          lastSeen: '2026-11-01',
+        }),
       },
     )
     expect(Object.keys(merged)).toEqual(['baiao', 'zeta'])
@@ -104,7 +139,9 @@ describe('mergePromoters', () => {
         'dale.events': entry({ aliases: ['dale.eventss'], venues: ['A'] }),
         'dale.eventss': entry({ venues: ['B'], lastSeen: '2026-05-01' }),
       },
-      { 'dale.eventss': entry({ socials: { instagram: 'https://www.instagram.com/dale.eventss/' }, venues: ['C'], lastSeen: '2026-12-01' }) },
+      {
+        'dale.eventss': entry({ socials: { instagram: 'https://www.instagram.com/dale.eventss/' }, venues: ['C'], lastSeen: '2026-12-01' }),
+      },
     )
     expect(Object.keys(merged)).toEqual(['dale.events'])
     expect(merged['dale.events']).toMatchObject({
@@ -135,7 +172,16 @@ describe('collectPromoters: papel', () => {
 describe('similarHandles', () => {
   it('acha grafias parecidas', () => {
     expect(
-      similarHandles(['dale.events', 'dale.eventss', 'tropicavana.bar', 'tropicavana_bar', 'dansundayoficial', 'dancesundayoficial', 'dalesalsa.pt', 'dalebachata.pt']),
+      similarHandles([
+        'dale.events',
+        'dale.eventss',
+        'tropicavana.bar',
+        'tropicavana_bar',
+        'dansundayoficial',
+        'dancesundayoficial',
+        'dalesalsa.pt',
+        'dalebachata.pt',
+      ]),
     ).toEqual([
       ['dale.events', 'dale.eventss'],
       ['dancesundayoficial', 'dansundayoficial'],

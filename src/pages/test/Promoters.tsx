@@ -29,7 +29,10 @@ const instagramUrl = (handle: string) => `https://www.instagram.com/${handle}/`
 function top(values: string[], n: number): string[] {
   const counts = new Map<string, number>()
   for (const value of values) counts.set(value, (counts.get(value) ?? 0) + 1)
-  return [...counts].sort((a, b) => b[1] - a[1]).slice(0, n).map(([value]) => value)
+  return [...counts]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, n)
+    .map(([value]) => value)
 }
 
 /**
@@ -38,7 +41,12 @@ function top(values: string[], n: number): string[] {
  * Duas visões: por promotor (quantos eventos, estilos, locais) e por evento.
  */
 export default function Promoters() {
-  useDocumentHead({ title: 'Promotores (teste)', description: 'Responsáveis pelos eventos', canonical: `${siteUrl()}teste/promotores`, noindex: true })
+  useDocumentHead({
+    title: 'Promotores (teste)',
+    description: 'Responsáveis pelos eventos',
+    canonical: `${siteUrl()}teste/promotores`,
+    noindex: true,
+  })
   const { query, ...range } = useEventsInRange()
   const [view, setView] = useState<View>('promoters')
   const [search, setSearch] = useState('')
@@ -72,8 +80,14 @@ export default function Promoters() {
         role: mainRole(roles),
         events,
         titles: new Set(events.map((event) => event.title)).size,
-        genres: top(events.flatMap((event) => visibleGenres(event.genres)), 3),
-        venues: top(events.flatMap((event) => (event.venue ? [event.venue.name] : [])), 2),
+        genres: top(
+          events.flatMap((event) => visibleGenres(event.genres)),
+          3,
+        ),
+        venues: top(
+          events.flatMap((event) => (event.venue ? [event.venue.name] : [])),
+          2,
+        ),
       }))
       .sort((a, b) => b.events.length - a.events.length || a.handle.localeCompare(b.handle))
   }, [eventRows])
@@ -89,8 +103,7 @@ export default function Promoters() {
     (row) => (role === 'all' || row.role === role) && matches(row.handle, ...row.events.map((event) => event.title)),
   )
   const visibleEvents = eventRows.filter(
-    (row) =>
-      (!onlyMissing || !hasPromoter(row)) && matches(row.summary, row.organizedBy, ...row.mentions.map((mention) => mention.handle)),
+    (row) => (!onlyMissing || !hasPromoter(row)) && matches(row.summary, row.organizedBy, ...row.mentions.map((mention) => mention.handle)),
   )
 
   return (
@@ -134,93 +147,96 @@ export default function Promoters() {
         </div>
       </Card>
 
-      {view === 'promoters' ? (
-        visiblePromoters.length > 0 && (
-          <Card className="overflow-x-auto p-0">
-            <table className="w-full text-left text-sm">
-              <thead className="border-b border-border text-fg-muted">
-                <tr>
-                  <th scope="col" className={TH}>
-                    Perfil
-                  </th>
-                  <th scope="col" className={`${TH} text-right`}>
-                    Eventos
-                  </th>
-                  <th scope="col" className={TH}>
-                    Estilos
-                  </th>
-                  <th scope="col" className={TH}>
-                    Locais
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {visiblePromoters.map((row) => {
-                  const isOpen = expanded === row.handle
-                  return (
-                    <PromoterTableRow key={row.handle} row={row} isOpen={isOpen} onToggle={() => setExpanded(isOpen ? null : row.handle)} />
-                  )
-                })}
-              </tbody>
-            </table>
-          </Card>
-        )
-      ) : (
-        visibleEvents.length > 0 && (
-          <Card className="overflow-x-auto p-0">
-            <table className="w-full text-left text-sm">
-              <thead className="border-b border-border text-fg-muted">
-                <tr>
-                  <th scope="col" className={TH}>
-                    Quando
-                  </th>
-                  <th scope="col" className={TH}>
-                    Título no calendário
-                  </th>
-                  <th scope="col" className={TH}>
-                    Responsáveis
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {visibleEvents.map(({ event, summary, mentions, organizedBy }) => (
-                  <tr key={event.id} className="border-b border-border last:border-0">
-                    <td className={`${TD} whitespace-nowrap tabular-nums`}>
-                      {formatDayHeading(lisbonDate(event.start), 'pt-BR')}
-                      <span className="block text-fg-muted">{formatTimeRange(event, 'pt-BR')}</span>
-                    </td>
-                    <td className={`${TD} break-words`}>
-                      <Link to={eventPath(event.slug)} className={LINK}>
-                        {summary}
-                      </Link>
-                    </td>
-                    <td className={TD}>
-                      {mentions.length === 0 && !organizedBy ? (
-                        <span className="text-fg-muted">—</span>
-                      ) : (
-                        <div className="flex flex-wrap gap-x-3 gap-y-1">
-                          {/* Promotores primeiro; os outros com o papel ao lado. */}
-                          {[...mentions]
-                            .sort((a, b) => ROLES.indexOf(a.role) - ROLES.indexOf(b.role))
-                            .map((mention) => (
-                              <span key={mention.handle} className="inline-flex items-center gap-1">
-                                <a href={instagramUrl(mention.handle)} target="_blank" rel="noreferrer" className={LINK}>
-                                  @{mention.handle}
-                                </a>
-                                {mention.role !== 'promoter' && <RoleTag role={mention.role} />}
-                              </span>
-                            ))}
-                          {organizedBy && <span className="text-fg-muted">Organização: {organizedBy}</span>}
-                        </div>
-                      )}
-                    </td>
+      {view === 'promoters'
+        ? visiblePromoters.length > 0 && (
+            <Card className="overflow-x-auto p-0">
+              <table className="w-full text-left text-sm">
+                <thead className="border-b border-border text-fg-muted">
+                  <tr>
+                    <th scope="col" className={TH}>
+                      Perfil
+                    </th>
+                    <th scope="col" className={`${TH} text-right`}>
+                      Eventos
+                    </th>
+                    <th scope="col" className={TH}>
+                      Estilos
+                    </th>
+                    <th scope="col" className={TH}>
+                      Locais
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </Card>
-        )
-      )}
+                </thead>
+                <tbody>
+                  {visiblePromoters.map((row) => {
+                    const isOpen = expanded === row.handle
+                    return (
+                      <PromoterTableRow
+                        key={row.handle}
+                        row={row}
+                        isOpen={isOpen}
+                        onToggle={() => setExpanded(isOpen ? null : row.handle)}
+                      />
+                    )
+                  })}
+                </tbody>
+              </table>
+            </Card>
+          )
+        : visibleEvents.length > 0 && (
+            <Card className="overflow-x-auto p-0">
+              <table className="w-full text-left text-sm">
+                <thead className="border-b border-border text-fg-muted">
+                  <tr>
+                    <th scope="col" className={TH}>
+                      Quando
+                    </th>
+                    <th scope="col" className={TH}>
+                      Título no calendário
+                    </th>
+                    <th scope="col" className={TH}>
+                      Responsáveis
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {visibleEvents.map(({ event, summary, mentions, organizedBy }) => (
+                    <tr key={event.id} className="border-b border-border last:border-0">
+                      <td className={`${TD} whitespace-nowrap tabular-nums`}>
+                        {formatDayHeading(lisbonDate(event.start), 'pt-BR')}
+                        <span className="block text-fg-muted">{formatTimeRange(event, 'pt-BR')}</span>
+                      </td>
+                      <td className={`${TD} break-words`}>
+                        <Link to={eventPath(event.slug)} className={LINK}>
+                          {summary}
+                        </Link>
+                      </td>
+                      <td className={TD}>
+                        {mentions.length === 0 && !organizedBy ? (
+                          <span className="text-fg-muted">—</span>
+                        ) : (
+                          <div className="flex flex-wrap gap-x-3 gap-y-1">
+                            {/* Promotores primeiro; os outros com o papel ao lado. */}
+                            {[...mentions]
+                              .sort((a, b) => ROLES.indexOf(a.role) - ROLES.indexOf(b.role))
+                              .map((mention) => (
+                                <span key={mention.handle} className="inline-flex items-center gap-1">
+                                  <a href={instagramUrl(mention.handle)} target="_blank" rel="noreferrer" className={LINK}>
+                                    @{mention.handle}
+                                  </a>
+                                  {mention.role !== 'promoter' && <RoleTag role={mention.role} />}
+                                </span>
+                              ))}
+                            {organizedBy && <span className="text-fg-muted">Organização: {organizedBy}</span>}
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </Card>
+          )}
     </section>
   )
 }

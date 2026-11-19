@@ -48,8 +48,7 @@ export function fromTradicionais(event: GCalEvent): GCalEvent {
   const city = parts.length > 1 ? parts.at(-1) : undefined
   const venue = event.location?.trim()
   // A cidade ajuda a achar o local no mapa ("Teatro da Luz" → "Teatro da Luz, Lisboa").
-  const location =
-    venue && city && !venue.toLowerCase().includes(city.toLowerCase().split(' [')[0]) ? `${venue}, ${city}` : (venue ?? city)
+  const location = venue && city && !venue.toLowerCase().includes(city.toLowerCase().split(' [')[0]) ? `${venue}, ${city}` : (venue ?? city)
   return {
     ...event,
     summary: withTag('Tradicionais', title ?? ''),

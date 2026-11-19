@@ -64,12 +64,7 @@ export default function EventsMap({
   const selectedPlace = places.find((place) => place.events.some((event) => event.slug === selectedSlug))
 
   return (
-    <MapContainer
-      center={LISBON}
-      zoom={11}
-      zoomControl={false}
-      className={`h-full w-full ${theme === 'dark' ? 'map-dark' : ''}`}
-    >
+    <MapContainer center={LISBON} zoom={11} zoomControl={false} className={`h-full w-full ${theme === 'dark' ? 'map-dark' : ''}`}>
       <TileLayer url={TILES_URL} attribution={ATTRIBUTION} maxZoom={19} />
       {/* Por padrão embaixo: em cima fica o resumo do dia. */}
       <ZoomControl position={zoomPosition} />
@@ -101,20 +96,20 @@ export default function EventsMap({
             {/* Título do evento (ou dos eventos do local) enquanto o pino ou o card estão em hover.
                 Controlado pelo store: fecha junto com o hover, mesmo se o mouse "sumir" do pino. */}
             {hovered && (
-            <Tooltip direction="top" offset={[0, -16]} permanent>
-              {place.events.length === 1 ? (
-                <span className="font-semibold">{place.events[0].title}</span>
-              ) : (
-                <span>
-                  <span className="block font-semibold">{place.name}</span>
-                  {place.events.map((event) => (
-                    <span key={event.id} className="block">
-                      {event.title}
-                    </span>
-                  ))}
-                </span>
-              )}
-            </Tooltip>
+              <Tooltip direction="top" offset={[0, -16]} permanent>
+                {place.events.length === 1 ? (
+                  <span className="font-semibold">{place.events[0].title}</span>
+                ) : (
+                  <span>
+                    <span className="block font-semibold">{place.name}</span>
+                    {place.events.map((event) => (
+                      <span key={event.id} className="block">
+                        {event.title}
+                      </span>
+                    ))}
+                  </span>
+                )}
+              </Tooltip>
             )}
             {place.events.length > 1 && (
               <Popup>

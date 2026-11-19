@@ -14,7 +14,10 @@ import { createServer } from 'vite'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const FILE = join(root, 'src/data/promoters.json')
-const [daysAfter = 90, DAYS_BEFORE = 30] = process.argv.slice(2).filter((arg) => /^\d+$/.test(arg)).map(Number)
+const [daysAfter = 90, DAYS_BEFORE = 30] = process.argv
+  .slice(2)
+  .filter((arg) => /^\d+$/.test(arg))
+  .map(Number)
 
 // Dados reais: o ambiente vence o .env.local no Vite.
 process.env.VITE_USE_MOCK = 'false'
@@ -62,7 +65,11 @@ try {
   )
   for (const handle of added) console.log(`  + @${handle} (${merged[handle].role})`)
   const roles = Object.groupBy(Object.values(merged), (entry) => entry.role)
-  console.log(`Papéis: ${Object.entries(roles).map(([role, list]) => `${role} ${list.length}`).join(', ')}.`)
+  console.log(
+    `Papéis: ${Object.entries(roles)
+      .map(([role, list]) => `${role} ${list.length}`)
+      .join(', ')}.`,
+  )
 
   // Grafias parecidas: revisar e, se for o mesmo perfil, acrescentar em `aliases` do perfil certo.
   const suspects = similarHandles(Object.keys(merged))

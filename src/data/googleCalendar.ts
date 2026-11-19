@@ -112,9 +112,7 @@ async function fetchMockEvents({ timeMin, timeMax, signal }: FetchEventsParams):
   if (MOCK_DELAY_MS) await delay(MOCK_DELAY_MS, signal)
 
   // Mesma regra da API: termina depois de timeMin e começa antes de timeMax.
-  return items
-    .filter((e) => endOf(e) > timeMin && startOf(e) < timeMax)
-    .sort((a, b) => startOf(a).getTime() - startOf(b).getTime())
+  return items.filter((e) => endOf(e) > timeMin && startOf(e) < timeMax).sort((a, b) => startOf(a).getTime() - startOf(b).getTime())
 }
 
 function startOf(event: GCalEvent): Date {

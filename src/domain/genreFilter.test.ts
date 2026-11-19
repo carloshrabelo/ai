@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest'
-import { canonicalGenresSearch, coveringUmbrella, genresToParam, matchesGenres, normalizeSlug, parseGenresParam, toggleFilter } from './genreFilter'
+import {
+  canonicalGenresSearch,
+  coveringUmbrella,
+  genresToParam,
+  matchesGenres,
+  normalizeSlug,
+  parseGenresParam,
+  toggleFilter,
+} from './genreFilter'
 
 describe('normalizeSlug', () => {
   it.each([

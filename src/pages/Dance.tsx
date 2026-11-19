@@ -114,9 +114,7 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
           )}
         </div>
 
-        <SidebarPortal>
-          {shortcuts}
-        </SidebarPortal>
+        <SidebarPortal>{shortcuts}</SidebarPortal>
         <SidebarPortal position="bottom">
           <Card variant="panel">
             <LocationControl />
@@ -128,7 +126,10 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
       </div>
 
       {/* A partir de `xl`: coluna do mapa, que divide o espaço com os detalhes quando um evento está aberto. */}
-      <aside aria-label={t.nav.mapColumn} className="sticky top-20 hidden h-[calc(100dvh-7rem)] w-90 shrink-0 flex-col gap-4 xl:flex 2xl:w-120">
+      <aside
+        aria-label={t.nav.mapColumn}
+        className="sticky top-20 hidden h-[calc(100dvh-7rem)] w-90 shrink-0 flex-col gap-4 xl:flex 2xl:w-120"
+      >
         {isXl && (
           <>
             {/* Sem evento aberto, o mapa ocupa a coluna. Com evento aberto, a coluna se divide por

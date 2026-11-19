@@ -54,7 +54,11 @@ import { BackToTest } from './shared'
 type Option = { name: string; icon: LucideIcon; note: string; current?: boolean }
 type NameOption = { pt: string; en: string; note: string; current?: boolean }
 
-const currentIndex = (options: { current?: boolean }[]) => Math.max(0, options.findIndex((option) => option.current))
+const currentIndex = (options: { current?: boolean }[]) =>
+  Math.max(
+    0,
+    options.findIndex((option) => option.current),
+  )
 
 const DANCE: Option[] = [
   { name: 'Music', icon: Music, note: 'Anterior. Genérico: lembra app de música.' },
@@ -133,7 +137,12 @@ const nameOf = (options: Option[], index: number) => options[index].name
  * no botão de filtro.
  */
 export default function Icons() {
-  useDocumentHead({ title: 'Ícones (teste)', description: 'Sugestões de ícones e nomes', canonical: `${siteUrl()}teste/icones`, noindex: true })
+  useDocumentHead({
+    title: 'Ícones (teste)',
+    description: 'Sugestões de ícones e nomes',
+    canonical: `${siteUrl()}teste/icones`,
+    noindex: true,
+  })
   const [dance, setDance] = useState(() => currentIndex(DANCE))
   const [filter, setFilter] = useState(() => currentIndex(FILTER))
   const [infoName, setInfoName] = useState(() => currentIndex(INFO_NAMES))
@@ -171,9 +180,7 @@ export default function Icons() {
       <Card className="space-y-4">
         <div>
           <h2 className="text-lg font-semibold">Ícones e nomes</h2>
-          <p className="text-sm text-fg-muted">
-            Clique numa opção para ver na prévia. Ícones do lucide-react (o mesmo pacote do app).
-          </p>
+          <p className="text-sm text-fg-muted">Clique numa opção para ver na prévia. Ícones do lucide-react (o mesmo pacote do app).</p>
         </div>
 
         <div className="grid gap-4 md:grid-cols-[1fr_auto_auto]">
@@ -238,7 +245,14 @@ export default function Icons() {
         </Button>
       </Card>
 
-      <IconChoices title="Ícone de Dança" options={DANCE} value={dance} onChange={setDance} open={openGroup === 'dance'} onToggle={toggle('dance')} />
+      <IconChoices
+        title="Ícone de Dança"
+        options={DANCE}
+        value={dance}
+        onChange={setDance}
+        open={openGroup === 'dance'}
+        onToggle={toggle('dance')}
+      />
       <IconChoices
         title="Ícone do filtro de estilos"
         options={FILTER}
@@ -256,7 +270,14 @@ export default function Icons() {
         open={openGroup === 'mapName'}
         onToggle={toggle('mapName')}
       />
-      <IconChoices title="Ícone do Mapa" options={MAP_ICONS} value={mapIcon} onChange={setMapIcon} open={openGroup === 'mapIcon'} onToggle={toggle('mapIcon')} />
+      <IconChoices
+        title="Ícone do Mapa"
+        options={MAP_ICONS}
+        value={mapIcon}
+        onChange={setMapIcon}
+        open={openGroup === 'mapIcon'}
+        onToggle={toggle('mapIcon')}
+      />
       <NameChoices
         title="Nome de Sobre (antes Info)"
         hint="A tela tem: sobre o app e o calendário, tema, idioma, conexão, instalar e versão."
@@ -403,7 +424,9 @@ function ChoiceButton({
         selected ? 'border-brand bg-brand/10' : 'border-border bg-surface hover:bg-surface-muted'
       }`}
     >
-      {current && <span className="absolute top-2 right-2 rounded bg-surface-muted px-1.5 text-[10px] font-medium text-fg-muted">atual</span>}
+      {current && (
+        <span className="absolute top-2 right-2 rounded bg-surface-muted px-1.5 text-[10px] font-medium text-fg-muted">atual</span>
+      )}
       {children}
     </button>
   )

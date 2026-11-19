@@ -1,13 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { DanceEvent } from '../../domain/event'
-import {
-  formatDayHeading,
-  formatDayInSentence,
-  formatDayOfMonth,
-  formatShortDay,
-  formatTimeRange,
-  formatWeekdayShort,
-} from './format'
+import { formatDayHeading, formatDayInSentence, formatDayOfMonth, formatShortDay, formatTimeRange, formatWeekdayShort } from './format'
 
 const timed = {
   allDay: false,

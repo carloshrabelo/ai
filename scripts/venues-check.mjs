@@ -23,7 +23,12 @@ function readEnvLocal(name) {
     .split('\n')
     .find((l) => l.trim().startsWith(`${name}=`))
   // Aceita valor entre aspas, como o Vite.
-  return line ? line.slice(line.indexOf('=') + 1).trim().replace(/^(['"])(.*)\1$/, '$2') : ''
+  return line
+    ? line
+        .slice(line.indexOf('=') + 1)
+        .trim()
+        .replace(/^(['"])(.*)\1$/, '$2')
+    : ''
 }
 
 const key = readEnvLocal('VITE_GOOGLE_API_KEY')

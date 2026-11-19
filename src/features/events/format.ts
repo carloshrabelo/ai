@@ -21,8 +21,7 @@ function formatter(locale: Locale, name: string, options: Intl.DateTimeFormatOpt
 /** Relógio de 24h (pt-BR) usa hora com 2 dígitos ("04:00"); o de 12h (en-US), não ("4:00 AM"). */
 const uses24h = (locale: Locale) =>
   ['h23', 'h24'].includes(new Intl.DateTimeFormat(locale, { hour: 'numeric' }).resolvedOptions().hourCycle ?? '')
-const time = (locale: Locale) =>
-  formatter(locale, 'time', { hour: uses24h(locale) ? '2-digit' : 'numeric', minute: '2-digit' })
+const time = (locale: Locale) => formatter(locale, 'time', { hour: uses24h(locale) ? '2-digit' : 'numeric', minute: '2-digit' })
 const shortDate = (locale: Locale) => formatter(locale, 'shortDate', { day: '2-digit', month: '2-digit' })
 const dayHeading = (locale: Locale) => formatter(locale, 'dayHeading', { weekday: 'long', day: '2-digit', month: '2-digit' })
 const weekdayShort = (locale: Locale) => formatter(locale, 'weekdayShort', { weekday: 'short' })

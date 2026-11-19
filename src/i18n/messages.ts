@@ -6,7 +6,16 @@ import type { Locale } from './locale'
  * Nomes de gêneros são nomes próprios e não são traduzidos, exceto "Outros".
  */
 const pt = {
-  nav: { main: 'Navegação principal', dance: 'Dança', map: 'Explorar', community: 'Comunidade', schools: 'Escolas', info: 'Sobre', sidebar: 'Menu e filtros', mapColumn: 'Mapa e detalhes do evento' },
+  nav: {
+    main: 'Navegação principal',
+    dance: 'Dança',
+    map: 'Explorar',
+    community: 'Comunidade',
+    schools: 'Escolas',
+    info: 'Sobre',
+    sidebar: 'Menu e filtros',
+    mapColumn: 'Mapa e detalhes do evento',
+  },
   routes: { notFound: 'Página não encontrada' },
   dates: {
     shortcuts: 'Atalhos de dia',
@@ -95,7 +104,8 @@ const pt = {
     whatsapp: 'Grupos do WhatsApp',
     instagram: 'Instagram',
     subscribe: 'Assinar no app de agenda',
-    subscribeHint: 'No iPhone, no Mac ou em outro app de agenda, assine para ver os eventos junto com os seus. No Android ou no computador, use o Google Agenda.',
+    subscribeHint:
+      'No iPhone, no Mac ou em outro app de agenda, assine para ver os eventos junto com os seus. No Android ou no computador, use o Google Agenda.',
     subscribeAction: 'Assinar',
     copyLink: 'Copiar link',
     copied: 'Copiado',
@@ -169,7 +179,16 @@ const pt = {
 export type Messages = typeof pt
 
 const en: Messages = {
-  nav: { main: 'Main navigation', dance: 'Dance', map: 'Explore', community: 'Community', schools: 'Schools', info: 'About', sidebar: 'Menu and filters', mapColumn: 'Map and event details' },
+  nav: {
+    main: 'Main navigation',
+    dance: 'Dance',
+    map: 'Explore',
+    community: 'Community',
+    schools: 'Schools',
+    info: 'About',
+    sidebar: 'Menu and filters',
+    mapColumn: 'Map and event details',
+  },
   routes: { notFound: 'Page not found' },
   dates: {
     shortcuts: 'Day shortcuts',
@@ -258,7 +277,8 @@ const en: Messages = {
     whatsapp: 'WhatsApp groups',
     instagram: 'Instagram',
     subscribe: 'Subscribe in your calendar app',
-    subscribeHint: 'On iPhone, Mac or another calendar app, subscribe to see the events alongside yours. On Android or a computer, use Google Calendar.',
+    subscribeHint:
+      'On iPhone, Mac or another calendar app, subscribe to see the events alongside yours. On Android or a computer, use Google Calendar.',
     subscribeAction: 'Subscribe',
     copyLink: 'Copy link',
     copied: 'Copied',

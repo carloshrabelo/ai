@@ -24,7 +24,12 @@ describe('detectChanges', () => {
   })
 
   it('horário, local e situação', () => {
-    const now = { ...base, start: new Date('2026-11-17T21:00:00Z'), status: 'cancelled' as const, venue: { ...base.venue!, location: 'Outro lugar' } }
+    const now = {
+      ...base,
+      start: new Date('2026-11-17T21:00:00Z'),
+      status: 'cancelled' as const,
+      venue: { ...base.venue!, location: 'Outro lugar' },
+    }
     const [change] = detectChanges([snapshotOf(base)], [now], loaded, dayOf)
     expect(change).toMatchObject({ kind: 'changed', fields: ['time', 'location', 'status'], title: 'Samba no Mercado' })
     expect(change.after?.status).toBe('cancelled')

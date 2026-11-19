@@ -29,7 +29,12 @@ export default function Community() {
     <section className="mx-auto max-w-2xl space-y-4">
       <p className="text-sm text-fg-muted">
         {t.community.intro}{' '}
-        <a href="https://pasdedeux.pt/outros.html" target="_blank" rel="noopener noreferrer" className="font-medium text-brand hover:underline">
+        <a
+          href="https://pasdedeux.pt/outros.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-medium text-brand hover:underline"
+        >
           pasdedeux.pt
         </a>
         .
@@ -82,7 +87,17 @@ function SectionTitle({ icon: Icon, children }: { icon: LucideIcon; children: Re
 }
 
 /** Seção com uma lista de links externos; `columns`: 2 colunas a partir de `sm` (nomes curtos). */
-function LinkSection({ title, icon, links, columns = false }: { title: string; icon: LucideIcon; links: CommunityLink[]; columns?: boolean }) {
+function LinkSection({
+  title,
+  icon,
+  links,
+  columns = false,
+}: {
+  title: string
+  icon: LucideIcon
+  links: CommunityLink[]
+  columns?: boolean
+}) {
   return (
     <Card className="space-y-2">
       <SectionTitle icon={icon}>{title}</SectionTitle>

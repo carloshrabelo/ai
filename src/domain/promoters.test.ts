@@ -81,7 +81,10 @@ describe('extractPromoters', () => {
 
   it.each([
     ['👥 Organization: WCS Portugal', 'WCS Portugal'],
-    ['A community event organised by Portugal Social Events & International Friends Lisbon.', 'Portugal Social Events & International Friends Lisbon'],
+    [
+      'A community event organised by Portugal Social Events & International Friends Lisbon.',
+      'Portugal Social Events & International Friends Lisbon',
+    ],
     ['🤝 Com o apoio da Junta e organização da Animatudo Eventos.', 'Animatudo Eventos'],
     ['Organizado pela Embaixada da República Dominicana', 'Embaixada da República Dominicana'],
   ])('organização: %s', (text, organizedBy) => {

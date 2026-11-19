@@ -54,9 +54,7 @@ export function useDayNavigation(startDate: IsoDate, stickyRef: RefObject<HTMLEl
 
       if (loadedEnd && day >= startDate && day < loadedEnd) {
         // Primeiro cabeçalho no dia escolhido ou depois (o dia pode não ter eventos).
-        const target = [...document.querySelectorAll<HTMLElement>(DAY_HEADINGS)].find(
-          (heading) => (heading.dataset.day ?? '') >= day,
-        )
+        const target = [...document.querySelectorAll<HTMLElement>(DAY_HEADINGS)].find((heading) => (heading.dataset.day ?? '') >= day)
         if (target) {
           // Desconta a área fixa (header + atalhos/faixa), que muda de altura conforme o breakpoint.
           const offset = stuckBottom(stickyRef.current) + 8

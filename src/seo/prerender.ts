@@ -68,7 +68,12 @@ ${items}
 </main>`
 
   const html =
-    upcoming.length > 0 ? addJsonLd(template, eventListJsonLd(upcoming, (event) => `${siteUrl}${eventPagePath(event)}`)) : template
+    upcoming.length > 0
+      ? addJsonLd(
+          template,
+          eventListJsonLd(upcoming, (event) => `${siteUrl}${eventPagePath(event)}`),
+        )
+      : template
   return html.replace('<div id="root"></div>', `<div id="root">${body}</div>`)
 }
 

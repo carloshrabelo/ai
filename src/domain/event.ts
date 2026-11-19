@@ -93,7 +93,10 @@ function toVenue(location: string): Venue {
 
 /** HTML da descrição → texto, só para procurar gêneros. */
 function plainText(html: string | undefined): string {
-  return (html ?? '').replace(/<[^>]*>/g, ' ').replaceAll('&amp;', '&').replaceAll('&nbsp;', ' ')
+  return (html ?? '')
+    .replace(/<[^>]*>/g, ' ')
+    .replaceAll('&amp;', '&')
+    .replaceAll('&nbsp;', ' ')
 }
 
 const URL_PATTERN = /https?:\/\/[^\s"'<>]+/g

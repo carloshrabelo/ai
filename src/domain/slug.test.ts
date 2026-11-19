@@ -6,7 +6,7 @@ describe('slugify', () => {
     ['Festa Mirage', 'festa-mirage'],
     ['Forró da Liberdade', 'forro-da-liberdade'],
     ['Street Jazz Concert " Tuba Skinny" & "The Invisible Tuba"', 'street-jazz-concert-tuba-skinny-the-invisible-tuba'],
-    ['Cuban Salsa Party after Workshop\'s', 'cuban-salsa-party-after-workshop-s'],
+    ["Cuban Salsa Party after Workshop's", 'cuban-salsa-party-after-workshop-s'],
     ['  ¡Olé!  ', 'ole'],
   ])('%j → %j', (text, expected) => {
     expect(slugify(text)).toBe(expected)
@@ -18,7 +18,11 @@ describe('slugify', () => {
 })
 
 describe('eventSlug', () => {
-  const event = { id: 'o9f2oseq6l1lnqggfcdhupv20o_20261119T170000Z', title: 'Tropicavana Dance Night', start: new Date('2026-11-19T17:00:00Z') }
+  const event = {
+    id: 'o9f2oseq6l1lnqggfcdhupv20o_20261119T170000Z',
+    title: 'Tropicavana Dance Night',
+    start: new Date('2026-11-19T17:00:00Z'),
+  }
 
   it('dia de Lisboa + nome + hash curto', () => {
     expect(eventSlug(event)).toMatch(/^2026-11-19-tropicavana-dance-night-[a-z0-9]{4,5}$/)

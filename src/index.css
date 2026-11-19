@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* Tema escuro controlado por <html data-theme="dark">, definido em index.html e useTheme. */
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
@@ -105,7 +105,7 @@
     --genre-purple: #7e3fb8;
   }
 
-  [data-theme="dark"] {
+  [data-theme='dark'] {
     color-scheme: dark;
     --bg: #14162b;
     --surface: #23264a;

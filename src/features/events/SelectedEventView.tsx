@@ -28,12 +28,7 @@ function DetailsBody({ startDate, slug, headingId }: { startDate: IsoDate; slug:
 }
 
 /** A partir de `xl`: os detalhes ocupam a coluna do mapa. */
-export function EventDetailsPanel({
-  startDate,
-  slug,
-  onClose,
-  className = 'flex-1',
-}: ViewProps & { className?: string }) {
+export function EventDetailsPanel({ startDate, slug, onClose, className = 'flex-1' }: ViewProps & { className?: string }) {
   const headingId = useId()
   const { t } = useI18n()
 

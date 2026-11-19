@@ -49,12 +49,18 @@ export default function PromoterDirectory() {
   const [role, setRole] = useState<RoleFilter>('promoter')
 
   const entries = useMemo(() => Object.entries(DIRECTORY), [])
-  const genres = useMemo(() => [...new Set(entries.flatMap(([, entry]) => entry.genres))].sort((a, b) => a.localeCompare(b, 'pt')), [entries])
+  const genres = useMemo(
+    () => [...new Set(entries.flatMap(([, entry]) => entry.genres))].sort((a, b) => a.localeCompare(b, 'pt')),
+    [entries],
+  )
   const socialCounts = SOCIAL_KINDS.map((kind) => [kind, entries.filter(([, entry]) => entry.socials[kind]).length] as const).filter(
     ([, count]) => count > 0,
   )
 
-  const roleCounts = Object.fromEntries(ROLES.map((r) => [r, entries.filter(([, entry]) => entry.role === r).length])) as Record<Role, number>
+  const roleCounts = Object.fromEntries(ROLES.map((r) => [r, entries.filter(([, entry]) => entry.role === r).length])) as Record<
+    Role,
+    number
+  >
   const duplicates = useMemo(() => similarHandles(entries.map(([handle]) => handle)), [entries])
 
   const term = search.trim().toLowerCase()
@@ -74,10 +80,10 @@ export default function PromoterDirectory() {
         <h2 className="text-lg font-semibold">Diretório de promotores</h2>
         <p className="text-sm text-fg-muted">
           <code className="rounded bg-surface-muted px-1">src/data/promoters.json</code>, atualizado todo dia pela Action{' '}
-          <em>Update promoters</em> (ou <code className="rounded bg-surface-muted px-1">pnpm promoters:update</code>). Nome e redes
-          podem ser editados à mão (<code className="rounded bg-surface-muted px-1">name</code>,{' '}
-          <code className="rounded bg-surface-muted px-1">role</code>, redes,{' '}
-          <code className="rounded bg-surface-muted px-1">aliases</code>): o script não apaga nem sobrescreve.
+          <em>Update promoters</em> (ou <code className="rounded bg-surface-muted px-1">pnpm promoters:update</code>). Nome e redes podem
+          ser editados à mão (<code className="rounded bg-surface-muted px-1">name</code>,{' '}
+          <code className="rounded bg-surface-muted px-1">role</code>, redes, <code className="rounded bg-surface-muted px-1">aliases</code>
+          ): o script não apaga nem sobrescreve.
         </p>
         <p className="text-sm text-fg-muted">
           {entries.length} perfis · {ROLES.map((r) => `${roleCounts[r]} ${ROLE_LABEL[r].toLowerCase()}`).join(' · ')} ·{' '}
@@ -167,13 +173,21 @@ export default function PromoterDirectory() {
                     {entry.name ?? `@${handle}`} {role === 'all' && <RoleTag role={entry.role} />}
                     {entry.name && <span className="block text-xs font-normal text-fg-muted">@{handle}</span>}
                     {entry.aliases && (
-                      <span className="block text-xs font-normal text-fg-muted">também: {entry.aliases.map((alias) => `@${alias}`).join(', ')}</span>
+                      <span className="block text-xs font-normal text-fg-muted">
+                        também: {entry.aliases.map((alias) => `@${alias}`).join(', ')}
+                      </span>
                     )}
                   </td>
                   <td className={TD}>
                     <div className="flex flex-wrap gap-x-3 gap-y-1">
                       {SOCIAL_KINDS.filter((kind) => entry.socials[kind]).map((kind) => (
-                        <a key={kind} href={entry.socials[kind]} target="_blank" rel="noreferrer" className="font-medium text-brand hover:underline">
+                        <a
+                          key={kind}
+                          href={entry.socials[kind]}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="font-medium text-brand hover:underline"
+                        >
                           {SOCIAL_LABEL[kind]}
                         </a>
                       ))}
@@ -182,7 +196,9 @@ export default function PromoterDirectory() {
                   <td className={`${TD} text-fg-muted`}>{entry.venues.join(' · ') || '—'}</td>
                   <td className={TD}>
                     <div className="flex flex-wrap gap-1">
-                      {entry.genres.map((value) => (isGenre(value) ? <Chip key={value} genre={value} /> : <span key={value}>{value}</span>))}
+                      {entry.genres.map((value) =>
+                        isGenre(value) ? <Chip key={value} genre={value} /> : <span key={value}>{value}</span>,
+                      )}
                     </div>
                   </td>
                   <td className={`${TD} whitespace-nowrap tabular-nums`}>{entry.lastSeen.split('-').reverse().join('/')}</td>
