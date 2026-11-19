@@ -388,6 +388,15 @@ const PIN_STYLE = {
 // Mesmo ícone para o mesmo visual: trocar o ícone recria o elemento do pino embaixo do mouse.
 const iconCache = new Map<string, L.DivIcon>()
 
+/**
+ * Pino selecionado pulsa: um anel roxo que cresce e some atrás do pino, sem parar. Com "reduzir
+ * movimento", o pulso não aparece (motion-safe).
+ */
+function withPulse(pin: string, pulse: boolean): string {
+  if (!pulse) return pin
+  return `<span class="relative flex size-full items-center justify-center"><span aria-hidden="true" class="absolute inset-0 rounded-full bg-brand/50 motion-safe:animate-ping"></span>${pin}</span>`
+}
+
 /** Pino de grupo: roxo da marca, maior, com o total de eventos. */
 function clusterIcon(total: number, state: keyof typeof PIN_STYLE): L.DivIcon {
   const ring = state === 'selected' ? 'ring-4 ring-brand' : state === 'hovered' ? 'ring-4 ring-brand/60' : ''
@@ -398,7 +407,10 @@ function clusterIcon(total: number, state: keyof typeof PIN_STYLE): L.DivIcon {
     className: '',
     iconSize: [40, 40],
     iconAnchor: [20, 20],
-    html: `<span class="flex size-10 items-center justify-center rounded-full border-[3px] border-white bg-brand text-sm font-bold text-brand-fg shadow-lg ${ring}">${total}</span>`,
+    html: withPulse(
+      `<span class="relative flex size-10 items-center justify-center rounded-full border-[3px] border-white bg-brand text-sm font-bold text-brand-fg shadow-lg ${ring}">${total}</span>`,
+      state === 'selected',
+    ),
   })
   iconCache.set(cacheKey, icon)
   return icon
@@ -418,7 +430,10 @@ function pinIcon(place: Place, state: keyof typeof PIN_STYLE): L.DivIcon {
     iconAnchor: [size / 2, size / 2],
     popupAnchor: [0, -size / 2],
     tooltipAnchor: [0, 0],
-    html: `<span class="flex items-center justify-center rounded-full text-xs font-semibold ${classes} ${colors}">${count}</span>`,
+    html: withPulse(
+      `<span class="relative flex items-center justify-center rounded-full text-xs font-semibold ${classes} ${colors}">${count}</span>`,
+      state === 'selected',
+    ),
   })
   iconCache.set(cacheKey, icon)
   return icon
