@@ -70,8 +70,9 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
               <span className="truncate">{event.venue.name}</span>
             </p>
           )}
-          {/* Horário e preço na mesma linha; preço longo quebra para a linha de baixo. */}
-          <p className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-fg-muted">
+          {/* Horário e preço na mesma linha, o preço à direita; preço longo quebra para a linha de baixo
+              (e fica à esquerda). */}
+          <p className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-sm text-fg-muted">
             <span className="flex items-center gap-2 tabular-nums">
               <Clock className="size-5 shrink-0" aria-hidden="true" />
               <span className="sr-only">{t.event.time}: </span>
