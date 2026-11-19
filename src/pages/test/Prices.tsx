@@ -6,8 +6,9 @@ import { Card } from '../../components/ui/Card'
 import { PriceChips } from '../../features/price/PriceChips'
 import { normalizePrice, translatePrice } from '../../domain/price/translatePrice'
 import { siteUrl, useDocumentHead } from '../../seo/useDocumentHead'
-import { BackToTest, RangeFields } from './shared'
-import { useEventsInRange } from './useEventsInRange'
+import { RangeFields } from '../../features/range/RangeFields'
+import { BackToTest } from './shared'
+import { useEventsInRange } from '../../features/range/useEventsInRange'
 
 /**
  * Sugestões de texto para evento sem preço identificado; o app usa o grupo "Ver descrição | Consultar

@@ -9,8 +9,9 @@ import { EventDetails } from '../../features/events/EventDetails'
 import { formatDayHeading, formatTimeRange } from '../../features/events/format'
 import { eventPath } from '../../features/events/useSelectedEvent'
 import { siteUrl, useDocumentHead } from '../../seo/useDocumentHead'
-import { BackToTest, RangeFields } from './shared'
-import { useEventsInRange } from './useEventsInRange'
+import { RangeFields } from '../../features/range/RangeFields'
+import { BackToTest } from './shared'
+import { useEventsInRange } from '../../features/range/useEventsInRange'
 
 type Row = { event: DanceEvent; summary: string; hint?: string }
 

@@ -12,8 +12,9 @@ import { eventPath } from '../../features/events/useSelectedEvent'
 import { siteUrl, useDocumentHead } from '../../seo/useDocumentHead'
 import type { RoleFilter } from './roleLabels'
 import { RoleSelect, RoleTag } from './roles'
-import { BackToTest, RangeFields } from './shared'
-import { useEventsInRange } from './useEventsInRange'
+import { RangeFields } from '../../features/range/RangeFields'
+import { BackToTest } from './shared'
+import { useEventsInRange } from '../../features/range/useEventsInRange'
 
 type View = 'promoters' | 'events'
 type EventRow = { event: DanceEvent; summary: string } & EventPromoters
