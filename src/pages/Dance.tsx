@@ -73,7 +73,9 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
   return (
     <div className="flex gap-6">
       <DanceHead startDate={startDate} selectedSlug={selectedSlug} />
-      <div className="min-w-0 flex-1 space-y-4">
+      {/* Tablet: a lista vai até 26rem (416px) e o mapa fica com o resto; a lista só encolhe se o mapa
+          ficar com menos de 16rem. A partir de `xl`, a lista ocupa o resto e o mapa tem largura fixa. */}
+      <div className="min-w-0 flex-1 space-y-4 md:max-w-104 md:shrink md:grow-0 md:basis-104 xl:max-w-none xl:grow xl:basis-0">
         {/* Fixo logo abaixo do header enquanto a lista rola. flex + gap (e não space-y): o popover de
             filtros, absoluto, não muda o espaçamento dos outros ao abrir. */}
         <div
@@ -131,7 +133,7 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
           altura desconta a barra inferior, 4rem, que só some no `xl`). */}
       <aside
         aria-label={t.nav.mapColumn}
-        className="sticky top-20 hidden h-[calc(100dvh-11rem-env(safe-area-inset-bottom))] w-72 shrink-0 flex-col gap-4 md:flex lg:w-80 xl:h-[calc(100dvh-7rem)] xl:w-90 2xl:w-120"
+        className="sticky top-20 hidden h-[calc(100dvh-11rem-env(safe-area-inset-bottom))] min-w-64 flex-1 flex-col gap-4 md:flex xl:h-[calc(100dvh-7rem)] xl:w-90 xl:flex-none 2xl:w-120"
       >
         {isMd && (
           <>
