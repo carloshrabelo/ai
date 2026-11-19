@@ -37,7 +37,7 @@ export const persistOptions: Omit<PersistQueryClientOptions, 'queryClient'> = {
   persister: createSyncStoragePersister({ storage: safeStorage(), key: 'lisbon-social-dance:queries' }),
   maxAge: PERSIST_MAX_AGE,
   // Mock e API não se misturam; mudar a versão do formato descarta o que estava salvo.
-  buster: `events-v1-${USE_MOCK ? 'mock' : 'api'}`,
+  buster: `events-v2-${USE_MOCK ? 'mock' : 'api'}`, // v2: eventos com `source`
   dehydrateOptions: {
     // Eventos e coordenadas buscadas no navegador (inclusive "não achou", para não repetir a busca).
     shouldDehydrateQuery: (query) =>

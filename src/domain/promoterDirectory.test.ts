@@ -15,6 +15,7 @@ const event = (over: Partial<DanceEvent>): DanceEvent => ({
   allDay: false,
   links: [],
   calendarUrl: '',
+  source: 'pasdedeux',
   ...over,
 })
 

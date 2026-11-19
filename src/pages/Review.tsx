@@ -9,6 +9,7 @@ import { lisbonDate } from '../data/dates'
 import { checkSpelling, type SpellLanguage } from '../data/languageTool'
 import promoters from '../data/promoters.json'
 import venues from '../data/venues.json'
+import { CALENDAR_SOURCES, type CalendarSource, SOURCE_INFO } from '../domain/calendarSources'
 import type { DanceEvent } from '../domain/event'
 import type { PromoterDirectory } from '../domain/promoterDirectory'
 import {
@@ -45,10 +46,15 @@ const VENUE_WORDS = Object.values(venues as Record<string, { name: string }>).fl
 
 const LANGUAGES: SpellLanguage[] = ['pt-PT', 'pt-BR', 'en-US', 'es']
 const IGNORE_KEY = 'lisbon-social-dance:review-ignored'
-const CHECKS_KEY = 'lisbon-social-dance:review-checks'
 
-/** O que verificar: ortografia (LanguageTool, mais lento) e perfis escritos errado. */
+/**
+ * O que verificar: ortografia (LanguageTool, mais lento) e perfis escritos errado. Ao abrir, sempre só
+ * os perfis (não fica salvo).
+ */
 type Checks = { spelling: boolean; aliases: boolean }
+const DEFAULT_CHECKS: Checks = { spelling: false, aliases: true }
+/** Calendários revisados ao abrir: só o principal; cada responsável marca o seu. */
+const DEFAULT_SOURCES: CalendarSource[] = ['pasdedeux']
 const LINK = 'font-medium text-brand hover:underline'
 
 type Field = 'title' | 'description'
@@ -79,10 +85,6 @@ function loadIgnored(): string[] {
   return Array.isArray(words) ? words.filter((word) => typeof word === 'string') : []
 }
 
-function loadChecks(): Checks {
-  const saved = load(CHECKS_KEY) as Partial<Checks> | null
-  return { spelling: saved?.spelling === true, aliases: saved?.aliases !== false }
-}
 const saveIgnored = (words: string[]) => save(IGNORE_KEY, words)
 
 const when = (event: DanceEvent) => `${formatShortDay(lisbonDate(event.start), 'pt-BR')} ${formatTimeRange(event, 'pt-BR')}`
@@ -96,12 +98,17 @@ export default function Review() {
   useDocumentHead({ title: 'Revisão', description: 'Erros de texto nos eventos', canonical: `${siteUrl()}review/`, noindex: true })
   const { query, ...range } = useEventsInRange(90)
   const [ignored, setIgnored] = useState(loadIgnored)
-  const [checks, setChecks] = useState(loadChecks)
-  const toggle = (key: keyof Checks) => (on: boolean) => {
-    const next = { ...checks, [key]: on }
-    setChecks(next)
-    save(CHECKS_KEY, next)
-  }
+  const [checks, setChecks] = useState(DEFAULT_CHECKS)
+  const toggle = (key: keyof Checks) => (on: boolean) => setChecks((current) => ({ ...current, [key]: on }))
+  const [sources, setSources] = useState<CalendarSource[]>(DEFAULT_SOURCES)
+  const toggleSource = (source: CalendarSource) => (on: boolean) =>
+    setSources((current) => (on ? [...current, source] : current.filter((item) => item !== source)))
+  // Eventos do período por calendário (para a contagem ao lado de cada caixa).
+  const perSource = useMemo(
+    () =>
+      Object.fromEntries(CALENDAR_SOURCES.map((source) => [source, (query.data ?? []).filter((event) => event.source === source).length])),
+    [query.data],
+  )
   const [choices, setChoices] = useState<Record<string, string | null>>({})
   const [progress, setProgress] = useState(0)
   const [copied, setCopied] = useState<string | null>(null)
@@ -109,6 +116,7 @@ export default function Review() {
   const groups = useMemo<Group[]>(() => {
     const byText = new Map<string, Group>()
     for (const event of query.data ?? []) {
+      if (!sources.includes(event.source)) continue
       const key = `${event.title}\u0000${event.description ?? ''}`
       const group = byText.get(key)
       if (group) group.events.push(event)
@@ -119,7 +127,7 @@ export default function Review() {
       }
     }
     return [...byText.values()]
-  }, [query.data])
+  }, [query.data, sources])
 
   const allTexts = useMemo(() => [...new Set(groups.flatMap((group) => group.texts.map((text) => text.plain.text)))], [groups])
   const spelling = useQuery({
@@ -202,7 +210,7 @@ export default function Review() {
       return lines.join('\n')
     })
     await navigator.clipboard.writeText(
-      `Revisão da agenda (${range.from.split('-').reverse().join('/')} a ${range.to.split('-').reverse().join('/')}): ${reviewed.length} eventos com correções\n\n${blocks.join('\n\n---\n\n')}\n`,
+      `Revisão da agenda: ${sources.map((source) => SOURCE_INFO[source].label).join(', ')} (${range.from.split('-').reverse().join('/')} a ${range.to.split('-').reverse().join('/')}): ${reviewed.length} eventos com correções\n\n${blocks.join('\n\n---\n\n')}\n`,
     )
     flash('all')
   }
@@ -244,7 +252,7 @@ export default function Review() {
             : query.isError
               ? `Erro: ${query.error.message}`
               : [
-                  `${query.data.length} eventos (${groups.length} textos diferentes)`,
+                  `${groups.reduce((sum, group) => sum + group.events.length, 0)} de ${query.data.length} eventos (${groups.length} textos diferentes)`,
                   !checks.spelling
                     ? null
                     : spelling.isError
@@ -259,7 +267,18 @@ export default function Review() {
         </p>
         {checkingSpelling && <SpellingProgress done={Math.min(progress, total)} total={total} />}
         <fieldset className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
-          <legend className="sr-only">Verificar</legend>
+          <legend className="mb-1 text-xs font-medium text-fg-muted">Calendários</legend>
+          {CALENDAR_SOURCES.map((source) => (
+            <CheckField
+              key={source}
+              label={`${SOURCE_INFO[source].label} (${query.data ? perSource[source] : '…'})`}
+              checked={sources.includes(source)}
+              onChange={toggleSource(source)}
+            />
+          ))}
+        </fieldset>
+        <fieldset className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
+          <legend className="mb-1 text-xs font-medium text-fg-muted">Verificar</legend>
           <CheckField label="Perfis escritos errado (aliases)" checked={checks.aliases} onChange={toggle('aliases')} />
           <CheckField label="Ortografia (LanguageTool)" checked={checks.spelling} onChange={toggle('spelling')} />
         </fieldset>

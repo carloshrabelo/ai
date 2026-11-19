@@ -15,6 +15,7 @@ const event: DanceEvent = {
   description: 'Mais info:<br>@dance &amp; amigos',
   links: [],
   calendarUrl: 'https://www.google.com/calendar/event?eid=x',
+  source: 'pasdedeux',
 }
 const page = 'https://carloshrabelo.github.io/ai/evento/2026-11-17-samba-no-mercado-abcde/'
 

@@ -14,6 +14,7 @@ const base: DanceEvent = {
   venue: { location: 'Time Out Market Lisboa, Av. 24 de Julho 49', name: 'Time Out Market Lisboa', address: '' },
   links: [],
   calendarUrl: '',
+  source: 'pasdedeux',
 }
 const dayOf = (iso: string) => iso.slice(0, 10)
 const loaded = [{ start: '2026-11-17', end: '2026-12-01' }]

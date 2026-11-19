@@ -1,4 +1,4 @@
-import { fromTangoLx, fromTradicionais, TANGO_CALENDAR_ID, TRADICIONAIS_CALENDAR_ID } from '../domain/calendarSources'
+import { type CalendarSource, fromTangoLx, fromTradicionais, TANGO_CALENDAR_ID, TRADICIONAIS_CALENDAR_ID } from '../domain/calendarSources'
 import { CALENDAR_ID, GOOGLE_API_KEY, MOCK_DELAY_MS, USE_MOCK } from './config'
 import { lisbonMidnight, todayIso } from './dates'
 import { shiftMockEvents } from './mockDates'
@@ -17,6 +17,8 @@ export type GCalEvent = {
   start: GCalDateTime
   end: GCalDateTime
   recurringEventId?: string
+  /** Calendário de origem: preenchido pelo app depois da busca (não vem da API). Sem ele, o principal. */
+  source?: CalendarSource
 }
 
 type GCalEventsResponse = {
@@ -34,10 +36,10 @@ export type FetchEventsParams = {
  * Calendários lidos: o principal (pasdedeux.pt) e outros públicos, cada um com um adaptador que
  * converte o evento para o formato do principal (ver src/domain/calendarSources.ts).
  */
-const SOURCES: { calendarId: string; adapt?: (event: GCalEvent) => GCalEvent }[] = [
-  { calendarId: CALENDAR_ID },
-  { calendarId: TRADICIONAIS_CALENDAR_ID, adapt: fromTradicionais },
-  { calendarId: TANGO_CALENDAR_ID, adapt: fromTangoLx },
+const SOURCES: { source: CalendarSource; calendarId: string; adapt?: (event: GCalEvent) => GCalEvent }[] = [
+  { source: 'pasdedeux', calendarId: CALENDAR_ID },
+  { source: 'tradicionais', calendarId: TRADICIONAIS_CALENDAR_ID, adapt: fromTradicionais },
+  { source: 'tangolx', calendarId: TANGO_CALENDAR_ID, adapt: fromTangoLx },
 ]
 
 /** Eventos que se sobrepõem a [timeMin, timeMax), ordenados pelo início. */
@@ -54,9 +56,9 @@ export function fetchEvents(params: FetchEventsParams): Promise<GCalEvent[]> {
  */
 async function fetchAllCalendars(params: FetchEventsParams): Promise<GCalEvent[]> {
   const results = await Promise.allSettled(
-    SOURCES.map(async ({ calendarId, adapt }) => {
+    SOURCES.map(async ({ source, calendarId, adapt }) => {
       const items = await fetchApiEvents(calendarId, params)
-      return adapt ? items.map(adapt) : items
+      return items.map((item) => ({ ...(adapt ? adapt(item) : item), source }))
     }),
   )
   const [main] = results

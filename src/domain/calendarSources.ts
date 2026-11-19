@@ -5,6 +5,16 @@ import type { GCalEvent } from '../data/googleCalendar'
 // o evento para o formato do principal ("Tag • Nome • Preço" no título, local em `location`, hora em
 // `dateTime`), e o resto do app (gêneros, preço, local, mapa) funciona igual.
 
+/** Calendário de onde veio cada evento (para a revisão por responsável, em /review). */
+export const CALENDAR_SOURCES = ['pasdedeux', 'tangolx', 'tradicionais'] as const
+export type CalendarSource = (typeof CALENDAR_SOURCES)[number]
+
+export const SOURCE_INFO: Record<CalendarSource, { label: string; owner: string }> = {
+  pasdedeux: { label: 'Pas de Deux', owner: '@ateterca' },
+  tangolx: { label: 'Tango (tangolx.com)', owner: 'tangolx.com' },
+  tradicionais: { label: 'Danças tradicionais', owner: 'Luís Manuel Guerra' },
+}
+
 /** Prefixo de situação ("(Cancelado) …") fica na frente da tag, onde o parseSummary procura. */
 const STATUS_PREFIX = /^\s*[([]\s*(?:canc\w*|postponed|adiad[oa])\s*[)\]]\s*/i
 

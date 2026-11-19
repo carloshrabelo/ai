@@ -14,6 +14,7 @@ function event(id: string, start: string, end: string, allDay = false): DanceEve
     allDay,
     links: [],
     calendarUrl: '',
+    source: 'pasdedeux',
   }
 }
 

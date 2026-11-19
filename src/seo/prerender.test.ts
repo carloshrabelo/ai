@@ -24,6 +24,7 @@ const event: DanceEvent = {
   description: 'Linha 1<br>Linha 2<br><br>Outro parágrafo',
   links: [],
   calendarUrl: '',
+  source: 'pasdedeux',
 }
 
 describe('slugFromPath', () => {

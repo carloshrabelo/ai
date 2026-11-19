@@ -1,6 +1,7 @@
 import venues from '../data/venues.json'
 import { lisbonMidnight } from '../data/dates'
 import type { GCalDateTime, GCalEvent } from '../data/googleCalendar'
+import type { CalendarSource } from './calendarSources'
 import { confirmedUmbrellas, GENRES, type Genre } from './genres'
 import { genresInText } from './parseGenres'
 import { priceFromDescription } from './descriptionPrice'
@@ -37,6 +38,8 @@ export type DanceEvent = {
   description?: string
   links: string[]
   calendarUrl: string
+  /** Calendário de onde veio (pasdedeux, tangolx, tradicionais). */
+  source: CalendarSource
 }
 
 type VenueCoords = { name: string; lat: number; lng: number }
@@ -71,6 +74,7 @@ export function toDanceEvent(event: GCalEvent): DanceEvent {
     ...(description ? { description } : {}),
     links: extractLinks(description),
     calendarUrl: event.htmlLink,
+    source: event.source ?? 'pasdedeux',
   }
 }
 

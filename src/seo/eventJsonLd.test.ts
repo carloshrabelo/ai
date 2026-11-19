@@ -16,6 +16,7 @@ const event: DanceEvent = {
   description: 'Mais info:<br>@mirage &amp; amigos',
   links: [],
   calendarUrl: '',
+  source: 'pasdedeux',
 }
 
 describe('eventJsonLd', () => {
