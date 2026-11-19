@@ -99,18 +99,8 @@ const CHIP = 'inline-flex items-center gap-1 rounded-full border border-border p
 /** Um preço do calendário (texto cru) em chips, na variação escolhida. */
 export function PriceChips({ price, variant, locale }: { price: string; variant: PriceChipVariant; locale: Locale }) {
   const parsed = labeledPrice(price)
-  const items =
-    parsed.kind === 'range'
-      ? [
-          {
-            value:
-              locale === 'pt-BR'
-                ? `${money(parsed.options[0].amount ?? 0, locale).replace('€', '')}–${money(parsed.options[1].amount ?? 0, locale)}`
-                : `${money(parsed.options[0].amount ?? 0, locale)}–${money(parsed.options[1].amount ?? 0, locale).replace('€', '')}`,
-            detail: false,
-          } as Item,
-        ]
-      : parsed.options.map((option) => ({ ...describe(option, locale), detail: !!option.detail }))
+  // Faixa ("5€ to 15€") também em dois chips: 5€ e 15€.
+  const items: Item[] = parsed.options.map((option) => ({ ...describe(option, locale), detail: !!option.detail }))
   // Observação no idioma ("5€?" → "€5?"), sem a maiúscula que o translatePrice põe no começo.
   const note = parsed.note && translatePrice(parsed.note, locale)
   const extras = [
