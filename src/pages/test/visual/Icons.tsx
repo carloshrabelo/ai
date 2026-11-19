@@ -5,6 +5,8 @@ import { Card } from '../../../components/ui/Card'
 import { siteUrl, useDocumentHead } from '../../../seo/useDocumentHead'
 import { BackToTest } from '../shared'
 
+import { Segmented } from '../../../components/ui/Segmented'
+import { ICON_STYLES, type IconStyle, pairNote, styledIcon } from './iconStyles'
 import { currentIndex, type Group, type GroupId, GROUPS, type IconComponent, SECTIONS } from './iconGroups'
 
 /**
@@ -23,6 +25,8 @@ export default function Icons() {
     () => Object.fromEntries(GROUPS.map((group) => [group.id, currentIndex(group.options)])) as Record<GroupId, number>,
   )
   const [copied, setCopied] = useState(false)
+  // Estilo dos ícones na amostra: o atual (Lucide) ou um estilo cheio (ver iconStyles.ts).
+  const [style, setStyle] = useState<IconStyle>('lucide')
   // Acordeon: um grupo de opções aberto por vez (fechado, mostra só a escolha).
   const [openGroup, setOpenGroup] = useState<GroupId | null>(null)
 
@@ -47,14 +51,22 @@ export default function Icons() {
             Cada ícone do app com opções da Lucide (a biblioteca do app). A amostra abaixo usa os escolhidos.
           </p>
         </div>
-        <Sample icon={(id) => chosen(id).icon} />
+        <Sample icon={(id) => styledIcon(style, id, chosen(id).icon)} />
         <div className="flex flex-wrap items-center gap-3">
+          <Segmented
+            label="Estilo dos ícones"
+            options={ICON_STYLES.map(({ id, label }) => ({ value: id, label }))}
+            value={style}
+            onChange={setStyle}
+          />
           <Button onClick={copy}>
             {copied ? <Check className="size-4" aria-hidden="true" /> : <Copy className="size-4" aria-hidden="true" />}
             {copied ? 'Copiado' : 'Copiar escolha'}
           </Button>
         </div>
       </Card>
+
+      <StyleComparison icon={(id) => chosen(id).icon} />
 
       {SECTIONS.map((section) => (
         <div key={section} className="space-y-2">
@@ -305,6 +317,49 @@ function IconChoices({
           })}
         </div>
       )}
+    </Card>
+  )
+}
+
+/** Os ícones escolhidos lado a lado em cada estilo (Lucide, Phosphor Fill e Duotone, Fluent Filled). */
+function StyleComparison({ icon }: { icon: (id: GroupId) => IconComponent }) {
+  return (
+    <Card className="overflow-x-auto p-0">
+      <table className="w-full text-left text-sm">
+        <caption className="px-4 pt-4 text-left">
+          <span className="block text-base font-semibold">Comparação de estilos</span>
+          <span className="block text-xs font-normal text-fg-muted">
+            {ICON_STYLES.map(({ label, note }) => `${label}: ${note}`).join(' · ')}
+          </span>
+        </caption>
+        <thead className="border-b border-border text-fg-muted">
+          <tr>
+            <th scope="col" className="px-4 py-2 font-medium">
+              Ícone
+            </th>
+            {ICON_STYLES.map(({ id, label }) => (
+              <th key={id} scope="col" className="px-4 py-2 text-center font-medium whitespace-nowrap">
+                {label}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {GROUPS.map((group) => (
+            <tr key={group.id} className="border-b border-border last:border-0">
+              <th scope="row" className="px-4 py-2 font-medium">
+                {group.title}
+                {pairNote(group.id) && <span className="block text-xs font-normal text-fg-muted">{pairNote(group.id)}</span>}
+              </th>
+              {ICON_STYLES.map(({ id }) => (
+                <td key={id} className="px-4 py-2 text-center text-brand">
+                  <Glyph icon={styledIcon(id, group.id, icon(group.id))} className="mx-auto size-7" />
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </Card>
   )
 }
