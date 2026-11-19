@@ -1,4 +1,6 @@
+import { CircleHelp, Ticket } from 'lucide-react'
 import { useMemo, useState } from 'react'
+import { Link } from 'react-router'
 import { Button } from '../../components/ui/Button'
 import { Card } from '../../components/ui/Card'
 import { PriceChips } from '../../features/events/PriceChips'
@@ -6,6 +8,21 @@ import { normalizePrice, translatePrice } from '../../i18n/price'
 import { siteUrl, useDocumentHead } from '../../seo/useDocumentHead'
 import { BackToTest, RangeFields } from './shared'
 import { useEventsInRange } from './useEventsInRange'
+
+/**
+ * Sugestões de texto para evento sem preço identificado (hoje o card não mostra nada). `icon`: com o
+ * ícone de dúvida, como o valor não confirmado de "Pago (5€?)".
+ */
+const NO_PRICE_TERMS: { pt: string; en: string; icon?: boolean; note: string }[] = [
+  { pt: 'A confirmar', en: 'To be confirmed', icon: true, note: 'Neutro e curto; combina com o ícone de valor não confirmado.' },
+  { pt: 'Preço não informado', en: 'Price not listed', note: 'Factual: o calendário não traz o preço. Mais longo.' },
+  { pt: 'Consultar organizador', en: 'Ask the organizer', note: 'Diz o que fazer; bom quando há @ do organizador.' },
+  { pt: 'Ver descrição', en: 'See description', note: 'Às vezes o preço está no texto e não foi reconhecido.' },
+  { pt: 'Sem informação', en: 'No info', note: 'Curto, mas vago (sem informação de quê?).' },
+  { pt: '—', en: '—', note: 'Só um traço: mínimo, mas pode parecer erro.' },
+  { pt: '', en: '', icon: true, note: 'Só o ícone, com o texto "a confirmar" no title e para leitor de tela.' },
+  { pt: 'Sem preço', en: 'No price', note: 'Evitar: pode ser lido como gratuito.' },
+]
 
 type PriceRow = { price: string; count: number; pt: string; en: string; untranslated: boolean }
 
@@ -76,6 +93,8 @@ export default function Prices() {
         </div>
       </Card>
 
+      <NoPriceTerms total={query.data?.length} withPrice={withPrice} />
+
       {rows.length > 0 && (
         <Card className="p-0">
           <table className="w-full text-left text-sm">
@@ -127,5 +146,51 @@ export default function Prices() {
         </Card>
       )}
     </section>
+  )
+}
+
+/** Sugestões de termo para quando o preço não foi identificado, com a prévia em chip. */
+function NoPriceTerms({ total, withPrice }: { total?: number; withPrice: number }) {
+  return (
+    <Card className="space-y-3">
+      <div>
+        <h2 className="text-lg font-semibold">Sem preço identificado</h2>
+        <p className="text-sm text-fg-muted">
+          {total === undefined ? 'Carregando…' : `${total - withPrice} eventos do período sem preço no título nem na descrição`} (lista em{' '}
+          <Link to="/teste/sem-preco" className="font-medium text-brand hover:underline">
+            /teste/sem-preco
+          </Link>
+          ). Hoje o card não mostra nada; sugestões de termo, no estilo dos chips:
+        </p>
+      </div>
+      <ul className="divide-y divide-border">
+        {NO_PRICE_TERMS.map((term) => (
+          <li
+            key={term.pt || 'icone'}
+            className="grid gap-x-4 gap-y-1 py-2 text-sm sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,2fr)] sm:items-center"
+          >
+            <TermChip text={term.pt} icon={term.icon} label="a confirmar" />
+            <TermChip text={term.en} icon={term.icon} label="to be confirmed" />
+            <span className="text-fg-muted">{term.note}</span>
+          </li>
+        ))}
+      </ul>
+    </Card>
+  )
+}
+
+function TermChip({ text, icon, label }: { text: string; icon?: boolean; label: string }) {
+  return (
+    <span className="flex items-center gap-2 text-fg-muted">
+      <Ticket className="size-4 shrink-0" aria-hidden="true" />
+      <span
+        className="inline-flex w-fit items-center gap-1 rounded-full border border-dashed border-border px-2 py-0.5 text-xs whitespace-nowrap"
+        title={icon ? label : undefined}
+      >
+        {text}
+        {icon && <CircleHelp className="size-3.5" aria-hidden="true" />}
+        {icon && !text && <span className="sr-only">{label}</span>}
+      </span>
+    </span>
   )
 }
