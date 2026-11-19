@@ -1,4 +1,4 @@
-import { Clock, DoorOpen, Gift, GraduationCap, type LucideIcon, Moon, Receipt, User, UserCheck, Wine } from 'lucide-react'
+import { CircleHelp, Clock, DoorOpen, Gift, GraduationCap, type LucideIcon, Moon, Receipt, User, UserCheck, Wine } from 'lucide-react'
 import { labeledPrice, type PriceLabel, type PriceOption } from '../../domain/labeledPrice'
 import type { Locale } from '../../i18n/locale'
 import { translatePrice } from '../../i18n/price'
@@ -44,9 +44,9 @@ const ICONS: Record<PriceLabel, LucideIcon> = {
   after: Moon,
 }
 
-const WORDS: Record<Locale, { free: string; flexible: string }> = {
-  'pt-BR': { free: 'Gratuito', flexible: 'flexível' },
-  'en-US': { free: 'Free', flexible: 'flexible' },
+const WORDS: Record<Locale, { free: string; flexible: string; uncertain: string }> = {
+  'pt-BR': { free: 'Gratuito', flexible: 'flexível', uncertain: 'a confirmar' },
+  'en-US': { free: 'Free', flexible: 'flexible', uncertain: 'to be confirmed' },
 }
 
 /** 5 → "5€" / "€5"; 7.5 → "7,50€" / "€7.50". */
@@ -56,27 +56,43 @@ function money(value: number, locale: Locale): string {
 }
 
 /** Valor da opção ("5€", "Gratuito", "Pago") e o rótulo dela, no idioma. */
-function describe(option: PriceOption, locale: Locale): { value: string; label?: string; icon?: LucideIcon } {
+function describe(option: PriceOption, locale: Locale): { value: string; label?: string; icon?: LucideIcon; uncertain?: string } {
   const value =
     option.amount !== undefined
-      ? `${money(option.amount, locale)}${option.uncertain ? '?' : ''}`
+      ? money(option.amount, locale)
       : option.free
         ? WORDS[locale].free
         : translatePrice(option.text ?? '', locale)
-  if (option.label) return { value, label: LABELS[locale][option.label](option.labelArg), icon: ICONS[option.label] }
-  if (option.rawLabel) return { value, label: option.rawLabel }
-  return { value, ...(option.free ? { icon: Gift } : {}) }
+  const uncertain = option.uncertain ? WORDS[locale].uncertain : undefined
+  if (option.label) return { value, uncertain, label: LABELS[locale][option.label](option.labelArg), icon: ICONS[option.label] }
+  if (option.rawLabel) return { value, uncertain, label: option.rawLabel }
+  return { value, uncertain, ...(option.free ? { icon: Gift } : {}) }
 }
 
 type Item = ReturnType<typeof describe> & { detail: boolean }
+
+/** Valor em negrito; não confirmado ("Pago (5€?)"), com o ícone de dúvida no lugar do "?". */
+function Amount({ value, uncertain }: { value: string; uncertain?: string }) {
+  return (
+    <span className="inline-flex items-center gap-0.5 font-semibold" title={uncertain}>
+      {value}
+      {uncertain && (
+        <>
+          <CircleHelp className="size-3.5 text-fg-muted" aria-hidden="true" />
+          <span className="sr-only"> ({uncertain})</span>
+        </>
+      )}
+    </span>
+  )
+}
 
 /** Chips unidos, separados por traço (valor e o seu detalhe, ou a variação "Grupo"). */
 function Joined({ items }: { items: Item[] }) {
   return (
     <span className="inline-flex divide-x divide-border overflow-hidden rounded-full border border-border text-xs tabular-nums">
-      {items.map(({ value, label }) => (
+      {items.map(({ value, label, uncertain }) => (
         <span key={value + label} className="px-2 py-0.5 whitespace-nowrap">
-          <span className="font-semibold">{value}</span>
+          <Amount value={value} uncertain={uncertain} />
           {label && <span className="text-fg-muted"> {label}</span>}
         </span>
       ))}
@@ -128,7 +144,7 @@ export function PriceChips({ price, variant, locale }: { price: string; variant:
             <Joined key={group.map((item) => item.value).join()} items={group} />
           ) : (
             <span key={group[0].value + group[0].label} className={CHIP}>
-              <span className="font-semibold">{group[0].value}</span>
+              <Amount value={group[0].value} uncertain={group[0].uncertain} />
               {group[0].label && <span className="text-fg-muted">{group[0].label}</span>}
             </span>
           ),
@@ -140,19 +156,19 @@ export function PriceChips({ price, variant, locale }: { price: string; variant:
 
   return (
     <span className="inline-flex flex-wrap items-center gap-1">
-      {items.map(({ value, label, icon: Icon }, index) => {
+      {items.map(({ value, label, uncertain, icon: Icon }, index) => {
         const key = value + label
         switch (variant) {
           case 'plain':
             return (
               <span key={key} className={CHIP}>
-                <span className="font-semibold">{value}</span>
+                <Amount value={value} uncertain={uncertain} />
               </span>
             )
           case 'inline':
             return (
               <span key={key} className={CHIP}>
-                <span className="font-semibold">{value}</span>
+                <Amount value={value} uncertain={uncertain} />
                 {label && <span className="text-fg-muted">{label}</span>}
               </span>
             )
@@ -162,14 +178,14 @@ export function PriceChips({ price, variant, locale }: { price: string; variant:
                 key={key}
                 className="inline-flex flex-col items-center rounded-lg border border-border px-2 py-0.5 text-xs leading-tight tabular-nums"
               >
-                <span className="font-semibold">{value}</span>
+                <Amount value={value} uncertain={uncertain} />
                 {label && <span className="text-[10px] text-fg-muted">{label}</span>}
               </span>
             )
           case 'icon':
             return (
               <span key={key} className={CHIP} title={label}>
-                <span className="font-semibold">{value}</span>
+                <Amount value={value} uncertain={uncertain} />
                 {Icon ? (
                   <Icon className="size-3.5 text-fg-muted" aria-hidden="true" />
                 ) : (
@@ -181,7 +197,7 @@ export function PriceChips({ price, variant, locale }: { price: string; variant:
           case 'primary':
             return (
               <span key={key} className={`${CHIP} ${index === 0 ? 'border-brand bg-brand text-brand-fg' : ''}`}>
-                <span className="font-semibold">{value}</span>
+                <Amount value={value} uncertain={uncertain} />
                 {label && <span className={index === 0 ? 'opacity-80' : 'text-fg-muted'}>{label}</span>}
               </span>
             )
