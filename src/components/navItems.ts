@@ -5,7 +5,7 @@ export type NavItem = {
   to: string
   label: (t: Messages) => string
   icon: Icon
-  /** Só na barra inferior (até 1279px): a partir de `xl` o mapa já está na agenda. */
+  /** Só no celular (até 767px): a partir de `md` (tablet) o mapa já está na agenda. */
   mobileOnly?: boolean
 }
 

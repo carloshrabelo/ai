@@ -16,7 +16,7 @@ import { LocationControl } from '../features/location/LocationControl'
 import { Card } from '../components/ui/Card'
 import { useGenreFilter } from '../features/genres/useGenreFilter'
 import { MapPanel } from '../features/map/MapPanel'
-import { useMediaQuery, XL_QUERY } from '../hooks/useMediaQuery'
+import { MD_QUERY, useMediaQuery, XL_QUERY } from '../hooks/useMediaQuery'
 import { SidebarPortal } from '../layouts/SidebarSlot'
 import { DanceHead } from '../seo/DanceHead'
 import { useI18n } from '../i18n/useI18n'
@@ -60,6 +60,7 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
     [open],
   )
   const isXl = useMediaQuery(XL_QUERY)
+  const isMd = useMediaQuery(MD_QUERY)
   const { t } = useI18n()
   const [filtersOpen, setFiltersOpen] = useState(false)
   const closeFilters = useCallback(() => setFiltersOpen(false), [])
@@ -125,27 +126,29 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
         <EventFeed startDate={startDate} genres={genres} onOpenEvent={openFromList} />
       </div>
 
-      {/* A partir de `xl`: coluna do mapa, que divide o espaço com os detalhes quando um evento está aberto. */}
+      {/* A partir de `md` (tablet): coluna do mapa. A partir de `xl`, ela divide o espaço com os detalhes
+          quando um evento está aberto; no tablet, os detalhes abrem no drawer e o mapa fica sozinho (a
+          altura desconta a barra inferior, 4rem, que só some no `xl`). */}
       <aside
         aria-label={t.nav.mapColumn}
-        className="sticky top-20 hidden h-[calc(100dvh-7rem)] w-90 shrink-0 flex-col gap-4 xl:flex 2xl:w-120"
+        className="sticky top-20 hidden h-[calc(100dvh-11rem-env(safe-area-inset-bottom))] w-72 shrink-0 flex-col gap-4 md:flex lg:w-80 xl:h-[calc(100dvh-7rem)] xl:w-90 2xl:w-120"
       >
-        {isXl && (
+        {isMd && (
           <>
             {/* Sem evento aberto, o mapa ocupa a coluna. Com evento aberto, a coluna se divide por
                 flex-grow (base 0), na ordem visual também no HTML (leitura e Tab seguem a tela):
                 - aberto pela lista: detalhes em cima (2/3) e mapa embaixo (1/3);
                 - aberto pelo mapa ou por link: mapa em cima (2/5) e detalhes embaixo (3/5). */}
-            {selectedSlug && fromList && <EventDetailsPanel key="details" {...detailsProps} className="grow-2 basis-0" />}
+            {isXl && selectedSlug && fromList && <EventDetailsPanel key="details" {...detailsProps} className="grow-2 basis-0" />}
             <MapPanel
               key="map"
               startDate={startDate}
               day={activeDay}
               genres={genres}
               onOpenEvent={openFromMap}
-              className={!selectedSlug ? 'flex-1' : fromList ? 'grow basis-0' : 'grow-2 basis-0'}
+              className={!isXl || !selectedSlug ? 'flex-1' : fromList ? 'grow basis-0' : 'grow-2 basis-0'}
             />
-            {selectedSlug && !fromList && <EventDetailsPanel key="details" {...detailsProps} className="grow-3 basis-0" />}
+            {isXl && selectedSlug && !fromList && <EventDetailsPanel key="details" {...detailsProps} className="grow-3 basis-0" />}
           </>
         )}
       </aside>
