@@ -101,9 +101,10 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
       {/* Conteúdo: largura toda do card (o calendário não ocupa mais uma coluna). */}
       <div className="space-y-1.5">
         {event.venue && (
-          <p className="flex items-center gap-2 text-[15px] text-fg-muted sm:text-sm">
-            <MapPinIcon className="size-5 shrink-0" aria-hidden="true" />
-            <span className="truncate">{event.venue.name}</span>
+          // Nome do local quebra em mais linhas quando é longo (sem reticências); o ícone fica na primeira.
+          <p className="flex items-start gap-2 text-[15px] text-fg-muted sm:text-sm">
+            <MapPinIcon className="mt-px size-5 shrink-0" aria-hidden="true" />
+            <span className="min-w-0 break-words">{event.venue.name}</span>
           </p>
         )}
         {/* Horário e preço na mesma linha, o preço à direita; preço longo quebra para a linha de baixo
