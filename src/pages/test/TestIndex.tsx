@@ -14,7 +14,7 @@ const SECTIONS: Section[] = [
     description: 'Opções de interface para escolher antes de mudar o app.',
     tools: [
       {
-        to: '/teste/icones',
+        to: '/test/icons',
         title: 'Ícones e nomes',
         description: 'Sugestões de ícone para Dança e para o filtro, e de nome e ícone para Mapa e Sobre, com prévia.',
         icon: Shapes,
@@ -26,19 +26,19 @@ const SECTIONS: Section[] = [
     description: 'Textos que vêm do calendário e são traduzidos no app (src/i18n/).',
     tools: [
       {
-        to: '/teste/precos',
+        to: '/test/prices',
         title: 'Preços',
         description: 'Preços distintos dos eventos, com a versão em pt-BR e en-US e o que ficou sem tradução.',
         icon: Tag,
       },
       {
-        to: '/teste/formato-precos',
+        to: '/test/price-formats',
         title: 'Formato de preços',
         description: 'Jeitos de exibir preços com mais de um valor ("5€ ou 10€"), lado a lado e num card de evento.',
         icon: Ticket,
       },
       {
-        to: '/teste/sem-preco',
+        to: '/test/no-price',
         title: 'Eventos sem preço',
         description: 'Eventos sem preço no título, com o trecho da descrição que cita valor, quando houver.',
         icon: TicketX,
@@ -50,7 +50,7 @@ const SECTIONS: Section[] = [
     description: 'Quem organiza cada evento, lido da descrição (src/domain/promoters.ts).',
     tools: [
       {
-        to: '/teste/promotores',
+        to: '/test/promoters',
         title: 'Responsáveis pelos eventos',
         description: 'Perfis do Instagram e "Organização: …" citados nos eventos, por promotor ou por evento.',
         icon: Megaphone,
@@ -62,13 +62,13 @@ const SECTIONS: Section[] = [
     description: 'src/content/promoters.json, atualizado todo dia pela Action "Update promoters" (pnpm promoters:update).',
     tools: [
       {
-        to: '/teste/diretorio-promotores',
+        to: '/test/promoter-directory',
         title: 'Promotores: redes, locais e estilos',
         description: 'Um registro por perfil, com as redes sociais, os locais e os estilos dos eventos e o último evento.',
         icon: BookUser,
       },
       {
-        to: '/teste/envolvidos',
+        to: '/test/people',
         title: 'Envolvidos por grupo',
         description: 'Promotores, professores, DJs, locais e outros, com foto (ou iniciais) e o @ de cada um.',
         icon: UsersRound,
@@ -84,7 +84,7 @@ const SECTIONS: Section[] = [
 ]
 
 /**
- * Área de teste (/teste, pública mas sem link no app): índice das ferramentas internas, usadas para
+ * Área de teste (/test, pública mas sem link no app): índice das ferramentas internas, usadas para
  * revisar dados e configurações. Sem i18n: não é para o público.
  */
 export default function TestIndex() {

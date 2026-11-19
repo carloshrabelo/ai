@@ -21,7 +21,7 @@ export type Venue = {
 
 export type DanceEvent = {
   id: string
-  /** Parte da URL do evento: /evento/<slug>/ (ver domain/slug.ts). */
+  /** Parte da URL do evento: /event/<slug>/ (ver domain/slug.ts). */
   slug: string
   /** Marcado no título do calendário como cancelado ou adiado. */
   status?: EventStatus

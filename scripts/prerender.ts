@@ -1,8 +1,9 @@
 // Gera as páginas estáticas depois do `vite build` (SEO sem servidor: GitHub Pages):
-//   dist/evento/<slug>/index.html  — uma por evento (de 1 semana atrás a 90 dias à frente)
+//   dist/event/<slug>/index.html  — uma por evento (de 1 semana atrás a 90 dias à frente)
 //   dist/index.html                — agenda com a lista dos próximos eventos
 //   dist/404.html                  — fallback de SPA (cópia do index.html original)
 //   dist/sitemap.xml               — rotas fixas + eventos futuros
+//   dist/evento/<slug>/, mapa/…    — redirecionam das rotas antigas (em português) para as novas
 // Os dados vêm da mesma fonte do app (mock ou API, conforme VITE_USE_MOCK). Se a API falhar, o
 // build segue só com as páginas fixas.
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
@@ -11,6 +12,8 @@ import { root, startApp } from './lib/app.ts'
 import type { DatesModule, IsoDate, ScriptEvent } from './lib/types.ts'
 
 type PrerenderModule = {
+  legacyEventPagePath: (event: ScriptEvent) => string
+  renderRedirectPage: (url: string) => string
   loadEvents: (from: IsoDate, to: IsoDate) => Promise<ScriptEvent[]>
   renderEventPage: (template: string, event: ScriptEvent, siteUrl: string) => string
   renderHomePage: (template: string, events: ScriptEvent[], siteUrl: string) => string
@@ -19,14 +22,17 @@ type PrerenderModule = {
 
 const outDir = join(root, 'dist')
 const siteUrl = process.env.SITE_URL ?? (process.env.GITHUB_PAGES ? 'https://carloshrabelo.github.io/ai/' : 'http://localhost:4173/')
-const PUBLIC_ROUTES = ['', 'mapa/', 'comunidade/', 'info/']
+const PUBLIC_ROUTES = ['', 'map/', 'community/', 'about/']
+// Rotas antigas, em português → novas: páginas que só redirecionam (links já compartilhados).
+const LEGACY_ROUTES: Record<string, string> = { 'mapa/': 'map/', 'comunidade/': 'community/', 'info/': 'about/', 'escolas/': 'schools/' }
 const DAYS_BEFORE = 7
 const DAYS_AFTER = 90
 
 // A chave da API é restrita por referer (o site): a mesma origem do app.
 const app = await startApp({ name: 'prerender', referer: siteUrl })
 try {
-  const { loadEvents, renderEventPage, renderHomePage, renderSitemap } = await app.load<PrerenderModule>('/src/seo/prerender.ts')
+  const { legacyEventPagePath, loadEvents, renderEventPage, renderHomePage, renderRedirectPage, renderSitemap } =
+    await app.load<PrerenderModule>('/src/seo/prerender.ts')
   const { addDays, todayIso } = await app.load<DatesModule>('/src/lib/dates.ts')
 
   const template = readFileSync(join(outDir, 'index.html'), 'utf8')
@@ -40,11 +46,15 @@ try {
     console.warn(`prerender: eventos indisponíveis (${error instanceof Error ? error.message : String(error)}); só páginas fixas.`)
   }
 
-  for (const event of events) {
-    const dir = join(outDir, 'evento', event.slug)
-    mkdirSync(dir, { recursive: true })
-    writeFileSync(join(dir, 'index.html'), renderEventPage(template, event, siteUrl))
+  const writePage = (path: string, html: string) => {
+    mkdirSync(join(outDir, path), { recursive: true })
+    writeFileSync(join(outDir, path, 'index.html'), html)
   }
+  for (const event of events) {
+    writePage(`event/${event.slug}`, renderEventPage(template, event, siteUrl))
+    writePage(legacyEventPagePath(event), renderRedirectPage(`${siteUrl}event/${event.slug}/`))
+  }
+  for (const [from, to] of Object.entries(LEGACY_ROUTES)) writePage(from, renderRedirectPage(`${siteUrl}${to}`))
 
   const upcoming = events.filter((event) => event.end.getTime() > Date.now())
   writeFileSync(join(outDir, 'index.html'), renderHomePage(template, upcoming, siteUrl))

@@ -1,4 +1,4 @@
-// Formatos comparados em /teste/formato-precos (ver PriceFormat.tsx).
+// Formatos comparados em /test/price-formats (ver PriceFormat.tsx).
 
 export const PRICE_FORMATS = [
   { id: 'text', label: 'Texto (atual)', hint: 'Como está hoje: "5€ ou 10€".' },

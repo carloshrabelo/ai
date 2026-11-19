@@ -5,7 +5,7 @@ interface ImportMetaEnv {
   readonly VITE_GOOGLE_API_KEY?: string
   /** Só no mock: atraso artificial da resposta, em ms. */
   readonly VITE_MOCK_DELAY_MS?: string
-  /** "true" liga as páginas de teste (/teste/precos). Só para uso local: não configure no deploy. */
+  /** "true" liga as páginas de teste (/test/prices). Só para uso local: não configure no deploy. */
   readonly VITE_TEST_PAGES?: 'true' | 'false'
 }
 

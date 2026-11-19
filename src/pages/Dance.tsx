@@ -37,7 +37,7 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
   const { selectedSlug: selectedInUrl, open, close } = useSelectedEvent()
   useLegacyEventRedirect(startDate)
 
-  // A URL (/evento/<slug>/) guarda a seleção; o eventFocusStore é a fonte única que lista, mapa e
+  // A URL (/event/<slug>/) guarda a seleção; o eventFocusStore é a fonte única que lista, mapa e
   // detalhes leem. useLayoutEffect: sincroniza antes da pintura, sem um frame desatualizado.
   useLayoutEffect(() => eventFocus.syncSelectedFromUrl(selectedInUrl), [selectedInUrl])
   useLayoutEffect(() => () => eventFocus.reset(), []) // saindo da página

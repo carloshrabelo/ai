@@ -1,5 +1,5 @@
 // Preço lido da descrição, quando o título não traz preço (`Tag • Nome` sem o terceiro trecho).
-// Tabela de valores numa linha ("12€ | 10€"), valor com bebida ("10€ com bebida") ou entrada gratuita. Para revisar: /teste/sem-preco.
+// Tabela de valores numa linha ("12€ | 10€"), valor com bebida ("10€ com bebida") ou entrada gratuita. Para revisar: /test/no-price.
 
 /** Preço exibido para entrada gratuita (o tradutor de src/domain/price/translatePrice.ts faz o en-US: "Free"). */
 const FREE_PRICE = 'Gratuito'

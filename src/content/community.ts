@@ -1,6 +1,6 @@
 import { CALENDARS } from '../domain/calendarSources'
 
-// Conteúdo da página Comunidade (/comunidade), espelho de https://pasdedeux.pt/outros.html:
+// Conteúdo da página Comunidade (/community), espelho de https://pasdedeux.pt/outros.html:
 // outros calendários, grupos de WhatsApp, perfis do Instagram e os calendários do Pas de Deux para
 // assinar no app de agenda ou abrir no Google Agenda. Nomes são nomes próprios (sem tradução).
 

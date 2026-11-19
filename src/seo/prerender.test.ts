@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import type { DanceEvent } from '../domain/event'
 import { slugFromPath } from '../features/events/useSelectedEvent'
-import { renderEventPage, renderHomePage, renderSitemap } from './prerender'
+import { renderEventPage, renderHomePage, renderRedirectPage, renderSitemap } from './prerender'
 
 const site = 'https://example.com/ai/'
 const template = `<html><head>
@@ -28,17 +28,26 @@ const event: DanceEvent = {
 }
 
 describe('slugFromPath', () => {
-  it('lê o slug de /evento/<slug>/ (com ou sem barra final)', () => {
-    expect(slugFromPath('/evento/2026-11-17-samba-x1y2z/')).toBe('2026-11-17-samba-x1y2z')
-    expect(slugFromPath('/evento/2026-11-17-samba-x1y2z')).toBe('2026-11-17-samba-x1y2z')
+  it('lê o slug de /event/<slug>/ (com ou sem barra final)', () => {
+    expect(slugFromPath('/event/2026-11-17-samba-x1y2z/')).toBe('2026-11-17-samba-x1y2z')
+    expect(slugFromPath('/event/2026-11-17-samba-x1y2z')).toBe('2026-11-17-samba-x1y2z')
     expect(slugFromPath('/')).toBeNull()
-    expect(slugFromPath('/evento/')).toBeNull()
+    expect(slugFromPath('/event/')).toBeNull()
+  })
+})
+
+describe('renderRedirectPage', () => {
+  it('redireciona da rota antiga para a nova, mantendo a busca', () => {
+    const html = renderRedirectPage(`${site}event/abc/`)
+    expect(html).toContain(`<link rel="canonical" href="${site}event/abc/">`)
+    expect(html).toContain(`<meta http-equiv="refresh" content="0; url=${site}event/abc/">`)
+    expect(html).toContain(`location.replace("${site}event/abc/" + location.search + location.hash)`)
   })
 })
 
 describe('renderEventPage', () => {
   const html = renderEventPage(template, event, site)
-  const url = `${site}evento/${event.slug}/`
+  const url = `${site}event/${event.slug}/`
 
   it('head próprio: título, canonical, og:url e JSON-LD', () => {
     expect(html).toContain('<title>Samba &lt;no&gt; Mercado · Terça-feira, 17/11 — Lisbon Social Dance</title>')
@@ -57,12 +66,12 @@ describe('renderEventPage', () => {
 
 describe('renderHomePage / renderSitemap', () => {
   it('agenda com links para as páginas dos eventos', () => {
-    expect(renderHomePage(template, [event], site)).toContain(`<a href="${site}evento/${event.slug}/">`)
+    expect(renderHomePage(template, [event], site)).toContain(`<a href="${site}event/${event.slug}/">`)
   })
 
   it('sitemap com rotas fixas e eventos', () => {
-    const xml = renderSitemap(site, ['', 'info/'], [event], '2026-11-17')
-    expect(xml).toContain(`<loc>${site}info/</loc>`)
-    expect(xml).toContain(`<loc>${site}evento/${event.slug}/</loc>`)
+    const xml = renderSitemap(site, ['', 'about/'], [event], '2026-11-17')
+    expect(xml).toContain(`<loc>${site}about/</loc>`)
+    expect(xml).toContain(`<loc>${site}event/${event.slug}/</loc>`)
   })
 })

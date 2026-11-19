@@ -26,7 +26,7 @@ const EventsMap = lazy(() => import('../features/map/EventsMap'))
 const DAY_PARAM = 'day'
 
 /**
- * Rota /mapa (celular): faixa de dias em cima, mapa no meio e os eventos do dia num
+ * Rota /map (celular): faixa de dias em cima, mapa no meio e os eventos do dia num
  * carrossel embaixo. O card visível no carrossel fica em foco no mapa; tocar num pino traz o
  * card dele; tocar no card abre os detalhes. A partir de `md` (tablet) o mapa já está na agenda.
  */
@@ -47,9 +47,9 @@ function DayMap({ startDate }: { startDate: IsoDate }) {
   const filtersId = useId()
   const carouselTitleId = useId()
 
-  useDocumentHead({ title: t.seo.mapTitle, description: t.seo.mapDescription, canonical: `${siteUrl()}mapa/` })
+  useDocumentHead({ title: t.seo.mapTitle, description: t.seo.mapDescription, canonical: `${siteUrl()}map/` })
   // Saindo da página, limpa só o hover. A seleção não é desta página: um reset aqui roda depois de a
-  // agenda ler o evento da URL (/evento/<slug>/) e fecharia os detalhes recém-abertos.
+  // agenda ler o evento da URL (/event/<slug>/) e fecharia os detalhes recém-abertos.
   useEffect(
     () => () => {
       eventFocus.unhover('list')

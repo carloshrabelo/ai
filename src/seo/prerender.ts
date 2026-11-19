@@ -19,7 +19,32 @@ const HOME_LIST_SIZE = 40
 
 export { loadEvents } from '../api/loadEvents'
 
-export const eventPagePath = (event: DanceEvent) => `evento/${event.slug}/`
+export const eventPagePath = (event: DanceEvent) => `event/${event.slug}/`
+
+/** Caminho antigo, em português, da página de um evento (ainda nas agendas e links já compartilhados). */
+export const legacyEventPagePath = (event: DanceEvent) => `evento/${event.slug}/`
+
+/**
+ * Página estática que só redireciona (rotas antigas, em português). O JavaScript mantém a busca e o
+ * hash da URL; o meta refresh cobre quem não executa JavaScript, e o canonical aponta o buscador
+ * para a página nova.
+ */
+export function renderRedirectPage(url: string): string {
+  const href = escapeHtml(url)
+  return `<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Lisbon Social Dance</title>
+<link rel="canonical" href="${href}">
+<meta name="robots" content="noindex">
+<meta http-equiv="refresh" content="0; url=${href}">
+<script>location.replace(${JSON.stringify(url).replaceAll('<', '\\u003c')} + location.search + location.hash)</script>
+</head>
+<body><p><a href="${href}">${href}</a></p></body>
+</html>
+`
+}
 
 /** Página de um evento: <head> próprio (título, descrição, canonical, Open Graph, JSON-LD) e conteúdo. */
 export function renderEventPage(template: string, event: DanceEvent, siteUrl: string): string {

@@ -4,7 +4,7 @@ import { useSyncExternalStore } from 'react'
 export type HoverSource = 'list' | 'map'
 
 export type EventFocusState = {
-  /** Slug do evento aberto nos detalhes (espelho de /evento/<slug>/ na URL). */
+  /** Slug do evento aberto nos detalhes (espelho de /event/<slug>/ na URL). */
   selectedSlug: string | null
   /** Onde o evento foi aberto: lista, mapa, ou null (link direto, "voltar" do navegador). */
   selectedFrom: HoverSource | null
@@ -56,7 +56,7 @@ export const eventFocus = {
     else pendingSource = source
   },
 
-  /** Chamado quando o evento aberto muda na URL (/evento/<slug>/). */
+  /** Chamado quando o evento aberto muda na URL (/event/<slug>/). */
   syncSelectedFromUrl(selectedSlug: string | null) {
     const selectedFrom = selectedSlug ? pendingSource : null
     pendingSource = null

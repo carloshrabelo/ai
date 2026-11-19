@@ -8,7 +8,7 @@
 export const pt = {
   nav: {
     main: 'Navegação principal',
-    dance: 'Dança',
+    agenda: 'Agenda',
     map: 'Explorar',
     community: 'Comunidade',
     schools: 'Escolas',

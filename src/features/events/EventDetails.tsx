@@ -150,7 +150,7 @@ function Row({ icon, label, children }: { icon: ReactNode; label: string; childr
   )
 }
 
-/** Enquanto os eventos carregam (ex.: link direto para /evento/<slug>/). */
+/** Enquanto os eventos carregam (ex.: link direto para /event/<slug>/). */
 export function EventDetailsSkeleton() {
   const { t } = useI18n()
   return (

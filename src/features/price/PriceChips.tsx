@@ -7,7 +7,7 @@ import { MESSAGES } from '../../i18n/messages'
 import { useI18n } from '../../i18n/useI18n'
 
 // Preço em chips, cada valor com o seu rótulo ("5€ sócios", "3€ alunos LeT"), em variações para
-// comparar em /teste/formato-precos.
+// comparar em /test/price-formats.
 
 /** Texto do rótulo no idioma (textos em src/i18n/messages, seção `price`). */
 function labelText(label: PriceLabel, arg: string | undefined, locale: Locale): string {
@@ -86,7 +86,7 @@ function groupDetails(items: Item[]): Item[][] {
 
 /**
  * Variações de chips. O app usa `auto` (rótulo no chip; valor com detalhe unido a ele); as outras
- * ficam para comparar em /teste/formato-precos.
+ * ficam para comparar em /test/price-formats.
  */
 export type PriceChipVariant = 'auto' | 'plain' | 'inline' | 'stacked' | 'icon' | 'primary' | 'segmented'
 

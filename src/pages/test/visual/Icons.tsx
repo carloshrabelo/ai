@@ -18,7 +18,7 @@ const WEIGHTS: { value: IconWeight; label: string }[] = [
 ]
 
 /**
- * Página de teste (/teste/icones, pública mas sem link no app): opções do Phosphor para cada ícone
+ * Página de teste (/test/icons, pública mas sem link no app): opções do Phosphor para cada ícone
  * do app (menu, agenda e mapa, card e detalhes) e, à direita, uma amostra das telas com os ícones
  * escolhidos, fixa na tela para comparar enquanto escolhe.
  */

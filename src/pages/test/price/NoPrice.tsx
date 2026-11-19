@@ -24,7 +24,7 @@ function descriptionText(html: string | undefined): string {
 }
 
 /**
- * Página de teste (/teste/sem-preco, pública mas sem link no app): eventos do período sem preço no
+ * Página de teste (/test/no-price, pública mas sem link no app): eventos do período sem preço no
  * título, com o título como está no calendário e, quando houver, o trecho da descrição que cita
  * valor. Ajuda a decidir o que corrigir no calendário ou no parser (src/domain/parseSummary.ts).
  */

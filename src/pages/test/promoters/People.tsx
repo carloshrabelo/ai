@@ -40,7 +40,7 @@ function initials(handle: string, name?: string): string {
 }
 
 /**
- * Página de teste (/teste/envolvidos, pública mas sem link no app): todo mundo de
+ * Página de teste (/test/people, pública mas sem link no app): todo mundo de
  * src/content/promoters.json separado por papel (promotores, professores, DJs, locais, outros), com a
  * foto (campo `photo`, à mão) ou as iniciais, e o @ com link para o Instagram.
  */

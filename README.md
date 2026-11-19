@@ -30,8 +30,8 @@
 
 - **Feed por dia** a partir de hoje, carregado em janelas de 2 semanas com scroll infinito; atalhos Ontem / Hoje / Amanhã, faixa de dias e seletor de data. O dia ativo acompanha a rolagem.
 - **Filtros por estilo** (na barra lateral no desktop; numa folha que sobe de baixo no celular e tablet), acumulativos e guardados na URL (`?genres=salsa,forro`). Conjuntos 🇩🇴 **Latinas** (Salsa, Salsa Cubana, Bachata, Merengue), 🇦🇴 **Afro** (Kizomba, Semba, Urban Kiz) e 🇧🇷 **BR** (Forró, Zouk, Samba), mais Swing, West Coast Swing, Tango, Bolero e Outros.
-- **Mapa** com os eventos do dia: a partir de 1280px, numa coluna ao lado da lista (hover no card destaca o pino e vice-versa); no celular e tablet, na página **Mapa** (`/mapa`), com a faixa de dias em cima e os eventos num carrossel embaixo. O card visível fica em foco no mapa, tocar num pino traz o card dele e tocar no card abre os detalhes.
-- **Detalhes do evento**: na coluna do mapa no desktop, numa página em drawer no celular. Link compartilhável (`/evento/<data>-<nome>-<hash>/`, com página estática), rota no app de navegação do aparelho e "Adicionar ao calendário".
+- **Mapa** com os eventos do dia: a partir de 1280px, numa coluna ao lado da lista (hover no card destaca o pino e vice-versa); no celular e tablet, na página **Mapa** (`/map`), com a faixa de dias em cima e os eventos num carrossel embaixo. O card visível fica em foco no mapa, tocar num pino traz o card dele e tocar no card abre os detalhes.
+- **Detalhes do evento**: na coluna do mapa no desktop, numa página em drawer no celular. Link compartilhável (`/event/<data>-<nome>-<hash>/`, com página estática), rota no app de navegação do aparelho e "Adicionar ao calendário".
 - **Distância** até cada evento, quando o usuário libera a localização.
 - **Eventos cancelados e adiados** marcados a partir do título do calendário.
 - **Tema claro e escuro** (segue o sistema ou escolha manual).
@@ -68,7 +68,7 @@ pnpm dev
 | `VITE_USE_MOCK` | `true` (padrão) usa `src/mocks/events.json`, com as datas deslocadas para perto de hoje; `false` usa a Google Calendar API. |
 | `VITE_GOOGLE_API_KEY` | Chave da Google Calendar API (obrigatória com `VITE_USE_MOCK=false`). Restrinja por *HTTP referrer* no Google Cloud: ela fica visível no JavaScript publicado. |
 | `VITE_MOCK_DELAY_MS` | Atraso artificial do mock, para ver os skeletons. |
-| `VITE_TEST_PAGES` | `true` mostra o link "Teste" no menu (só local, não configure no deploy). A área `/teste`, com as ferramentas internas (como `/teste/precos`, que lista os preços distintos dos eventos e a tradução de cada um), existe também no site publicado para quem tem o link, sem link no app e com noindex. |
+| `VITE_TEST_PAGES` | `true` mostra o link "Teste" no menu (só local, não configure no deploy). A área `/test`, com as ferramentas internas (como `/test/prices`, que lista os preços distintos dos eventos e a tradução de cada um), existe também no site publicado para quem tem o link, sem link no app e com noindex. |
 
 ### Scripts
 
@@ -101,7 +101,7 @@ src/
     tracking/  eventos adicionados ao calendário e aviso de mudanças
   seo/         <head> por página, JSON-LD, páginas estáticas (prerender)
   components/  layout (header, sidebar, bottom nav) e componentes base (Chip, Card, Button…)
-  pages/       Dança (/ e /evento/<slug>/), Mapa (/mapa, celular e tablet), Info (/info), Escolas (/escolas, oculta)
+  pages/       Dança (/ e /event/<slug>/), Mapa (/map, celular e tablet), Info (/about), Escolas (/schools, oculta)
 scripts/       prerender.mjs, venues-check.mjs, a11y-check.mjs
 docs/          prints, logo e protótipos de referência
 ```

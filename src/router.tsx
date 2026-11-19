@@ -3,6 +3,7 @@ import type { RouteHandle } from './app'
 import { eventsLoader } from './api/eventsLoader'
 import AppLayout from './layouts/AppLayout'
 import ErrorPage from './pages/ErrorPage'
+import { LegacyRedirect } from './components/LegacyRedirect'
 
 export const router = createBrowserRouter(
   [
@@ -12,33 +13,36 @@ export const router = createBrowserRouter(
       ErrorBoundary: ErrorPage,
       children: [
         {
-          // Agenda e evento aberto (/evento/<slug>/) são a mesma página: a rota pai sem caminho
+          // Agenda e evento aberto (/event/<slug>/) são a mesma página: a rota pai sem caminho
           // mantém a Dance montada ao abrir/fechar detalhes.
           id: 'dance',
           loader: eventsLoader,
           lazy: { Component: async () => (await import('./pages/Dance')).default },
-          children: [{ index: true }, { path: 'evento/:slug' }],
+          children: [
+            { index: true, handle: { title: (t) => t.nav.agenda } satisfies RouteHandle },
+            { path: 'event/:slug', handle: { title: (t) => t.nav.agenda } satisfies RouteHandle },
+          ],
         },
         {
           // Celular e tablet: mapa do dia com os eventos num carrossel.
-          path: 'mapa',
+          path: 'map',
           loader: eventsLoader,
           handle: { title: (t) => t.nav.map } satisfies RouteHandle,
           lazy: { Component: async () => (await import('./pages/MapPage')).default },
         },
         {
-          path: 'escolas',
+          path: 'schools',
           handle: { title: (t) => t.nav.schools } satisfies RouteHandle,
           lazy: { Component: async () => (await import('./pages/Schools')).default },
         },
         {
           // Outros calendários, grupos do WhatsApp e Instagram (espelho de pasdedeux.pt/outros.html).
-          path: 'comunidade',
+          path: 'community',
           handle: { title: (t) => t.nav.community } satisfies RouteHandle,
           lazy: { Component: async () => (await import('./pages/Community')).default },
         },
         {
-          path: 'info',
+          path: 'about',
           handle: { title: (t) => t.nav.info } satisfies RouteHandle,
           lazy: { Component: async () => (await import('./pages/Info')).default },
         },
@@ -49,10 +53,10 @@ export const router = createBrowserRouter(
           handle: { title: () => 'Revisão' } satisfies RouteHandle,
           lazy: { Component: async () => (await import('./pages/Review')).default },
         },
-        // Área de teste (/teste e ferramentas): pública para quem tem o link, mas sem link no app (o
+        // Área de teste (/test e ferramentas): pública para quem tem o link, mas sem link no app (o
         // item "Teste" do menu só aparece com VITE_TEST_PAGES=true) e com noindex.
         {
-          path: 'teste',
+          path: 'test',
           children: [
             {
               index: true,
@@ -60,42 +64,49 @@ export const router = createBrowserRouter(
               lazy: { Component: async () => (await import('./pages/test/TestIndex')).default },
             },
             {
-              path: 'precos',
+              path: 'prices',
               handle: { title: () => 'Preços (teste)' } satisfies RouteHandle,
               lazy: { Component: async () => (await import('./pages/test/price/Prices')).default },
             },
             {
-              path: 'formato-precos',
+              path: 'price-formats',
               handle: { title: () => 'Formato de preços (teste)' } satisfies RouteHandle,
               lazy: { Component: async () => (await import('./pages/test/price/PriceFormats')).default },
             },
             {
-              path: 'sem-preco',
+              path: 'no-price',
               handle: { title: () => 'Sem preço (teste)' } satisfies RouteHandle,
               lazy: { Component: async () => (await import('./pages/test/price/NoPrice')).default },
             },
             {
-              path: 'promotores',
+              path: 'promoters',
               handle: { title: () => 'Promotores (teste)' } satisfies RouteHandle,
               lazy: { Component: async () => (await import('./pages/test/promoters/Promoters')).default },
             },
             {
-              path: 'icones',
+              path: 'icons',
               handle: { title: () => 'Ícones (teste)' } satisfies RouteHandle,
               lazy: { Component: async () => (await import('./pages/test/visual/Icons')).default },
             },
             {
-              path: 'envolvidos',
+              path: 'people',
               handle: { title: () => 'Envolvidos (teste)' } satisfies RouteHandle,
               lazy: { Component: async () => (await import('./pages/test/promoters/People')).default },
             },
             {
-              path: 'diretorio-promotores',
+              path: 'promoter-directory',
               handle: { title: () => 'Diretório de promotores (teste)' } satisfies RouteHandle,
               lazy: { Component: async () => (await import('./pages/test/promoters/PromoterDirectory')).default },
             },
           ],
         },
+        // Rotas antigas, em português: redirecionam para as novas (ver LegacyRedirect).
+        { path: 'evento/:slug', element: <LegacyRedirect to="/event/:slug/" /> },
+        { path: 'mapa', element: <LegacyRedirect to="/map" /> },
+        { path: 'comunidade', element: <LegacyRedirect to="/community" /> },
+        { path: 'info', element: <LegacyRedirect to="/about" /> },
+        { path: 'escolas', element: <LegacyRedirect to="/schools" /> },
+        { path: 'teste/*', element: <LegacyRedirect to="/test" /> },
         {
           path: '*',
           handle: { title: (t) => t.routes.notFound } satisfies RouteHandle,

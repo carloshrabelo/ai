@@ -18,12 +18,12 @@ const LINK_ROW =
   'flex min-h-11 items-center gap-3 rounded-lg px-3 py-2 hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand'
 
 /**
- * Rota "/comunidade": o que está em https://pasdedeux.pt/outros.html (outros calendários, grupos do
+ * Rota "/community": o que está em https://pasdedeux.pt/outros.html (outros calendários, grupos do
  * WhatsApp, Instagram e os calendários do Pas de Deux para assinar ou abrir no Google Agenda).
  */
 export default function Community() {
   const { t } = useI18n()
-  useDocumentHead({ title: t.seo.communityTitle, description: t.seo.communityDescription, canonical: `${siteUrl()}comunidade/` })
+  useDocumentHead({ title: t.seo.communityTitle, description: t.seo.communityDescription, canonical: `${siteUrl()}community/` })
 
   return (
     <section className="mx-auto max-w-2xl space-y-4">

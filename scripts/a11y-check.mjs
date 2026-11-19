@@ -62,8 +62,8 @@ const scenarios = [
     before: "document.querySelector('button[aria-controls][aria-expanded]').click()",
   },
   { name: 'celular · detalhes (drawer)', url: '/', w: 390, h: 844, before: "document.querySelectorAll('article h3 button')[1].click()" },
-  { name: 'celular · mapa · claro', url: '/mapa', w: 390, h: 844 },
-  { name: 'tablet · mapa · escuro', url: '/mapa', w: 820, h: 1180, dark: true },
+  { name: 'celular · mapa · claro', url: '/map', w: 390, h: 844 },
+  { name: 'tablet · agenda · escuro', url: '/', w: 820, h: 1180, dark: true },
   { name: 'desktop · lista + mapa · claro', url: '/', w: 1440, h: 900 },
   {
     name: 'desktop · detalhes · escuro',
@@ -73,7 +73,7 @@ const scenarios = [
     dark: true,
     before: "document.querySelectorAll('article h3 button')[1].click()",
   },
-  { name: 'desktop · info', url: '/info', w: 1440, h: 900 },
+  { name: 'desktop · info', url: '/about', w: 1440, h: 900 },
 ]
 let total = 0
 for (const s of scenarios) {

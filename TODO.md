@@ -39,7 +39,7 @@ O analytics está pronto, mas fica fora do `main` até ser configurado. A branch
 - [ ] `robots.txt`: no GitHub Pages, o que vale é o da raiz do domínio (`carloshrabelo.github.io/robots.txt`). Se existir o repositório `carloshrabelo.github.io`, colocar lá a linha `Sitemap: https://carloshrabelo.github.io/ai/sitemap.xml`.
 - [ ] Testar uma página de evento no [Rich Results Test](https://search.google.com/test/rich-results) (Schema.org `Event`).
 - [ ] Testar o preview de links (agenda e evento) no WhatsApp, Instagram/Facebook ([Sharing Debugger](https://developers.facebook.com/tools/debug/)) e LinkedIn.
-- [ ] Abrir um link antigo `…/ai/?event=<id>` e conferir que ele vai para `/evento/<slug>/`.
+- [ ] Abrir um link antigo `…/ai/?event=<id>` e conferir que ele vai para `/event/<slug>/`.
 
 ## 5. Testes em aparelhos reais
 
@@ -60,7 +60,7 @@ O analytics está pronto, mas fica fora do `main` até ser configurado. A branch
 
 ## 7. Fotos dos perfis (promotores, DJs, professores) — branch `feature/promoter-photos`
 
-Preencher `photo` em `src/content/promoters.json` com a foto de perfil do Instagram, automaticamente (hoje aparece só em `/teste/envolvidos`; sem foto, iniciais). O código está na branch, fora do `main` até ser configurado:
+Preencher `photo` em `src/content/promoters.json` com a foto de perfil do Instagram, automaticamente (hoje aparece só em `/test/people`; sem foto, iniciais). O código está na branch, fora do `main` até ser configurado:
 
 - `pnpm ig:token <token curto> [perfil de teste]` (`scripts/ig-token.mjs`): troca o token curto por um de ~60 dias e grava `IG_ACCESS_TOKEN` e `IG_USER_ID` no `.env.local`.
 - `pnpm promoters:photos [máximo] [--force]` (`scripts/promoters-photos.mjs`): baixa as fotos para `public/promoters/<perfil>.jpg` e preenche `photo` (e `name`, se vazio).
@@ -88,7 +88,7 @@ Usa a **Instagram Graph API oficial (Business Discovery)**. O endpoint interno `
 **Buscar as fotos**
 
 - [ ] Testar com poucos perfis: `pnpm promoters:photos 3`; depois todos: `pnpm promoters:photos`. No fim ele lista quem não foi encontrado (conta pessoal ou @ errado) e quem não tem foto.
-- [ ] Conferir em `/teste/envolvidos`.
+- [ ] Conferir em `/test/people`.
 - [ ] Perfis que pedirem para não aparecer: `"photo": false` no `promoters.json` (o script pula).
 - [ ] Commitar `public/promoters/*.jpg` e o `promoters.json`, e fazer o merge da branch.
 
@@ -119,7 +119,7 @@ Já feito (commits `167c348` a `c587708`, no `main`):
   - [ ] Modo com tipos: `pnpm add -D oxlint-tsgolint`, rodar `oxlint --type-aware` e ligar `typescript/no-floating-promises` e `typescript/no-misused-promises` (fila do LanguageTool, `fetchNextPage`, cópias para a área de transferência). Corrigir com `await` ou `void` explícito, e trocar o `lint` no `package.json` (o CI usa esse script).
 - [ ] **Testes de ponta a ponta (Playwright)**:
   - [ ] `pnpm add -D @playwright/test @axe-core/playwright`; `playwright.config.ts` com `webServer` em modo mock (`VITE_USE_MOCK=true VITE_TEST_PAGES=false pnpm dev --port <porta>`): dados fixos, sem chave.
-  - [ ] Fluxos: lista carrega; filtro (popover no desktop, drawer no celular; conjunto marcado bloqueia os estilos; "Limpar"); abrir e fechar detalhes (URL `/evento/<slug>/`); barra inferior no celular (Dança, Explorar, Comunidade, Sobre); preço em chips (rótulo e grupo); `/review` carrega.
+  - [ ] Fluxos: lista carrega; filtro (popover no desktop, drawer no celular; conjunto marcado bloqueia os estilos; "Limpar"); abrir e fechar detalhes (URL `/event/<slug>/`); barra inferior no celular (Dança, Explorar, Comunidade, Sobre); preço em chips (rótulo e grupo); `/review` carrega.
   - [ ] Acessibilidade com `@axe-core/playwright` nas telas principais, nos dois temas, e remover `scripts/a11y-check.mjs` (último script em `.mjs`) e o `axe-core` do `ignoreDependencies` do `knip.json`.
   - [ ] No CI (`.github/workflows/deploy.yml`): `pnpm exec playwright install --with-deps chromium` e `pnpm e2e` antes do build.
 - [ ] **README, seção "Estrutura"**: ainda descreve `src/data` e os scripts `.mjs`. Atualizar para `src/api`, `src/content`, `src/lib`, `src/domain/price`, `src/features/{price,review,range}`, `src/pages/test/{price,promoters,visual}` e `scripts/*.ts` + `scripts/lib`.

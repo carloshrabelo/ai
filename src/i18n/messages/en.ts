@@ -4,7 +4,7 @@ import type { Messages } from './pt'
 export const en: Messages = {
   nav: {
     main: 'Main navigation',
-    dance: 'Dance',
+    agenda: 'Events',
     map: 'Explore',
     community: 'Community',
     schools: 'Schools',

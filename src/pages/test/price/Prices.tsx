@@ -34,7 +34,7 @@ const NO_PRICE_TERMS: { pt: string; en: string; icon?: boolean; note: string }[]
 type PriceRow = { price: string; count: number; pt: string; en: string; untranslated: boolean }
 
 /**
- * Página de teste (/teste/precos, pública mas sem link no app): todos os preços distintos dos
+ * Página de teste (/test/prices, pública mas sem link no app): todos os preços distintos dos
  * eventos do período e a tradução de cada um (src/domain/price/translatePrice.ts), para revisar e completar o
  * dicionário. Sem i18n: é ferramenta interna.
  */
@@ -164,8 +164,8 @@ function NoPriceTerms({ total, withPrice }: { total?: number; withPrice: number 
         <h2 className="text-lg font-semibold">Sem preço identificado</h2>
         <p className="text-sm text-fg-muted">
           {total === undefined ? 'Carregando…' : `${total - withPrice} eventos do período sem preço no título nem na descrição`} (lista em{' '}
-          <Link to="/teste/sem-preco" className="font-medium text-brand hover:underline">
-            /teste/sem-preco
+          <Link to="/test/no-price" className="font-medium text-brand hover:underline">
+            /test/no-price
           </Link>
           ). O app mostra o primeiro (o grupo); as outras sugestões ficam para comparar:
         </p>

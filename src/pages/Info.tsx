@@ -11,7 +11,7 @@ import { siteUrl, useDocumentHead } from '../seo/useDocumentHead'
 export default function Info() {
   const online = useOnline()
   const { t, locale } = useI18n()
-  useDocumentHead({ title: t.seo.infoTitle, description: t.seo.infoDescription, canonical: `${siteUrl()}info/` })
+  useDocumentHead({ title: t.seo.infoTitle, description: t.seo.infoDescription, canonical: `${siteUrl()}about/` })
 
   return (
     <section className="mx-auto max-w-2xl space-y-4">

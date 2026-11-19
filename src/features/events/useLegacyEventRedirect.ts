@@ -7,7 +7,7 @@ import { eventPath, LEGACY_EVENT_PARAM } from './useSelectedEvent'
 
 /**
  * Links compartilhados antes das páginas por evento (?event=<id do Google>): assim que o evento
- * carrega, troca para /evento/<slug>/ (sem novo item no histórico). Sem evento, só limpa o parâmetro.
+ * carrega, troca para /event/<slug>/ (sem novo item no histórico). Sem evento, só limpa o parâmetro.
  */
 export function useLegacyEventRedirect(startDate: IsoDate) {
   const location = useLocation()
