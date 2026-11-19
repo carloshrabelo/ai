@@ -229,12 +229,12 @@
 }
 
 /* Pulso do pino selecionado ou em hover no mapa, como o leaflet-icon-pulse
-   (github.com/mapshakers/leaflet-icon-pulse): anel com brilho, 2,4× o tamanho do pino, que nasce
+   (github.com/mapshakers/leaflet-icon-pulse): anel com brilho, 1,7× o tamanho do pino, que nasce
    pequeno, cresce e some. */
 .pin-pulse::after {
   content: '';
   position: absolute;
-  inset: -70%;
+  inset: -35%;
   border-radius: 9999px;
   /* Anel cheio e com brilho forte: sobre o mapa (cheio de detalhe), o brilho fino do original sumia. */
   border: 3px solid var(--brand);
