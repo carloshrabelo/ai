@@ -59,7 +59,7 @@ function money(value: number, locale: Locale): string {
 function describe(option: PriceOption, locale: Locale): { value: string; label?: string; icon?: LucideIcon } {
   const value =
     option.amount !== undefined
-      ? money(option.amount, locale)
+      ? `${money(option.amount, locale)}${option.uncertain ? '?' : ''}`
       : option.free
         ? WORDS[locale].free
         : translatePrice(option.text ?? '', locale)

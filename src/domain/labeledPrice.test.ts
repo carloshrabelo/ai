@@ -34,7 +34,7 @@ describe('labeledPrice', () => {
     ['10€ (consumo mínimo)', { kind: 'single', options: [{ amount: 10, label: 'minimum' }] }],
     ['15€ | 20€', { kind: 'alternatives', options: [{ amount: 15 }, { amount: 20 }] }],
     ['7,50€ ou 10€', { kind: 'alternatives', options: [{ amount: 7.5 }, { amount: 10 }] }],
-    ['Pago (5€?)', { kind: 'single', options: [{ text: 'Pago' }], note: '5€?' }],
+    ['Pago (5€?)', { kind: 'alternatives', options: [{ text: 'Pago' }, { amount: 5, uncertain: true, detail: true }] }],
   ])('%s', (raw, expected) => {
     expect(labeledPrice(raw)).toEqual(expected)
   })
