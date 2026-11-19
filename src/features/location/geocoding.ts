@@ -137,8 +137,9 @@ async function search(provider: GeoProvider, query: string, options: GeocodeOpti
     try {
       const response = await doFetch(url, { headers, signal: options.signal })
       if (!response.ok) return []
-      const data = await response.json()
-      return provider === 'nominatim' ? parseNominatim(data) : parsePhoton(data)
+      // Formato de cada provedor; o parser ignora o que não reconhece.
+      const data: unknown = await response.json()
+      return provider === 'nominatim' ? parseNominatim(data as NominatimResult[]) : parsePhoton(data as { features?: PhotonFeature[] })
     } catch (error) {
       if (options.signal?.aborted) throw error
       return [] // rede caiu ou o provedor limitou: segue para a próxima tentativa

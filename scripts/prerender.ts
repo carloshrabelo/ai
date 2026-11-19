@@ -6,11 +6,17 @@
 // Os dados vêm da mesma fonte do app (mock ou API, conforme VITE_USE_MOCK). Se a API falhar, o
 // build segue só com as páginas fixas.
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
-import { dirname, join } from 'node:path'
-import { fileURLToPath } from 'node:url'
-import { createServer } from 'vite'
+import { join } from 'node:path'
+import { root, startApp } from './lib/app.ts'
+import type { DatesModule, IsoDate, ScriptEvent } from './lib/types.ts'
 
-const root = join(dirname(fileURLToPath(import.meta.url)), '..')
+type PrerenderModule = {
+  loadEvents: (from: IsoDate, to: IsoDate) => Promise<ScriptEvent[]>
+  renderEventPage: (template: string, event: ScriptEvent, siteUrl: string) => string
+  renderHomePage: (template: string, events: ScriptEvent[], siteUrl: string) => string
+  renderSitemap: (siteUrl: string, routes: readonly string[], events: ScriptEvent[], today: IsoDate) => string
+}
+
 const outDir = join(root, 'dist')
 const siteUrl = process.env.SITE_URL ?? (process.env.GITHUB_PAGES ? 'https://carloshrabelo.github.io/ai/' : 'http://localhost:4173/')
 const PUBLIC_ROUTES = ['', 'mapa/', 'comunidade/', 'info/']
@@ -18,38 +24,20 @@ const DAYS_BEFORE = 7
 const DAYS_AFTER = 90
 
 // A chave da API é restrita por referer (o site): a mesma origem do app.
-const originalFetch = globalThis.fetch
-globalThis.fetch = (input, init = {}) => {
-  const url = String(input instanceof Request ? input.url : input)
-  if (!url.startsWith('https://www.googleapis.com/')) return originalFetch(input, init)
-  const headers = new Headers(init.headers)
-  headers.set('Referer', siteUrl)
-  return originalFetch(input, { ...init, headers })
-}
-
-const vite = await createServer({
-  root,
-  configFile: false,
-  logLevel: 'warn',
-  appType: 'custom',
-  optimizeDeps: { noDiscovery: true, include: [] },
-  server: { middlewareMode: true, hmr: false, ws: false },
-  define: { __APP_VERSION__: '"prerender"', __APP_BUILD_TIME__: '""', __PWA_IN_DEV__: 'false' },
-})
-
+const app = await startApp({ name: 'prerender', referer: siteUrl })
 try {
-  const { loadEvents, renderEventPage, renderHomePage, renderSitemap } = await vite.ssrLoadModule('/src/seo/prerender.ts')
-  const { addDays, todayIso } = await vite.ssrLoadModule('/src/lib/dates.ts')
+  const { loadEvents, renderEventPage, renderHomePage, renderSitemap } = await app.load<PrerenderModule>('/src/seo/prerender.ts')
+  const { addDays, todayIso } = await app.load<DatesModule>('/src/lib/dates.ts')
 
   const template = readFileSync(join(outDir, 'index.html'), 'utf8')
   writeFileSync(join(outDir, '404.html'), template)
 
   const today = todayIso()
-  let events = []
+  let events: ScriptEvent[] = []
   try {
     events = await loadEvents(addDays(today, -DAYS_BEFORE), addDays(today, DAYS_AFTER))
   } catch (error) {
-    console.warn(`prerender: eventos indisponíveis (${error.message}); só páginas fixas.`)
+    console.warn(`prerender: eventos indisponíveis (${error instanceof Error ? error.message : String(error)}); só páginas fixas.`)
   }
 
   for (const event of events) {
@@ -64,5 +52,5 @@ try {
 
   console.log(`prerender: ${events.length} páginas de evento, ${upcoming.length} no sitemap.`)
 } finally {
-  await vite.close()
+  await app.close()
 }

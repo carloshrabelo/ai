@@ -75,7 +75,7 @@ pnpm dev
 | Comando | O que faz |
 |---|---|
 | `pnpm dev` | Servidor de desenvolvimento (sem service worker; use `PWA_DEV=true pnpm dev` para testar o PWA). |
-| `pnpm build` | Checagem de tipos + build de produção + páginas estáticas dos eventos (`scripts/prerender.mjs`). |
+| `pnpm build` | Checagem de tipos + build de produção + páginas estáticas dos eventos (`scripts/prerender.ts`). |
 | `pnpm preview` | Serve o build localmente. |
 | `pnpm test` / `pnpm test:watch` | Testes (Vitest). |
 | `pnpm lint` | Lint (oxlint). |
@@ -129,7 +129,7 @@ Para corrigir um ponto, edite as coordenadas no `venues.json`: a busca automáti
 - Tags fixas no `index.html` (lidas por buscadores e redes sociais sem JavaScript): título, descrição, canonical, `hreflang`, Open Graph e Twitter Card com `public/og-image.jpg`.
 - `<head>` dinâmico por página (`src/seo/`): título e descrição próprios, canonical, `noindex` para 404 e eventos inexistentes, e Schema.org em JSON-LD (`ItemList` na agenda, `DanceEvent` no evento aberto).
 - No build: `sitemap.xml`, `robots.txt` e `info/index.html` (para `/ai/info` responder 200 no GitHub Pages em vez de cair no 404).
-- Páginas estáticas (SSG, `scripts/prerender.mjs` depois do `vite build`): uma por evento em `evento/<slug>/index.html` (de 1 semana atrás a 90 dias à frente), com título, descrição, canonical, Open Graph, JSON-LD e o conteúdo do evento no HTML; a agenda (`index.html`) traz a lista dos próximos eventos com links; o `sitemap.xml` inclui os eventos futuros. No navegador, o React substitui esse conteúdo pelo app. O deploy roda todo dia para as páginas acompanharem o calendário. Se a API falhar no build, saem só as páginas fixas.
+- Páginas estáticas (SSG, `scripts/prerender.ts` depois do `vite build`): uma por evento em `evento/<slug>/index.html` (de 1 semana atrás a 90 dias à frente), com título, descrição, canonical, Open Graph, JSON-LD e o conteúdo do evento no HTML; a agenda (`index.html`) traz a lista dos próximos eventos com links; o `sitemap.xml` inclui os eventos futuros. No navegador, o React substitui esse conteúdo pelo app. O deploy roda todo dia para as páginas acompanharem o calendário. Se a API falhar no build, saem só as páginas fixas.
 - Slug do evento: dia de Lisboa + título + hash curto do id do Google (`src/domain/slug.ts`), sempre o mesmo para o mesmo evento. Links antigos (`?event=<id>`) são redirecionados para o novo endereço.
 - Limitações do GitHub Pages: o `robots.txt` que vale é o da raiz do domínio; não há redirecionamento 301 (evento removido recebe `noindex` e aponta para a agenda).
 

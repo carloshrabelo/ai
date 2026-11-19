@@ -8,66 +8,51 @@
 // Uso: pnpm promoters:update [dias à frente] [dias para trás]   (padrão: 90 e 30)
 // Usa sempre a Google Calendar API (nunca o mock). Lê VITE_GOOGLE_API_KEY do ambiente ou do .env.local.
 import { readFileSync, writeFileSync } from 'node:fs'
-import { dirname, join } from 'node:path'
-import { fileURLToPath } from 'node:url'
-import { createServer } from 'vite'
+import { join } from 'node:path'
+import { root, startApp } from './lib/app.ts'
+import type { DatesModule, LoadEventsModule, ScriptEvent } from './lib/types.ts'
 
-const root = join(dirname(fileURLToPath(import.meta.url)), '..')
+type Entry = { role: string; aliases?: string[] }
+type Directory = Record<string, Entry>
+type PromoterDirectoryModule = {
+  collectPromoters: (events: ScriptEvent[], dayOf: (event: ScriptEvent) => string) => Directory
+  mergePromoters: (existing: Directory, found: Directory) => Directory
+  similarHandles: (handles: string[]) => [string, string][]
+}
+
 const FILE = join(root, 'src/content/promoters.json')
-const [daysAfter = 90, DAYS_BEFORE = 30] = process.argv
+const [daysAfter = 90, daysBefore = 30] = process.argv
   .slice(2)
   .filter((arg) => /^\d+$/.test(arg))
   .map(Number)
 
-// Dados reais: o ambiente vence o .env.local no Vite.
-process.env.VITE_USE_MOCK = 'false'
-
-// A chave da API é restrita por referer (o site publicado).
-const originalFetch = globalThis.fetch
-globalThis.fetch = (input, init = {}) => {
-  const url = String(input instanceof Request ? input.url : input)
-  if (!url.startsWith('https://www.googleapis.com/')) return originalFetch(input, init)
-  const headers = new Headers(init.headers)
-  headers.set('Referer', 'https://carloshrabelo.github.io/ai/')
-  return originalFetch(input, { ...init, headers })
-}
-
-const vite = await createServer({
-  root,
-  configFile: false,
-  logLevel: 'warn',
-  appType: 'custom',
-  optimizeDeps: { noDiscovery: true, include: [] },
-  server: { middlewareMode: true, hmr: false, ws: false },
-  define: { __APP_VERSION__: '"promoters"', __APP_BUILD_TIME__: '""', __PWA_IN_DEV__: 'false' },
-})
-
+const app = await startApp({ name: 'promoters', realData: true })
 try {
-  const { GOOGLE_API_KEY } = await vite.ssrLoadModule('/src/api/config.ts')
+  const { GOOGLE_API_KEY } = await app.load<{ GOOGLE_API_KEY: string }>('/src/api/config.ts')
   if (!GOOGLE_API_KEY) throw new Error('VITE_GOOGLE_API_KEY não encontrada (ambiente ou .env.local).')
-  const { loadEvents } = await vite.ssrLoadModule('/src/api/loadEvents.ts')
-  const { addDays, lisbonDate, todayIso } = await vite.ssrLoadModule('/src/lib/dates.ts')
-  const { collectPromoters, mergePromoters, similarHandles } = await vite.ssrLoadModule('/src/domain/promoterDirectory.ts')
+  const { loadEvents } = await app.load<LoadEventsModule>('/src/api/loadEvents.ts')
+  const { addDays, lisbonDate, todayIso } = await app.load<DatesModule>('/src/lib/dates.ts')
+  const { collectPromoters, mergePromoters, similarHandles } = await app.load<PromoterDirectoryModule>('/src/domain/promoterDirectory.ts')
 
   const today = todayIso()
-  const events = await loadEvents(addDays(today, -DAYS_BEFORE), addDays(today, daysAfter))
+  const events = await loadEvents(addDays(today, -daysBefore), addDays(today, daysAfter))
   const found = collectPromoters(events, (event) => lisbonDate(event.start))
 
-  const existing = JSON.parse(readFileSync(FILE, 'utf8'))
+  const existing = JSON.parse(readFileSync(FILE, 'utf8')) as Directory
   const merged = mergePromoters(existing, found)
   const aliases = new Set(Object.values(merged).flatMap((entry) => entry.aliases ?? []))
   const added = Object.keys(found).filter((handle) => !existing[handle] && !aliases.has(handle))
 
   writeFileSync(FILE, `${JSON.stringify(merged, null, 2)}\n`)
   console.log(
-    `${events.length} eventos (${DAYS_BEFORE} dias atrás a ${daysAfter} à frente); ${Object.keys(found).length} perfis citados; ` +
+    `${events.length} eventos (${daysBefore} dias atrás a ${daysAfter} à frente); ${Object.keys(found).length} perfis citados; ` +
       `${added.length} novos; ${Object.keys(merged).length} no arquivo.`,
   )
   for (const handle of added) console.log(`  + @${handle} (${merged[handle].role})`)
   const roles = Object.groupBy(Object.values(merged), (entry) => entry.role)
   console.log(
     `Papéis: ${Object.entries(roles)
-      .map(([role, list]) => `${role} ${list.length}`)
+      .map(([role, list]) => `${role} ${list?.length ?? 0}`)
       .join(', ')}.`,
   )
 
@@ -78,8 +63,8 @@ try {
     for (const [a, b] of suspects) console.log(`  @${a} × @${b}`)
   }
 } catch (error) {
-  console.error(`promoters:update: ${error.message}`)
+  console.error(`promoters:update: ${error instanceof Error ? error.message : String(error)}`)
   process.exitCode = 1
 } finally {
-  await vite.close()
+  await app.close()
 }
