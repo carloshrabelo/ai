@@ -10,10 +10,16 @@ import { BackToTest, RangeFields } from './shared'
 import { useEventsInRange } from './useEventsInRange'
 
 /**
- * Sugestões de texto para evento sem preço identificado (hoje o card não mostra nada). `icon`: com o
+ * Sugestões de texto para evento sem preço identificado; o app usa o grupo "Ver descrição | Consultar
+ * organizador" (NoPriceChips). `icon`: com o
  * ícone de dúvida, como o valor não confirmado de "Pago (5€?)".
  */
 const NO_PRICE_TERMS: { pt: string; en: string; icon?: boolean; note: string }[] = [
+  {
+    pt: 'Ver descrição | Consultar organizador',
+    en: 'See description | Ask the organizer',
+    note: 'Escolhido: os dois juntos, em grupo. É o que o app mostra (sem descrição, só "Consultar organizador").',
+  },
   { pt: 'A confirmar', en: 'To be confirmed', icon: true, note: 'Neutro e curto; combina com o ícone de valor não confirmado.' },
   { pt: 'Preço não informado', en: 'Price not listed', note: 'Factual: o calendário não traz o preço. Mais longo.' },
   { pt: 'Consultar organizador', en: 'Ask the organizer', note: 'Diz o que fazer; bom quando há @ do organizador.' },
@@ -160,7 +166,7 @@ function NoPriceTerms({ total, withPrice }: { total?: number; withPrice: number 
           <Link to="/teste/sem-preco" className="font-medium text-brand hover:underline">
             /teste/sem-preco
           </Link>
-          ). Hoje o card não mostra nada; sugestões de termo, no estilo dos chips:
+          ). O app mostra o primeiro (o grupo); as outras sugestões ficam para comparar:
         </p>
       </div>
       <ul className="divide-y divide-border">
@@ -187,7 +193,13 @@ function TermChip({ text, icon, label }: { text: string; icon?: boolean; label: 
         className="inline-flex w-fit items-center gap-1 rounded-full border border-dashed border-border px-2 py-0.5 text-xs whitespace-nowrap"
         title={icon ? label : undefined}
       >
-        {text}
+        {text.includes(' | ')
+          ? text.split(' | ').map((part, index) => (
+              <span key={part} className={index > 0 ? 'border-l border-dashed border-border pl-1.5' : ''}>
+                {part}
+              </span>
+            ))
+          : text}
         {icon && <CircleHelp className="size-3.5" aria-hidden="true" />}
         {icon && !text && <span className="sr-only">{label}</span>}
       </span>

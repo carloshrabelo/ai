@@ -9,7 +9,7 @@ import { visibleGenres } from '../../domain/genres'
 import { EventDistance } from '../location/EventDistance'
 import { eventFocus, useEventFocus } from './eventFocusStore'
 import { EventStatusBadge } from './EventStatusBadge'
-import { PriceChips } from './PriceChips'
+import { NoPriceChips, PriceChips } from './PriceChips'
 import { formatTimeRange } from './format'
 import { useI18n } from '../../i18n/useI18n'
 import { slugify } from '../../domain/slug'
@@ -77,13 +77,15 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
               <span className="sr-only">{t.event.time}: </span>
               {formatTimeRange(event, locale)}
             </span>
-            {event.price && (
-              <span className="flex min-w-0 items-center gap-2">
-                <Ticket className="size-5 shrink-0" aria-hidden="true" />
-                <span className="sr-only">{t.event.price}: </span>
+            <span className="flex min-w-0 items-center gap-2">
+              <Ticket className="size-5 shrink-0" aria-hidden="true" />
+              <span className="sr-only">{t.event.price}: </span>
+              {event.price ? (
                 <PriceChips price={event.price} variant="auto" locale={locale} />
-              </span>
-            )}
+              ) : (
+                <NoPriceChips hasDescription={!!event.description} />
+              )}
+            </span>
           </p>
         </div>
         {/* Tooltip visível: o ícone sozinho não é óbvio para todo mundo. */}

@@ -2,6 +2,7 @@ import { CircleHelp, Clock, DoorOpen, Gift, GraduationCap, type LucideIcon, Moon
 import { labeledPrice, type PriceLabel, type PriceOption } from '../../domain/labeledPrice'
 import type { Locale } from '../../i18n/locale'
 import { translatePrice } from '../../i18n/price'
+import { useI18n } from '../../i18n/useI18n'
 import type { PriceChipVariant } from './priceChipVariants'
 
 // Preço em chips, cada valor com o seu rótulo ("5€ sócios", "3€ alunos LeT"), em variações para
@@ -204,6 +205,24 @@ export function PriceChips({ price, variant, locale }: { price: string; variant:
         }
       })}
       {trailing}
+    </span>
+  )
+}
+
+/**
+ * Evento sem preço identificado: "Ver descrição | Consultar organizador", unidos e com borda
+ * tracejada (não é um preço). Sem descrição, só "Consultar organizador".
+ */
+export function NoPriceChips({ hasDescription }: { hasDescription: boolean }) {
+  const { t } = useI18n()
+  const parts = [hasDescription ? t.event.seeDescription : undefined, t.event.askOrganizer].filter((part): part is string => !!part)
+  return (
+    <span className="inline-flex divide-x divide-dashed divide-border overflow-hidden rounded-full border border-dashed border-border text-xs">
+      {parts.map((part) => (
+        <span key={part} className="px-2 py-0.5 whitespace-nowrap">
+          {part}
+        </span>
+      ))}
     </span>
   )
 }

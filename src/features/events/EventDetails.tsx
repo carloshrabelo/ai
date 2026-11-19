@@ -11,7 +11,7 @@ import { navigationLink } from '../location/navigationLink'
 import { useGeocodedVenue } from '../location/useGeocodedEvents'
 import { EventStatusBadge } from './EventStatusBadge'
 import { formatDayHeading, formatTimeRange } from './format'
-import { PriceChips } from './PriceChips'
+import { NoPriceChips, PriceChips } from './PriceChips'
 import { ShareButton } from './ShareButton'
 import { useI18n } from '../../i18n/useI18n'
 import { Button } from '../../components/ui/Button'
@@ -72,11 +72,13 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
             )}
           </Row>
         )}
-        {event.price && (
-          <Row icon={<Ticket className="size-5" aria-hidden="true" />} label={t.event.price}>
+        <Row icon={<Ticket className="size-5" aria-hidden="true" />} label={t.event.price}>
+          {event.price ? (
             <PriceChips price={event.price} variant="auto" locale={locale} />
-          </Row>
-        )}
+          ) : (
+            <NoPriceChips hasDescription={!!event.description} />
+          )}
+        </Row>
       </dl>
 
       {/* Adicionar ao calendário da pessoa (sem login) e passar a acompanhar mudanças. */}
