@@ -50,40 +50,49 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
         selected || highlighted ? 'ring-2 ring-brand' : ''
       } ${event.status === 'cancelled' ? 'opacity-75' : ''}`}
     >
-      {/* Cabeçalho: título e o botão do calendário. */}
-      <header className="flex items-start gap-2">
-        <h3 className="line-clamp-2 min-w-0 flex-1 text-lg font-semibold">
+      {/* Cabeçalho: o título usa a largura toda e só a 1ª linha desvia do botão do calendário (um
+          espaço flutuante dentro do título reserva o lugar; o botão fica por cima, absoluto no canto).
+          Sem line-clamp: o overflow:hidden dele faria o título inteiro desviar do espaço. */}
+      <header>
+        <h3 className="text-lg font-semibold">
           <button
             type="button"
             aria-current={selected || undefined}
             onClick={() => onOpen(event.slug)}
-            className={`cursor-pointer text-left outline-none after:absolute after:inset-0 after:rounded-xl focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-brand ${
+            className={`block w-full cursor-pointer text-left outline-none after:absolute after:inset-0 after:rounded-xl focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-brand ${
               event.status === 'cancelled' ? 'line-through decoration-2' : ''
             }`}
           >
+            {/* Reserva só o lugar do ícone (20px + 4px), na 1ª linha (28px de altura). */}
+            <span aria-hidden="true" className="float-right ml-1 h-7 w-5" />
             {event.title}
           </button>
         </h3>
-        {/* Tooltip visível: o ícone sozinho não é óbvio para todo mundo. -my-2: o botão (44px) não aumenta a altura do cabeçalho além do título. */}
-        <Tooltip label={t.event.addToCalendar} className="relative z-10 -my-2 -mr-2 shrink-0">
-          {/* Google Agenda já preenchido; no iPhone, baixa o .ics (Calendário do iOS). */}
-          <a
-            href={googleCalendarUrl(event, eventUrl(event.slug))}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={t.event.addToCalendarFor(event.title)}
-            className={ICON_LINK}
-            onClick={(click) => {
-              trackEvent(event)
-              if (detectPlatform() === 'ios') {
-                click.preventDefault()
-                downloadIcs(event, eventUrl(event.slug), slugify(event.title) || 'evento')
-              }
-            }}
-          >
-            <CalendarPlusIcon className="size-5" aria-hidden="true" />
-          </a>
-        </Tooltip>
+        {/* No canto do card (relativo ao article, não ao header, para o título continuar esticado sobre
+            o card todo). O ícone (20px) fica alinhado à borda do conteúdo e centrado na 1ª linha; a área
+            de toque de 44px sobra para o padding do card: top-2 = 16 + 14 − 22; right-1 = 16 − 12. */}
+        <div className="absolute top-2 right-1 z-10">
+          {/* Tooltip visível: o ícone sozinho não é óbvio para todo mundo. */}
+          <Tooltip label={t.event.addToCalendar} className="z-10">
+            {/* Google Agenda já preenchido; no iPhone, baixa o .ics (Calendário do iOS). */}
+            <a
+              href={googleCalendarUrl(event, eventUrl(event.slug))}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={t.event.addToCalendarFor(event.title)}
+              className={ICON_LINK}
+              onClick={(click) => {
+                trackEvent(event)
+                if (detectPlatform() === 'ios') {
+                  click.preventDefault()
+                  downloadIcs(event, eventUrl(event.slug), slugify(event.title) || 'evento')
+                }
+              }}
+            >
+              <CalendarPlusIcon className="size-5" aria-hidden="true" />
+            </a>
+          </Tooltip>
+        </div>
       </header>
 
       {/* Conteúdo: largura toda do card (o calendário não ocupa mais uma coluna). */}
