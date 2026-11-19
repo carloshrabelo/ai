@@ -33,8 +33,20 @@ export const WHATSAPP_GROUPS: CommunityLink[] = [
 ]
 
 export const INSTAGRAM: CommunityLink[] = [
-  { name: 'Pas de Deux', url: 'https://www.instagram.com/pasdedeux.pt/', detail: '@pasdedeux.pt' },
-  { name: 'Samba de Gafieira', url: 'https://www.instagram.com/sambadegafieiralisboa/', detail: '@sambadegafieiralisboa' },
+  {
+    name: 'Bachata Community Lisbon',
+    url: 'https://www.instagram.com/bachata_community_lisbon/',
+    detail: '@bachata_community_lisbon',
+    genre: 'Bachata',
+  },
+  { name: 'Rolê Zouk', url: 'https://www.instagram.com/rolezouk/', detail: '@rolezouk', genre: 'Zouk' },
+  { name: 'Samba de Gafieira', url: 'https://www.instagram.com/sambadegafieiralisboa/', detail: '@sambadegafieiralisboa', genre: 'Samba' },
+  {
+    name: 'West Coast Swing Portugal',
+    url: 'https://www.instagram.com/westcoastswingportugal/',
+    detail: '@westcoastswingportugal',
+    genre: 'West Coast Swing',
+  },
 ]
 
 /** Calendários do Pas de Deux: id do Google Agenda (assinar .ics e abrir no Google). */
