@@ -110,7 +110,8 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
         </Tooltip>
       </div>
 
-      <div className="flex items-center gap-2">
+      {/* mt-auto: as tags ficam sempre embaixo, mesmo num card esticado (grid da lista e do mapa). */}
+      <div className="mt-auto flex items-center gap-2">
         <div className="flex min-w-0 flex-1 flex-wrap gap-2">
           {event.status && <EventStatusBadge status={event.status} />}
           {event.genres.length > 0
