@@ -20,7 +20,6 @@ import {
   Info,
   LocateFixed,
   ListFilter,
-  type LucideIcon,
   Map as MapIcon,
   MapPin,
   MapPinned,
@@ -42,16 +41,88 @@ import {
   Sparkles,
   SunMoon,
   Tags,
+  BookOpen,
+  Contact,
+  Globe,
+  Handshake,
+  Megaphone,
+  MessagesSquare,
+  Network,
+  Share2,
+  Smile,
+  Sparkle,
   Users,
+  UsersRound,
 } from 'lucide-react'
-import { type ReactNode, useState } from 'react'
+import {
+  AddressBookIcon,
+  BookOpenTextIcon,
+  ChampagneIcon,
+  ChatsCircleIcon,
+  ConfettiIcon,
+  DiscoBallIcon,
+  DotsThreeCircleIcon,
+  GearIcon,
+  GlobeHemisphereWestIcon,
+  HandHeartIcon,
+  HandshakeIcon,
+  HandWavingIcon,
+  HeartIcon,
+  InfoIcon,
+  MegaphoneIcon,
+  MusicNotesIcon,
+  PersonArmsSpreadIcon,
+  PersonSimpleTaiChiIcon,
+  QuestionIcon,
+  ShareNetworkIcon,
+  SmileyIcon,
+  SneakerMoveIcon,
+  SparkleIcon,
+  UsersThreeIcon,
+} from '@phosphor-icons/react'
+import {
+  IconAddressBook,
+  IconAffiliate,
+  IconBook,
+  IconConfetti,
+  IconDisc,
+  IconDots,
+  IconFriends,
+  IconHandLoveYou,
+  IconHeart,
+  IconHeartHandshake,
+  IconHelpCircle,
+  IconInfoCircle,
+  IconInfoSquareRounded,
+  IconMessages,
+  IconMicrophone2,
+  IconMoodHappy,
+  IconMusic,
+  IconPlaylist,
+  IconSettings,
+  IconShoe,
+  IconSparkles,
+  IconSpeakerphone,
+  IconUsersGroup,
+  IconWorld,
+} from '@tabler/icons-react'
+import { type ComponentType, type ReactNode, useState } from 'react'
 import { Button } from '../../components/ui/Button'
 import { Card } from '../../components/ui/Card'
+import { Segmented } from '../../components/ui/Segmented'
 import { siteUrl, useDocumentHead } from '../../seo/useDocumentHead'
 import { BackToTest } from './shared'
 
-/** `current`: o que o app usa hoje (marcado como "atual" e escolhido de início). */
-type Option = { name: string; icon: LucideIcon; note: string; current?: boolean }
+/** Bibliotecas comparadas. O app usa a lucide-react; outra entraria como dependência nova. */
+const LIBS = ['lucide', 'phosphor', 'tabler'] as const
+type Lib = (typeof LIBS)[number]
+const LIB_LABEL: Record<Lib, string> = { lucide: 'Lucide', phosphor: 'Phosphor', tabler: 'Tabler' }
+type IconComponent = ComponentType<{ className?: string }>
+
+/**
+ * `current`: o que o app usa hoje (marcado como "atual" e escolhido de início). Sem `lib`, Lucide.
+ */
+type Option = { name: string; icon: IconComponent; note: string; lib?: Lib; current?: boolean }
 type NameOption = { pt: string; en: string; note: string; current?: boolean }
 
 const currentIndex = (options: { current?: boolean }[]) =>
@@ -74,6 +145,51 @@ const DANCE: Option[] = [
   { name: 'Flame', icon: Flame, note: 'Energia, "hot", latino.' },
   { name: 'Music2', icon: Music2, note: 'Variação da nota musical.' },
   { name: 'AudioLines', icon: AudioLines, note: 'Som / ritmo, moderno.' },
+  { lib: 'phosphor', name: 'DiscoBall', icon: DiscoBallIcon, note: 'Globo de discoteca: pista e noite, sem parecer player de música.' },
+  { lib: 'phosphor', name: 'SneakerMove', icon: SneakerMoveIcon, note: 'Tênis em movimento: dançar.' },
+  { lib: 'phosphor', name: 'PersonArmsSpread', icon: PersonArmsSpreadIcon, note: 'Pessoa de braços abertos: alegria, movimento.' },
+  { lib: 'phosphor', name: 'PersonSimpleTaiChi', icon: PersonSimpleTaiChiIcon, note: 'Pose em movimento; lembra um passo.' },
+  { lib: 'phosphor', name: 'MusicNotes', icon: MusicNotesIcon, note: 'Duas notas: música para dançar.' },
+  { lib: 'phosphor', name: 'Confetti', icon: ConfettiIcon, note: 'Festa.' },
+  { lib: 'phosphor', name: 'Champagne', icon: ChampagneIcon, note: 'Brinde: social, noite.' },
+  { lib: 'phosphor', name: 'Sparkle', icon: SparkleIcon, note: 'Brilho único, mais limpo que Sparkles.' },
+  { lib: 'tabler', name: 'IconDisc', icon: IconDisc, note: 'Disco, como o Disc3 atual, com traço Tabler.' },
+  { lib: 'tabler', name: 'IconShoe', icon: IconShoe, note: 'Sapato: dança.' },
+  { lib: 'tabler', name: 'IconMusic', icon: IconMusic, note: 'Nota musical.' },
+  { lib: 'tabler', name: 'IconPlaylist', icon: IconPlaylist, note: 'Lista com nota: agenda + música.' },
+  { lib: 'tabler', name: 'IconMicrophone2', icon: IconMicrophone2, note: 'Microfone: DJ, show ao vivo.' },
+  { lib: 'tabler', name: 'IconConfetti', icon: IconConfetti, note: 'Festa.' },
+  { lib: 'tabler', name: 'IconSparkles', icon: IconSparkles, note: 'Brilho.' },
+  { lib: 'tabler', name: 'IconMoodHappy', icon: IconMoodHappy, note: 'Sorriso: diversão.' },
+]
+
+const COMMUNITY_ICONS: Option[] = [
+  { name: 'UsersRound', icon: UsersRound, note: 'Pessoas: comunidade.', current: true },
+  { name: 'Users', icon: Users, note: 'Variação com cabeça redonda menor.' },
+  { name: 'HeartHandshake', icon: HeartHandshake, note: 'Apoio, parceria entre a comunidade.' },
+  { name: 'Handshake', icon: Handshake, note: 'Parceria, encontro.' },
+  { name: 'MessagesSquare', icon: MessagesSquare, note: 'Conversas: grupos do WhatsApp.' },
+  { name: 'Megaphone', icon: Megaphone, note: 'Divulgação, avisos.' },
+  { name: 'Globe', icon: Globe, note: 'Outros sites e calendários.' },
+  { name: 'Contact', icon: Contact, note: 'Contatos: perfis e grupos.' },
+  { name: 'Network', icon: Network, note: 'Rede de comunidades.' },
+  { name: 'Share2', icon: Share2, note: 'Conexões, compartilhar.' },
+  { lib: 'phosphor', name: 'UsersThree', icon: UsersThreeIcon, note: 'Três pessoas: grupo, comunidade.' },
+  { lib: 'phosphor', name: 'ChatsCircle', icon: ChatsCircleIcon, note: 'Conversas: grupos.' },
+  { lib: 'phosphor', name: 'Handshake', icon: HandshakeIcon, note: 'Parceria.' },
+  { lib: 'phosphor', name: 'HandHeart', icon: HandHeartIcon, note: 'Cuidado, comunidade.' },
+  { lib: 'phosphor', name: 'Megaphone', icon: MegaphoneIcon, note: 'Divulgação.' },
+  { lib: 'phosphor', name: 'GlobeHemisphereWest', icon: GlobeHemisphereWestIcon, note: 'Mundo (com a Europa/Atlântico).' },
+  { lib: 'phosphor', name: 'AddressBook', icon: AddressBookIcon, note: 'Agenda de contatos.' },
+  { lib: 'phosphor', name: 'ShareNetwork', icon: ShareNetworkIcon, note: 'Rede.' },
+  { lib: 'tabler', name: 'IconUsersGroup', icon: IconUsersGroup, note: 'Grupo de três: comunidade.' },
+  { lib: 'tabler', name: 'IconFriends', icon: IconFriends, note: 'Duas pessoas lado a lado: amizade, par.' },
+  { lib: 'tabler', name: 'IconMessages', icon: IconMessages, note: 'Conversas: grupos.' },
+  { lib: 'tabler', name: 'IconHeartHandshake', icon: IconHeartHandshake, note: 'Apoio, parceria.' },
+  { lib: 'tabler', name: 'IconAffiliate', icon: IconAffiliate, note: 'Rede ligada.' },
+  { lib: 'tabler', name: 'IconWorld', icon: IconWorld, note: 'Outros sites.' },
+  { lib: 'tabler', name: 'IconAddressBook', icon: IconAddressBook, note: 'Contatos.' },
+  { lib: 'tabler', name: 'IconSpeakerphone', icon: IconSpeakerphone, note: 'Divulgação.' },
 ]
 
 const FILTER: Option[] = [
@@ -106,6 +222,25 @@ const INFO_ICONS: Option[] = [
   { name: 'CircleUserRound', icon: CircleUserRound, note: 'Conta/perfil (o app não tem login).' },
   { name: 'CircleHelp', icon: CircleHelp, note: 'Ajuda / dúvidas.' },
   { name: 'Heart', icon: Heart, note: 'Sobre / quem faz.' },
+  { name: 'BookOpen', icon: BookOpen, note: 'Sobre / leia mais.' },
+  { name: 'Smile', icon: Smile, note: 'Amigável, "olá".' },
+  { name: 'Sparkle', icon: Sparkle, note: 'O app em si.' },
+  { lib: 'phosphor', name: 'Info', icon: InfoIcon, note: 'Info no traço Phosphor.' },
+  { lib: 'phosphor', name: 'Question', icon: QuestionIcon, note: 'Ajuda.' },
+  { lib: 'phosphor', name: 'BookOpenText', icon: BookOpenTextIcon, note: 'Sobre / leia mais.' },
+  { lib: 'phosphor', name: 'DotsThreeCircle', icon: DotsThreeCircleIcon, note: '"Mais".' },
+  { lib: 'phosphor', name: 'Gear', icon: GearIcon, note: 'Ajustes.' },
+  { lib: 'phosphor', name: 'HandWaving', icon: HandWavingIcon, note: 'Aceno: "olá", quem somos.' },
+  { lib: 'phosphor', name: 'Heart', icon: HeartIcon, note: 'Feito com carinho.' },
+  { lib: 'phosphor', name: 'Smiley', icon: SmileyIcon, note: 'Amigável.' },
+  { lib: 'tabler', name: 'IconInfoCircle', icon: IconInfoCircle, note: 'Info no traço Tabler.' },
+  { lib: 'tabler', name: 'IconInfoSquareRounded', icon: IconInfoSquareRounded, note: 'Info em quadrado arredondado.' },
+  { lib: 'tabler', name: 'IconHelpCircle', icon: IconHelpCircle, note: 'Ajuda.' },
+  { lib: 'tabler', name: 'IconDots', icon: IconDots, note: '"Mais".' },
+  { lib: 'tabler', name: 'IconSettings', icon: IconSettings, note: 'Ajustes.' },
+  { lib: 'tabler', name: 'IconHeart', icon: IconHeart, note: 'Feito com carinho.' },
+  { lib: 'tabler', name: 'IconBook', icon: IconBook, note: 'Sobre / leia mais.' },
+  { lib: 'tabler', name: 'IconHandLoveYou', icon: IconHandLoveYou, note: 'Mão "amo você": comunidade, carinho.' },
 ]
 
 const MAP_NAMES: NameOption[] = [
@@ -129,7 +264,9 @@ const MAP_ICONS: Option[] = [
   { name: 'Radar', icon: Radar, note: 'Radar: o que acontece por perto.' },
 ]
 
-const nameOf = (options: Option[], index: number) => options[index].name
+const libOf = (option: Option): Lib => option.lib ?? 'lucide'
+const nameOf = (options: Option[], index: number) => `${options[index].name} (${LIB_LABEL[libOf(options[index])]})`
+const keyOf = (option: Option) => `${libOf(option)}:${option.name}`
 
 /**
  * Página de teste (/teste/icones, pública mas sem link no app): opções de ícone para "Dança" e para
@@ -149,6 +286,9 @@ export default function Icons() {
   const [infoIcon, setInfoIcon] = useState(() => currentIndex(INFO_ICONS))
   const [mapName, setMapName] = useState(() => currentIndex(MAP_NAMES))
   const [mapIcon, setMapIcon] = useState(() => currentIndex(MAP_ICONS))
+  const [communityIcon, setCommunityIcon] = useState(() => currentIndex(COMMUNITY_ICONS))
+  // Filtro por biblioteca nas listas de opções (a escolhida continua na prévia).
+  const [lib, setLib] = useState<Lib | 'all'>('all')
   const [copied, setCopied] = useState(false)
   // Acordeon: um grupo de opções aberto por vez (fechado, mostra só a escolha).
   const [openGroup, setOpenGroup] = useState<string | null>('dance')
@@ -157,6 +297,7 @@ export default function Icons() {
   const nav = [
     { label: 'Dança', icon: DANCE[dance].icon, active: true },
     { label: MAP_NAMES[mapName].pt, icon: MAP_ICONS[mapIcon].icon, active: false },
+    { label: 'Comunidade', icon: COMMUNITY_ICONS[communityIcon].icon, active: false },
     { label: INFO_NAMES[infoName].pt, icon: INFO_ICONS[infoIcon].icon, active: false },
   ]
   const FilterIcon = FILTER[filter].icon
@@ -167,6 +308,7 @@ export default function Icons() {
         `Dança: ${nameOf(DANCE, dance)}`,
         `Filtro: ${nameOf(FILTER, filter)}`,
         `Mapa: "${MAP_NAMES[mapName].pt}" / "${MAP_NAMES[mapName].en}", ícone ${nameOf(MAP_ICONS, mapIcon)}`,
+        `Comunidade: ${nameOf(COMMUNITY_ICONS, communityIcon)}`,
         `Info: "${INFO_NAMES[infoName].pt}" / "${INFO_NAMES[infoName].en}", ícone ${nameOf(INFO_ICONS, infoIcon)}`,
       ].join('\n'),
     )
@@ -180,7 +322,10 @@ export default function Icons() {
       <Card className="space-y-4">
         <div>
           <h2 className="text-lg font-semibold">Ícones e nomes</h2>
-          <p className="text-sm text-fg-muted">Clique numa opção para ver na prévia. Ícones do lucide-react (o mesmo pacote do app).</p>
+          <p className="text-sm text-fg-muted">
+            Clique numa opção para ver na prévia. O app usa a Lucide; Phosphor e Tabler entram para comparar (usar uma delas no app seria
+            uma dependência nova, e misturar estilos de traço entre os ícones do menu fica desigual).
+          </p>
         </div>
 
         <div className="grid gap-4 md:grid-cols-[1fr_auto_auto]">
@@ -239,13 +384,22 @@ export default function Icons() {
           </Preview>
         </div>
 
-        <Button onClick={copy}>
-          {copied ? <Check className="size-4" aria-hidden="true" /> : <Copy className="size-4" aria-hidden="true" />}
-          {copied ? 'Copiado' : 'Copiar escolha'}
-        </Button>
+        <div className="flex flex-wrap items-center gap-3">
+          <Segmented
+            label="Biblioteca"
+            options={[{ value: 'all' as const, label: 'Todas' }, ...LIBS.map((value) => ({ value, label: LIB_LABEL[value] }))]}
+            value={lib}
+            onChange={setLib}
+          />
+          <Button onClick={copy}>
+            {copied ? <Check className="size-4" aria-hidden="true" /> : <Copy className="size-4" aria-hidden="true" />}
+            {copied ? 'Copiado' : 'Copiar escolha'}
+          </Button>
+        </div>
       </Card>
 
       <IconChoices
+        lib={lib}
         title="Ícone de Dança"
         options={DANCE}
         value={dance}
@@ -254,6 +408,7 @@ export default function Icons() {
         onToggle={toggle('dance')}
       />
       <IconChoices
+        lib={lib}
         title="Ícone do filtro de estilos"
         options={FILTER}
         value={filter}
@@ -271,12 +426,22 @@ export default function Icons() {
         onToggle={toggle('mapName')}
       />
       <IconChoices
+        lib={lib}
         title="Ícone do Mapa"
         options={MAP_ICONS}
         value={mapIcon}
         onChange={setMapIcon}
         open={openGroup === 'mapIcon'}
         onToggle={toggle('mapIcon')}
+      />
+      <IconChoices
+        lib={lib}
+        title="Ícone de Comunidade"
+        options={COMMUNITY_ICONS}
+        value={communityIcon}
+        onChange={setCommunityIcon}
+        open={openGroup === 'communityIcon'}
+        onToggle={toggle('communityIcon')}
       />
       <NameChoices
         title="Nome de Sobre (antes Info)"
@@ -288,6 +453,7 @@ export default function Icons() {
         onToggle={toggle('infoName')}
       />
       <IconChoices
+        lib={lib}
         title="Ícone de Sobre"
         options={INFO_ICONS}
         value={infoIcon}
@@ -373,8 +539,9 @@ function NameChoices({ title, hint, options, value, onChange, open, onToggle }: 
   )
 }
 
-function IconChoices({ title, options, value, onChange, open, onToggle }: ChoicesProps<Option>) {
-  const { icon: Chosen, name: chosenName } = options[value]
+function IconChoices({ title, options, value, onChange, open, onToggle, lib }: ChoicesProps<Option> & { lib: Lib | 'all' }) {
+  const chosen = options[value]
+  const { icon: Chosen, name: chosenName } = chosen
   return (
     <Accordion
       title={title}
@@ -382,23 +549,28 @@ function IconChoices({ title, options, value, onChange, open, onToggle }: Choice
         <>
           <Chosen className="size-5" aria-hidden="true" />
           <span className="font-mono text-xs">{chosenName}</span>
+          <LibTag lib={libOf(chosen)} />
         </>
       }
       open={open}
       onToggle={onToggle}
     >
       <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-        {options.map(({ name, icon: Icon, note, current }, index) => (
-          <ChoiceButton key={name} selected={index === value} onClick={() => onChange(index)} current={!!current}>
-            <span className="flex items-start gap-3">
-              <Icon className="size-7 shrink-0" aria-hidden="true" />
-              <span>
-                <span className="font-mono text-xs font-semibold">{name}</span>
-                <span className="mt-0.5 block text-xs text-fg-muted">{note}</span>
+        {options.map((option, index) => {
+          if (lib !== 'all' && libOf(option) !== lib) return null
+          const { name, icon: Icon, note, current } = option
+          return (
+            <ChoiceButton key={keyOf(option)} selected={index === value} onClick={() => onChange(index)} current={!!current}>
+              <span className="flex items-start gap-3">
+                <Icon className="size-7 shrink-0" aria-hidden="true" />
+                <span>
+                  <span className="font-mono text-xs font-semibold">{name}</span> <LibTag lib={libOf(option)} />
+                  <span className="mt-0.5 block text-xs text-fg-muted">{note}</span>
+                </span>
               </span>
-            </span>
-          </ChoiceButton>
-        ))}
+            </ChoiceButton>
+          )
+        })}
       </div>
     </Accordion>
   )
@@ -429,5 +601,14 @@ function ChoiceButton({
       )}
       {children}
     </button>
+  )
+}
+
+/** Selo da biblioteca do ícone. */
+function LibTag({ lib }: { lib: Lib }) {
+  return (
+    <span className="rounded bg-surface-muted px-1.5 py-0.5 align-middle font-sans text-[10px] font-medium text-fg-muted">
+      {LIB_LABEL[lib]}
+    </span>
   )
 }
