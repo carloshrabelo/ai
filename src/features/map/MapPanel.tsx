@@ -8,7 +8,7 @@ import { useEventBySlug } from '../events/useEventBySlug'
 import { useGeocodedEvents } from '../location/useGeocodedEvents'
 import { useI18n } from '../../i18n/useI18n'
 
-// Leaflet só é baixado a partir de `xl`, quando o mapa aparece.
+// Leaflet só é baixado a partir de `md`, quando o mapa aparece.
 const EventsMap = lazy(() => import('./EventsMap'))
 
 type Props = {
@@ -21,7 +21,7 @@ type Props = {
   className?: string
 }
 
-/** Coluna do mapa (`xl+`): pinos dos eventos do dia ativo, com o filtro de gêneros aplicado. */
+/** Coluna do mapa (`md+`): pinos dos eventos do dia ativo, com o filtro de gêneros aplicado. */
 export function MapPanel({ startDate, day, genres, onOpenEvent, className = 'h-full' }: Props) {
   const { t, locale } = useI18n()
   const { events, isPending } = useDayEvents(startDate, day, genres)

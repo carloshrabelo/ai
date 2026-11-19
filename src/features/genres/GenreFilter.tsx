@@ -1,4 +1,4 @@
-import { Funnel, FunnelX } from 'lucide-react'
+import { FunnelIcon, FunnelXIcon } from '@phosphor-icons/react'
 import { Card } from '../../components/ui/Card'
 import { ToggleChip } from '../../components/ui/Chip'
 import { FILTER_VALUES, type GenreFilterValue, OTHER_GENRES } from '../../domain/genreFilter'
@@ -26,7 +26,7 @@ export function GenreFilter({ plain = false }: { plain?: boolean } = {}) {
     // "plain": sem o card (dentro do drawer, que já tem fundo e bordas).
     <Container plain={plain}>
       <div className="flex items-center gap-2">
-        <Funnel className="size-5 text-fg-muted" aria-hidden="true" />
+        <FunnelIcon className="size-5 text-fg-muted" aria-hidden="true" />
         <h2 id="genre-filter-title" className="flex-1 text-sm font-semibold">
           {t.filters.title}
           {selected.length > 0 && <span className="font-normal text-fg-muted"> · {t.filters.active(selected.length)}</span>}
@@ -37,7 +37,7 @@ export function GenreFilter({ plain = false }: { plain?: boolean } = {}) {
             onClick={clear}
             className="-my-2 -mr-2 inline-flex h-11 cursor-pointer items-center gap-1 rounded-lg px-3 text-sm font-medium text-brand hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-brand"
           >
-            <FunnelX className="size-4" aria-hidden="true" />
+            <FunnelXIcon className="size-4" aria-hidden="true" />
             {t.filters.clear}
           </button>
         )}

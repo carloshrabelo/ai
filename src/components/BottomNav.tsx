@@ -11,8 +11,8 @@ export default function BottomNav() {
       className="fixed inset-x-0 bottom-0 z-10 border-t border-border bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur xl:hidden"
     >
       <ul className="mx-auto flex h-16 max-w-3xl">
-        {NAV_ITEMS.map(({ to, label, icon: Icon }) => (
-          <li key={to} className="flex-1">
+        {NAV_ITEMS.map(({ to, label, icon: Icon, mobileOnly }) => (
+          <li key={to} className={`flex-1 ${mobileOnly ? 'md:hidden' : ''}`}>
             <NavLink
               to={to}
               end={to === '/'}

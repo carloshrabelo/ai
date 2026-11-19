@@ -6,12 +6,13 @@ type CardProps = HTMLAttributes<HTMLElement> & {
   variant?: 'card' | 'panel'
 }
 
+// Estilo Duolingo: borda de 2px, um pouco mais grossa embaixo, cantos bem arredondados, sem sombra.
 const VARIANTS = {
-  card: 'rounded-xl shadow-sm',
-  panel: 'rounded-2xl shadow-md',
+  card: 'rounded-2xl border-2 border-b-4 border-border',
+  panel: 'rounded-2xl border-2 border-b-4 border-border shadow-lg',
 }
 
 /** Superfície padrão: p-4, sombra no claro, borda sutil e sem sombra no escuro. */
 export function Card({ as: Tag = 'div', variant = 'card', className = '', ...props }: CardProps) {
-  return <Tag className={`bg-surface p-4 dark:border dark:border-border dark:shadow-none ${VARIANTS[variant]} ${className}`} {...props} />
+  return <Tag className={`bg-surface p-4 ${VARIANTS[variant]} ${className}`} {...props} />
 }

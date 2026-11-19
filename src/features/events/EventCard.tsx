@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { CalendarPlus, ChevronRight, Clock, MapPin, Ticket } from 'lucide-react'
+import { ArrowSquareOutIcon, CalendarPlusIcon, ClockIcon, MapPinIcon, TicketIcon } from '@phosphor-icons/react'
 import { Card } from '../../components/ui/Card'
 import { Chip } from '../../components/ui/Chip'
 import { Skeleton } from '../../components/ui/Skeleton'
@@ -89,7 +89,7 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
                 }
               }}
             >
-              <CalendarPlus className="size-5" aria-hidden="true" />
+              <CalendarPlusIcon className="size-5" aria-hidden="true" />
             </a>
           </Tooltip>
         </div>
@@ -99,7 +99,7 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
       <div className="space-y-1.5">
         {event.venue && (
           <p className="flex items-center gap-2 text-sm text-fg-muted">
-            <MapPin className="size-5 shrink-0" aria-hidden="true" />
+            <MapPinIcon className="size-5 shrink-0" aria-hidden="true" />
             <span className="truncate">{event.venue.name}</span>
           </p>
         )}
@@ -107,12 +107,12 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
             (e fica à esquerda). */}
         <p className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-sm text-fg-muted">
           <span className="flex items-center gap-2 tabular-nums">
-            <Clock className="size-5 shrink-0" aria-hidden="true" />
+            <ClockIcon className="size-5 shrink-0" aria-hidden="true" />
             <span className="sr-only">{t.event.time}: </span>
             {formatTimeRange(event, locale)}
           </span>
           <span className="flex min-w-0 items-center gap-2">
-            <Ticket className="size-5 shrink-0" aria-hidden="true" />
+            <TicketIcon className="size-5 shrink-0" aria-hidden="true" />
             <span className="sr-only">{t.event.price}: </span>
             {event.price ? (
               <PriceChips price={event.price} variant="auto" locale={locale} />
@@ -132,7 +132,7 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
             : event.rawTag && <Chip label={event.rawTag} />}
         </div>
         <EventDistance venue={event.venue} />
-        <ChevronRight className="size-5 shrink-0 text-fg-muted" aria-hidden="true" />
+        <ArrowSquareOutIcon className="size-5 shrink-0 text-fg-muted" aria-hidden="true" />
       </div>
     </Card>
   )

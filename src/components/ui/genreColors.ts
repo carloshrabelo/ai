@@ -16,7 +16,7 @@ const COLOR_CLASSES: Record<GenreColor | 'neutral', string> = {
   green: 'bg-genre-green text-genre-green-fg',
   lime: 'bg-genre-lime text-genre-lime-fg',
   teal: 'bg-genre-teal text-genre-teal-fg',
-  purple: 'bg-genre-purple text-genre-purple-fg',
+  slate: 'bg-genre-slate text-genre-slate-fg',
   magenta: 'bg-genre-magenta text-genre-magenta-fg',
   orange: 'bg-genre-orange text-genre-orange-fg',
   lavender: 'bg-genre-lavender text-genre-lavender-fg',

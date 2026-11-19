@@ -8,7 +8,16 @@
  * as utilities (bg-surface, text-fg-muted, bg-genre-wine…) apontam para elas.
  * Contraste de texto verificado em AA (≥ 4.5) nos dois temas.
  */
+/* Teste de tema estilo Duolingo (branch feat/duolingo-theme): Nunito no texto, Fredoka nos títulos. */
+@theme {
+  --font-sans: 'Nunito', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Fredoka', 'Nunito', ui-sans-serif, system-ui, sans-serif;
+}
+
 @theme inline {
+  --color-accent: var(--accent);
+  --color-badge: var(--badge);
+  --color-badge-fg: var(--badge-fg);
   --color-bg: var(--bg);
   --color-surface: var(--surface);
   --color-surface-muted: var(--surface-muted);
@@ -62,8 +71,8 @@
   --color-genre-teal: #0f766e;
   --color-genre-teal-fg: #ffffff;
   /* Swing */
-  --color-genre-purple: var(--genre-purple);
-  --color-genre-purple-fg: #ffffff;
+  --color-genre-slate: #52606d;
+  --color-genre-slate-fg: #ffffff;
   /* Tango */
   --color-genre-magenta: #c2306f;
   --color-genre-magenta-fg: #ffffff;
@@ -84,16 +93,24 @@
 @layer base {
   :root {
     color-scheme: light;
-    --bg: #e8f0f2;
+    /* Paleta do Duolingo: Polar, Swan, Eel, Wolf, Feather Green, Macaw. */
+    --bg: #f7f7f7;
     --surface: #ffffff;
-    --surface-muted: #f3f7f8;
-    --border: #d5e1e5;
-    --fg: #0f172a;
-    --fg-muted: #475569;
-    --brand: #0b7584; /* 4,67:1 sobre o fundo claro (AA para texto e links) */
+    --surface-muted: #f7f7f7;
+    --border: #e5e5e5;
+    --fg: #4b4b4b;
+    --fg-muted: #6f6f6f; /* Wolf (#777) um tom mais escuro: 4,69:1 (AA) */
+    /* Cores da logo: roxo do anel (principal), ciano das letras "Lisbon" (apoio) e rosa do brilho
+       (contador). Roxo com texto branco: 6,2:1 (AA). */
+    --brand: #6d3fd9;
     --brand-fg: #ffffff;
-    --header: #0e7f8f;
-    --header-fg: #ffffff;
+    --brand-shadow: #4e2aa6;
+    --brand-ink: #6d3fd9; /* textos e links: 5,8:1 sobre o fundo */
+    --accent: #0b7f9e; /* ciano da logo um tom mais escuro para texto: 4,6:1 */
+    --badge: #e04fd6; /* rosa da logo, com texto marinho da logo: 5:1 */
+    --badge-fg: #141450;
+    --header: #ffffff;
+    --header-fg: #4b4b4b;
 
     --genre-neutral: #e2e8f0;
     --genre-neutral-fg: #334155;
@@ -102,21 +119,25 @@
     --genre-royal-blue: #1d4ed8;
     --genre-black-gold: #1c1c1c;
     --genre-chocolate: #5d3a1a;
-    --genre-purple: #7e3fb8;
   }
 
   [data-theme='dark'] {
     color-scheme: dark;
-    --bg: #14162b;
-    --surface: #23264a;
-    --surface-muted: #1c1f3d;
-    --border: rgb(255 255 255 / 0.1);
-    --fg: #eef0ff;
-    --fg-muted: #a3a8d0;
-    --brand: #22c3d6;
-    --brand-fg: #0b1020;
-    --header: #14162b;
-    --header-fg: #eef0ff;
+    --bg: #131f24;
+    --surface: #202f36;
+    --surface-muted: #1a2a31;
+    --border: #37464f;
+    --fg: #f1f7fb;
+    --fg-muted: #9db3bf;
+    --brand: #6d3fd9;
+    --brand-fg: #ffffff;
+    --brand-shadow: #4e2aa6;
+    --brand-ink: #c98af5; /* lilás: o roxo como texto no escuro fica em 2,7:1; este, 5,5:1 */
+    --accent: #4dd4f5; /* ciano da logo: 7,9:1 */
+    --badge: #e04fd6;
+    --badge-fg: #141450;
+    --header: #131f24;
+    --header-fg: #f1f7fb;
 
     /* Cores escuras demais sobre o fundo azul-marinho ficam um tom mais claras (o preto do Afro vira
        chumbo, mantendo o texto amarelo). */
@@ -127,7 +148,13 @@
     --genre-royal-blue: #3b6fe0;
     --genre-black-gold: #454545;
     --genre-chocolate: #8a5a2b;
-    --genre-purple: #8f52c9;
+  }
+
+  /* Títulos na fonte "gordinha" (no Duolingo, Feather Bold). */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
   }
 
   html {
@@ -136,7 +163,7 @@
   }
 
   body {
-    @apply bg-bg text-fg antialiased;
+    @apply bg-bg font-sans font-semibold text-fg antialiased;
     overscroll-behavior: none;
   }
 
@@ -154,4 +181,10 @@
 /* Mapa no tema escuro: inverte só os tiles (pinos e controles mantêm as cores). */
 .map-dark .leaflet-tile-pane {
   filter: invert(1) hue-rotate(180deg) brightness(0.85) contrast(0.9);
+}
+
+/* Textos e links "brand" num tom próprio para texto (--brand-ink). Fora de camada: vence a utility
+   text-brand do Tailwind. */
+.text-brand {
+  color: var(--brand-ink);
 }

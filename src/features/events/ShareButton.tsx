@@ -1,4 +1,5 @@
-import { Check, Share2 } from 'lucide-react'
+import { Check } from 'lucide-react'
+import { ShareFatIcon } from '@phosphor-icons/react'
 import { useEffect, useState } from 'react'
 import { Button } from '../../components/ui/Button'
 import { lisbonDate } from '../../lib/dates'
@@ -44,7 +45,7 @@ export function ShareButton({ event }: { event: DanceEvent }) {
 
   return (
     <Button variant="secondary" onClick={share} aria-live="polite">
-      {copied ? <Check className="size-5" aria-hidden="true" /> : <Share2 className="size-5" aria-hidden="true" />}
+      {copied ? <Check className="size-5" aria-hidden="true" /> : <ShareFatIcon className="size-5" aria-hidden="true" />}
       {copied ? t.event.linkCopied : t.event.share}
     </Button>
   )

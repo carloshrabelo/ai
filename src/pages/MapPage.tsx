@@ -15,7 +15,7 @@ import { GenreFilter } from '../features/genres/GenreFilter'
 import { GenreFilterButton } from '../features/genres/GenreFilterButton'
 import { useGenreFilter } from '../features/genres/useGenreFilter'
 import { useGeocodedEvents } from '../features/location/useGeocodedEvents'
-import { useMediaQuery, XL_QUERY } from '../hooks/useMediaQuery'
+import { MD_QUERY, useMediaQuery } from '../hooks/useMediaQuery'
 import { useI18n } from '../i18n/useI18n'
 import { siteUrl, useDocumentHead } from '../seo/useDocumentHead'
 
@@ -26,15 +26,15 @@ const EventsMap = lazy(() => import('../features/map/EventsMap'))
 const DAY_PARAM = 'day'
 
 /**
- * Rota /mapa (celular e tablet): faixa de dias em cima, mapa no meio e os eventos do dia num
+ * Rota /mapa (celular): faixa de dias em cima, mapa no meio e os eventos do dia num
  * carrossel embaixo. O card visível no carrossel fica em foco no mapa; tocar num pino traz o
- * card dele; tocar no card abre os detalhes. A partir de `xl` o mapa já está na agenda.
+ * card dele; tocar no card abre os detalhes. A partir de `md` (tablet) o mapa já está na agenda.
  */
 export default function MapPage() {
   const { startDate } = useLoaderData() as EventsLoaderData
   const location = useLocation()
-  const isXl = useMediaQuery(XL_QUERY)
-  if (isXl) return <Navigate to={{ pathname: '/', search: location.search }} replace />
+  const isMd = useMediaQuery(MD_QUERY)
+  if (isMd) return <Navigate to={{ pathname: '/', search: location.search }} replace />
   return <DayMap key={startDate} startDate={startDate} />
 }
 
@@ -197,7 +197,7 @@ function DayMap({ startDate }: { startDate: IsoDate }) {
                 <li
                   key={event.id}
                   data-slug={event.slug}
-                  className={`grid snap-center rounded-xl transition-shadow ${
+                  className={`grid snap-center rounded-2xl transition-shadow ${
                     event.slug === active ? 'shadow-lg ring-2 ring-brand' : 'shadow-md'
                   }`}
                 >
