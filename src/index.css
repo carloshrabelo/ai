@@ -16,6 +16,8 @@
 
 @theme inline {
   --color-accent: var(--accent);
+  --color-badge: var(--badge);
+  --color-badge-fg: var(--badge-fg);
   --color-bg: var(--bg);
   --color-surface: var(--surface);
   --color-surface-muted: var(--surface-muted);
@@ -69,8 +71,8 @@
   --color-genre-teal: #0f766e;
   --color-genre-teal-fg: #ffffff;
   /* Swing */
-  --color-genre-purple: var(--genre-purple);
-  --color-genre-purple-fg: #ffffff;
+  --color-genre-slate: #52606d;
+  --color-genre-slate-fg: #ffffff;
   /* Tango */
   --color-genre-magenta: #c2306f;
   --color-genre-magenta-fg: #ffffff;
@@ -98,14 +100,15 @@
     --border: #e5e5e5;
     --fg: #4b4b4b;
     --fg-muted: #6f6f6f; /* Wolf (#777) um tom mais escuro: 4,69:1 (AA) */
-    /* Feather Green com texto branco, como no Duolingo: 2,1:1, abaixo do AA (4,5:1). Para passar,
-       usar texto escuro (--brand-fg: #131f24, 8:1), como o próprio Duolingo faz no tema escuro. */
-    --brand: #58cc02;
+    /* Cores da logo: roxo do anel (principal), ciano das letras "Lisbon" (apoio) e rosa do brilho
+       (contador). Roxo com texto branco: 6,2:1 (AA). */
+    --brand: #6d3fd9;
     --brand-fg: #ffffff;
-    --brand-shadow: #58a700;
-    /* Verde dos textos e links (o Feather Green como texto fica em 2,1:1): 5,1:1. */
-    --brand-ink: #3b7d00;
-    --accent: #1176a8; /* Macaw (#1cb0f6) um tom mais escuro para texto: 5:1 */
+    --brand-shadow: #4e2aa6;
+    --brand-ink: #6d3fd9; /* textos e links: 5,8:1 sobre o fundo */
+    --accent: #0b7f9e; /* ciano da logo um tom mais escuro para texto: 4,6:1 */
+    --badge: #e04fd6; /* rosa da logo, com texto marinho da logo: 5:1 */
+    --badge-fg: #141450;
     --header: #ffffff;
     --header-fg: #4b4b4b;
 
@@ -116,7 +119,6 @@
     --genre-royal-blue: #1d4ed8;
     --genre-black-gold: #1c1c1c;
     --genre-chocolate: #5d3a1a;
-    --genre-purple: #7e3fb8;
   }
 
   [data-theme='dark'] {
@@ -127,11 +129,13 @@
     --border: #37464f;
     --fg: #f1f7fb;
     --fg-muted: #9db3bf;
-    --brand: #58cc02;
-    --brand-fg: #131f24;
-    --brand-shadow: #46a302;
-    --brand-ink: #79d634;
-    --accent: #1cb0f6;
+    --brand: #6d3fd9;
+    --brand-fg: #ffffff;
+    --brand-shadow: #4e2aa6;
+    --brand-ink: #c98af5; /* lilás: o roxo como texto no escuro fica em 2,7:1; este, 5,5:1 */
+    --accent: #4dd4f5; /* ciano da logo: 7,9:1 */
+    --badge: #e04fd6;
+    --badge-fg: #141450;
     --header: #131f24;
     --header-fg: #f1f7fb;
 
@@ -144,7 +148,6 @@
     --genre-royal-blue: #3b6fe0;
     --genre-black-gold: #454545;
     --genre-chocolate: #8a5a2b;
-    --genre-purple: #8f52c9;
   }
 
   /* Títulos na fonte "gordinha" (no Duolingo, Feather Bold). */
@@ -180,8 +183,8 @@
   filter: invert(1) hue-rotate(180deg) brightness(0.85) contrast(0.9);
 }
 
-/* Textos e links "brand" no verde escuro (o Feather Green como texto não passa no AA). Fora de
-   camada: vence a utility text-brand do Tailwind. */
+/* Textos e links "brand" num tom próprio para texto (--brand-ink). Fora de camada: vence a utility
+   text-brand do Tailwind. */
 .text-brand {
   color: var(--brand-ink);
 }

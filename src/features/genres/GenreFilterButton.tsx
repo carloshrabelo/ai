@@ -31,7 +31,7 @@ export function GenreFilterButton({ open, onToggle, controls, activeCount }: Pro
       {activeCount > 0 && (
         <span
           aria-hidden="true"
-          className="absolute -top-1 -right-1 inline-flex size-5 items-center justify-center rounded-full bg-genre-red text-xs font-semibold text-genre-red-fg tabular-nums"
+          className="absolute -top-1 -right-1 inline-flex size-5 items-center justify-center rounded-full bg-badge text-xs font-semibold text-badge-fg tabular-nums"
         >
           {activeCount}
         </span>

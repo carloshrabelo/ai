@@ -71,7 +71,7 @@ export type GenreColor =
   | 'green'
   | 'lime'
   | 'teal'
-  | 'purple'
+  | 'slate'
   | 'magenta'
   | 'orange'
   | 'lavender'
@@ -96,7 +96,7 @@ export const genreToPalette: Record<Genre, GenreColor> = {
   Samba: 'green',
   Forró: 'lime',
   Zouk: 'teal',
-  Swing: 'purple',
+  Swing: 'slate', // cinza-ardósia: o roxo é a cor do app (logo)
   Tango: 'magenta',
   'West Coast Swing': 'orange',
   Bolero: 'lavender',
