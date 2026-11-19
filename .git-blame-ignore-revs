@@ -1,0 +1,3 @@
+# Commits só de formatação (git blame os ignora com blame.ignoreRevsFile; o GitHub já usa este arquivo).
+# oxfmt em todo o código
+29b8f2be7a89cd13f90952b9f3a6085b50fde303
