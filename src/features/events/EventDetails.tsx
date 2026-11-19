@@ -245,12 +245,12 @@ export function EventDetailsSkeleton() {
       <span className="sr-only">{t.event.loading}</span>
       <Skeleton className="h-8 w-3/4" />
       <div className="flex gap-2">
-        <Skeleton rounded="rounded-full" className="h-7 w-16" />
-        <Skeleton rounded="rounded-full" className="h-7 w-20" />
+        <Skeleton rounded="rounded-xl" className="h-7 w-16" />
+        <Skeleton rounded="rounded-xl" className="h-7 w-20" />
       </div>
       <Skeleton className="h-10 w-1/2" />
       <Skeleton className="h-10 w-2/3" />
-      <Skeleton className="h-11 w-48" rounded="rounded-lg" />
+      <Skeleton className="h-11 w-48" rounded="rounded-2xl" />
     </div>
   )
 }

@@ -150,8 +150,8 @@ export function WeekStrip({ startDate, activeDay, onSelect, genres = NO_GENRES, 
                     active ? 'bg-brand text-brand-fg' : 'text-fg hover:bg-surface-muted'
                   }`}
                 >
-                  <span className="text-sm font-semibold">{formatDayOfMonth(day, locale)}</span>
-                  <span className={`text-xs ${active ? '' : 'text-fg-muted'}`}>{formatWeekdayShort(day, locale)}</span>
+                  <span className="text-sm leading-tight font-bold">{formatDayOfMonth(day, locale)}</span>
+                  <span className={`text-[13px] leading-tight ${active ? '' : 'text-fg-muted'}`}>{formatWeekdayShort(day, locale)}</span>
                   {eventDays.has(day) && (
                     <span
                       aria-hidden="true"

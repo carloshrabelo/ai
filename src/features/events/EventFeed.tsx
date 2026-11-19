@@ -1,4 +1,4 @@
-import { CalendarXIcon, MagnifyingGlassIcon } from '@phosphor-icons/react'
+import { CalendarXIcon, MagnifyingGlassIcon, WarningCircleIcon } from '@phosphor-icons/react'
 import { QueryErrorResetBoundary, useSuspenseInfiniteQuery } from '@tanstack/react-query'
 import { Fragment, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { ErrorBoundary } from '../../components/ErrorBoundary'
@@ -84,9 +84,9 @@ function EventFeedContent({ startDate, genres, onOpenEvent }: FeedProps) {
   return (
     <div className="space-y-6" aria-busy={isFetchingNextPage}>
       {days.length === 0 && !hasNextPage && (
-        <div className="flex flex-col items-center gap-2 py-12 text-center text-fg-muted">
-          <CalendarXIcon className="size-12" aria-hidden="true" />
-          <p className="text-sm">{genres.length > 0 ? t.feed.emptyForGenres(genreNames) : t.feed.emptyFromDate}</p>
+        <div className="flex flex-col items-center gap-3 py-12 text-center">
+          <CalendarXIcon className="size-16 text-brand/70" aria-hidden="true" />
+          <p className="max-w-sm font-bold">{genres.length > 0 ? t.feed.emptyForGenres(genreNames) : t.feed.emptyFromDate}</p>
         </div>
       )}
 
@@ -129,17 +129,15 @@ function EventFeedContent({ startDate, genres, onOpenEvent }: FeedProps) {
           </Button>
         </div>
       ) : paused && !isFetchingNextPage ? (
-        <div role="status" className="flex flex-col items-center gap-2 py-4 text-center">
-          <MagnifyingGlassIcon className="size-8 text-fg-muted" aria-hidden="true" />
-          <p className="text-sm text-fg-muted">
+        <div role="status" className="flex flex-col items-center gap-3 py-6 text-center">
+          <MagnifyingGlassIcon className="size-14 text-brand/70" aria-hidden="true" />
+          <p className="max-w-sm font-bold">
             {(days.length === 0 ? t.feed.pausedNone : t.feed.pausedNoOther)(
               genreNames,
               formatDayInSentence(lastSearchedDay(data.pages, startDate), locale),
             )}
           </p>
-          <Button variant="secondary" onClick={searchMore}>
-            {t.feed.searchMore}
-          </Button>
+          <Button onClick={searchMore}>{t.feed.searchMore}</Button>
         </div>
       ) : hasNextPage ? (
         !isFetchingNextPage && (
@@ -186,8 +184,9 @@ function EventFeedSkeleton() {
 function FeedError({ onRetry }: { onRetry: () => void }) {
   const { t } = useI18n()
   return (
-    <div role="alert" className="flex flex-col items-center gap-4 py-12 text-center">
-      <p className="text-sm text-fg-muted">{t.feed.loadError}</p>
+    <div role="alert" className="flex flex-col items-center gap-3 py-12 text-center">
+      <WarningCircleIcon className="size-16 text-brand/70" aria-hidden="true" />
+      <p className="font-bold">{t.feed.loadError}</p>
       <Button onClick={onRetry}>{t.feed.retry}</Button>
     </div>
   )

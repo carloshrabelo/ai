@@ -18,7 +18,7 @@ export function EventStatusBadge({ status }: { status: NonNullable<DanceEvent['s
   const { icon: Icon, classes } = STATUS[status]
   const label = t.event[status]
   return (
-    <span className={`inline-flex h-7 shrink-0 items-center gap-1 rounded-xl px-2 text-xs font-bold ${classes}`}>
+    <span className={`inline-flex h-7 shrink-0 items-center gap-1 rounded-xl px-2 text-[13px] font-bold ${classes}`}>
       <Icon className="size-4" aria-hidden="true" />
       {label}
     </span>

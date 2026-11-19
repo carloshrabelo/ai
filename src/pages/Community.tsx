@@ -21,10 +21,12 @@ import {
   WHATSAPP_GROUPS,
 } from '../content/community'
 import { useI18n } from '../i18n/useI18n'
+import { Chip } from '../components/ui/Chip'
+import { buttonClassName } from '../components/ui/buttonStyles'
 import { siteUrl, useDocumentHead } from '../seo/useDocumentHead'
 
 const LINK_ROW =
-  'flex min-h-11 items-center gap-3 rounded-lg px-3 py-2 hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand'
+  'flex min-h-11 items-center gap-3 rounded-xl px-3 py-2 hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand'
 
 /**
  * Rota "/community": o que está em https://pasdedeux.pt/outros.html (outros calendários, grupos do
@@ -58,26 +60,26 @@ export default function Community() {
         <p className="text-sm text-fg-muted">{t.community.subscribeHint}</p>
         <ul className="divide-y divide-border">
           {PASDEDEUX_CALENDARS.map(({ name, id }) => (
-            <li key={id} className="flex flex-wrap items-center gap-x-2 gap-y-1 py-2">
-              <span className="min-w-0 flex-1 text-sm font-medium">{name}</span>
-              <a
-                href={webcalUrl(id)}
-                className="inline-flex h-11 items-center gap-1 rounded-lg px-3 text-sm font-medium text-brand hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-brand"
-              >
-                <CalendarPlusIcon className="size-4" aria-hidden="true" />
-                {t.community.subscribeAction}
-              </a>
-              <CopyButton text={icsUrl(id)} label={`${t.community.copyLink}: ${name}`} />
-              <a
-                href={googleCalendarUrl(id)}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${t.community.openGoogle}: ${name}`}
-                title={t.community.openGoogle}
-                className="inline-flex size-11 items-center justify-center rounded-lg text-fg-muted hover:bg-surface-muted hover:text-fg focus-visible:outline-2 focus-visible:outline-brand"
-              >
-                <ArrowSquareOutIcon className="size-4" aria-hidden="true" />
-              </a>
+            // Nome em cima e ações embaixo: no celular, os nomes longos não quebram ao lado dos botões.
+            // "Assinar" (webcal) no app de agenda; copiar o link .ics; abrir no Google Agenda.
+            <li key={id} className="space-y-2 py-3">
+              <p className="text-sm font-bold">{name}</p>
+              <div className="flex flex-wrap items-center gap-1">
+                <a href={webcalUrl(id)} className={buttonClassName('secondary', 'h-9 px-2 text-xs')}>
+                  <CalendarPlusIcon className="size-4" aria-hidden="true" />
+                  {t.community.subscribeAction}
+                </a>
+                <a
+                  href={googleCalendarUrl(id)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${t.community.openGoogle}: ${name}`}
+                  className={buttonClassName('ghost', 'h-9 px-2 text-xs')}
+                >
+                  Google
+                </a>
+                <CopyButton text={icsUrl(id)} label={`${t.community.copyLink}: ${name}`} />
+              </div>
             </li>
           ))}
         </ul>
@@ -88,8 +90,8 @@ export default function Community() {
 
 function SectionTitle({ icon: Icon, children }: { icon: Icon; children: ReactNode }) {
   return (
-    <h2 className="flex items-center gap-2 text-base font-semibold">
-      <Icon className="size-5 text-fg-muted" aria-hidden="true" />
+    <h2 className="flex items-center gap-2 text-base font-bold">
+      <Icon className="size-6 text-brand" aria-hidden="true" />
       {children}
     </h2>
   )
@@ -101,11 +103,12 @@ function LinkSection({ title, icon, links, columns = false }: { title: string; i
     <Card className="space-y-2">
       <SectionTitle icon={icon}>{title}</SectionTitle>
       <ul className={`-mx-3 ${columns ? 'grid sm:grid-cols-2' : ''}`}>
-        {links.map(({ name, url, detail }) => (
+        {links.map(({ name, url, detail, genre }) => (
           <li key={url}>
             <a href={url} target="_blank" rel="noopener noreferrer" className={LINK_ROW}>
-              <span className="min-w-0 flex-1">
-                <span className="block text-sm font-medium">{name}</span>
+              <span className="min-w-0 flex-1 space-y-1">
+                {/* Com estilo: o nome no chip colorido do estilo, como nas tags dos eventos. */}
+                {genre ? <Chip genre={genre} label={name} /> : <span className="block text-sm font-bold">{name}</span>}
                 {detail && <span className="block truncate text-xs text-fg-muted">{detail}</span>}
               </span>
               <ArrowSquareOutIcon className="size-4 shrink-0 text-fg-muted" aria-hidden="true" />
@@ -131,9 +134,10 @@ function CopyButton({ text, label }: { text: string; label: string }) {
         setCopied(true)
         setTimeout(() => setCopied(false), 2000)
       }}
-      className="inline-flex size-11 cursor-pointer items-center justify-center rounded-lg text-fg-muted hover:bg-surface-muted hover:text-fg focus-visible:outline-2 focus-visible:outline-brand"
+      className={buttonClassName('ghost', 'h-9 px-2 text-xs')}
     >
       {copied ? <CheckIcon className="size-4 text-brand" aria-hidden="true" /> : <CopyIcon className="size-4" aria-hidden="true" />}
+      {copied ? t.community.copied : t.community.copyShort}
     </button>
   )
 }

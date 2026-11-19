@@ -101,14 +101,14 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
       {/* Conteúdo: largura toda do card (o calendário não ocupa mais uma coluna). */}
       <div className="space-y-1.5">
         {event.venue && (
-          <p className="flex items-center gap-2 text-sm text-fg-muted">
+          <p className="flex items-center gap-2 text-[15px] text-fg-muted sm:text-sm">
             <MapPinIcon className="size-5 shrink-0" aria-hidden="true" />
             <span className="truncate">{event.venue.name}</span>
           </p>
         )}
         {/* Horário e preço na mesma linha, o preço à direita; preço longo quebra para a linha de baixo
             (e fica à esquerda). */}
-        <p className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-sm text-fg-muted">
+        <p className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-[15px] text-fg-muted sm:text-sm">
           <span className="flex items-center gap-2 tabular-nums">
             <ClockIcon className="size-5 shrink-0" aria-hidden="true" />
             <span className="sr-only">{t.event.time}: </span>
@@ -150,9 +150,9 @@ export function EventCardSkeleton({ className = '' }: { className?: string }) {
         <Skeleton className="h-5 w-1/3" />
       </div>
       <div className="flex gap-2">
-        <Skeleton rounded="rounded-full" className="h-7 w-16" />
-        <Skeleton rounded="rounded-full" className="h-7 w-20" />
-        <Skeleton rounded="rounded-full" className="h-7 w-14" />
+        <Skeleton rounded="rounded-xl" className="h-7 w-16" />
+        <Skeleton rounded="rounded-xl" className="h-7 w-20" />
+        <Skeleton rounded="rounded-xl" className="h-7 w-14" />
       </div>
     </Card>
   )
