@@ -135,7 +135,7 @@ const DANCE: Option[] = [
   { name: 'Music', icon: Music, note: 'Anterior. Genérico: lembra app de música.' },
   { name: 'Footprints', icon: Footprints, note: 'Passos de dança; não confunde com player de música.' },
   { name: 'PartyPopper', icon: PartyPopper, note: 'Festa, evento social.' },
-  { name: 'Disc3', icon: Disc3, note: 'Vinil / DJ: noite, pista.', current: true },
+  { name: 'Disc3', icon: Disc3, note: 'Anterior. Vinil / DJ: noite, pista.' },
   { name: 'CalendarHeart', icon: CalendarHeart, note: 'Agenda (o que a tela é) com afeto.' },
   { name: 'CalendarDays', icon: CalendarDays, note: 'Agenda, direto ao ponto.' },
   { name: 'Users', icon: Users, note: 'Pessoas, comunidade, social.' },
@@ -145,7 +145,7 @@ const DANCE: Option[] = [
   { name: 'Flame', icon: Flame, note: 'Energia, "hot", latino.' },
   { name: 'Music2', icon: Music2, note: 'Variação da nota musical.' },
   { name: 'AudioLines', icon: AudioLines, note: 'Som / ritmo, moderno.' },
-  { lib: 'phosphor', name: 'DiscoBall', icon: DiscoBallIcon, note: 'Globo de discoteca: pista e noite, sem parecer player de música.' },
+  { lib: 'phosphor', name: 'DiscoBall', icon: DiscoBallIcon, note: 'Globo de discoteca: pista e noite, sem parecer player de música.', current: true },
   { lib: 'phosphor', name: 'SneakerMove', icon: SneakerMoveIcon, note: 'Tênis em movimento: dançar.' },
   { lib: 'phosphor', name: 'PersonArmsSpread', icon: PersonArmsSpreadIcon, note: 'Pessoa de braços abertos: alegria, movimento.' },
   { lib: 'phosphor', name: 'PersonSimpleTaiChi', icon: PersonSimpleTaiChiIcon, note: 'Pose em movimento; lembra um passo.' },
@@ -213,7 +213,7 @@ const INFO_NAMES: NameOption[] = [
 ]
 
 const INFO_ICONS: Option[] = [
-  { name: 'Info', icon: Info, note: 'Combina com "Info" e "Sobre".', current: true },
+  { name: 'Info', icon: Info, note: 'Anterior. Combina com "Info" e "Sobre".' },
   { name: 'Ellipsis', icon: Ellipsis, note: 'Combina com "Mais".' },
   { name: 'CircleEllipsis', icon: CircleEllipsis, note: '"Mais" com o mesmo peso visual dos outros.' },
   { name: 'Menu', icon: Menu, note: 'Combina com "Menu".' },
@@ -225,7 +225,7 @@ const INFO_ICONS: Option[] = [
   { name: 'BookOpen', icon: BookOpen, note: 'Sobre / leia mais.' },
   { name: 'Smile', icon: Smile, note: 'Amigável, "olá".' },
   { name: 'Sparkle', icon: Sparkle, note: 'O app em si.' },
-  { lib: 'phosphor', name: 'Info', icon: InfoIcon, note: 'Info no traço Phosphor.' },
+  { lib: 'phosphor', name: 'Info', icon: InfoIcon, note: 'Info no traço Phosphor.', current: true },
   { lib: 'phosphor', name: 'Question', icon: QuestionIcon, note: 'Ajuda.' },
   { lib: 'phosphor', name: 'BookOpenText', icon: BookOpenTextIcon, note: 'Sobre / leia mais.' },
   { lib: 'phosphor', name: 'DotsThreeCircle', icon: DotsThreeCircleIcon, note: '"Mais".' },
