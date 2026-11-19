@@ -1,4 +1,4 @@
-import { type Role, ROLES } from '../../domain/promoters'
+import { type Role, ROLES } from '../../../domain/promoters'
 import { ROLE_LABEL, type RoleFilter } from './roleLabels'
 
 /** Filtro por papel (promotor, DJ, professor…), com a contagem de cada um. */

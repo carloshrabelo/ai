@@ -62,7 +62,7 @@ export const router = createBrowserRouter(
             {
               path: 'precos',
               handle: { title: () => 'Preços (teste)' } satisfies RouteHandle,
-              lazy: { Component: async () => (await import('./pages/test/Prices')).default },
+              lazy: { Component: async () => (await import('./pages/test/price/Prices')).default },
             },
             {
               path: 'formato-precos',
@@ -72,27 +72,27 @@ export const router = createBrowserRouter(
             {
               path: 'sem-preco',
               handle: { title: () => 'Sem preço (teste)' } satisfies RouteHandle,
-              lazy: { Component: async () => (await import('./pages/test/NoPrice')).default },
+              lazy: { Component: async () => (await import('./pages/test/price/NoPrice')).default },
             },
             {
               path: 'promotores',
               handle: { title: () => 'Promotores (teste)' } satisfies RouteHandle,
-              lazy: { Component: async () => (await import('./pages/test/Promoters')).default },
+              lazy: { Component: async () => (await import('./pages/test/promoters/Promoters')).default },
             },
             {
               path: 'icones',
               handle: { title: () => 'Ícones (teste)' } satisfies RouteHandle,
-              lazy: { Component: async () => (await import('./pages/test/Icons')).default },
+              lazy: { Component: async () => (await import('./pages/test/visual/Icons')).default },
             },
             {
               path: 'envolvidos',
               handle: { title: () => 'Envolvidos (teste)' } satisfies RouteHandle,
-              lazy: { Component: async () => (await import('./pages/test/People')).default },
+              lazy: { Component: async () => (await import('./pages/test/promoters/People')).default },
             },
             {
               path: 'diretorio-promotores',
               handle: { title: () => 'Diretório de promotores (teste)' } satisfies RouteHandle,
-              lazy: { Component: async () => (await import('./pages/test/PromoterDirectory')).default },
+              lazy: { Component: async () => (await import('./pages/test/promoters/PromoterDirectory')).default },
             },
           ],
         },

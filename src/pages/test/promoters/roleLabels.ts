@@ -1,4 +1,4 @@
-import type { Role } from '../../domain/promoters'
+import type { Role } from '../../../domain/promoters'
 
 export const ROLE_LABEL: Record<Role, string> = {
   promoter: 'Promotor',

@@ -1,13 +1,13 @@
 import { useState } from 'react'
-import { Card } from '../../components/ui/Card'
-import { Chip } from '../../components/ui/Chip'
-import { genreColorClasses } from '../../components/ui/genreColors'
-import promoters from '../../content/promoters.json'
-import { type Genre, GENRES } from '../../domain/genres'
-import type { PromoterDirectory, PromoterEntry } from '../../domain/promoterDirectory'
-import { type Role, ROLES } from '../../domain/promoters'
-import { siteUrl, useDocumentHead } from '../../seo/useDocumentHead'
-import { BackToTest } from './shared'
+import { Card } from '../../../components/ui/Card'
+import { Chip } from '../../../components/ui/Chip'
+import { genreColorClasses } from '../../../components/ui/genreColors'
+import promoters from '../../../content/promoters.json'
+import { type Genre, GENRES } from '../../../domain/genres'
+import type { PromoterDirectory, PromoterEntry } from '../../../domain/promoterDirectory'
+import { type Role, ROLES } from '../../../domain/promoters'
+import { siteUrl, useDocumentHead } from '../../../seo/useDocumentHead'
+import { BackToTest } from '../shared'
 
 const DIRECTORY = Object.entries(promoters as unknown as PromoterDirectory)
 
