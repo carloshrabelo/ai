@@ -134,7 +134,7 @@ export function WeekStrip({ startDate, activeDay, onSelect, genres = NO_GENRES, 
           aria-label={t.dates.days}
           onScroll={updateEdges}
           style={{ maskImage: mask, WebkitMaskImage: mask }}
-          className="flex snap-x scroll-px-1 gap-1 overflow-x-auto px-1 [scrollbar-width:none]"
+          className="flex snap-x scroll-px-2 gap-1 overflow-x-auto px-2 [scrollbar-width:none]"
         >
           {days.map((day) => {
             const active = day === activeDay
