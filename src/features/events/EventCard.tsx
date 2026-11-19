@@ -9,6 +9,7 @@ import { visibleGenres } from '../../domain/genres'
 import { EventDistance } from '../location/EventDistance'
 import { eventFocus, useEventFocus } from './eventFocusStore'
 import { EventStatusBadge } from './EventStatusBadge'
+import { PriceChips } from './PriceChips'
 import { formatTimeRange } from './format'
 import { useI18n } from '../../i18n/useI18n'
 import { slugify } from '../../domain/slug'
@@ -16,7 +17,6 @@ import { eventUrl } from '../../seo/useDocumentHead'
 import { detectPlatform } from '../location/navigationLink'
 import { trackEvent } from '../tracking/trackedEvents'
 import { downloadIcs, googleCalendarUrl } from './calendarLinks'
-import { translatePrice } from '../../i18n/price'
 
 const ICON_LINK =
   'relative z-10 inline-flex size-11 shrink-0 items-center justify-center rounded-lg text-fg-muted hover:bg-surface-muted hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand'
@@ -81,7 +81,7 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
               <span className="flex min-w-0 items-center gap-2">
                 <Ticket className="size-5 shrink-0" aria-hidden="true" />
                 <span className="sr-only">{t.event.price}: </span>
-                {translatePrice(event.price, locale)}
+                <PriceChips price={event.price} variant="auto" locale={locale} />
               </span>
             )}
           </p>

@@ -15,7 +15,7 @@ describe('labeledPrice', () => {
       },
     ],
     ['5€ / 3€ for students of LeT', { kind: 'alternatives', options: [{ amount: 5 }, { amount: 3, label: 'students', labelArg: 'LeT' }] }],
-    ['10€ (8€ bebida incluída)', { kind: 'alternatives', options: [{ amount: 10 }, { amount: 8, label: 'drink' }] }],
+    ['10€ (8€ bebida incluída)', { kind: 'alternatives', options: [{ amount: 10 }, { amount: 8, label: 'drink', detail: true }] }],
     ['20€ ou 15€ (alunos)', { kind: 'alternatives', options: [{ amount: 20 }, { amount: 15, label: 'students' }] }],
     ['7€ ou 9€ (porta)', { kind: 'alternatives', options: [{ amount: 7 }, { amount: 9, label: 'door' }] }],
     [

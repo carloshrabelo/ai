@@ -17,6 +17,11 @@ export type PriceOption = {
   labelArg?: string
   /** Qualificação não reconhecida, como veio. */
   rawLabel?: string
+  /**
+   * Detalhe do valor anterior, não uma opção à parte: veio entre parênteses
+   * ("10€ (8€ bebida incluída)": o 8€ explica os 10€). Na exibição, fica junto dele.
+   */
+  detail?: true
 }
 
 export type LabeledPrice = {
@@ -97,7 +102,7 @@ export function labeledPrice(raw: string): LabeledPrice {
     const amountInParen = paren.match(new RegExp(`^(${AMOUNT})\\s*(.*)$`, 'u'))
     const last = options.at(-1)
     if (amountInParen && options.some((item) => item.amount !== undefined)) {
-      options.push({ amount: toNumber(amountInParen[1]), ...classify(amountInParen[2]) })
+      options.push({ amount: toNumber(amountInParen[1]), ...classify(amountInParen[2]), detail: true })
     } else if (!amountInParen && last && !last.label && !last.rawLabel && last.amount !== undefined) {
       Object.assign(last, classify(paren))
     } else note = paren

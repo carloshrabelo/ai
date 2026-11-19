@@ -74,7 +74,7 @@ export default function PriceFormats() {
   const [locale, setLocale] = useState<Locale>('pt-BR')
   const [format, setFormat] = useState<PriceFormatId>('text')
   const chosen = PRICE_FORMATS.find((item) => item.id === format)
-  const [chipVariant, setChipVariant] = useState<PriceChipVariant>('inline')
+  const [chipVariant, setChipVariant] = useState<PriceChipVariant>('auto')
   const chosenChip = PRICE_CHIP_VARIANTS.find((item) => item.id === chipVariant)
 
   return (

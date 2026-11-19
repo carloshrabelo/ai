@@ -68,6 +68,32 @@ function describe(option: PriceOption, locale: Locale): { value: string; label?:
   return { value, ...(option.free ? { icon: Gift } : {}) }
 }
 
+type Item = ReturnType<typeof describe> & { detail: boolean }
+
+/** Chips unidos, separados por traço (valor e o seu detalhe, ou a variação "Grupo"). */
+function Joined({ items }: { items: Item[] }) {
+  return (
+    <span className="inline-flex divide-x divide-border overflow-hidden rounded-full border border-border text-xs tabular-nums">
+      {items.map(({ value, label }) => (
+        <span key={value + label} className="px-2 py-0.5 whitespace-nowrap">
+          <span className="font-semibold">{value}</span>
+          {label && <span className="text-fg-muted"> {label}</span>}
+        </span>
+      ))}
+    </span>
+  )
+}
+
+/** Cada valor com os seus detalhes logo depois: [[10€, 8€ bebida incluída]], [[5€], [10€]]. */
+function groupDetails(items: Item[]): Item[][] {
+  const groups: Item[][] = []
+  for (const item of items) {
+    if (item.detail && groups.length > 0) groups[groups.length - 1].push(item)
+    else groups.push([item])
+  }
+  return groups
+}
+
 const CHIP = 'inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 text-xs tabular-nums whitespace-nowrap'
 
 /** Um preço do calendário (texto cru) em chips, na variação escolhida. */
@@ -81,9 +107,10 @@ export function PriceChips({ price, variant, locale }: { price: string; variant:
               locale === 'pt-BR'
                 ? `${money(parsed.options[0].amount ?? 0, locale).replace('€', '')}–${money(parsed.options[1].amount ?? 0, locale)}`
                 : `${money(parsed.options[0].amount ?? 0, locale)}–${money(parsed.options[1].amount ?? 0, locale).replace('€', '')}`,
-          } as ReturnType<typeof describe>,
+            detail: false,
+          } as Item,
         ]
-      : parsed.options.map((option) => describe(option, locale))
+      : parsed.options.map((option) => ({ ...describe(option, locale), detail: !!option.detail }))
   // Observação no idioma ("5€?" → "€5?"), sem a maiúscula que o translatePrice põe no começo.
   const note = parsed.note && translatePrice(parsed.note, locale)
   const extras = [
@@ -96,14 +123,26 @@ export function PriceChips({ price, variant, locale }: { price: string; variant:
   if (variant === 'segmented') {
     return (
       <span className="inline-flex flex-wrap items-center gap-1">
-        <span className="inline-flex divide-x divide-border overflow-hidden rounded-full border border-border text-xs tabular-nums">
-          {items.map(({ value, label }) => (
-            <span key={value + label} className="px-2 py-0.5 whitespace-nowrap">
-              <span className="font-semibold">{value}</span>
-              {label && <span className="text-fg-muted"> {label}</span>}
+        <Joined items={items} />
+        {trailing}
+      </span>
+    )
+  }
+
+  // Rótulo no chip; um valor com detalhe fica unido a ele, em grupo.
+  if (variant === 'auto') {
+    return (
+      <span className="inline-flex flex-wrap items-center gap-1">
+        {groupDetails(items).map((group) =>
+          group.length > 1 ? (
+            <Joined key={group.map((item) => item.value).join()} items={group} />
+          ) : (
+            <span key={group[0].value + group[0].label} className={CHIP}>
+              <span className="font-semibold">{group[0].value}</span>
+              {group[0].label && <span className="text-fg-muted">{group[0].label}</span>}
             </span>
-          ))}
-        </span>
+          ),
+        )}
         {trailing}
       </span>
     )

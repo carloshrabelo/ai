@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Button } from '../../components/ui/Button'
 import { Card } from '../../components/ui/Card'
+import { PriceChips } from '../../features/events/PriceChips'
 import { normalizePrice, translatePrice } from '../../i18n/price'
 import { siteUrl, useDocumentHead } from '../../seo/useDocumentHead'
 import { BackToTest, RangeFields } from './shared'
@@ -89,6 +90,9 @@ export default function Prices() {
                 <th scope="col" className="px-4 py-2 font-medium">
                   en-US
                 </th>
+                <th scope="col" className="px-4 py-2 font-medium">
+                  No app (chips)
+                </th>
                 <th scope="col" className="px-4 py-2 text-right font-medium">
                   Eventos
                 </th>
@@ -106,6 +110,14 @@ export default function Prices() {
                         sem tradução
                       </span>
                     )}
+                  </td>
+                  <td className="space-y-1 px-4 py-2">
+                    <span className="block">
+                      <PriceChips price={row.price} variant="auto" locale="pt-BR" />
+                    </span>
+                    <span className="block">
+                      <PriceChips price={row.price} variant="auto" locale="en-US" />
+                    </span>
                   </td>
                   <td className="px-4 py-2 text-right tabular-nums">{row.count}</td>
                 </tr>

@@ -2,6 +2,11 @@
 
 export const PRICE_CHIP_VARIANTS = [
   { id: 'plain', label: 'Só valores', hint: 'Um chip por valor; qualificações saem.' },
+  {
+    id: 'auto',
+    label: 'Rótulo no chip + grupo',
+    hint: 'Rótulo no chip; um valor com detalhe ("10€ (8€ bebida incluída)") fica unido ao detalhe, em grupo. É o usado no app.',
+  },
   { id: 'inline', label: 'Rótulo no chip', hint: 'Valor em negrito e o rótulo ao lado, no mesmo chip.' },
   { id: 'stacked', label: 'Rótulo embaixo', hint: 'Valor em cima, rótulo pequeno embaixo.' },
   { id: 'icon', label: 'Ícone', hint: 'Rótulo como ícone (texto no title e para leitor de tela).' },
