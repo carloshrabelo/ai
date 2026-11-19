@@ -1,4 +1,4 @@
-import { addDays, type IsoDate } from '../../data/dates'
+import { addDays, type IsoDate } from '../../lib/dates'
 import { formatShortDay } from '../events/format'
 import { useI18n } from '../../i18n/useI18n'
 

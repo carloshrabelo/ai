@@ -1,8 +1,8 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { type RefObject, useCallback, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router'
-import type { IsoDate } from '../../data/dates'
-import { eventsInfiniteQueryOptions } from '../../data/queries'
+import type { IsoDate } from '../../lib/dates'
+import { eventsInfiniteQueryOptions } from '../../api/queries'
 
 const DAY_HEADINGS = '[data-day]'
 

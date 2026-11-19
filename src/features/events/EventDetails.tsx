@@ -2,7 +2,7 @@ import { BellPlus, CalendarArrowDown, CalendarPlus, Clock, MapPin, Navigation, T
 import { type ReactNode, useMemo } from 'react'
 import { Chip } from '../../components/ui/Chip'
 import { Skeleton } from '../../components/ui/Skeleton'
-import { lisbonDate } from '../../data/dates'
+import { lisbonDate } from '../../lib/dates'
 import type { DanceEvent } from '../../domain/event'
 import { visibleGenres } from '../../domain/genres'
 import { renderDescription } from './description'

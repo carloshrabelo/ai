@@ -1,25 +1,8 @@
 import { type CalendarSource, fromTangoLx, fromTradicionais, TANGO_CALENDAR_ID, TRADICIONAIS_CALENDAR_ID } from '../domain/calendarSources'
+import type { GCalDateTime, GCalEvent } from '../domain/gcal'
 import { CALENDAR_ID, GOOGLE_API_KEY, MOCK_DELAY_MS, USE_MOCK } from './config'
-import { lisbonMidnight, todayIso } from './dates'
+import { lisbonMidnight, todayIso } from '../lib/dates'
 import { shiftMockEvents } from './mockDates'
-
-/** Início/fim de um evento: `date` para dia inteiro, `dateTime` para evento com hora. */
-export type GCalDateTime = { date?: string; dateTime?: string; timeZone?: string }
-
-/** Campos do evento da Google Calendar API v3 que o app usa. */
-export type GCalEvent = {
-  id: string
-  status: string
-  htmlLink: string
-  summary?: string
-  description?: string
-  location?: string
-  start: GCalDateTime
-  end: GCalDateTime
-  recurringEventId?: string
-  /** Calendário de origem: preenchido pelo app depois da busca (não vem da API). Sem ele, o principal. */
-  source?: CalendarSource
-}
 
 type GCalEventsResponse = {
   items?: GCalEvent[]

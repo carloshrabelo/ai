@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { Card } from '../../components/ui/Card'
 import { Chip } from '../../components/ui/Chip'
 import { Segmented } from '../../components/ui/Segmented'
-import promoters from '../../data/promoters.json'
+import promoters from '../../content/promoters.json'
 import { type Genre, GENRES } from '../../domain/genres'
 import { type PromoterDirectory as Directory, similarHandles, SOCIAL_KINDS, type SocialKind } from '../../domain/promoterDirectory'
 import { type Role, ROLES } from '../../domain/promoters'
@@ -32,7 +32,7 @@ const isGenre = (value: string): value is Genre => (GENRES as readonly string[])
 
 /**
  * Página de teste (/teste/diretorio-promotores, pública mas sem link no app): o conteúdo de
- * src/data/promoters.json, atualizado todo dia pela Action "Update promoters"
+ * src/content/promoters.json, atualizado todo dia pela Action "Update promoters"
  * (scripts/promoters-update.mjs): papel (promotor, DJ, professor, local, outro), redes sociais, locais
  * e estilos de cada perfil, e os perfis que parecem o mesmo escrito de outro jeito.
  */
@@ -79,7 +79,7 @@ export default function PromoterDirectory() {
       <Card className="space-y-3">
         <h2 className="text-lg font-semibold">Diretório de promotores</h2>
         <p className="text-sm text-fg-muted">
-          <code className="rounded bg-surface-muted px-1">src/data/promoters.json</code>, atualizado todo dia pela Action{' '}
+          <code className="rounded bg-surface-muted px-1">src/content/promoters.json</code>, atualizado todo dia pela Action{' '}
           <em>Update promoters</em> (ou <code className="rounded bg-surface-muted px-1">pnpm promoters:update</code>). Nome e redes podem
           ser editados à mão (<code className="rounded bg-surface-muted px-1">name</code>,{' '}
           <code className="rounded bg-surface-muted px-1">role</code>, redes, <code className="rounded bg-surface-muted px-1">aliases</code>

@@ -1,7 +1,7 @@
 import { Check, Share2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Button } from '../../components/ui/Button'
-import { lisbonDate } from '../../data/dates'
+import { lisbonDate } from '../../lib/dates'
 import type { DanceEvent } from '../../domain/event'
 import { useI18n } from '../../i18n/useI18n'
 import { eventUrl } from '../../seo/useDocumentHead'

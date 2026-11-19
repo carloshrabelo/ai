@@ -39,7 +39,7 @@ const vite = await createServer({
 
 try {
   const { loadEvents, renderEventPage, renderHomePage, renderSitemap } = await vite.ssrLoadModule('/src/seo/prerender.ts')
-  const { addDays, todayIso } = await vite.ssrLoadModule('/src/data/dates.ts')
+  const { addDays, todayIso } = await vite.ssrLoadModule('/src/lib/dates.ts')
 
   const template = readFileSync(join(outDir, 'index.html'), 'utf8')
   writeFileSync(join(outDir, '404.html'), template)

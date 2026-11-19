@@ -1,5 +1,5 @@
 import { lazy, Suspense, useMemo } from 'react'
-import { type IsoDate, lisbonDate } from '../../data/dates'
+import { type IsoDate, lisbonDate } from '../../lib/dates'
 import type { GenreFilterValue } from '../../domain/genreFilter'
 import { formatDayHeading, formatTimeRange } from '../events/format'
 import { useDayEvents } from '../events/useDayEvents'

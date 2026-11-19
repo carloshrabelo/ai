@@ -1,4 +1,4 @@
-import type { IsoDate } from '../../data/dates'
+import type { IsoDate } from '../../lib/dates'
 import type { DanceEvent } from '../../domain/event'
 
 /** Como o evento estava quando a pessoa o adicionou ao calendário. */

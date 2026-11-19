@@ -3,7 +3,7 @@ import type { DanceEvent } from './event'
 import { visibleGenres } from './genres'
 import { extractPromoters, type Role, ROLES } from './promoters'
 
-// Diretório de perfis (src/data/promoters.json), montado a partir dos eventos por
+// Diretório de perfis (src/content/promoters.json), montado a partir dos eventos por
 // scripts/promoters-update.mjs, como o venues.json. Uma entrada por perfil do Instagram, com o papel
 // (promotor, DJ, professor, local, outro), redes sociais, locais e estilos (sem a lista de eventos).
 // Edição à mão: `name`, `role`, redes e `aliases` (grafias erradas do mesmo perfil, que passam a

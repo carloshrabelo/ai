@@ -59,7 +59,7 @@ const SECTIONS: Section[] = [
   },
   {
     title: 'Diretório de promotores',
-    description: 'src/data/promoters.json, atualizado todo dia pela Action "Update promoters" (pnpm promoters:update).',
+    description: 'src/content/promoters.json, atualizado todo dia pela Action "Update promoters" (pnpm promoters:update).',
     tools: [
       {
         to: '/teste/diretorio-promotores',

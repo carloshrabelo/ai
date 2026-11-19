@@ -81,7 +81,7 @@ pnpm dev
 | `pnpm lint` | Lint (oxlint). |
 | `pnpm format` / `pnpm format:check` | Formata o código (oxfmt: aspas simples, sem ponto e vírgula, 140 colunas; Markdown fica de fora) / só confere, como no CI. |
 | `pnpm knip` | Arquivos, exportações e dependências sem uso (Knip). Roda no CI. |
-| `pnpm venues:check [dias] [--fix]` | Lista os locais dos próximos eventos sem coordenadas; com `--fix`, busca e grava em `src/data/venues.json`. |
+| `pnpm venues:check [dias] [--fix]` | Lista os locais dos próximos eventos sem coordenadas; com `--fix`, busca e grava em `src/content/venues.json`. |
 | `pnpm a11y [url]` | Auditoria de acessibilidade (axe-core, WCAG 2.1 AA) nas telas principais; precisa do `pnpm preview` rodando. |
 | `pnpm generate-pwa-assets` | Gera os ícones do PWA a partir de `docs/assets/logo_square.png`. |
 
@@ -117,7 +117,7 @@ O título dos eventos segue o padrão `Tag • Nome • Preço` (ex.: `SBK • F
 
 ## Locais e coordenadas
 
-O texto de `location` de cada evento é a chave em `src/data/venues.json`. Locais que ainda não estão no arquivo:
+O texto de `location` de cada evento é a chave em `src/content/venues.json`. Locais que ainda não estão no arquivo:
 
 1. são buscados **no navegador** (Photon) na primeira vez que o mapa, a distância ou a rota precisam deles, e ficam salvos no aparelho;
 2. são gravados no arquivo pela Action diária **Update venues**, que roda `venues:check --fix` (Nominatim + Photon, só aceitando resultados da mesma região postal) e publica o site.

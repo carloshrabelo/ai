@@ -1,6 +1,6 @@
 import { type DanceEvent, toDanceEvent } from '../domain/event'
 import { WINDOW_DAYS } from './config'
-import { addDays, type IsoDate, lisbonMidnight } from './dates'
+import { addDays, type IsoDate, lisbonMidnight } from '../lib/dates'
 import { fetchEvents } from './googleCalendar'
 
 /** Eventos de [from, to), janela a janela (como o app busca), sem repetidos e ordenados pelo início. */

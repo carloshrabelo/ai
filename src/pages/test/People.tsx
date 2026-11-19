@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Card } from '../../components/ui/Card'
 import { Chip } from '../../components/ui/Chip'
 import { genreColorClasses } from '../../components/ui/genreColors'
-import promoters from '../../data/promoters.json'
+import promoters from '../../content/promoters.json'
 import { type Genre, GENRES } from '../../domain/genres'
 import type { PromoterDirectory, PromoterEntry } from '../../domain/promoterDirectory'
 import { type Role, ROLES } from '../../domain/promoters'
@@ -41,7 +41,7 @@ function initials(handle: string, name?: string): string {
 
 /**
  * Página de teste (/teste/envolvidos, pública mas sem link no app): todo mundo de
- * src/data/promoters.json separado por papel (promotores, professores, DJs, locais, outros), com a
+ * src/content/promoters.json separado por papel (promotores, professores, DJs, locais, outros), com a
  * foto (campo `photo`, à mão) ou as iniciais, e o @ com link para o Instagram.
  */
 export default function People() {
@@ -71,7 +71,7 @@ export default function People() {
       <Card className="space-y-3">
         <h2 className="text-lg font-semibold">Envolvidos</h2>
         <p className="text-sm text-fg-muted">
-          Perfis citados nos eventos (src/data/promoters.json), separados por papel, dos mais recentes para os mais antigos.{' '}
+          Perfis citados nos eventos (src/content/promoters.json), separados por papel, dos mais recentes para os mais antigos.{' '}
           {DIRECTORY.length} perfis, {withPhoto} com foto. Foto: campo <code className="rounded bg-surface-muted px-1">photo</code> do
           perfil, com um caminho em <code className="rounded bg-surface-muted px-1">public/</code> (ex.: promoters/perfil.webp) ou uma URL.
         </p>

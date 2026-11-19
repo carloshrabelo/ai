@@ -1,4 +1,4 @@
-// Atualiza src/data/promoters.json com os perfis do Instagram citados nos eventos, como o
+// Atualiza src/content/promoters.json com os perfis do Instagram citados nos eventos, como o
 // venues:check faz com os locais. Para cada perfil: papel (promotor = linha "Mais info: @…"; DJ,
 // professor, local ou outro pelo contexto), redes sociais, locais, estilos e o último dia em que
 // apareceu (sem a lista de eventos). Não apaga ninguém, e o que já está no arquivo (inclusive editado
@@ -13,7 +13,7 @@ import { fileURLToPath } from 'node:url'
 import { createServer } from 'vite'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
-const FILE = join(root, 'src/data/promoters.json')
+const FILE = join(root, 'src/content/promoters.json')
 const [daysAfter = 90, DAYS_BEFORE = 30] = process.argv
   .slice(2)
   .filter((arg) => /^\d+$/.test(arg))
@@ -43,10 +43,10 @@ const vite = await createServer({
 })
 
 try {
-  const { GOOGLE_API_KEY } = await vite.ssrLoadModule('/src/data/config.ts')
+  const { GOOGLE_API_KEY } = await vite.ssrLoadModule('/src/api/config.ts')
   if (!GOOGLE_API_KEY) throw new Error('VITE_GOOGLE_API_KEY não encontrada (ambiente ou .env.local).')
-  const { loadEvents } = await vite.ssrLoadModule('/src/data/loadEvents.ts')
-  const { addDays, lisbonDate, todayIso } = await vite.ssrLoadModule('/src/data/dates.ts')
+  const { loadEvents } = await vite.ssrLoadModule('/src/api/loadEvents.ts')
+  const { addDays, lisbonDate, todayIso } = await vite.ssrLoadModule('/src/lib/dates.ts')
   const { collectPromoters, mergePromoters, similarHandles } = await vite.ssrLoadModule('/src/domain/promoterDirectory.ts')
 
   const today = todayIso()

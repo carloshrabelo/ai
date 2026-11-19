@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
-import type { IsoDate } from '../../data/dates'
-import { eventsInfiniteQueryOptions, flattenEvents } from '../../data/queries'
+import type { IsoDate } from '../../lib/dates'
+import { eventsInfiniteQueryOptions, flattenEvents } from '../../api/queries'
 import type { DanceEvent } from '../../domain/event'
 
 /** Evento pelo slug (ou id), a partir do cache do feed. undefined enquanto carrega; null se não existe (ou sem chave). */

@@ -1,9 +1,9 @@
 // Lista os locais (campo `location`) dos próximos eventos da Google Calendar API que ainda não
-// estão em src/data/venues.json. Esses eventos aparecem sem pino no mapa e sem distância.
+// estão em src/content/venues.json. Esses eventos aparecem sem pino no mapa e sem distância.
 //
 // Uso: pnpm venues:check [dias] [--fix]   (padrão: 60 dias a partir de hoje)
 //   --fix  busca as coordenadas dos locais que faltam (Nominatim e Photon, dados do OpenStreetMap)
-//          e grava em src/data/venues.json. Roda todo dia na Action "Update venues".
+//          e grava em src/content/venues.json. Roda todo dia na Action "Update venues".
 // Saída: 2 quando faltam locais (sem --fix); 0 com --fix, mesmo que alguns não sejam encontrados.
 // Lê VITE_GOOGLE_API_KEY do ambiente ou do .env.local.
 
@@ -11,7 +11,7 @@ import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { geocodeLocation } from '../src/features/location/geocoding.ts'
 
 const CALENDAR_ID = 'pasdedeux.pt@gmail.com'
-const VENUES_FILE = 'src/data/venues.json'
+const VENUES_FILE = 'src/content/venues.json'
 const args = process.argv.slice(2)
 const fix = args.includes('--fix')
 const days = Number(args.find((arg) => /^\d+$/.test(arg))) || 60

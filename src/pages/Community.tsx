@@ -10,7 +10,7 @@ import {
   PASDEDEUX_CALENDARS,
   webcalUrl,
   WHATSAPP_GROUPS,
-} from '../data/community'
+} from '../content/community'
 import { useI18n } from '../i18n/useI18n'
 import { siteUrl, useDocumentHead } from '../seo/useDocumentHead'
 

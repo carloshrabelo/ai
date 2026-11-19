@@ -1,4 +1,4 @@
-import { TIME_ZONE } from './config'
+import { TIME_ZONE } from '../api/config'
 
 /** Data de calendário no formato YYYY-MM-DD, sem hora nem fuso. */
 export type IsoDate = string

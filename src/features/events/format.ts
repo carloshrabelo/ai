@@ -1,5 +1,5 @@
-import { TIME_ZONE } from '../../data/config'
-import { type IsoDate, lisbonMidnight } from '../../data/dates'
+import { TIME_ZONE } from '../../api/config'
+import { type IsoDate, lisbonMidnight } from '../../lib/dates'
 import type { DanceEvent } from '../../domain/event'
 import type { Locale } from '../../i18n/locale'
 import { MESSAGES } from '../../i18n/messages'

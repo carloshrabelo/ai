@@ -3,7 +3,7 @@ import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { RouterProvider } from 'react-router'
-import { persistOptions, queryClient } from './data/queryClient'
+import { persistOptions, queryClient } from './api/queryClient'
 import './index.css'
 // Idioma (navegador ou escolha salva) aplicado no <html lang> antes do primeiro render.
 import './i18n/locale'

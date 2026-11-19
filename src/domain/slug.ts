@@ -1,4 +1,4 @@
-import { type IsoDate, isIsoDate, lisbonDate } from '../data/dates'
+import { type IsoDate, isIsoDate, lisbonDate } from '../lib/dates'
 
 /** "Festa Mirage — 5€!" → "festa-mirage-5" (minúsculas, sem acento, só letras, números e "-"). */
 export function slugify(text: string, maxLength = 60): string {

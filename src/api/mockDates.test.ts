@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import mock from '../mocks/events.json'
-import { addDays, lisbonDate } from './dates'
-import type { GCalEvent } from './googleCalendar'
+import { addDays, lisbonDate } from '../lib/dates'
+import type { GCalEvent } from '../domain/gcal'
 import { shiftMockEvents } from './mockDates'
 
 const items = mock.items as GCalEvent[]

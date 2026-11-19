@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router'
-import type { IsoDate } from '../../data/dates'
+import type { IsoDate } from '../../lib/dates'
 import { toSearchString } from '../../domain/genreFilter'
 import { useEventBySlug } from './useEventBySlug'
 import { eventPath, LEGACY_EVENT_PARAM } from './useSelectedEvent'

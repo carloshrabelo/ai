@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { DanceEventsPage } from '../../data/queries'
+import type { DanceEventsPage } from '../../api/queries'
 import type { DanceEvent } from '../../domain/event'
 import type { Genre } from '../../domain/genres'
 import { lastSearchedDay, shouldPauseFilteredSearch, trailingMisses } from './filteredSearch'

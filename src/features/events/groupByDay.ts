@@ -1,4 +1,4 @@
-import { addDays, type IsoDate, lisbonDate } from '../../data/dates'
+import { addDays, type IsoDate, lisbonDate } from '../../lib/dates'
 import type { DanceEvent } from '../../domain/event'
 
 export type EventDay = {

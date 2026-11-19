@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
-import { addDays, type IsoDate, todayIso } from '../../data/dates'
-import { loadEvents } from '../../data/loadEvents'
+import { addDays, type IsoDate, todayIso } from '../../lib/dates'
+import { loadEvents } from '../../api/loadEvents'
 
 /** Eventos de um período escolhido na página, por padrão de hoje até `daysAfter` dias à frente (a
  *  mesma busca é compartilhada entre as páginas). */

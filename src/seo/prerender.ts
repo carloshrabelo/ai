@@ -2,7 +2,7 @@
 // sem executar JavaScript. Ao abrir no navegador, o React substitui o conteúdo de #root pelo app.
 // Roda no Node (via Vite ssrLoadModule): nada de window/document aqui.
 
-import { type IsoDate, lisbonDate } from '../data/dates'
+import { type IsoDate, lisbonDate } from '../lib/dates'
 import type { DanceEvent } from '../domain/event'
 import { visibleGenres } from '../domain/genres'
 import { formatDayHeading, formatTimeRange } from '../features/events/format'
@@ -17,7 +17,7 @@ const t = MESSAGES[LOCALE]
 /** Quantos eventos entram na lista da página inicial. */
 const HOME_LIST_SIZE = 40
 
-export { loadEvents } from '../data/loadEvents'
+export { loadEvents } from '../api/loadEvents'
 
 export const eventPagePath = (event: DanceEvent) => `evento/${event.slug}/`
 

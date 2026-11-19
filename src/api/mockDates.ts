@@ -1,5 +1,5 @@
-import { addDays, type IsoDate, lisbonDate, lisbonMidnight } from './dates'
-import type { GCalDateTime, GCalEvent } from './googleCalendar'
+import { addDays, type IsoDate, lisbonDate, lisbonMidnight } from '../lib/dates'
+import type { GCalDateTime, GCalEvent } from '../domain/gcal'
 
 const DAY_MS = 86_400_000
 /** Mínimo de dias com eventos na semana passada e na próxima. */

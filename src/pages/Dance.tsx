@@ -1,6 +1,6 @@
 import { useCallback, useId, useLayoutEffect, useRef, useState } from 'react'
 import { useLoaderData } from 'react-router'
-import type { EventsLoaderData } from '../data/eventsLoader'
+import type { EventsLoaderData } from '../api/eventsLoader'
 import { DayShortcuts } from '../features/dates/DayShortcuts'
 import { useDayNavigation } from '../features/dates/useDayNavigation'
 import { WeekStrip } from '../features/dates/WeekStrip'

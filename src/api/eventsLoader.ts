@@ -3,7 +3,7 @@ import { toDanceEvent } from '../domain/event'
 import { canonicalGenresSearch, toSearchString } from '../domain/genreFilter'
 import { slugDate } from '../domain/slug'
 import { WINDOW_DAYS } from './config'
-import { addDays, type IsoDate, isIsoDate, todayIso } from './dates'
+import { addDays, type IsoDate, isIsoDate, todayIso } from '../lib/dates'
 import { eventsInfiniteQueryOptions } from './queries'
 import { queryClient } from './queryClient'
 

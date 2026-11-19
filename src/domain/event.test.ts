@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { GCalEvent } from '../data/googleCalendar'
+import type { GCalEvent } from './gcal'
 import mock from '../mocks/events.json'
 import { extractLinks, toDanceEvent } from './event'
 import { visibleGenres } from './genres'

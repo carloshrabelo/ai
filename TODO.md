@@ -54,13 +54,13 @@ O analytics está pronto, mas fica fora do `main` até ser configurado. A branch
 ## 6. Conteúdo e dados
 
 - [ ] Confirmar com o pasdedeux.pt / [@ateterca](https://www.instagram.com/ateterca/) que está tudo bem usar e exibir os eventos do calendário.
-- [ ] Revisar os locais com pino errado no mapa e corrigir as coordenadas em `src/data/venues.json`.
+- [ ] Revisar os locais com pino errado no mapa e corrigir as coordenadas em `src/content/venues.json`.
 - [ ] Revisar tags novas que caem em **Outros** e, se fizer sentido, criar estilo ou alias em `src/domain/genres.ts`.
 - [ ] **Escolas** (aba oculta): definir de onde viriam os dados antes de reativá-la.
 
 ## 7. Fotos dos perfis (promotores, DJs, professores) — branch `feature/promoter-photos`
 
-Preencher `photo` em `src/data/promoters.json` com a foto de perfil do Instagram, automaticamente (hoje aparece só em `/teste/envolvidos`; sem foto, iniciais). O código está na branch, fora do `main` até ser configurado:
+Preencher `photo` em `src/content/promoters.json` com a foto de perfil do Instagram, automaticamente (hoje aparece só em `/teste/envolvidos`; sem foto, iniciais). O código está na branch, fora do `main` até ser configurado:
 
 - `pnpm ig:token <token curto> [perfil de teste]` (`scripts/ig-token.mjs`): troca o token curto por um de ~60 dias e grava `IG_ACCESS_TOKEN` e `IG_USER_ID` no `.env.local`.
 - `pnpm promoters:photos [máximo] [--force]` (`scripts/promoters-photos.mjs`): baixa as fotos para `public/promoters/<perfil>.jpg` e preenche `photo` (e `name`, se vazio).

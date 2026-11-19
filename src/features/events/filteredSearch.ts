@@ -1,5 +1,5 @@
-import { addDays, type IsoDate } from '../../data/dates'
-import type { DanceEventsPage } from '../../data/queries'
+import { addDays, type IsoDate } from '../../lib/dates'
+import type { DanceEventsPage } from '../../api/queries'
 import { type GenreFilterValue, matchesGenres } from '../../domain/genreFilter'
 
 /** Quantas janelas seguidas sem resultado o filtro busca sozinho antes de pausar. */

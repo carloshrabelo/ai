@@ -5,5 +5,5 @@
   "singleQuote": true,
   "trailingComma": "all",
   "arrowParens": "always",
-  "ignorePatterns": ["**/*.md", "src/data/*.json", "src/mocks/**", "public/**", "pnpm-lock.yaml"]
+  "ignorePatterns": ["**/*.md", "src/content/*.json", "src/mocks/**", "public/**", "pnpm-lock.yaml"]
 }

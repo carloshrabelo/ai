@@ -1,8 +1,9 @@
 import { type InfiniteData, infiniteQueryOptions } from '@tanstack/react-query'
 import { type DanceEvent, toDanceEvent } from '../domain/event'
 import { EMPTY_WINDOWS_TO_STOP, WINDOW_DAYS } from './config'
-import { addDays, type IsoDate, lisbonMidnight } from './dates'
-import { fetchEvents, type GCalEvent } from './googleCalendar'
+import { addDays, type IsoDate, lisbonMidnight } from '../lib/dates'
+import type { GCalEvent } from '../domain/gcal'
+import { fetchEvents } from './googleCalendar'
 
 /** Uma janela de WINDOW_DAYS dias: [start, end), como veio da fonte. */
 export type EventsPage = {

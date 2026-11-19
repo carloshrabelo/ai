@@ -1,6 +1,6 @@
 name: Update promoters
 
-# Uma vez por dia: acrescenta ao src/data/promoters.json os promotores citados nos eventos
+# Uma vez por dia: acrescenta ao src/content/promoters.json os promotores citados nos eventos
 # (perfis do Instagram, redes, locais e estilos). O site ainda não usa o arquivo (só a área de teste),
 # então não há deploy.
 on:
@@ -38,13 +38,13 @@ jobs:
 
       - name: Commit do promoters.json
         run: |
-          if git diff --quiet -- src/data/promoters.json; then
+          if git diff --quiet -- src/content/promoters.json; then
             echo "Sem mudanças."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/data/promoters.json
+          git add src/content/promoters.json
           git commit -m "Update promoters from calendar events"
           # O Update venues pode ter feito push antes: traz e reaplica.
           git pull --rebase

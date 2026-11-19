@@ -1,5 +1,5 @@
-import { addDays, type IsoDate, lisbonMidnight } from '../data/dates'
-import type { GCalEvent } from '../data/googleCalendar'
+import { addDays, type IsoDate, lisbonMidnight } from '../lib/dates'
+import type { GCalEvent } from './gcal'
 
 // Calendários além do principal (pasdedeux.pt). Cada um tem o próprio formato; o adaptador converte
 // o evento para o formato do principal ("Tag • Nome • Preço" no título, local em `location`, hora em

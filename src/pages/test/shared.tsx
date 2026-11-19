@@ -1,6 +1,6 @@
 import { ArrowLeft } from 'lucide-react'
 import { Link } from 'react-router'
-import { type IsoDate, isIsoDate } from '../../data/dates'
+import { type IsoDate, isIsoDate } from '../../lib/dates'
 import type { useEventsInRange } from './useEventsInRange'
 
 // Peças comuns das páginas da área de teste (/teste).

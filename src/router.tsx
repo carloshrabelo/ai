@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router'
 import type { RouteHandle } from './app'
-import { eventsLoader } from './data/eventsLoader'
+import { eventsLoader } from './api/eventsLoader'
 import AppLayout from './layouts/AppLayout'
 import ErrorPage from './pages/ErrorPage'
 
