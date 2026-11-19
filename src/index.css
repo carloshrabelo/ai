@@ -235,9 +235,12 @@
   position: absolute;
   inset: -100%;
   border-radius: 9999px;
-  box-shadow: 0 0 6px 2px var(--brand);
+  /* Anel cheio e com brilho forte: sobre o mapa (cheio de detalhe), o brilho fino do original sumia. */
+  border: 3px solid var(--brand);
+  background: color-mix(in srgb, var(--brand) 25%, transparent);
+  box-shadow: 0 0 12px 4px var(--brand);
   opacity: 0;
-  animation: pin-pulsate 1s ease-out infinite;
+  animation: pin-pulsate 1.2s ease-out infinite;
   pointer-events: none;
 }
 @keyframes pin-pulsate {
