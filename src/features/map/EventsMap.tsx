@@ -381,16 +381,17 @@ function groupByPlace(events: DanceEvent[]): Place[] {
 // Classes literais para o Tailwind gerar (o HTML do pino é uma string).
 const PIN_STYLE = {
   normal: { size: 28, classes: 'size-7 border-2 border-white shadow-md' },
-  hovered: { size: 36, classes: 'size-9 border-[3px] border-white shadow-lg ring-4 ring-brand/60' },
-  selected: { size: 36, classes: 'size-9 border-[3px] border-white shadow-lg ring-4 ring-brand' },
+  hovered: { size: 36, classes: 'size-9 border-[3px] border-white shadow-lg' },
+  selected: { size: 36, classes: 'size-9 border-[3px] border-white shadow-lg' },
 } as const
 
 // Mesmo ícone para o mesmo visual: trocar o ícone recria o elemento do pino embaixo do mouse.
 const iconCache = new Map<string, L.DivIcon>()
 
 /**
- * Pino selecionado pulsa, como o leaflet-icon-pulse: anel com brilho que cresce e some (`.pin-pulse`
- * em index.css). Com "reduzir movimento", o pulso não aparece.
+ * Pino selecionado ou em hover pulsa, como o leaflet-icon-pulse: anel com brilho que cresce e some
+ * (`.pin-pulse` em index.css), no lugar de um contorno fixo. Selecionado e hover também ficam maiores.
+ * Com "reduzir movimento", o pulso não aparece.
  */
 function withPulse(pin: string, pulse: boolean): string {
   if (!pulse) return pin
@@ -399,7 +400,6 @@ function withPulse(pin: string, pulse: boolean): string {
 
 /** Pino de grupo: roxo da marca, maior, com o total de eventos. */
 function clusterIcon(total: number, state: keyof typeof PIN_STYLE): L.DivIcon {
-  const ring = state === 'selected' ? 'ring-4 ring-brand' : state === 'hovered' ? 'ring-4 ring-brand/60' : ''
   const cacheKey = `cluster|${state}|${total}`
   const cached = iconCache.get(cacheKey)
   if (cached) return cached
@@ -408,8 +408,8 @@ function clusterIcon(total: number, state: keyof typeof PIN_STYLE): L.DivIcon {
     iconSize: [40, 40],
     iconAnchor: [20, 20],
     html: withPulse(
-      `<span class="relative flex size-10 items-center justify-center rounded-full border-[3px] border-white bg-brand text-sm font-bold text-brand-fg shadow-lg ${ring}">${total}</span>`,
-      state === 'selected',
+      `<span class="relative flex size-10 items-center justify-center rounded-full border-[3px] border-white bg-brand text-sm font-bold text-brand-fg shadow-lg">${total}</span>`,
+      state !== 'normal',
     ),
   })
   iconCache.set(cacheKey, icon)
@@ -432,7 +432,7 @@ function pinIcon(place: Place, state: keyof typeof PIN_STYLE): L.DivIcon {
     tooltipAnchor: [0, 0],
     html: withPulse(
       `<span class="relative flex items-center justify-center rounded-full text-xs font-semibold ${classes} ${colors}">${count}</span>`,
-      state === 'selected',
+      state !== 'normal',
     ),
   })
   iconCache.set(cacheKey, icon)
