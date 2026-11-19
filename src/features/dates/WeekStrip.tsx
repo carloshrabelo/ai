@@ -1,15 +1,13 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { CalendarDotsIcon } from '@phosphor-icons/react'
-import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { type ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 import { BottomSheet } from '../../components/ui/BottomSheet'
 import { useMediaQuery, XL_QUERY } from '../../hooks/useMediaQuery'
-import { type GenreFilterValue, matchesGenres } from '../../domain/genreFilter'
-import { groupByDay } from '../events/groupByDay'
 import { CalendarPicker } from './CalendarPicker'
 import { IconButton } from '../../components/ui/Button'
 import { WINDOW_DAYS } from '../../api/config'
 import { addDays, type IsoDate, todayIso } from '../../lib/dates'
-import { eventsInfiniteQueryOptions, flattenEvents } from '../../api/queries'
+import { eventsInfiniteQueryOptions } from '../../api/queries'
 import { formatDayHeading, formatDayOfMonth, formatWeekdayShort } from '../events/format'
 import { useI18n } from '../../i18n/useI18n'
 
@@ -17,21 +15,17 @@ type Props = {
   startDate: IsoDate
   activeDay: IsoDate
   onSelect: (day: IsoDate) => void
-  /** Filtro de gêneros: os pontos de "tem evento" seguem o mesmo filtro da lista. */
-  genres?: readonly GenreFilterValue[]
   /** Ações depois da faixa (ex.: botão de filtros). */
   actions?: ReactNode
 }
 
-const NO_GENRES: readonly GenreFilterValue[] = []
 const FADE = 24
 
 /**
  * Botão de calendário + faixa de dias, do início do feed até o fim do que já foi carregado. As bordas
- * da faixa esmaecem quando há mais dias para aquele lado. Os pontos de "tem evento" ficam só no
- * calendário do mês.
+ * da faixa esmaecem quando há mais dias para aquele lado.
  */
-export function WeekStrip({ startDate, activeDay, onSelect, genres = NO_GENRES, actions }: Props) {
+export function WeekStrip({ startDate, activeDay, onSelect, actions }: Props) {
   const { t, locale } = useI18n()
   const isXl = useMediaQuery(XL_QUERY)
   // Só lê o cache (mesma query do feed): a faixa cresce conforme novas janelas chegam.
@@ -39,11 +33,6 @@ export function WeekStrip({ startDate, activeDay, onSelect, genres = NO_GENRES, 
   const end = data?.pages.at(-1)?.end ?? addDays(startDate, WINDOW_DAYS)
   const days: IsoDate[] = []
   for (let day = startDate; day < end; day = addDays(day, 1)) days.push(day)
-
-  const eventDays = useMemo(() => {
-    const filtered = flattenEvents(data?.pages ?? []).filter((event) => matchesGenres(event.genres, genres))
-    return new Set(groupByDay(filtered, startDate, end).map((group) => group.day))
-  }, [data, genres, startDate, end])
 
   const stripRef = useRef<HTMLUListElement>(null)
   const [edges, setEdges] = useState({ start: false, end: false })
@@ -96,7 +85,7 @@ export function WeekStrip({ startDate, activeDay, onSelect, genres = NO_GENRES, 
     setPickerOpen(false)
     onSelect(day)
   }
-  const picker = <CalendarPicker value={activeDay} today={todayIso()} eventDays={eventDays} onSelect={pick} />
+  const picker = <CalendarPicker value={activeDay} today={todayIso()} onSelect={pick} />
   const mask = `linear-gradient(to right, ${edges.start ? 'transparent' : 'black'}, black ${FADE}px, black calc(100% - ${FADE}px), ${edges.end ? 'transparent' : 'black'})`
 
   return (

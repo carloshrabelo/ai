@@ -98,7 +98,6 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
             startDate={startDate}
             activeDay={activeDay}
             onSelect={selectDay}
-            genres={genres}
             actions={
               <GenreFilterButton
                 open={filtersOpen}

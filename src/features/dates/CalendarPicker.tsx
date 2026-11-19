@@ -8,8 +8,6 @@ import { useI18n } from '../../i18n/useI18n'
 type Props = {
   value: IsoDate
   today: IsoDate
-  /** Dias que têm eventos (do que já foi carregado, com o filtro aplicado): ganham um ponto. */
-  eventDays: ReadonlySet<IsoDate>
   onSelect: (day: IsoDate) => void
 }
 
@@ -23,11 +21,11 @@ function shiftMonth(day: IsoDate, months: number): IsoDate {
 }
 
 /**
- * Calendário do mês (no lugar do seletor de data do navegador): semanas começando na segunda, ponto
- * nos dias com eventos, hoje com contorno e o dia escolhido em roxo. Setas do teclado andam pelos
+ * Calendário do mês (no lugar do seletor de data do navegador): semanas começando na segunda, hoje
+ * com contorno e o dia escolhido em roxo. Setas do teclado andam pelos
  * dias (←/→) e semanas (↑/↓); PageUp/PageDown trocam o mês.
  */
-export function CalendarPicker({ value, today, eventDays, onSelect }: Props) {
+export function CalendarPicker({ value, today, onSelect }: Props) {
   const { t, locale } = useI18n()
   const [focused, setFocused] = useState(value)
   const gridRef = useRef<HTMLDivElement>(null)
@@ -100,9 +98,6 @@ export function CalendarPicker({ value, today, eventDays, onSelect }: Props) {
               } ${day === today && !selected ? 'border-2 border-brand/50' : ''}`}
             >
               {formatDayOfMonth(day, locale)}
-              {eventDays.has(day) && (
-                <span aria-hidden="true" className={`absolute bottom-1 size-1.5 rounded-full ${selected ? 'bg-brand-fg' : 'bg-brand'}`} />
-              )}
             </button>
           )
         })}
