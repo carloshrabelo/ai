@@ -74,7 +74,8 @@ export const en: Messages = {
     allOfSet: (name) => `All of ${name}`,
     includedIn: (name) => `Included in ${name}`,
     otherStyles: 'Other styles',
-    done: 'Show events',
+    close: 'Close filters',
+    done: (count) => (count === 0 ? 'Show events' : count === 1 ? 'Show 1 event' : `Show ${count} events`),
     other: 'Other',
   },
   location: {

@@ -78,11 +78,13 @@ export const pt = {
     allOfSet: (name: string) => `Todos de ${name}`,
     includedIn: (name: string) => `Incluído em ${name}`,
     otherStyles: 'Outros estilos',
-    done: 'Ver eventos',
+    /** Botão que fecha os filtros, com quantos eventos passam por eles. */
+    close: 'Fechar filtros',
+    done: (count: number) => (count === 0 ? 'Ver eventos' : count === 1 ? 'Ver 1 evento' : `Ver ${count} eventos`),
     other: 'Outros',
   },
   location: {
-    show: 'Mostrar distâncias',
+    show: 'Ver distâncias',
     locating: 'Localizando…',
     active: 'Distâncias a partir da sua localização.',
     refresh: 'Atualizar localização',

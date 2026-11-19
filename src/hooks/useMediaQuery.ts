@@ -16,5 +16,8 @@ export function useMediaQuery(query: string): boolean {
 /** Breakpoint `xl` do Tailwind (1280px): sidebar e detalhes no painel ao lado do mapa. */
 export const XL_QUERY = '(min-width: 80rem)'
 
+/** Breakpoint `2xl` do Tailwind (1536px): filtros fixos na sidebar, sem o popover. */
+export const XXL_QUERY = '(min-width: 96rem)'
+
 /** Breakpoint `md` do Tailwind (768px, tablet): coluna do mapa na agenda (e sem a aba Explorar). */
 export const MD_QUERY = '(min-width: 48rem)'

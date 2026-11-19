@@ -3,8 +3,11 @@ import { Button } from '../../components/ui/Button'
 import { requestLocation, useUserLocation } from './userLocation'
 import { useI18n } from '../../i18n/useI18n'
 
-/** Liga as distâncias nos cards (e a posição no mapa). Só pede a localização quando clicado. */
-export function LocationControl() {
+/**
+ * Liga as distâncias nos cards (e a posição no mapa). Só pede a localização quando clicado.
+ * `compact`: botão pequeno, no topo da lista (celular e tablet); senão ocupa a largura (sidebar).
+ */
+export function LocationControl({ compact = false }: { compact?: boolean }) {
   const location = useUserLocation()
   const { t } = useI18n()
 
@@ -36,7 +39,7 @@ export function LocationControl() {
         <div className="space-y-1">
           <Button
             variant="secondary"
-            className="w-full"
+            className={compact ? 'h-9 px-3 text-xs' : 'w-full'}
             onClick={() => {
               requestLocation()
             }}

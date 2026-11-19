@@ -4,6 +4,7 @@ import { ToggleChip } from '../../components/ui/Chip'
 import { FILTER_VALUES, type GenreFilterValue, OTHER_GENRES } from '../../domain/genreFilter'
 import { type Genre, GENRE_GROUPS } from '../../domain/genres'
 import { useI18n } from '../../i18n/useI18n'
+import { GroupToggle } from './GroupToggle'
 import { genreLabel } from './genreLabel'
 import { useGenreFilter } from './useGenreFilter'
 
@@ -84,8 +85,8 @@ export function GenreFilterPopover({ id, onClose }: Props) {
         <button
           type="button"
           onClick={onClose}
-          aria-label={t.filters.done}
-          title={t.filters.done}
+          aria-label={t.filters.close}
+          title={t.filters.close}
           className="-my-2 -mr-2 inline-flex size-11 cursor-pointer items-center justify-center rounded-lg text-fg-muted hover:bg-surface-muted hover:text-fg focus-visible:outline-2 focus-visible:outline-brand"
         >
           <XIcon className="size-5" aria-hidden="true" />
@@ -99,9 +100,8 @@ export function GenreFilterPopover({ id, onClose }: Props) {
           {GENRE_GROUPS.map(({ umbrella, genres: members }) => (
             <div key={umbrella} role="group" aria-label={t.filters.set(umbrella)} className="min-w-0 space-y-3">
               <ColumnHeader>
-                <ToggleChip
+                <GroupToggle
                   genre={umbrella}
-                  variant="group"
                   pressed={selected.includes(umbrella)}
                   onClick={() => toggle(umbrella)}
                   title={t.filters.allOfSet(umbrella)}

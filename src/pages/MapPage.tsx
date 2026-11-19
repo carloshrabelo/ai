@@ -153,7 +153,7 @@ function DayMap({ startDate }: { startDate: IsoDate }) {
             onClose={() => setFiltersOpen(false)}
             footer={(close) => (
               <Button className="w-full" onClick={close}>
-                {t.filters.done}
+                {t.filters.done(events.length)}
               </Button>
             )}
           >

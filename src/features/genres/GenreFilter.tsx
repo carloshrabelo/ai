@@ -3,9 +3,9 @@ import { Card } from '../../components/ui/Card'
 import { ToggleChip } from '../../components/ui/Chip'
 import { FILTER_VALUES, type GenreFilterValue, OTHER_GENRES } from '../../domain/genreFilter'
 import { type Genre, GENRE_GROUPS } from '../../domain/genres'
-import { LocationControl } from '../location/LocationControl'
 import { useGenreFilter } from './useGenreFilter'
 import { useI18n } from '../../i18n/useI18n'
+import { GroupToggle } from './GroupToggle'
 import { genreLabel } from './genreLabel'
 import type { ReactNode } from 'react'
 
@@ -50,9 +50,8 @@ export function GenreFilter({ plain = false }: { plain?: boolean } = {}) {
           {GENRE_GROUPS.map(({ umbrella, genres: members }) => (
             <div key={umbrella} role="group" aria-label={t.filters.set(umbrella)} className="space-y-2">
               <div className="flex items-center gap-2">
-                <ToggleChip
+                <GroupToggle
                   genre={umbrella}
-                  variant="group"
                   pressed={selected.includes(umbrella)}
                   onClick={() => toggle(umbrella)}
                   title={t.filters.allOfSet(umbrella)}
@@ -88,10 +87,6 @@ export function GenreFilter({ plain = false }: { plain?: boolean } = {}) {
             </div>
           </div>
         </div>
-      </div>
-
-      <div className="border-t border-border pt-4">
-        <LocationControl />
       </div>
     </Container>
   )
