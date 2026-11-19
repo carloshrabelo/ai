@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { BellRing } from 'lucide-react'
+import { BellPlus } from 'lucide-react'
 import { useMemo } from 'react'
 import { Button } from '../../components/ui/Button'
 import { type IsoDate, lisbonDate } from '../../data/dates'
@@ -37,7 +37,7 @@ export function ChangesBanner({ startDate, onOpenEvent }: { startDate: IsoDate; 
       className="space-y-3 rounded-xl border border-genre-yellow bg-genre-yellow/15 p-4"
     >
       <h2 id="changes-banner-title" className="flex items-center gap-2 text-sm font-semibold">
-        <BellRing className="size-5 shrink-0" aria-hidden="true" />
+        <BellPlus className="size-5 shrink-0" aria-hidden="true" />
         {t.tracking.title(changes.length)}
       </h2>
       <ul className="space-y-3">

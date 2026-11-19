@@ -276,7 +276,7 @@ import { BackToTest } from './shared'
 // Ícones importados um a um: importar a biblioteca inteira deixaria esta página com vários MB (e o
 // cache offline do PWA recusa arquivos acima de 2 MB).
 
-/** Bibliotecas comparadas. O app usa a Lucide e, no menu, dois ícones do Phosphor (peso bold). */
+/** Bibliotecas comparadas. O app usa só a Lucide. */
 const LIBS = ['lucide', 'phosphor', 'tabler', 'heroicons', 'iconoir', 'remix'] as const
 type Lib = (typeof LIBS)[number]
 const LIB_LABEL: Record<Lib, string> = {
@@ -347,14 +347,14 @@ const GROUPS: Group[] = [
     title: 'Dança',
     where: 'Barra inferior e menu lateral.',
     options: [
-      ph(DiscoBallIcon, 'DiscoBall', 'Globo de discoteca: pista e noite.', true),
+      ph(DiscoBallIcon, 'DiscoBall', 'Globo de discoteca: pista e noite.'),
       ph(SneakerMoveIcon, 'SneakerMove', 'Tênis em movimento.'),
       ph(PersonArmsSpreadIcon, 'PersonArmsSpread', 'Braços abertos.'),
       ph(MusicNotesIcon, 'MusicNotes'),
       ph(ChampagneIcon, 'Champagne', 'Brinde: social.'),
       lu(Disc3, 'Disc3', 'Vinil / DJ.'),
       lu(Music, 'Music', 'Lembra app de música.'),
-      lu(Footprints, 'Footprints', 'Passos.'),
+      lu(Footprints, 'Footprints', 'Passos.', true),
       lu(PartyPopper, 'PartyPopper', 'Festa.'),
       lu(Sparkles, 'Sparkles'),
       tb(IconDisc, 'IconDisc'),
@@ -432,12 +432,12 @@ const GROUPS: Group[] = [
     title: 'Sobre',
     where: 'Barra inferior e menu lateral.',
     options: [
-      ph(InfoIcon, 'Info', 'Info.', true),
+      ph(InfoIcon, 'Info', 'Info.'),
       ph(HandWavingIcon, 'HandWaving', 'Aceno: "olá".'),
       ph(BookOpenTextIcon, 'BookOpenText'),
       ph(QuestionIcon, 'Question'),
       ph(SmileyIcon, 'Smiley'),
-      lu(Info, 'Info'),
+      lu(Info, 'Info', undefined, true),
       lu(CircleHelp, 'CircleHelp'),
       lu(BookOpen, 'BookOpen'),
       lu(Heart, 'Heart', 'Quem faz.'),
@@ -511,9 +511,9 @@ const GROUPS: Group[] = [
     title: 'Escolher data',
     where: 'Botão no começo da faixa de dias.',
     options: [
-      lu(CalendarDays, 'CalendarDays', 'Calendário com dias.', true),
+      lu(CalendarDays, 'CalendarDays', 'Calendário com dias.'),
       lu(Calendar, 'Calendar'),
-      lu(CalendarSearch, 'CalendarSearch', 'Procurar data.'),
+      lu(CalendarSearch, 'CalendarSearch', 'Procurar data.', true),
       ph(CalendarDotsIcon, 'CalendarDots'),
       ph(CalendarBlankIcon, 'CalendarBlank'),
       tb(IconCalendar, 'IconCalendar'),
@@ -656,9 +656,9 @@ const GROUPS: Group[] = [
     title: 'Baixar .ics',
     where: 'Detalhes do evento (Apple, Outlook).',
     options: [
-      lu(Download, 'Download', 'Seta para baixo.', true),
+      lu(Download, 'Download', 'Seta para baixo.'),
       lu(FileDown, 'FileDown'),
-      lu(CalendarArrowDown, 'CalendarArrowDown', 'Calendário com seta.'),
+      lu(CalendarArrowDown, 'CalendarArrowDown', 'Calendário com seta.', true),
       ph(DownloadSimpleIcon, 'DownloadSimple'),
       tb(IconDownload, 'IconDownload'),
       tb(IconFileDownload, 'IconFileDownload'),
@@ -715,8 +715,8 @@ const GROUPS: Group[] = [
     title: 'Aviso de mudanças',
     where: 'Detalhes e o aviso no topo da lista.',
     options: [
-      lu(BellRing, 'BellRing', 'Sino tocando.', true),
-      lu(BellPlus, 'BellPlus'),
+      lu(BellRing, 'BellRing', 'Sino tocando.'),
+      lu(BellPlus, 'BellPlus', undefined, true),
       ph(BellRingingIcon, 'BellRinging'),
       tb(IconBellRinging, 'IconBellRinging'),
       he(HeroBellAlert, 'BellAlert'),

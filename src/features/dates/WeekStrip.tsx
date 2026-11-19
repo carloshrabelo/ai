@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { CalendarDays } from 'lucide-react'
+import { CalendarSearch } from 'lucide-react'
 import { type ReactNode, useEffect, useRef } from 'react'
 import { IconButton } from '../../components/ui/Button'
 import { WINDOW_DAYS } from '../../data/config'
@@ -51,7 +51,7 @@ export function WeekStrip({ startDate, activeDay, onSelect, actions }: Props) {
       <IconButton
         label={t.dates.pickDate}
         variant="secondary"
-        icon={<CalendarDays className="size-6" aria-hidden="true" />}
+        icon={<CalendarSearch className="size-6" aria-hidden="true" />}
         onClick={openPicker}
         className="h-14"
       />

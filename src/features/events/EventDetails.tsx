@@ -1,4 +1,4 @@
-import { BellRing, CalendarPlus, Clock, Download, MapPin, Navigation, Ticket } from 'lucide-react'
+import { BellPlus, CalendarArrowDown, CalendarPlus, Clock, MapPin, Navigation, Ticket } from 'lucide-react'
 import { type ReactNode, useMemo } from 'react'
 import { Chip } from '../../components/ui/Chip'
 import { Skeleton } from '../../components/ui/Skeleton'
@@ -102,14 +102,14 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
               downloadIcs(event, eventUrl(event.slug), slugify(event.title) || 'evento')
             }}
           >
-            <Download className="size-5" aria-hidden="true" />
+            <CalendarArrowDown className="size-5" aria-hidden="true" />
             {t.tracking.icsCalendar}
           </Button>
           <ShareButton event={event} />
         </div>
         {tracked && (
           <p className="flex flex-wrap items-center gap-x-2 text-sm text-fg-muted">
-            <BellRing className="size-4 shrink-0" aria-hidden="true" />
+            <BellPlus className="size-4 shrink-0" aria-hidden="true" />
             {t.tracking.tracked}
             <button
               type="button"
