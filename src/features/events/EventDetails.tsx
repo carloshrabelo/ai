@@ -15,7 +15,7 @@ import { CalendarDownloadIcon } from '../../components/icons/CalendarDownloadIco
 import { NoPriceChips, PriceChips } from '../price/PriceChips'
 import { ShareButton } from './ShareButton'
 import { useI18n } from '../../i18n/useI18n'
-import { Button } from '../../components/ui/Button'
+import { Button, buttonClassName } from '../../components/ui/Button'
 import { slugify } from '../../domain/slug'
 import { eventUrl } from '../../seo/useDocumentHead'
 import { untrackEvent, useIsTracked, trackEvent } from '../tracking/trackedEvents'
@@ -93,7 +93,7 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
             onClick={() => {
               trackEvent(event)
             }}
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-brand px-4 text-sm font-medium text-brand-fg hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+            className={buttonClassName()}
           >
             <CalendarPlusIcon className="size-5" aria-hidden="true" />
             {t.tracking.googleCalendar}
