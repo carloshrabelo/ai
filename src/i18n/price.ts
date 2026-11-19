@@ -1,7 +1,7 @@
 import type { Locale } from './locale'
 
 // O preço vem do título do evento no calendário (`Tag • Nome • Preço`), escrito à mão em
-// português, com variações e erros de digitação. A tradução é por partes (não por frase inteira):
+// português (às vezes em inglês, no calendário de tango), com variações e erros de digitação. A tradução é por partes (não por frase inteira):
 // os mesmos pedaços se repetem em combinações diferentes ("7€ ou 10€ (bebida incluída)").
 // Texto desconhecido fica como veio. Lista completa para revisar: /teste/precos.
 
@@ -13,6 +13,15 @@ const W = (word: string) => new RegExp(`(?<![\\p{L}\\d])${word}(?![\\p{L}\\d])`,
 /** Padroniza o português: grafia, acentos, maiúsculas e espaços. */
 const NORMALIZE: Rule[] = [
   [/\s+/g, ' '],
+  // Preços em inglês (calendário de tango): "€5" → "5€", e as palavras em português.
+  [/€\s*(\d+(?:[.,]\d+)?)/g, '$1€'],
+  [/\s*\bfor (?:non-?)?members\b/gi, ''], // "€5 for members / €10 for non-members" → "5€ / 10€"
+  [/(\d€)\s*\/\s*(?=\d)/g, '$1 ou '], // "5€ / 10€" → "5€ ou 10€"
+  [W('or'), 'ou'],
+  [/(\d€) to (?=\d)/g, '$1 a '], // "5€ to 15€" → "5€ a 15€"
+  [W('flexible'), 'flexível'],
+  [W('for students of'), 'para alunos de'],
+  [W('for students'), 'para alunos'],
   [/(\d)\s*€/g, '$1€'], // "7 €" → "7€"
   [/€(?=\p{L})/gu, '€ '], // "8€ou 10€" → "8€ ou 10€"
   [W('contribui[cç][aã]o volunt[aá]ria'), 'Contribuição voluntária'],
@@ -28,6 +37,10 @@ const NORMALIZE: Rule[] = [
 const TO_ENGLISH: Rule[] = [
   // "10€ até 1h após 12€": 10€ até a 1h da manhã, 12€ depois.
   [/(\S+) até (\d{1,2})h após (\S+)/g, '$1 until $2am, then $3'],
+  [/(\d€) a (?=\d)/g, '$1 to '], // "5€ a 15€" → "5€ to 15€"
+  [W('flexível'), 'flexible'],
+  [W('para alunos de'), 'for students of'],
+  [W('para alunos'), 'for students'],
   [W('Contribuição voluntária'), 'Donation'],
   [W('Pago'), 'Paid'],
   [W('Gratuito'), 'Free'],

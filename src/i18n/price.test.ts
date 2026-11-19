@@ -26,6 +26,12 @@ const CASES: [raw: string, pt: string, en: string][] = [
   ['7€ ou 9€ (porta)', '7€ ou 9€ (porta)', '€7 or €9 (at the door)'],
   ['Pago (5€?)', 'Pago (5€?)', 'Paid (€5?)'],
   ['10€ com bebida', '10€ com bebida', '€10 with a drink'],
+  // Em inglês (calendário de tango).
+  ['€5 for members / €10 for non-members', '5€ ou 10€', '€5 or €10'],
+  ['5€ to 15€ (flexible)', '5€ a 15€ (flexível)', '€5 to €15 (flexible)'],
+  ['5€ / 3€ for students of LeT', '5€ ou 3€ para alunos de LeT', '€5 or €3 for students of LeT'],
+  ['€12 or €17 or €20', '12€ ou 17€ ou 20€', '€12 or €17 or €20'],
+  ['Free', 'Gratuito', 'Free'],
 ]
 
 describe('translatePrice', () => {
