@@ -30,7 +30,7 @@ function ChipLabel({ genre, label }: ChipProps) {
 /** Chip só de leitura, 28px de altura. */
 export function Chip({ genre, label }: ChipProps) {
   return (
-    <span className={`${BASE} h-7 rounded-full font-medium ${colorOf(genre)}`}>
+    <span className={`${BASE} h-7 rounded-xl font-bold ${colorOf(genre)}`}>
       <ChipLabel genre={genre} label={label} />
     </span>
   )
@@ -45,7 +45,7 @@ type ToggleChipProps = ChipProps &
 
 /** Chip selecionável do filtro, 32px de altura. Não selecionado fica neutro com borda. */
 export function ToggleChip({ genre, label, pressed, variant = 'genre', className = '', ...props }: ToggleChipProps) {
-  const shape = variant === 'group' ? 'rounded-md font-semibold tracking-wide' : 'rounded-full font-medium'
+  const shape = variant === 'group' ? 'rounded-lg font-extrabold tracking-wide' : 'rounded-xl font-bold'
   const state = pressed ? colorOf(genre) : 'border border-border bg-surface text-fg-muted hover:text-fg'
   return (
     <button

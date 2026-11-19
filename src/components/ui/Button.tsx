@@ -2,9 +2,11 @@ import type { ButtonHTMLAttributes, ReactNode } from 'react'
 
 const FOCUS = 'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand'
 
+// Botões "3D" do Duolingo: sombra sólida embaixo que some ao apertar (o botão afunda).
+const PRESS = 'active:translate-y-1 active:shadow-none'
 const VARIANTS = {
-  primary: 'bg-brand text-brand-fg hover:opacity-90',
-  secondary: 'border border-border bg-surface text-fg hover:bg-surface-muted',
+  primary: `bg-brand text-brand-fg shadow-[0_4px_0_var(--brand-shadow)] hover:brightness-105 ${PRESS}`,
+  secondary: `border-2 border-border bg-surface text-accent shadow-[0_4px_0_var(--border)] hover:bg-surface-muted ${PRESS}`,
   ghost: 'text-fg-muted hover:bg-surface-muted hover:text-fg',
 }
 
@@ -17,7 +19,7 @@ export function Button({ variant = 'primary', type = 'button', className = '', .
   return (
     <button
       type={type}
-      className={`inline-flex h-11 cursor-pointer items-center justify-center gap-2 rounded-lg px-4 text-sm font-medium transition disabled:cursor-default disabled:opacity-60 ${FOCUS} ${VARIANTS[variant]} ${className}`}
+      className={`inline-flex h-11 cursor-pointer items-center justify-center gap-2 rounded-2xl px-4 text-sm font-extrabold tracking-wide uppercase transition disabled:cursor-default disabled:opacity-60 ${FOCUS} ${VARIANTS[variant]} ${className}`}
       {...props}
     />
   )
@@ -37,7 +39,7 @@ export function IconButton({ label, icon, variant = 'ghost', type = 'button', cl
       type={type}
       aria-label={label}
       title={label}
-      className={`inline-flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-lg transition ${FOCUS} ${VARIANTS[variant]} ${className}`}
+      className={`inline-flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-2xl transition ${FOCUS} ${VARIANTS[variant]} ${className}`}
       {...props}
     >
       {icon}
