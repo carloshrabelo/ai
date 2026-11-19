@@ -44,7 +44,8 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      # Não publica se o lint ou os testes falharem.
+      # Não publica se a formatação, o lint ou os testes falharem.
+      - run: pnpm format:check
       - run: pnpm lint
       - run: pnpm test
 

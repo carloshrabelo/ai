@@ -1,0 +1,9 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 140,
+  "semi": false,
+  "singleQuote": true,
+  "trailingComma": "all",
+  "arrowParens": "always",
+  "ignorePatterns": ["**/*.md", "src/data/*.json", "src/mocks/**", "public/**", "pnpm-lock.yaml"]
+}
