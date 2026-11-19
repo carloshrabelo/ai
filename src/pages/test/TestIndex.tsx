@@ -1,4 +1,4 @@
-import { BookUser, ChevronRight, Shapes, SpellCheck, type LucideIcon, UsersRound, Megaphone, Tag, TicketX } from 'lucide-react'
+import { BookUser, ChevronRight, Shapes, SpellCheck, type LucideIcon, UsersRound, Megaphone, Tag, Ticket, TicketX } from 'lucide-react'
 import { Link } from 'react-router'
 import { Card } from '../../components/ui/Card'
 import { siteUrl, useDocumentHead } from '../../seo/useDocumentHead'
@@ -30,6 +30,12 @@ const SECTIONS: Section[] = [
         title: 'Preços',
         description: 'Preços distintos dos eventos, com a versão em pt-BR e en-US e o que ficou sem tradução.',
         icon: Tag,
+      },
+      {
+        to: '/teste/formato-precos',
+        title: 'Formato de preços',
+        description: 'Jeitos de exibir preços com mais de um valor ("5€ ou 10€"), lado a lado e num card de evento.',
+        icon: Ticket,
       },
       {
         to: '/teste/sem-preco',

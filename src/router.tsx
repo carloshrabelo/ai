@@ -65,6 +65,11 @@ export const router = createBrowserRouter(
               lazy: { Component: async () => (await import('./pages/test/Prices')).default },
             },
             {
+              path: 'formato-precos',
+              handle: { title: () => 'Formato de preços (teste)' } satisfies RouteHandle,
+              lazy: { Component: async () => (await import('./pages/test/PriceFormats')).default },
+            },
+            {
               path: 'sem-preco',
               handle: { title: () => 'Sem preço (teste)' } satisfies RouteHandle,
               lazy: { Component: async () => (await import('./pages/test/NoPrice')).default },
