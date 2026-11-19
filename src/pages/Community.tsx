@@ -21,7 +21,6 @@ import {
   WHATSAPP_GROUPS,
 } from '../content/community'
 import { useI18n } from '../i18n/useI18n'
-import { Chip } from '../components/ui/Chip'
 import { buttonClassName } from '../components/ui/buttonStyles'
 import { siteUrl, useDocumentHead } from '../seo/useDocumentHead'
 
@@ -103,12 +102,11 @@ function LinkSection({ title, icon, links, columns = false }: { title: string; i
     <Card className="space-y-2">
       <SectionTitle icon={icon}>{title}</SectionTitle>
       <ul className={`-mx-3 ${columns ? 'grid sm:grid-cols-2' : ''}`}>
-        {links.map(({ name, url, detail, genre }) => (
+        {links.map(({ name, url, detail }) => (
           <li key={url}>
             <a href={url} target="_blank" rel="noopener noreferrer" className={LINK_ROW}>
-              <span className="min-w-0 flex-1 space-y-1">
-                {/* Com estilo: o nome no chip colorido do estilo, como nas tags dos eventos. */}
-                {genre ? <Chip genre={genre} label={name} /> : <span className="block text-sm font-bold">{name}</span>}
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm font-bold">{name}</span>
                 {detail && <span className="block truncate text-xs text-fg-muted">{detail}</span>}
               </span>
               <ArrowSquareOutIcon className="size-4 shrink-0 text-fg-muted" aria-hidden="true" />

@@ -1,35 +1,32 @@
 import { CALENDARS } from '../domain/calendarSources'
-import type { Genre } from '../domain/genres'
 
 // Conteúdo da página Comunidade (/community), espelho de https://pasdedeux.pt/outros.html:
 // outros calendários, grupos de WhatsApp, perfis do Instagram e os calendários do Pas de Deux para
 // assinar no app de agenda ou abrir no Google Agenda. Nomes são nomes próprios (sem tradução).
 
-/** `genre`: cor e bandeira do estilo (a mesma paleta das tags dos eventos). */
-export type CommunityLink = { name: string; url: string; detail?: string; genre?: Genre }
+export type CommunityLink = { name: string; url: string; detail?: string }
 
 /** Agendas de outras comunidades. */
 export const OTHER_CALENDARS: CommunityLink[] = [
-  { name: 'Latinas', url: 'https://salsalisbon.com/', detail: 'salsalisbon.com', genre: 'Latinas' },
-  { name: 'West Coast Swing', url: 'http://tinyurl.com/wcsportugalschedule', detail: 'WCS Portugal', genre: 'West Coast Swing' },
+  { name: 'Latinas', url: 'https://salsalisbon.com/', detail: 'salsalisbon.com' },
+  { name: 'West Coast Swing', url: 'http://tinyurl.com/wcsportugalschedule', detail: 'WCS Portugal' },
   { name: 'Dancing Events', url: 'https://chat.whatsapp.com/GChrQA4ENBW2MLH25rBTnv', detail: 'WhatsApp' },
   {
     name: 'Tradicionais',
     url: 'https://calendar.google.com/calendar/u/0/embed?src=europeias.agenda@gmail.com&ctz=Europe/Lisbon&mode=agenda',
     detail: 'europeias.agenda@gmail.com',
-    genre: 'Tradicionais',
   },
-  { name: 'Tango', url: 'https://www.tangolx.com/', detail: 'tangolx.com', genre: 'Tango' },
+  { name: 'Tango', url: 'https://www.tangolx.com/', detail: 'tangolx.com' },
 ]
 
 /** Grupos de WhatsApp por estilo. */
 export const WHATSAPP_GROUPS: CommunityLink[] = [
-  { name: 'Forró', url: 'https://chat.whatsapp.com/EloroWmR46tLNZWXVFTUu9', genre: 'Forró' },
-  { name: 'Salsa', url: 'https://chat.whatsapp.com/JfoGrlHvfrD6rDfjQ2NRYY', genre: 'Salsa' },
-  { name: 'West Coast Swing', url: 'https://chat.whatsapp.com/Eu5lhl1EtXE2heNtKJ7Q2I', genre: 'West Coast Swing' },
-  { name: 'Bachata Sensual', url: 'https://chat.whatsapp.com/KpTURq9uay8D76XUV22zbc', genre: 'Bachata' },
-  { name: 'Zouk', url: 'https://chat.whatsapp.com/IjpLXYSgEhk1oefhZ0A2vL', genre: 'Zouk' },
-  { name: 'Kizomba', url: 'https://chat.whatsapp.com/HH7Z4ZC4tRHJ0xWXjh9fK2', genre: 'Kizomba' },
+  { name: 'Forró', url: 'https://chat.whatsapp.com/EloroWmR46tLNZWXVFTUu9' },
+  { name: 'Salsa', url: 'https://chat.whatsapp.com/JfoGrlHvfrD6rDfjQ2NRYY' },
+  { name: 'West Coast Swing', url: 'https://chat.whatsapp.com/Eu5lhl1EtXE2heNtKJ7Q2I' },
+  { name: 'Bachata Sensual', url: 'https://chat.whatsapp.com/KpTURq9uay8D76XUV22zbc' },
+  { name: 'Zouk', url: 'https://chat.whatsapp.com/IjpLXYSgEhk1oefhZ0A2vL' },
+  { name: 'Kizomba', url: 'https://chat.whatsapp.com/HH7Z4ZC4tRHJ0xWXjh9fK2' },
 ]
 
 export const INSTAGRAM: CommunityLink[] = [
@@ -37,15 +34,13 @@ export const INSTAGRAM: CommunityLink[] = [
     name: 'Bachata Community Lisbon',
     url: 'https://www.instagram.com/bachata_community_lisbon/',
     detail: '@bachata_community_lisbon',
-    genre: 'Bachata',
   },
-  { name: 'Rolê Zouk', url: 'https://www.instagram.com/rolezouk/', detail: '@rolezouk', genre: 'Zouk' },
-  { name: 'Samba de Gafieira', url: 'https://www.instagram.com/sambadegafieiralisboa/', detail: '@sambadegafieiralisboa', genre: 'Samba' },
+  { name: 'Rolê Zouk', url: 'https://www.instagram.com/rolezouk/', detail: '@rolezouk' },
+  { name: 'Samba de Gafieira', url: 'https://www.instagram.com/sambadegafieiralisboa/', detail: '@sambadegafieiralisboa' },
   {
     name: 'West Coast Swing Portugal',
     url: 'https://www.instagram.com/westcoastswingportugal/',
     detail: '@westcoastswingportugal',
-    genre: 'West Coast Swing',
   },
 ]
 
