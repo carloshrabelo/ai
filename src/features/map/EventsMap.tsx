@@ -189,7 +189,11 @@ function ClusterMarker({ cluster, selected }: { cluster: Cluster; selected: bool
         },
         mouseover: () => eventFocus.hover(ids, 'map'),
         mouseout: () => eventFocus.unhover('map'),
+        // O grupo some ao aproximar, sem "mouseout" (no celular, o toque também gera "mouseover"):
+        // sem limpar, o hover ficava preso e todos os pinos filhos pulsavam.
+        remove: () => eventFocus.unhover('map'),
         click: () => {
+          eventFocus.unhover('map')
           const bounds = L.latLngBounds(cluster.places.map((place) => [place.coords.lat, place.coords.lng] as L.LatLngTuple))
           map.fitBounds(bounds, { padding: [80, 80], maxZoom: Math.max(map.getZoom() + 2, 16) })
         },
@@ -218,6 +222,8 @@ function PlaceMarker({ place, selected, onOpenEvent }: { place: Place; selected:
         },
         mouseover: () => eventFocus.hover(ids, 'map'),
         mouseout: () => eventFocus.unhover('map'),
+        // Pino que sai do mapa (ex.: vira parte de um grupo ao afastar) não deixa o hover preso.
+        remove: () => eventFocus.unhover('map'),
         click: () => {
           if (place.events.length === 1) onOpenEvent(place.events[0].slug)
         },
