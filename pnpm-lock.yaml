@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@fluentui/react-icons':
-        specifier: ^2.0.346
-        version: 2.0.346(react@19.3.1)
       '@phosphor-icons/react':
         specifier: ^2.1.10
         version: 2.1.10(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
@@ -641,9 +638,6 @@ packages:
   '@emnapi/wasi-threads@2.2.0':
     resolution: {integrity: sha512-JP7OYH38Q7+pyTAe14raZHLQIK7BDKbdwji+Xi3pcd/6QkJYQH3SX4wu6EplGrGJWRepoNzedfm0G3B9Z4e9Rw==}
 
-  '@emotion/hash@0.9.2':
-    resolution: {integrity: sha512-MyqliTZGuOm3+5ZRSaaBGP3USLw6+EGykkwZns2EPC5g8jJ4z9OrdZY9apkl3+UP9+sdz76YYkwCKP5gh8iY3g==}
-
   '@exodus/bytes@1.16.0':
     resolution: {integrity: sha512-IcpW84uEn3N7ETtNZMlxKhfl6Pec8rUNGOTBtWbK1FKhJxIFAptZyVrvVRVBimAJxJCgc3PxepxkdWWG4DVzfA==}
     engines: {node: ^20.19.0 || ^22.12.0 || >=24.0.0}
@@ -661,22 +655,6 @@ packages:
 
   '@floating-ui/utils@0.2.12':
     resolution: {integrity: sha512-HpCo8tmWzLVad5s2d19EhAz5zqrrQ6s69qd6moPMQvkOuSwDT1YgRfWSVuc4ennqrgv3OHppiOGMQ7oC13yIww==}
-
-  '@fluentui/react-icons@2.0.346':
-    resolution: {integrity: sha512-HrtEQcmJgA73sXt/jJHq5la3svt8nQoA+tycER5PXH+tPKzSrmPY72wSz8m+4iMzjG9w5WMQJbjbhsSzQNS53g==}
-    peerDependencies:
-      react: '>=16.8.0 <20.0.0'
-
-  '@griffel/core@1.21.4':
-    resolution: {integrity: sha512-Pt6tjaBCOYYC76L7U5yl3r+UqOGXEbeskvYuqUsUzaVQR2ueoMErA2+bRjvVPFr8NvvhPVU+QNBqd9Deg5st2A==}
-
-  '@griffel/react@1.7.8':
-    resolution: {integrity: sha512-kTegyzZoRqpRNUQ8Fd6QWLC8MUqSyO+/GDC/ffbEG8Y6JDole98rBrOVA/NN9PDD61/ktsd2UqtsTNwtAG6q3w==}
-    peerDependencies:
-      react: '>=16.14.0 <20.0.0'
-
-  '@griffel/style-types@1.4.3':
-    resolution: {integrity: sha512-sFxMK19oFUPQSmyCKT1Pvj5Nu/ODvhMczqhGjVAoksDTXUj1za40WA0CXqV3o+xxKWPec+K/rbS78jJLmomsQA==}
 
   '@img/colour@1.1.0':
     resolution: {integrity: sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ==}
@@ -3020,9 +2998,6 @@ packages:
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
 
-  rtl-css-js@1.16.1:
-    resolution: {integrity: sha512-lRQgou1mu19e+Ya0LsTvKrVJ5TYUbqCVPAiImX3UfLTenarvPUl1QFdvu5Z3PYmHT9RCcwIfbjRQBntExyj3Zg==}
-
   safe-array-concat@1.1.4:
     resolution: {integrity: sha512-wtZlHyOje6OZTGqAoaDKxFkgRtkF9CnHAVnCHKfuj200wAgL+bSJhdsCD2l0Qx/2ekEXjPWcyKkfGb5CPboslg==}
     engines: {node: '>=0.4'}
@@ -3193,9 +3168,6 @@ packages:
   strip-json-comments@5.0.3:
     resolution: {integrity: sha512-1tB5mhVo7U+ETBKNf92xT4hrQa3pm0MZ0PQvuDnWgAAGHDsfp4lPSpiS6psrSiet87wyGPh9ft6wmhOMQ0hDiw==}
     engines: {node: '>=14.16'}
-
-  stylis@4.4.0:
-    resolution: {integrity: sha512-5Z9ZpRzfuH6l/UAvCPAPUo3665Nk2wLaZU3x+TLHKVzIz33+sbJqbtrYoC3KD4/uVOr2Zp+L0LySezP9OHV9yA==}
 
   superjson@2.2.6:
     resolution: {integrity: sha512-H+ue8Zo4vJmV2nRjpx86P35lzwDT3nItnIsocgumgr0hHMQ+ZGq5vrERg9kJBo5AWGmxZDhzDo+WVIJqkB0cGA==}
@@ -4280,8 +4252,6 @@ snapshots:
       tslib: 2.9.1
     optional: true
 
-  '@emotion/hash@0.9.2': {}
-
   '@exodus/bytes@1.16.0': {}
 
   '@floating-ui/core@1.8.0':
@@ -4294,31 +4264,6 @@ snapshots:
       '@floating-ui/utils': 0.2.12
 
   '@floating-ui/utils@0.2.12': {}
-
-  '@fluentui/react-icons@2.0.346(react@19.3.1)':
-    dependencies:
-      '@griffel/react': 1.7.8(react@19.3.1)
-      react: 19.3.1
-      tslib: 2.9.1
-
-  '@griffel/core@1.21.4':
-    dependencies:
-      '@emotion/hash': 0.9.2
-      '@griffel/style-types': 1.4.3
-      csstype: 3.2.3
-      rtl-css-js: 1.16.1
-      stylis: 4.4.0
-      tslib: 2.9.1
-
-  '@griffel/react@1.7.8(react@19.3.1)':
-    dependencies:
-      '@griffel/core': 1.21.4
-      react: 19.3.1
-      tslib: 2.9.1
-
-  '@griffel/style-types@1.4.3':
-    dependencies:
-      csstype: 3.2.3
 
   '@img/colour@1.1.0': {}
 
@@ -6334,10 +6279,6 @@ snapshots:
       '@rollup/rollup-win32-x64-msvc': 4.68.4
       fsevents: 2.3.3
 
-  rtl-css-js@1.16.1:
-    dependencies:
-      '@babel/runtime': 7.29.14
-
   safe-array-concat@1.1.4:
     dependencies:
       call-bind: 1.0.9
@@ -6568,8 +6509,6 @@ snapshots:
 
   strip-json-comments@5.0.3: {}
 
-  stylis@4.4.0: {}
-
   superjson@2.2.6:
     dependencies:
       copy-anything: 4.1.5
@@ -6623,7 +6562,8 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  tslib@2.9.1: {}
+  tslib@2.9.1:
+    optional: true
 
   type-fest@0.16.0: {}
 

@@ -19,7 +19,6 @@
     "generate-pwa-assets": "pwa-assets-generator"
   },
   "dependencies": {
-    "@fluentui/react-icons": "^2.0.346",
     "@phosphor-icons/react": "^2.1.10",
     "@tanstack/query-sync-storage-persister": "^5.107.1",
     "@tanstack/react-query": "^5.107.1",

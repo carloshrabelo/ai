@@ -1,18 +1,26 @@
 import { Check, ChevronDown, Copy } from 'lucide-react'
-import { createElement, type ReactNode, useState } from 'react'
+import type { IconWeight } from '@phosphor-icons/react'
+import { createContext, createElement, type ReactNode, use, useState } from 'react'
 import { Button } from '../../../components/ui/Button'
 import { Card } from '../../../components/ui/Card'
+import { Segmented } from '../../../components/ui/Segmented'
 import { siteUrl, useDocumentHead } from '../../../seo/useDocumentHead'
 import { BackToTest } from '../shared'
-
-import { Segmented } from '../../../components/ui/Segmented'
-import { ICON_STYLES, type IconStyle, pairNote, styledIcon } from './iconStyles'
 import { currentIndex, type Group, type GroupId, GROUPS, type IconComponent, SECTIONS } from './iconGroups'
 
+/** Peso dos ícones do Phosphor na página (o escolhido foi o Duotone). */
+const WeightContext = createContext<IconWeight>('duotone')
+const WEIGHTS: { value: IconWeight; label: string }[] = [
+  { value: 'duotone', label: 'Duotone' },
+  { value: 'fill', label: 'Fill' },
+  { value: 'regular', label: 'Regular' },
+  { value: 'bold', label: 'Bold' },
+]
+
 /**
- * Página de teste (/teste/icones, pública mas sem link no app): opções para cada ícone do app (menu,
- * agenda e mapa, card e detalhes), todas da Lucide, com uma amostra fixa das telas usando os
- * ícones escolhidos.
+ * Página de teste (/teste/icones, pública mas sem link no app): opções do Phosphor para cada ícone
+ * do app (menu, agenda e mapa, card e detalhes) e, à direita, uma amostra das telas com os ícones
+ * escolhidos, fixa na tela para comparar enquanto escolhe.
  */
 export default function Icons() {
   useDocumentHead({
@@ -24,9 +32,8 @@ export default function Icons() {
   const [choice, setChoice] = useState<Record<GroupId, number>>(
     () => Object.fromEntries(GROUPS.map((group) => [group.id, currentIndex(group.options)])) as Record<GroupId, number>,
   )
+  const [weight, setWeight] = useState<IconWeight>('duotone')
   const [copied, setCopied] = useState(false)
-  // Estilo dos ícones na amostra: o atual (Lucide) ou um estilo cheio (ver iconStyles.ts).
-  const [style, setStyle] = useState<IconStyle>('lucide')
   // Acordeon: um grupo de opções aberto por vez (fechado, mostra só a escolha).
   const [openGroup, setOpenGroup] = useState<GroupId | null>(null)
 
@@ -36,54 +43,59 @@ export default function Icons() {
   }
 
   const copy = async () => {
-    await navigator.clipboard.writeText(GROUPS.map((group) => `${group.title}: ${chosen(group.id).name}`).join('\n'))
+    await navigator.clipboard.writeText(
+      [`Phosphor, peso ${weight}`, ...GROUPS.map((group) => `${group.title}: ${chosen(group.id).name}`)].join('\n'),
+    )
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
 
   return (
-    <section className="mx-auto max-w-5xl space-y-4">
-      <BackToTest />
-      <Card className="space-y-4">
-        <div>
-          <h2 className="text-lg font-semibold">Ícones</h2>
-          <p className="text-sm text-fg-muted">
-            Cada ícone do app com opções da Lucide (a biblioteca do app). A amostra abaixo usa os escolhidos.
-          </p>
-        </div>
-        <Sample icon={(id) => styledIcon(style, id, chosen(id).icon)} />
-        <div className="flex flex-wrap items-center gap-3">
-          <Segmented
-            label="Estilo dos ícones"
-            options={ICON_STYLES.map(({ id, label }) => ({ value: id, label }))}
-            value={style}
-            onChange={setStyle}
-          />
-          <Button onClick={copy}>
-            {copied ? <Check className="size-4" aria-hidden="true" /> : <Copy className="size-4" aria-hidden="true" />}
-            {copied ? 'Copiado' : 'Copiar escolha'}
-          </Button>
-        </div>
-      </Card>
+    <WeightContext value={weight}>
+      <section className="mx-auto max-w-6xl space-y-4">
+        <BackToTest />
+        <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,1fr)_400px]">
+          {/* Opções à esquerda; a amostra fica à direita, fixa na tela (em cima, no celular). */}
+          <div className="order-2 space-y-4 lg:order-1">
+            <Card className="space-y-1">
+              <h2 className="text-lg font-semibold">Ícones (Phosphor)</h2>
+              <p className="text-sm text-fg-muted">
+                Opções parecidas para cada ícone do app. A primeira de cada grupo é o equivalente da escolha anterior (Lucide).
+              </p>
+            </Card>
+            {SECTIONS.map((section) => (
+              <div key={section} className="space-y-2">
+                <h3 className="pt-2 text-sm font-semibold text-fg-muted">{section}</h3>
+                {GROUPS.filter((group) => group.section === section).map((group) => (
+                  <IconChoices
+                    key={group.id}
+                    group={group}
+                    value={choice[group.id]}
+                    onChange={(index) => setChoice((current) => ({ ...current, [group.id]: index }))}
+                    open={openGroup === group.id}
+                    onToggle={() => setOpenGroup((current) => (current === group.id ? null : group.id))}
+                  />
+                ))}
+              </div>
+            ))}
+          </div>
 
-      <StyleComparison icon={(id) => chosen(id).icon} />
-
-      {SECTIONS.map((section) => (
-        <div key={section} className="space-y-2">
-          <h3 className="pt-2 text-sm font-semibold text-fg-muted">{section}</h3>
-          {GROUPS.filter((group) => group.section === section).map((group) => (
-            <IconChoices
-              key={group.id}
-              group={group}
-              value={choice[group.id]}
-              onChange={(index) => setChoice((current) => ({ ...current, [group.id]: index }))}
-              open={openGroup === group.id}
-              onToggle={() => setOpenGroup((current) => (current === group.id ? null : group.id))}
-            />
-          ))}
+          <aside aria-label="Prévia" className="order-1 lg:sticky lg:top-20 lg:order-2 lg:max-h-[calc(100dvh-6rem)] lg:overflow-y-auto">
+            <Card className="space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h2 className="text-lg font-semibold">Prévia</h2>
+                <Button onClick={copy}>
+                  {copied ? <Check className="size-4" aria-hidden="true" /> : <Copy className="size-4" aria-hidden="true" />}
+                  {copied ? 'Copiado' : 'Copiar escolha'}
+                </Button>
+              </div>
+              <Segmented label="Peso" options={WEIGHTS} value={weight} onChange={setWeight} />
+              <Sample icon={(id) => chosen(id).icon} />
+            </Card>
+          </aside>
         </div>
-      ))}
-    </section>
+      </section>
+    </WeightContext>
   )
 }
 
@@ -116,7 +128,7 @@ function Sample({ icon }: { icon: (id: GroupId) => IconComponent }) {
   const action = 'inline-flex h-11 items-center gap-2 rounded-lg border border-border bg-surface px-3 text-sm font-medium'
 
   return (
-    <div className="grid gap-4 lg:grid-cols-2">
+    <div className="space-y-4">
       <Preview title="Barra inferior (celular)">
         <ul className="flex h-16 rounded-lg border border-border bg-surface">
           {nav.map(({ label, Icon, active }) => (
@@ -209,7 +221,7 @@ function Sample({ icon }: { icon: (id: GroupId) => IconComponent }) {
         </div>
       </Preview>
 
-      <Preview title="Ações nos detalhes" className="lg:col-span-2">
+      <Preview title="Ações nos detalhes">
         <div className="flex flex-wrap gap-2">
           <span className={action}>
             <Glyph icon={AddCalendar} className="size-5" />
@@ -239,7 +251,7 @@ function Sample({ icon }: { icon: (id: GroupId) => IconComponent }) {
 
 /** Desenha um ícone recebido por valor (o lint não confunde com componente criado na renderização). */
 function Glyph({ icon, className }: { icon: IconComponent; className: string }) {
-  return createElement(icon, { className })
+  return createElement(icon, { className, weight: use(WeightContext) })
 }
 
 function Preview({ title, className = '', children }: { title: string; className?: string; children: ReactNode }) {
@@ -265,7 +277,6 @@ function IconChoices({
   onToggle: () => void
 }) {
   const chosen = group.options[value]
-  const Chosen = chosen.icon
   const id = `group-${group.id}`
   return (
     <Card className="p-0">
@@ -282,16 +293,15 @@ function IconChoices({
             <span className="block text-xs text-fg-muted">{group.where}</span>
           </span>
           <span className="ml-auto inline-flex items-center gap-2 text-sm">
-            <Chosen className="size-5" />
+            <Glyph icon={chosen.icon} className="size-5" />
             <span className="font-mono text-xs">{chosen.name}</span>
           </span>
           <ChevronDown className={`size-5 shrink-0 text-fg-muted transition-transform ${open ? 'rotate-180' : ''}`} aria-hidden="true" />
         </button>
       </h4>
       {open && (
-        <div id={id} className="grid gap-2 border-t border-border p-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div id={id} className="grid gap-2 border-t border-border p-4 sm:grid-cols-2">
           {group.options.map((option, index) => {
-            const Icon = option.icon
             return (
               <button
                 key={option.name}
@@ -307,7 +317,7 @@ function IconChoices({
                     atual
                   </span>
                 )}
-                <Icon className="size-7 shrink-0" />
+                <Glyph icon={option.icon} className="size-7 shrink-0" />
                 <span>
                   <span className="font-mono text-xs font-semibold">{option.name}</span>
                   {option.note && <span className="mt-0.5 block text-xs text-fg-muted">{option.note}</span>}
@@ -317,49 +327,6 @@ function IconChoices({
           })}
         </div>
       )}
-    </Card>
-  )
-}
-
-/** Os ícones escolhidos lado a lado em cada estilo (Lucide, Phosphor Fill e Duotone, Fluent Filled). */
-function StyleComparison({ icon }: { icon: (id: GroupId) => IconComponent }) {
-  return (
-    <Card className="overflow-x-auto p-0">
-      <table className="w-full text-left text-sm">
-        <caption className="px-4 pt-4 text-left">
-          <span className="block text-base font-semibold">Comparação de estilos</span>
-          <span className="block text-xs font-normal text-fg-muted">
-            {ICON_STYLES.map(({ label, note }) => `${label}: ${note}`).join(' · ')}
-          </span>
-        </caption>
-        <thead className="border-b border-border text-fg-muted">
-          <tr>
-            <th scope="col" className="px-4 py-2 font-medium">
-              Ícone
-            </th>
-            {ICON_STYLES.map(({ id, label }) => (
-              <th key={id} scope="col" className="px-4 py-2 text-center font-medium whitespace-nowrap">
-                {label}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {GROUPS.map((group) => (
-            <tr key={group.id} className="border-b border-border last:border-0">
-              <th scope="row" className="px-4 py-2 font-medium">
-                {group.title}
-                {pairNote(group.id) && <span className="block text-xs font-normal text-fg-muted">{pairNote(group.id)}</span>}
-              </th>
-              {ICON_STYLES.map(({ id }) => (
-                <td key={id} className="px-4 py-2 text-center text-brand">
-                  <Glyph icon={styledIcon(id, group.id, icon(group.id))} className="mx-auto size-7" />
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
     </Card>
   )
 }
