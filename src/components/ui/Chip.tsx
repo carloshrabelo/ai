@@ -54,8 +54,9 @@ type ToggleChipProps = ChipProps &
 /** Chip selecionável do filtro, 32px de altura. Não selecionado fica neutro com borda. */
 export function ToggleChip({ genre, label, pressed, variant = 'genre', className = '', ...props }: ToggleChipProps) {
   const shape = variant === 'group' ? 'rounded-lg font-extrabold tracking-wide' : 'rounded-xl font-bold'
+  // Selecionada, a borda fica transparente (e não some): as duas têm o mesmo tamanho.
   const state = pressed
-    ? `${colorOf(genre)} ${genre ? DEPTH : DEPTH_NEUTRAL}`
+    ? `border border-transparent ${colorOf(genre)} ${genre ? DEPTH : DEPTH_NEUTRAL}`
     : `border border-border bg-surface text-fg-muted hover:text-fg ${DEPTH_NEUTRAL}`
   return (
     <button
