@@ -1,4 +1,12 @@
-import { BellPlus, CalendarArrowDown, CalendarPlus, Clock, MapPin, Navigation, Ticket } from 'lucide-react'
+import {
+  BellRingingIcon,
+  CalendarPlusIcon,
+  ClockIcon,
+  DownloadSimpleIcon,
+  MapPinIcon,
+  NavigationArrowIcon,
+  TicketIcon,
+} from '@phosphor-icons/react'
 import { type ReactNode, useMemo } from 'react'
 import { Chip } from '../../components/ui/Chip'
 import { Skeleton } from '../../components/ui/Skeleton'
@@ -49,12 +57,12 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
       </div>
 
       <dl className="space-y-2 text-sm">
-        <Row icon={<Clock className="size-5" aria-hidden="true" />} label={t.event.when}>
+        <Row icon={<ClockIcon className="size-5" aria-hidden="true" />} label={t.event.when}>
           <span className="block">{formatDayHeading(lisbonDate(event.start), locale)}</span>
           <span className="block text-fg-muted tabular-nums">{formatTimeRange(event, locale)}</span>
         </Row>
         {event.venue && (
-          <Row icon={<MapPin className="size-5" aria-hidden="true" />} label={t.event.where}>
+          <Row icon={<MapPinIcon className="size-5" aria-hidden="true" />} label={t.event.where}>
             <span className="flex items-baseline justify-between gap-2">
               {event.venue.name}
               <EventDistance venue={event.venue} />
@@ -66,13 +74,13 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
                 {...(directions.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                 className="inline-flex min-h-11 items-center gap-1 font-medium text-brand underline-offset-2 hover:underline"
               >
-                <Navigation className="size-4" aria-hidden="true" />
+                <NavigationArrowIcon className="size-4" aria-hidden="true" />
                 {t.event.openInMaps}
               </a>
             )}
           </Row>
         )}
-        <Row icon={<Ticket className="size-5" aria-hidden="true" />} label={t.event.price}>
+        <Row icon={<TicketIcon className="size-5" aria-hidden="true" />} label={t.event.price}>
           {event.price ? (
             <PriceChips price={event.price} variant="auto" locale={locale} />
           ) : (
@@ -94,7 +102,7 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
             }}
             className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-brand px-4 text-sm font-medium text-brand-fg hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
           >
-            <CalendarPlus className="size-5" aria-hidden="true" />
+            <CalendarPlusIcon className="size-5" aria-hidden="true" />
             {t.tracking.googleCalendar}
           </a>
           <Button
@@ -104,14 +112,14 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
               downloadIcs(event, eventUrl(event.slug), slugify(event.title) || 'evento')
             }}
           >
-            <CalendarArrowDown className="size-5" aria-hidden="true" />
+            <DownloadSimpleIcon className="size-5" aria-hidden="true" />
             {t.tracking.icsCalendar}
           </Button>
           <ShareButton event={event} />
         </div>
         {tracked && (
           <p className="flex flex-wrap items-center gap-x-2 text-sm text-fg-muted">
-            <BellPlus className="size-4 shrink-0" aria-hidden="true" />
+            <BellRingingIcon className="size-4 shrink-0" aria-hidden="true" />
             {t.tracking.tracked}
             <button
               type="button"

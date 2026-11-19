@@ -1,3 +1,4 @@
+import { IconContext } from '@phosphor-icons/react'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import { StrictMode } from 'react'
@@ -25,10 +26,13 @@ if (import.meta.env.DEV && !__PWA_IN_DEV__ && 'serviceWorker' in navigator) {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <PersistQueryClientProvider client={queryClient} persistOptions={persistOptions}>
-      <RouterProvider router={router} />
-      {/* Não renderiza nada no build de produção. */}
-      <ReactQueryDevtools buttonPosition="top-right" />
-    </PersistQueryClientProvider>
+    {/* Ícones do Phosphor no peso Duotone em todo o app (escolhido em /teste/icones). */}
+    <IconContext.Provider value={{ weight: 'duotone' }}>
+      <PersistQueryClientProvider client={queryClient} persistOptions={persistOptions}>
+        <RouterProvider router={router} />
+        {/* Não renderiza nada no build de produção. */}
+        <ReactQueryDevtools buttonPosition="top-right" />
+      </PersistQueryClientProvider>
+    </IconContext.Provider>
   </StrictMode>,
 )

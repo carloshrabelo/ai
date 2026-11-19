@@ -1,4 +1,5 @@
-import { LocateFixed, RefreshCw } from 'lucide-react'
+import { RefreshCw } from 'lucide-react'
+import { GpsFixIcon } from '@phosphor-icons/react'
 import { Button } from '../../components/ui/Button'
 import { requestLocation, useUserLocation } from './userLocation'
 import { useI18n } from '../../i18n/useI18n'
@@ -12,7 +13,7 @@ export function LocationControl() {
     case 'granted':
       return (
         <div className="flex items-center gap-2 text-sm text-fg-muted">
-          <LocateFixed className="size-5 shrink-0 text-brand" aria-hidden="true" />
+          <GpsFixIcon className="size-5 shrink-0 text-brand" aria-hidden="true" />
           <span className="flex-1">{t.location.active}</span>
           <button
             type="button"
@@ -42,7 +43,7 @@ export function LocationControl() {
             }}
             disabled={location.status === 'pending'}
           >
-            <LocateFixed className="size-5" aria-hidden="true" />
+            <GpsFixIcon className="size-5" aria-hidden="true" />
             {location.status === 'pending' ? t.location.locating : t.location.show}
           </Button>
           {location.status === 'unavailable' && (

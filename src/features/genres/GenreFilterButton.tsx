@@ -1,4 +1,4 @@
-import { Funnel } from 'lucide-react'
+import { FunnelIcon } from '@phosphor-icons/react'
 import { TOOL, TOOL_ACTIVE, TOOL_IDLE } from '../../components/ui/Button'
 import { useI18n } from '../../i18n/useI18n'
 
@@ -28,7 +28,7 @@ export function GenreFilterButton({ open, onToggle, controls, activeCount }: Pro
         open ? TOOL_ACTIVE : TOOL_IDLE
       }`}
     >
-      <Funnel className="size-6" aria-hidden="true" />
+      <FunnelIcon className="size-6" aria-hidden="true" />
       {activeCount > 0 && (
         <span
           aria-hidden="true"

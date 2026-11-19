@@ -1,4 +1,5 @@
-import { FunnelX, X } from 'lucide-react'
+import { X } from 'lucide-react'
+import { FunnelXIcon } from '@phosphor-icons/react'
 import { type ReactNode, useEffect, useRef } from 'react'
 import { ToggleChip } from '../../components/ui/Chip'
 import { FILTER_VALUES, type GenreFilterValue, OTHER_GENRES } from '../../domain/genreFilter'
@@ -77,7 +78,7 @@ export function GenreFilterPopover({ id, onClose }: Props) {
             onClick={clear}
             className="-my-2 inline-flex h-11 cursor-pointer items-center gap-1 rounded-lg px-3 text-sm font-medium text-brand hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-brand"
           >
-            <FunnelX className="size-4" aria-hidden="true" />
+            <FunnelXIcon className="size-4" aria-hidden="true" />
             {t.filters.clear}
           </button>
         )}

@@ -1,6 +1,6 @@
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
-import { Focus } from 'lucide-react'
+import { ScanIcon } from '@phosphor-icons/react'
 import { useEffect, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { CircleMarker, MapContainer, Marker, Popup, TileLayer, Tooltip, useMap, ZoomControl } from 'react-leaflet'
@@ -232,7 +232,7 @@ function FitControl({ position, label, ...fit }: FitProps & { position: L.Contro
       }}
       className="flex size-[30px] cursor-pointer items-center justify-center rounded-[2px] bg-white text-black hover:bg-[#f4f4f4] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
     >
-      <Focus className="size-4" aria-hidden="true" />
+      <ScanIcon className="size-4" aria-hidden="true" />
     </button>,
     container,
   )
