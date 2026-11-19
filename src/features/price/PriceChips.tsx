@@ -3,34 +3,18 @@ import { CircleHelp, Clock, DoorOpen, Gift, GraduationCap, type LucideIcon, Moon
 import { labeledPrice, type PriceLabel, type PriceOption } from '../../domain/price/labeledPrice'
 import type { Locale } from '../../i18n/locale'
 import { translatePrice } from '../../domain/price/translatePrice'
+import { MESSAGES } from '../../i18n/messages'
 import { useI18n } from '../../i18n/useI18n'
 
 // Preço em chips, cada valor com o seu rótulo ("5€ sócios", "3€ alunos LeT"), em variações para
 // comparar em /teste/formato-precos.
 
-const LABELS: Record<Locale, Record<PriceLabel, (arg?: string) => string>> = {
-  'pt-BR': {
-    members: () => 'sócios',
-    nonMembers: () => 'não sócios',
-    students: (arg) => (arg ? `alunos ${arg}` : 'alunos'),
-    door: () => 'na porta',
-    drink: () => 'bebida incluída',
-    withDrink: () => 'com bebida',
-    minimum: () => 'consumo mínimo',
-    until: (hour) => `até ${hour}h`,
-    after: () => 'depois',
-  },
-  'en-US': {
-    members: () => 'members',
-    nonMembers: () => 'non-members',
-    students: (arg) => (arg ? `${arg} students` : 'students'),
-    door: () => 'at the door',
-    drink: () => 'drink included',
-    withDrink: () => 'with a drink',
-    minimum: () => 'minimum spend',
-    until: (hour) => `until ${hour}am`,
-    after: () => 'after',
-  },
+/** Texto do rótulo no idioma (textos em src/i18n/messages, seção `price`). */
+function labelText(label: PriceLabel, arg: string | undefined, locale: Locale): string {
+  const text = MESSAGES[locale].price
+  if (label === 'students') return text.students(arg)
+  if (label === 'until') return text.until(arg ?? '')
+  return text[label]
 }
 
 const ICONS: Record<PriceLabel, LucideIcon> = {
@@ -45,21 +29,16 @@ const ICONS: Record<PriceLabel, LucideIcon> = {
   after: Moon,
 }
 
-const WORDS: Record<Locale, { free: string; flexible: string; uncertain: string }> = {
-  'pt-BR': { free: 'Gratuito', flexible: 'flexível', uncertain: 'a confirmar' },
-  'en-US': { free: 'Free', flexible: 'flexible', uncertain: 'to be confirmed' },
-}
-
 /** Valor da opção ("5€", "Gratuito", "Pago") e o rótulo dela, no idioma. */
 function describe(option: PriceOption, locale: Locale): { value: string; label?: string; icon?: LucideIcon; uncertain?: string } {
   const value =
     option.amount !== undefined
       ? formatEuro(option.amount, locale)
       : option.free
-        ? WORDS[locale].free
+        ? MESSAGES[locale].price.free
         : translatePrice(option.text ?? '', locale)
-  const uncertain = option.uncertain ? WORDS[locale].uncertain : undefined
-  if (option.label) return { value, uncertain, label: LABELS[locale][option.label](option.labelArg), icon: ICONS[option.label] }
+  const uncertain = option.uncertain ? MESSAGES[locale].price.uncertain : undefined
+  if (option.label) return { value, uncertain, label: labelText(option.label, option.labelArg, locale), icon: ICONS[option.label] }
   if (option.rawLabel) return { value, uncertain, label: option.rawLabel }
   return { value, uncertain, ...(option.free ? { icon: Gift } : {}) }
 }
@@ -121,7 +100,7 @@ export function PriceChips({ price, variant, locale }: { price: string; variant:
   // Observação no idioma ("5€?" → "€5?"), sem a maiúscula que o translatePrice põe no começo.
   const note = parsed.note && translatePrice(parsed.note, locale)
   const extras = [
-    parsed.flexible ? WORDS[locale].flexible : undefined,
+    parsed.flexible ? MESSAGES[locale].price.flexible : undefined,
     note && parsed.note && /^\p{Ll}/u.test(parsed.note) ? note.charAt(0).toLowerCase() + note.slice(1) : note,
   ].filter(Boolean)
 
