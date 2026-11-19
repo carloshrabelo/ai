@@ -1,6 +1,7 @@
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
 import { QueryClient } from '@tanstack/react-query'
 import type { PersistQueryClientOptions } from '@tanstack/react-query-persist-client'
+import { safeStorage } from '../lib/storage'
 import { USE_MOCK } from './config'
 
 /** Quanto tempo os eventos salvos no aparelho valem para abrir o app sem internet. */
@@ -16,18 +17,6 @@ export const queryClient = new QueryClient({
     },
   },
 })
-
-/** localStorage indisponível (aba anônima com bloqueio, etc.): segue sem salvar. */
-function safeStorage(): Storage | undefined {
-  try {
-    const key = '__persist_test__'
-    window.localStorage.setItem(key, key)
-    window.localStorage.removeItem(key)
-    return window.localStorage
-  } catch {
-    return undefined
-  }
-}
 
 /**
  * Salva os eventos já carregados no aparelho: o app abre com eles mesmo sem internet

@@ -1,3 +1,4 @@
+import { formatEuro } from '../../lib/money'
 import { CircleHelp, Clock, DoorOpen, Gift, GraduationCap, type LucideIcon, Moon, Receipt, User, UserCheck, Wine } from 'lucide-react'
 import { labeledPrice, type PriceLabel, type PriceOption } from '../../domain/labeledPrice'
 import type { Locale } from '../../i18n/locale'
@@ -50,17 +51,11 @@ const WORDS: Record<Locale, { free: string; flexible: string; uncertain: string 
   'en-US': { free: 'Free', flexible: 'flexible', uncertain: 'to be confirmed' },
 }
 
-/** 5 → "5€" / "€5"; 7.5 → "7,50€" / "€7.50". */
-function money(value: number, locale: Locale): string {
-  const number = Number.isInteger(value) ? String(value) : value.toFixed(2)
-  return locale === 'pt-BR' ? `${number.replace('.', ',')}€` : `€${number}`
-}
-
 /** Valor da opção ("5€", "Gratuito", "Pago") e o rótulo dela, no idioma. */
 function describe(option: PriceOption, locale: Locale): { value: string; label?: string; icon?: LucideIcon; uncertain?: string } {
   const value =
     option.amount !== undefined
-      ? money(option.amount, locale)
+      ? formatEuro(option.amount, locale)
       : option.free
         ? WORDS[locale].free
         : translatePrice(option.text ?? '', locale)

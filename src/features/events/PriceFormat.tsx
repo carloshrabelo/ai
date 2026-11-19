@@ -1,3 +1,4 @@
+import { formatEuro } from '../../lib/money'
 import { type PriceParts, priceParts } from '../../domain/priceParts'
 import type { Locale } from '../../i18n/locale'
 import { normalizePrice, translatePrice } from '../../i18n/price'
@@ -17,15 +18,9 @@ function inline(text: string, locale: Locale): string {
   return /^\p{Ll}/u.test(text) ? translated.charAt(0).toLowerCase() + translated.slice(1) : translated
 }
 
-/** 5 → "5€" / "€5"; 7.5 → "7,50€" / "€7.50". */
-function money(value: number, locale: Locale): string {
-  const number = Number.isInteger(value) ? String(value) : value.toFixed(2)
-  return locale === 'pt-BR' ? `${number.replace('.', ',')}€` : `€${number}`
-}
-
 /** Faixa compacta: "5–10€" / "€5–10". */
 function range(min: number, max: number, locale: Locale): string {
-  const [a, b] = [min, max].map((value) => money(value, locale).replace('€', ''))
+  const [a, b] = [min, max].map((value) => formatEuro(value, locale).replace('€', ''))
   return locale === 'pt-BR' ? `${a}–${b}€` : `€${a}–${b}`
 }
 
@@ -61,7 +56,7 @@ export function PriceFormat({ price, format, locale }: { price: string; format: 
     case 'from':
       return (
         <span>
-          {hasFree || parts.min === undefined ? options.join(' · ') : `${WORDS[locale].from} ${money(parts.min, locale)}`}
+          {hasFree || parts.min === undefined ? options.join(' · ') : `${WORDS[locale].from} ${formatEuro(parts.min, locale)}`}
           <Note parts={parts} locale={locale} />
         </span>
       )

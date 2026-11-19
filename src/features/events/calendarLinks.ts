@@ -1,3 +1,4 @@
+import { htmlToText } from '../../lib/text'
 import type { DanceEvent } from '../../domain/event'
 
 // "Adicionar ao calendário" sem login: o link de modelo do Google Agenda abre a agenda da
@@ -15,24 +16,13 @@ const utcStamp = (date: Date) =>
 /** Data de Lisboa sem separadores (dia inteiro): 20261117 */
 const lisbonDay = (date: Date) => new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Lisbon' }).format(date).replace(/-/g, '')
 
-function plainText(html: string | undefined): string {
-  return (html ?? '')
-    .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<\/p>/gi, '\n')
-    .replace(/<[^>]*>/g, '')
-    .replaceAll('&amp;', '&')
-    .replaceAll('&nbsp;', ' ')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim()
-}
-
 function locationText(event: DanceEvent): string {
   return event.venue ? [event.venue.name, event.venue.address].filter(Boolean).join(', ') : ''
 }
 
 /** Descrição: link para a página do evento no app + a descrição original (limitada). */
 function details(event: DanceEvent, pageUrl: string, maxLength: number): string {
-  const description = plainText(event.description)
+  const description = htmlToText(event.description)
   const text = description.length > maxLength ? `${description.slice(0, maxLength).trimEnd()}…` : description
   return [pageUrl, text].filter(Boolean).join('\n\n')
 }

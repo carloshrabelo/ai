@@ -1,3 +1,5 @@
+import { levenshtein } from '../lib/text'
+
 // Revisão de texto dos eventos (/review): erros de ortografia (LanguageTool) e perfis do Instagram
 // escritos errado (os `aliases` de promoters.json), com a correção aplicada no texto original.
 //
@@ -175,18 +177,6 @@ export function toPlain(source: string): PlainText {
 function codeRanges(text: string): [number, number][] {
   const pattern = /@[\p{L}\p{N}_.]+|https?:\/\/\S+|www\.\S+|[\w.+-]+@[\w-]+\.[\w.]+/giu
   return [...text.matchAll(pattern)].map((match) => [match.index ?? 0, (match.index ?? 0) + match[0].length])
-}
-
-function levenshtein(a: string, b: string): number {
-  let previous = Array.from({ length: b.length + 1 }, (_, i) => i)
-  for (let i = 1; i <= a.length; i++) {
-    const current = [i]
-    for (let j = 1; j <= b.length; j++) {
-      current[j] = Math.min(previous[j] + 1, current[j - 1] + 1, previous[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1))
-    }
-    previous = current
-  }
-  return previous[b.length]
 }
 
 /**

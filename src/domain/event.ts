@@ -7,6 +7,7 @@ import { genresInText } from './parseGenres'
 import { priceFromDescription } from './descriptionPrice'
 import { type EventStatus, parseSummary } from './parseSummary'
 import { eventSlug } from './slug'
+import { htmlToText } from '../lib/text'
 
 export type Venue = {
   /** Texto original do `location` no calendário (chave do venues.json e da geocodificação). */
@@ -53,7 +54,7 @@ export function toDanceEvent(event: GCalEvent): DanceEvent {
   // A tag do título é a fonte principal; gêneros citados no título ou na descrição completam
   // (ex.: tag "Bachata & Kizomba" com "70% Bachata / 30% Salsa" na descrição → inclui Salsa).
   // Inclusive os que a tag já implica: "Latinas" com Salsa e Bachata na descrição mostra os três.
-  const text = `${title}\n${plainText(description)}`
+  const text = `${title}\n${htmlToText(description, { tagSeparator: ' ' })}`
   const textGenres = genresInText(text)
   // Tag composta ("Afro-Latinas"): só as partes que o conteúdo confirma.
   const fromTag = confirmedUmbrellas(tagGenres, textGenres, text)
@@ -93,14 +94,6 @@ function toVenue(location: string): Venue {
     address: rest.join(', '),
     ...(known ? { lat: known.lat, lng: known.lng } : {}),
   }
-}
-
-/** HTML da descrição → texto, só para procurar gêneros. */
-function plainText(html: string | undefined): string {
-  return (html ?? '')
-    .replace(/<[^>]*>/g, ' ')
-    .replaceAll('&amp;', '&')
-    .replaceAll('&nbsp;', ' ')
 }
 
 const URL_PATTERN = /https?:\/\/[^\s"'<>]+/g

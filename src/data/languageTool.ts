@@ -1,4 +1,5 @@
 import type { ToolMatch } from '../domain/spelling'
+import { readJson, writeJson } from '../lib/storage'
 
 // Ortografia pela API pública e gratuita do LanguageTool (sem chave). Limites por IP: 20 requisições e
 // 75 KB por minuto, 20 KB por requisição. Os textos vão juntos em lotes de até BATCH_BYTES, numa fila
@@ -18,22 +19,8 @@ export type SpellLanguage = 'pt-PT' | 'pt-BR' | 'en-US' | 'es'
 
 type Cache = Record<string, ToolMatch[]>
 
-function readCache(): Cache {
-  try {
-    return JSON.parse(window.localStorage.getItem(CACHE_KEY) ?? '{}') as Cache
-  } catch {
-    return {}
-  }
-}
-
-function writeCache(cache: Cache) {
-  try {
-    const entries = Object.entries(cache)
-    window.localStorage.setItem(CACHE_KEY, JSON.stringify(Object.fromEntries(entries.slice(-CACHE_LIMIT))))
-  } catch {
-    // cheio ou bloqueado
-  }
-}
+const readCache = (): Cache => readJson<Cache>(CACHE_KEY, {})
+const writeCache = (cache: Cache) => writeJson(CACHE_KEY, Object.fromEntries(Object.entries(cache).slice(-CACHE_LIMIT)))
 
 /** Hash curto (FNV-1a) para a chave do cache. */
 function hash(text: string): string {

@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from 'react'
+import { readJson, writeJson } from '../../lib/storage'
 import type { DanceEvent } from '../../domain/event'
 import { type EventChange, type EventSnapshot, snapshotOf } from './changes'
 
@@ -12,29 +13,24 @@ const KEEP_AFTER_END_MS = 24 * 60 * 60_000
 
 type Store = Record<string, EventSnapshot>
 
+const isStore = (value: unknown): value is Store => typeof value === 'object' && value !== null && !Array.isArray(value)
+
 function read(): Store {
-  try {
-    const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '{}') as Store
-    const now = Date.now()
-    // Descarta eventos que já acabaram.
-    return Object.fromEntries(Object.entries(parsed).filter(([, s]) => new Date(s.end).getTime() + KEEP_AFTER_END_MS > now))
-  } catch {
-    return {}
-  }
+  const now = Date.now()
+  // Descarta eventos que já acabaram.
+  return Object.fromEntries(
+    Object.entries(readJson(STORAGE_KEY, {}, isStore)).filter(([, s]) => new Date(s.end).getTime() + KEEP_AFTER_END_MS > now),
+  )
 }
 
-let store: Store = typeof localStorage === 'undefined' ? {} : read()
+let store: Store = read()
 let snapshots: EventSnapshot[] = Object.values(store)
 const listeners = new Set<() => void>()
 
 function save(next: Store) {
   store = next
   snapshots = Object.values(next)
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
-  } catch {
-    // Sem storage: vale só nesta sessão.
-  }
+  writeJson(STORAGE_KEY, next) // sem storage: vale só nesta sessão
   for (const listener of listeners) listener()
 }
 

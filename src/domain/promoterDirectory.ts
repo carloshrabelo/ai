@@ -1,3 +1,4 @@
+import { levenshtein } from '../lib/text'
 import type { DanceEvent } from './event'
 import { visibleGenres } from './genres'
 import { extractPromoters, type Role, ROLES } from './promoters'
@@ -171,19 +172,6 @@ export function mergePromoters(existing: PromoterDirectory, found: PromoterDirec
   return Object.fromEntries(Object.entries(merged).sort(([a], [b]) => a.localeCompare(b)))
 }
 
-/** Distância de edição (Levenshtein). */
-function distance(a: string, b: string): number {
-  let previous = Array.from({ length: b.length + 1 }, (_, i) => i)
-  for (let i = 1; i <= a.length; i++) {
-    const current = [i]
-    for (let j = 1; j <= b.length; j++) {
-      current[j] = Math.min(previous[j] + 1, current[j - 1] + 1, previous[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1))
-    }
-    previous = current
-  }
-  return previous[b.length]
-}
-
 /**
  * Perfis que parecem o mesmo escrito de outro jeito: iguais sem "." e "_" (tropicavana.bar /
  * tropicavana_bar) ou com até 2 letras de diferença em nomes longos (dale.events / dale.eventss).
@@ -197,7 +185,7 @@ export function similarHandles(handles: string[]): [string, string][] {
     for (let j = i + 1; j < sorted.length; j++) {
       const [a, b] = [sorted[i], sorted[j]]
       const same = plain(a) === plain(b)
-      const close = Math.min(a.length, b.length) >= 8 && distance(plain(a), plain(b)) <= 2
+      const close = Math.min(a.length, b.length) >= 8 && levenshtein(plain(a), plain(b)) <= 2
       if (same || close) pairs.push([a, b])
     }
   }

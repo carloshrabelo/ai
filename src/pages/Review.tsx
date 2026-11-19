@@ -26,6 +26,7 @@ import {
 import { formatShortDay, formatTimeRange } from '../features/events/format'
 import { eventPath } from '../features/events/useSelectedEvent'
 import { siteUrl, useDocumentHead } from '../seo/useDocumentHead'
+import { usePersistentState } from '../hooks/usePersistentState'
 import { RangeFields } from './test/shared'
 import { useEventsInRange } from './test/useEventsInRange'
 
@@ -63,29 +64,7 @@ type Text = { field: Field; source: string; plain: PlainText }
 type Group = { key: string; events: DanceEvent[]; texts: Text[] }
 type FieldIssue = Issue & { id: string; field: Field }
 
-// Preferências de quem revisa, salvas no aparelho (sem storage: valem só nesta visita).
-function load(key: string): unknown {
-  try {
-    return JSON.parse(window.localStorage.getItem(key) ?? 'null')
-  } catch {
-    return null
-  }
-}
-
-function save(key: string, value: unknown) {
-  try {
-    window.localStorage.setItem(key, JSON.stringify(value))
-  } catch {
-    // sem storage
-  }
-}
-
-function loadIgnored(): string[] {
-  const words = load(IGNORE_KEY)
-  return Array.isArray(words) ? words.filter((word) => typeof word === 'string') : []
-}
-
-const saveIgnored = (words: string[]) => save(IGNORE_KEY, words)
+const isWordList = (value: unknown): value is string[] => Array.isArray(value) && value.every((word) => typeof word === 'string')
 
 const when = (event: DanceEvent) => `${formatShortDay(lisbonDate(event.start), 'pt-BR')} ${formatTimeRange(event, 'pt-BR')}`
 
@@ -97,7 +76,8 @@ const when = (event: DanceEvent) => `${formatShortDay(lisbonDate(event.start), '
 export default function Review() {
   useDocumentHead({ title: 'Revisão', description: 'Erros de texto nos eventos', canonical: `${siteUrl()}review/`, noindex: true })
   const { query, ...range } = useEventsInRange(90)
-  const [ignored, setIgnored] = useState(loadIgnored)
+  // Palavras ignoradas: salvas no aparelho de quem revisa.
+  const [ignored, setIgnored] = usePersistentState<string[]>(IGNORE_KEY, [], isWordList)
   const [checks, setChecks] = useState(DEFAULT_CHECKS)
   const toggle = (key: keyof Checks) => (on: boolean) => setChecks((current) => ({ ...current, [key]: on }))
   const [sources, setSources] = useState<CalendarSource[]>(DEFAULT_SOURCES)
@@ -184,7 +164,6 @@ export default function Review() {
   const ignoreWord = (word: string) => {
     const next = [...new Set([...ignored, word.toLowerCase()])]
     setIgnored(next)
-    saveIgnored(next)
   }
 
   const flash = (id: string) => {
@@ -292,7 +271,6 @@ export default function Review() {
               variant="ghost"
               onClick={() => {
                 setIgnored([])
-                saveIgnored([])
               }}
             >
               Voltar a mostrar {ignored.length} palavras ignoradas

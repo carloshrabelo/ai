@@ -1,3 +1,4 @@
+import { htmlToText } from '../lib/text'
 import type { DanceEvent } from '../domain/event'
 import { visibleGenres } from '../domain/genres'
 
@@ -14,7 +15,7 @@ export function eventJsonLd(event: DanceEvent, url: string): Record<string, unkn
     eventStatus: `https://schema.org/${status}`,
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
     url,
-    ...(event.description ? { description: plainText(event.description).slice(0, 500) } : {}),
+    ...(event.description ? { description: htmlToText(event.description).slice(0, 500) } : {}),
     ...(event.genres.length > 0 ? { keywords: visibleGenres(event.genres).join(', ') } : {}),
     ...(event.venue
       ? {
@@ -56,13 +57,4 @@ function isoFor(date: Date, allDay: boolean): string {
 export function parsePrice(text: string | undefined): number | undefined {
   const match = text?.trim().match(/^(\d+(?:[.,]\d{1,2})?)\s*€$/)
   return match ? Number(match[1].replace(',', '.')) : undefined
-}
-
-function plainText(html: string): string {
-  return html
-    .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<[^>]*>/g, ' ')
-    .replaceAll('&amp;', '&')
-    .replace(/[ \t]+/g, ' ')
-    .trim()
 }

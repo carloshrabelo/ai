@@ -1,3 +1,4 @@
+import { readText, writeText } from '../lib/storage'
 import { useSyncExternalStore } from 'react'
 
 /** Idiomas suportados. Qualquer "pt-*" usa pt-BR; o resto (e a reserva), en-US. */
@@ -26,12 +27,8 @@ const STORAGE_KEY = 'locale'
 
 function readMode(): LocaleMode {
   if (!IN_BROWSER) return 'auto'
-  try {
-    const value = localStorage.getItem(STORAGE_KEY)
-    return value === 'pt-BR' || value === 'en-US' ? value : 'auto'
-  } catch {
-    return 'auto'
-  }
+  const value = readText(STORAGE_KEY)
+  return value === 'pt-BR' || value === 'en-US' ? value : 'auto'
 }
 
 const IN_BROWSER = typeof window !== 'undefined' && typeof document !== 'undefined'
@@ -63,12 +60,7 @@ if (IN_BROWSER) {
 }
 
 export function setLocaleMode(mode: LocaleMode) {
-  try {
-    if (mode === 'auto') localStorage.removeItem(STORAGE_KEY)
-    else localStorage.setItem(STORAGE_KEY, mode)
-  } catch {
-    // Sem storage: vale só nesta sessão.
-  }
+  writeText(STORAGE_KEY, mode === 'auto' ? null : mode) // sem storage: vale só nesta sessão
   apply(resolve(mode))
 }
 

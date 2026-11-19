@@ -1,3 +1,5 @@
+import { htmlToText } from '../lib/text'
+
 // Perfis do Instagram citados na descrição de um evento (@perfil ou link instagram.com/perfil), com
 // o papel de cada um deduzido do texto em volta, e frases de organização ("Organização: WCS
 // Portugal"). O calendário não tem campo de responsável; o `creator` do Google é quem cadastrou o
@@ -81,19 +83,9 @@ function promoterBlocks(text: string): [number, number][] {
   return blocks
 }
 
-function plainText(html: string): string {
-  return html
-    .replace(/<br\s*\/?>|<\/(?:p|div|li|h\d)>/gi, '\n')
-    .replace(/<a\s[^>]*href="([^"]*)"[^>]*>/gi, ' $1 ') // mantém os links (perfil no href)
-    .replace(/<[^>]*>/g, ' ')
-    .replaceAll('&amp;', '&')
-    .replaceAll('&nbsp;', ' ')
-    .normalize('NFKC')
-}
-
 export function extractPromoters(description: string | undefined): EventPromoters {
   if (!description) return { mentions: [] }
-  const text = plainText(description)
+  const text = htmlToText(description, { keepLinks: true, normalize: true, tagSeparator: ' ' })
   // Na ordem do texto: @perfil e links misturados.
   const found = [
     ...[...text.matchAll(HANDLE)].map((match) => ({ at: match.index ?? 0, handle: match[1] })),

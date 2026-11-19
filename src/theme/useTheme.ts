@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { readText, writeText } from '../lib/storage'
 
 export type ThemeMode = 'light' | 'dark' | 'system'
 
@@ -10,12 +11,8 @@ const DARK_QUERY = '(prefers-color-scheme: dark)'
 const THEME_COLOR = { light: '#0e7f8f', dark: '#14162b' } as const
 
 function readMode(): ThemeMode {
-  try {
-    const value = localStorage.getItem(STORAGE_KEY)
-    return value === 'light' || value === 'dark' ? value : 'system'
-  } catch {
-    return 'system'
-  }
+  const value = readText(STORAGE_KEY)
+  return value === 'light' || value === 'dark' ? value : 'system'
 }
 
 function resolve(mode: ThemeMode): 'light' | 'dark' {
@@ -42,12 +39,8 @@ export function useTheme() {
   }, [mode])
 
   const setMode = useCallback((next: ThemeMode) => {
-    try {
-      if (next === 'system') localStorage.removeItem(STORAGE_KEY)
-      else localStorage.setItem(STORAGE_KEY, next)
-    } catch {
-      // Sem storage (aba anônima, bloqueado): o tema vale só nesta sessão.
-    }
+    // Sem storage (aba anônima, bloqueado): o tema vale só nesta sessão.
+    writeText(STORAGE_KEY, next === 'system' ? null : next)
     setModeState(next)
   }, [])
 
