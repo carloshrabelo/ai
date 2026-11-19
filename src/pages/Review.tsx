@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react'
 import { Link } from 'react-router'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
+import { Skeleton } from '../components/ui/Skeleton'
 import { lisbonDate } from '../data/dates'
 import { checkSpelling, type SpellLanguage } from '../data/languageTool'
 import promoters from '../data/promoters.json'
@@ -124,7 +125,8 @@ export default function Review() {
   const spelling = useQuery({
     queryKey: ['review-spelling', allTexts],
     queryFn: async ({ signal }) => {
-      // Respostas das três línguas para cada texto, na ordem de LANGUAGES.
+      setProgress(0)
+      // Respostas das línguas para cada texto, na ordem de LANGUAGES.
       const results = new Map<string, ToolMatch[][]>(allTexts.map((text) => [text, []]))
       for (const [i, language] of LANGUAGES.entries()) {
         const checked = await checkSpelling(allTexts, language, { signal, onProgress: (done) => setProgress(i * allTexts.length + done) })
@@ -222,6 +224,9 @@ export default function Review() {
   }
 
   const total = allTexts.length * LANGUAGES.length
+  const checkingSpelling = checks.spelling && spelling.isFetching
+  // Skeleton enquanto os eventos chegam, e no fim da lista enquanto a ortografia ainda não voltou.
+  const skeletons = query.isPending ? 3 : checkingSpelling ? 2 : 0
   const aliasCount = reviewed.filter(({ issues }) => issues.some((issue) => issue.kind === 'alias')).length
 
   return (
@@ -245,13 +250,14 @@ export default function Review() {
                     : spelling.isError
                       ? `ortografia: erro (${spelling.error.message})`
                       : spelling.isFetching
-                        ? `verificando ortografia… ${Math.min(progress, total)}/${total}`
+                        ? 'verificando ortografia…'
                         : null,
                   `${reviewed.length} com correções (${aliasCount} com perfil errado)`,
                 ]
                   .filter(Boolean)
                   .join(' · ')}
         </p>
+        {checkingSpelling && <SpellingProgress done={Math.min(progress, total)} total={total} />}
         <fieldset className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
           <legend className="sr-only">Verificar</legend>
           <CheckField label="Perfis escritos errado (aliases)" checked={checks.aliases} onChange={toggle('aliases')} />
@@ -362,6 +368,9 @@ export default function Review() {
           </Card>
         )
       })}
+      {Array.from({ length: skeletons }, (_, index) => (
+        <ReviewCardSkeleton key={index} />
+      ))}
     </section>
   )
 }
@@ -372,6 +381,47 @@ function CheckField({ label, checked, onChange }: { label: string; checked: bool
       <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} className="size-4" />
       {label}
     </label>
+  )
+}
+
+/** Barra de progresso da verificação de ortografia (textos × línguas já verificados). */
+function SpellingProgress({ done, total }: { done: number; total: number }) {
+  const percent = total > 0 ? Math.round((done / total) * 100) : 0
+  return (
+    <div className="space-y-1">
+      <div className="flex justify-between text-xs text-fg-muted">
+        <span>Verificando ortografia (a API gratuita tem limite por minuto)</span>
+        <span className="tabular-nums">{percent}%</span>
+      </div>
+      <div
+        role="progressbar"
+        aria-label="Verificando ortografia"
+        aria-valuemin={0}
+        aria-valuemax={total}
+        aria-valuenow={done}
+        aria-valuetext={`${done} de ${total}`}
+        className="h-2 overflow-hidden rounded-full bg-surface-muted"
+      >
+        <div className="h-full rounded-full bg-brand transition-[width] duration-500" style={{ width: `${percent}%` }} />
+      </div>
+    </div>
+  )
+}
+
+/** Card de resultado carregando: mesmas medidas do card real (título, datas, erros, botão). */
+function ReviewCardSkeleton() {
+  return (
+    <Card className="space-y-3" aria-hidden="true">
+      <div className="space-y-2">
+        <Skeleton className="h-5 w-2/5" />
+        <Skeleton className="h-4 w-3/5" />
+      </div>
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-4/5" />
+        <Skeleton className="h-4 w-2/3" />
+      </div>
+      <Skeleton className="h-11 w-52" rounded="rounded-lg" />
+    </Card>
   )
 }
 
