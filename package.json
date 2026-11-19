@@ -19,15 +19,10 @@
     "generate-pwa-assets": "pwa-assets-generator"
   },
   "dependencies": {
-    "@heroicons/react": "^2.2.0",
-    "@phosphor-icons/react": "^2.1.10",
-    "@remixicon/react": "^4.9.0",
-    "@tabler/icons-react": "^3.52.0",
     "@tanstack/query-sync-storage-persister": "^5.107.1",
     "@tanstack/react-query": "^5.107.1",
     "@tanstack/react-query-persist-client": "^5.107.1",
     "dompurify": "^3.4.18",
-    "iconoir-react": "^7.12.2",
     "leaflet": "^1.9.4",
     "lucide-react": "^1.73.0",
     "react": "^19.3.1",

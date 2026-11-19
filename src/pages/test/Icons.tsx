@@ -1,203 +1,4 @@
 import {
-  ArrowDownTrayIcon as HeroArrowDownTray,
-  ArrowRightIcon as HeroArrowRight,
-  ArrowsPointingOutIcon as HeroArrowsPointingOut,
-  ArrowUpOnSquareIcon as HeroArrowUpOnSquare,
-  ArrowUturnLeftIcon as HeroArrowUturnLeft,
-  BanknotesIcon as HeroBanknotes,
-  BellAlertIcon as HeroBellAlert,
-  BuildingOfficeIcon as HeroBuildingOffice,
-  CalendarDateRangeIcon as HeroCalendarDateRange,
-  CalendarDaysIcon as HeroCalendarDays,
-  ChatBubbleLeftRightIcon as HeroChatBubbleLeftRight,
-  ChevronRightIcon as HeroChevronRight,
-  ClockIcon as HeroClock,
-  CurrencyEuroIcon as HeroCurrencyEuro,
-  DocumentArrowDownIcon as HeroDocumentArrowDown,
-  FaceSmileIcon as HeroFaceSmile,
-  FunnelIcon as HeroFunnel,
-  AdjustmentsHorizontalIcon as HeroAdjustmentsHorizontal,
-  GlobeEuropeAfricaIcon as HeroGlobeEuropeAfrica,
-  InformationCircleIcon as HeroInformationCircle,
-  MapIcon as HeroMap,
-  MapPinIcon as HeroMapPin,
-  MusicalNoteIcon as HeroMusicalNote,
-  PaperAirplaneIcon as HeroPaperAirplane,
-  PlusCircleIcon as HeroPlusCircle,
-  ShareIcon as HeroShare,
-  SparklesIcon as HeroSparkles,
-  TicketIcon as HeroTicket,
-  UserGroupIcon as HeroUserGroup,
-  ViewfinderCircleIcon as HeroViewfinderCircle,
-  XCircleIcon as HeroXCircle,
-} from '@heroicons/react/24/outline'
-import {
-  ArrowCounterClockwiseIcon,
-  BellRingingIcon,
-  BookmarkSimpleIcon,
-  BookOpenTextIcon,
-  BuildingsIcon,
-  CalendarBlankIcon,
-  CalendarCheckIcon,
-  CalendarDotsIcon,
-  CalendarPlusIcon,
-  CaretRightIcon,
-  ChampagneIcon,
-  ChatsCircleIcon,
-  ClockIcon,
-  CompassIcon,
-  CornersOutIcon,
-  CrosshairIcon,
-  CurrencyEurIcon,
-  DiscoBallIcon,
-  DownloadSimpleIcon,
-  FrameCornersIcon,
-  FunnelIcon,
-  FunnelSimpleIcon,
-  FunnelSimpleXIcon,
-  FunnelXIcon,
-  GpsFixIcon,
-  HandHeartIcon,
-  HandWavingIcon,
-  InfoIcon,
-  MapPinAreaIcon,
-  MapPinIcon,
-  MapTrifoldIcon,
-  MusicNotesIcon,
-  NavigationArrowIcon,
-  PathIcon,
-  PersonArmsSpreadIcon,
-  QuestionIcon,
-  ShareFatIcon,
-  ShareNetworkIcon,
-  SignpostIcon,
-  SlidersHorizontalIcon,
-  SmileyIcon,
-  SneakerMoveIcon,
-  TagIcon,
-  TicketIcon,
-  UsersThreeIcon,
-  WalletIcon,
-} from '@phosphor-icons/react'
-import {
-  RiArrowGoBackLine,
-  RiArrowRightSLine,
-  RiBuildingLine,
-  RiCalendarCheckLine,
-  RiCalendarLine,
-  RiChat3Line,
-  RiCommunityLine,
-  RiCompass3Line,
-  RiCrosshair2Line,
-  RiDirectionLine,
-  RiDiscLine,
-  RiDownloadLine,
-  RiEqualizerLine,
-  RiFilter3Line,
-  RiFilterOffLine,
-  RiFocus3Line,
-  RiFootprintLine,
-  RiFullscreenLine,
-  RiGroupLine,
-  RiInformationLine,
-  RiMapLine,
-  RiMapPin2Line,
-  RiMoneyEuroCircleLine,
-  RiMusic2Line,
-  RiNotification3Line,
-  RiQuestionLine,
-  RiShareForwardLine,
-  RiShareLine,
-  RiTicket2Line,
-  RiTimeLine,
-  RiUserHeartLine,
-} from '@remixicon/react'
-import {
-  IconAdjustmentsHorizontal,
-  IconArrowRight,
-  IconBellRinging,
-  IconBookmark,
-  IconBuildingCommunity,
-  IconCalendar,
-  IconCalendarCheck,
-  IconCalendarEvent,
-  IconCalendarPlus,
-  IconCalendarSearch,
-  IconCash,
-  IconChevronRight,
-  IconClock,
-  IconCompass,
-  IconCurrencyEuro,
-  IconCurrentLocation,
-  IconDirections,
-  IconDisc,
-  IconDownload,
-  IconEraser,
-  IconFileDownload,
-  IconFilter,
-  IconFilterOff,
-  IconFocus2,
-  IconFriends,
-  IconGps,
-  IconHandLoveYou,
-  IconHeartHandshake,
-  IconInfoCircle,
-  IconInfoSquareRounded,
-  IconMap,
-  IconMapPin,
-  IconMapSearch,
-  IconMaximize,
-  IconMessages,
-  IconMicrophone2,
-  IconPlaylist,
-  IconRestore,
-  IconRoute,
-  IconSend,
-  IconShare,
-  IconShoe,
-  IconTags,
-  IconTicket,
-  IconUsersGroup,
-  IconZoomScan,
-} from '@tabler/icons-react'
-import {
-  Bell as IoBell,
-  BellNotification as IoBellNotification,
-  Building as IoBuilding,
-  Calendar as IoCalendar,
-  CalendarPlus as IoCalendarPlus,
-  ChatLines as IoChatLines,
-  Clock as IoClock,
-  Community as IoCommunity,
-  Compass as IoCompass,
-  Download as IoDownload,
-  Erase as IoErase,
-  Euro as IoEuro,
-  Expand as IoExpand,
-  Filter as IoFilter,
-  FilterList as IoFilterList,
-  Frame as IoFrame,
-  Gps as IoGps,
-  Group as IoGroup,
-  InfoCircle as IoInfoCircle,
-  Map as IoMap,
-  MapPin as IoMapPin,
-  MapsTurnRight as IoMapsTurnRight,
-  MusicDoubleNote as IoMusicDoubleNote,
-  NavArrowRight as IoNavArrowRight,
-  Navigator as IoNavigator,
-  Position as IoPosition,
-  Send as IoSend,
-  ShareIos as IoShareIos,
-  SoundHigh as IoSoundHigh,
-  Sparks as IoSparks,
-  Undo as IoUndo,
-  Wallet as IoWallet,
-  XmarkCircle as IoXmarkCircle,
-  HelpCircle as IoHelpCircle,
-  EmojiTalkingHappy as IoEmojiTalkingHappy,
-} from 'iconoir-react'
-import {
   AlarmClock,
   ArrowRight,
   Banknote,
@@ -269,53 +70,20 @@ import {
 import { type ComponentType, createElement, type ReactNode, useState } from 'react'
 import { Button } from '../../components/ui/Button'
 import { Card } from '../../components/ui/Card'
-import { Segmented } from '../../components/ui/Segmented'
 import { siteUrl, useDocumentHead } from '../../seo/useDocumentHead'
 import { BackToTest } from './shared'
 
-// Ícones importados um a um: importar a biblioteca inteira deixaria esta página com vários MB (e o
-// cache offline do PWA recusa arquivos acima de 2 MB).
-
-/** Bibliotecas comparadas. O app usa só a Lucide. */
-const LIBS = ['lucide', 'phosphor', 'tabler', 'heroicons', 'iconoir', 'remix'] as const
-type Lib = (typeof LIBS)[number]
-const LIB_LABEL: Record<Lib, string> = {
-  lucide: 'Lucide',
-  phosphor: 'Phosphor',
-  tabler: 'Tabler',
-  heroicons: 'Heroicons',
-  iconoir: 'Iconoir',
-  remix: 'Remix',
-}
 type IconComponent = ComponentType<{ className?: string }>
 
 /** `current`: o que o app usa hoje (marcado como "atual" e escolhido de início). */
-type Option = { lib: Lib; name: string; icon: IconComponent; note?: string; current?: boolean }
+type Option = { name: string; icon: IconComponent; note?: string; current?: boolean }
 
-// Cada biblioteca com o traço mais perto do da Lucide (2px a 24px): Phosphor em "bold"; Heroicons e
-// Iconoir com strokeWidth 2 (o padrão deles é 1,5). Tabler e Lucide já são 2; Remix é preenchido.
-type AnyIcon = ComponentType<Record<string, unknown>>
-const withProps =
-  (Icon: unknown, extra: Record<string, unknown>): IconComponent =>
-  (props) =>
-    createElement(Icon as AnyIcon, { ...extra, ...props })
-
-function make(lib: Lib, name: string, icon: unknown, note?: string, current?: boolean): Option {
-  const extra = lib === 'phosphor' ? { weight: 'bold' } : lib === 'heroicons' || lib === 'iconoir' ? { strokeWidth: 2 } : null
-  return {
-    lib,
-    name,
-    icon: extra ? withProps(icon, extra) : (icon as IconComponent),
-    ...(note ? { note } : {}),
-    ...(current ? { current } : {}),
-  }
-}
-const lu = (icon: unknown, name: string, note?: string, current?: boolean) => make('lucide', name, icon, note, current)
-const ph = (icon: unknown, name: string, note?: string, current?: boolean) => make('phosphor', name, icon, note, current)
-const tb = (icon: unknown, name: string, note?: string) => make('tabler', name, icon, note)
-const he = (icon: unknown, name: string, note?: string) => make('heroicons', name, icon, note)
-const io = (icon: unknown, name: string, note?: string) => make('iconoir', name, icon, note)
-const ri = (icon: unknown, name: string, note?: string) => make('remix', name, icon, note)
+const lu = (icon: IconComponent, name: string, note?: string, current?: boolean): Option => ({
+  name,
+  icon,
+  ...(note ? { note } : {}),
+  ...(current ? { current } : {}),
+})
 
 type GroupId =
   | 'dance'
@@ -347,28 +115,11 @@ const GROUPS: Group[] = [
     title: 'Dança',
     where: 'Barra inferior e menu lateral.',
     options: [
-      ph(DiscoBallIcon, 'DiscoBall', 'Globo de discoteca: pista e noite.'),
-      ph(SneakerMoveIcon, 'SneakerMove', 'Tênis em movimento.'),
-      ph(PersonArmsSpreadIcon, 'PersonArmsSpread', 'Braços abertos.'),
-      ph(MusicNotesIcon, 'MusicNotes'),
-      ph(ChampagneIcon, 'Champagne', 'Brinde: social.'),
       lu(Disc3, 'Disc3', 'Vinil / DJ.'),
       lu(Music, 'Music', 'Lembra app de música.'),
       lu(Footprints, 'Footprints', 'Passos.', true),
       lu(PartyPopper, 'PartyPopper', 'Festa.'),
       lu(Sparkles, 'Sparkles'),
-      tb(IconDisc, 'IconDisc'),
-      tb(IconShoe, 'IconShoe', 'Sapato.'),
-      tb(IconPlaylist, 'IconPlaylist', 'Agenda + música.'),
-      tb(IconMicrophone2, 'IconMicrophone2', 'DJ / ao vivo.'),
-      he(HeroMusicalNote, 'MusicalNote'),
-      he(HeroSparkles, 'Sparkles'),
-      io(IoMusicDoubleNote, 'MusicDoubleNote'),
-      io(IoSparks, 'Sparks', 'Faíscas.'),
-      io(IoSoundHigh, 'SoundHigh', 'Som alto: festa.'),
-      ri(RiDiscLine, 'RiDiscLine'),
-      ri(RiFootprintLine, 'RiFootprintLine', 'Pegadas.'),
-      ri(RiMusic2Line, 'RiMusic2Line'),
     ],
   },
   {
@@ -382,18 +133,6 @@ const GROUPS: Group[] = [
       lu(MapPinned, 'MapPinned'),
       lu(Navigation, 'Navigation'),
       lu(Radar, 'Radar', 'Por perto.'),
-      ph(CompassIcon, 'Compass'),
-      ph(MapTrifoldIcon, 'MapTrifold'),
-      ph(MapPinAreaIcon, 'MapPinArea', 'Pino com área.'),
-      tb(IconCompass, 'IconCompass'),
-      tb(IconMap, 'IconMap'),
-      tb(IconMapSearch, 'IconMapSearch', 'Mapa com lupa.'),
-      he(HeroMap, 'Map'),
-      he(HeroGlobeEuropeAfrica, 'GlobeEuropeAfrica', 'Globo com a Europa.'),
-      io(IoCompass, 'Compass'),
-      io(IoMap, 'Map'),
-      ri(RiCompass3Line, 'RiCompass3Line'),
-      ri(RiMapLine, 'RiMapLine'),
     ],
   },
   {
@@ -408,22 +147,6 @@ const GROUPS: Group[] = [
       lu(MessagesSquare, 'MessagesSquare', 'Conversas (WhatsApp).'),
       lu(Megaphone, 'Megaphone'),
       lu(Globe, 'Globe', 'Outros sites.'),
-      ph(UsersThreeIcon, 'UsersThree', 'Grupo de três.'),
-      ph(ChatsCircleIcon, 'ChatsCircle'),
-      ph(HandHeartIcon, 'HandHeart'),
-      tb(IconUsersGroup, 'IconUsersGroup'),
-      tb(IconFriends, 'IconFriends', 'Par.'),
-      tb(IconMessages, 'IconMessages'),
-      tb(IconHeartHandshake, 'IconHeartHandshake'),
-      he(HeroUserGroup, 'UserGroup'),
-      he(HeroChatBubbleLeftRight, 'ChatBubbleLeftRight', 'Conversa.'),
-      io(IoCommunity, 'Community', 'Comunidade (nome literal).'),
-      io(IoGroup, 'Group'),
-      io(IoChatLines, 'ChatLines'),
-      ri(RiGroupLine, 'RiGroupLine'),
-      ri(RiCommunityLine, 'RiCommunityLine', 'Prédios: bairro.'),
-      ri(RiUserHeartLine, 'RiUserHeartLine'),
-      ri(RiChat3Line, 'RiChat3Line'),
     ],
   },
   {
@@ -431,27 +154,7 @@ const GROUPS: Group[] = [
     section: 'Menu',
     title: 'Sobre',
     where: 'Barra inferior e menu lateral.',
-    options: [
-      ph(InfoIcon, 'Info', 'Info.'),
-      ph(HandWavingIcon, 'HandWaving', 'Aceno: "olá".'),
-      ph(BookOpenTextIcon, 'BookOpenText'),
-      ph(QuestionIcon, 'Question'),
-      ph(SmileyIcon, 'Smiley'),
-      lu(Info, 'Info', undefined, true),
-      lu(CircleHelp, 'CircleHelp'),
-      lu(BookOpen, 'BookOpen'),
-      lu(Heart, 'Heart', 'Quem faz.'),
-      tb(IconInfoCircle, 'IconInfoCircle'),
-      tb(IconInfoSquareRounded, 'IconInfoSquareRounded'),
-      tb(IconHandLoveYou, 'IconHandLoveYou'),
-      he(HeroInformationCircle, 'InformationCircle'),
-      he(HeroFaceSmile, 'FaceSmile'),
-      io(IoInfoCircle, 'InfoCircle'),
-      io(IoHelpCircle, 'HelpCircle'),
-      io(IoEmojiTalkingHappy, 'EmojiTalkingHappy', 'Rosto falando.'),
-      ri(RiInformationLine, 'RiInformationLine'),
-      ri(RiQuestionLine, 'RiQuestionLine'),
-    ],
+    options: [lu(Info, 'Info', undefined, true), lu(CircleHelp, 'CircleHelp'), lu(BookOpen, 'BookOpen'), lu(Heart, 'Heart', 'Quem faz.')],
   },
   // ---- Agenda e mapa
   {
@@ -465,19 +168,6 @@ const GROUPS: Group[] = [
       lu(ListFilter, 'ListFilter'),
       lu(Tags, 'Tags', 'Estilos como etiquetas.'),
       lu(Palette, 'Palette', 'Cada estilo tem uma cor.'),
-      ph(FunnelIcon, 'Funnel'),
-      ph(FunnelSimpleIcon, 'FunnelSimple'),
-      ph(SlidersHorizontalIcon, 'SlidersHorizontal'),
-      ph(TagIcon, 'Tag'),
-      tb(IconFilter, 'IconFilter'),
-      tb(IconAdjustmentsHorizontal, 'IconAdjustmentsHorizontal'),
-      tb(IconTags, 'IconTags'),
-      he(HeroFunnel, 'Funnel'),
-      he(HeroAdjustmentsHorizontal, 'AdjustmentsHorizontal'),
-      io(IoFilter, 'Filter'),
-      io(IoFilterList, 'FilterList'),
-      ri(RiFilter3Line, 'RiFilter3Line', 'Três linhas.'),
-      ri(RiEqualizerLine, 'RiEqualizerLine'),
     ],
   },
   {
@@ -490,19 +180,6 @@ const GROUPS: Group[] = [
       lu(RotateCcw, 'RotateCcw', 'Voltar ao início.'),
       lu(Eraser, 'Eraser'),
       lu(CircleX, 'CircleX'),
-      ph(FunnelXIcon, 'FunnelX'),
-      ph(FunnelSimpleXIcon, 'FunnelSimpleX'),
-      ph(ArrowCounterClockwiseIcon, 'ArrowCounterClockwise'),
-      tb(IconFilterOff, 'IconFilterOff'),
-      tb(IconRestore, 'IconRestore'),
-      tb(IconEraser, 'IconEraser'),
-      he(HeroXCircle, 'XCircle'),
-      he(HeroArrowUturnLeft, 'ArrowUturnLeft'),
-      io(IoXmarkCircle, 'XmarkCircle'),
-      io(IoUndo, 'Undo'),
-      io(IoErase, 'Erase'),
-      ri(RiFilterOffLine, 'RiFilterOffLine'),
-      ri(RiArrowGoBackLine, 'RiArrowGoBackLine'),
     ],
   },
   {
@@ -514,15 +191,6 @@ const GROUPS: Group[] = [
       lu(CalendarDays, 'CalendarDays', 'Calendário com dias.'),
       lu(Calendar, 'Calendar'),
       lu(CalendarSearch, 'CalendarSearch', 'Procurar data.', true),
-      ph(CalendarDotsIcon, 'CalendarDots'),
-      ph(CalendarBlankIcon, 'CalendarBlank'),
-      tb(IconCalendar, 'IconCalendar'),
-      tb(IconCalendarSearch, 'IconCalendarSearch'),
-      tb(IconCalendarEvent, 'IconCalendarEvent'),
-      he(HeroCalendarDays, 'CalendarDays'),
-      he(HeroCalendarDateRange, 'CalendarDateRange'),
-      io(IoCalendar, 'Calendar'),
-      ri(RiCalendarLine, 'RiCalendarLine'),
     ],
   },
   {
@@ -530,42 +198,14 @@ const GROUPS: Group[] = [
     section: 'Agenda e mapa',
     title: 'Enquadrar mapa',
     where: 'Botão no canto do mapa.',
-    options: [
-      lu(Focus, 'Focus', 'Mira com cantos.', true),
-      lu(Maximize, 'Maximize'),
-      lu(Scan, 'Scan'),
-      lu(Crosshair, 'Crosshair'),
-      ph(CornersOutIcon, 'CornersOut'),
-      ph(FrameCornersIcon, 'FrameCorners'),
-      ph(CrosshairIcon, 'Crosshair'),
-      tb(IconFocus2, 'IconFocus2'),
-      tb(IconMaximize, 'IconMaximize'),
-      tb(IconZoomScan, 'IconZoomScan', 'Zoom para caber.'),
-      he(HeroArrowsPointingOut, 'ArrowsPointingOut'),
-      he(HeroViewfinderCircle, 'ViewfinderCircle'),
-      io(IoExpand, 'Expand'),
-      io(IoFrame, 'Frame'),
-      ri(RiFullscreenLine, 'RiFullscreenLine'),
-      ri(RiFocus3Line, 'RiFocus3Line'),
-    ],
+    options: [lu(Focus, 'Focus', 'Mira com cantos.', true), lu(Maximize, 'Maximize'), lu(Scan, 'Scan'), lu(Crosshair, 'Crosshair')],
   },
   {
     id: 'locate',
     section: 'Agenda e mapa',
     title: 'Distâncias (minha localização)',
     where: '"Mostrar distâncias", no fim da barra lateral e no drawer.',
-    options: [
-      lu(LocateFixed, 'LocateFixed', 'Mira de localização.', true),
-      lu(Locate, 'Locate'),
-      lu(MapPinCheck, 'MapPinCheck'),
-      ph(GpsFixIcon, 'GpsFix'),
-      ph(NavigationArrowIcon, 'NavigationArrow'),
-      tb(IconCurrentLocation, 'IconCurrentLocation'),
-      tb(IconGps, 'IconGps'),
-      io(IoPosition, 'Position'),
-      io(IoGps, 'Gps'),
-      ri(RiCrosshair2Line, 'RiCrosshair2Line'),
-    ],
+    options: [lu(LocateFixed, 'LocateFixed', 'Mira de localização.', true), lu(Locate, 'Locate'), lu(MapPinCheck, 'MapPinCheck')],
   },
   // ---- Card e detalhes
   {
@@ -573,62 +213,21 @@ const GROUPS: Group[] = [
     section: 'Card e detalhes',
     title: 'Local',
     where: 'Card e detalhes do evento.',
-    options: [
-      lu(MapPin, 'MapPin', 'Pino: o padrão.', true),
-      lu(Building2, 'Building2', 'Prédio.'),
-      lu(Landmark, 'Landmark'),
-      ph(MapPinIcon, 'MapPin'),
-      ph(BuildingsIcon, 'Buildings'),
-      tb(IconMapPin, 'IconMapPin'),
-      tb(IconBuildingCommunity, 'IconBuildingCommunity'),
-      he(HeroMapPin, 'MapPin'),
-      he(HeroBuildingOffice, 'BuildingOffice'),
-      io(IoMapPin, 'MapPin'),
-      io(IoBuilding, 'Building'),
-      ri(RiMapPin2Line, 'RiMapPin2Line'),
-      ri(RiBuildingLine, 'RiBuildingLine'),
-    ],
+    options: [lu(MapPin, 'MapPin', 'Pino: o padrão.', true), lu(Building2, 'Building2', 'Prédio.'), lu(Landmark, 'Landmark')],
   },
   {
     id: 'time',
     section: 'Card e detalhes',
     title: 'Horário',
     where: 'Card e detalhes do evento.',
-    options: [
-      lu(Clock, 'Clock', 'Relógio.', true),
-      lu(Timer, 'Timer'),
-      lu(AlarmClock, 'AlarmClock'),
-      ph(ClockIcon, 'Clock'),
-      tb(IconClock, 'IconClock'),
-      he(HeroClock, 'Clock'),
-      io(IoClock, 'Clock'),
-      ri(RiTimeLine, 'RiTimeLine'),
-    ],
+    options: [lu(Clock, 'Clock', 'Relógio.', true), lu(Timer, 'Timer'), lu(AlarmClock, 'AlarmClock')],
   },
   {
     id: 'price',
     section: 'Card e detalhes',
     title: 'Preço',
     where: 'Card e detalhes do evento.',
-    options: [
-      lu(Ticket, 'Ticket', 'Bilhete: entrada.', true),
-      lu(Euro, 'Euro'),
-      lu(Wallet, 'Wallet'),
-      lu(Banknote, 'Banknote'),
-      ph(TicketIcon, 'Ticket'),
-      ph(CurrencyEurIcon, 'CurrencyEur'),
-      ph(WalletIcon, 'Wallet'),
-      tb(IconTicket, 'IconTicket'),
-      tb(IconCurrencyEuro, 'IconCurrencyEuro'),
-      tb(IconCash, 'IconCash'),
-      he(HeroTicket, 'Ticket'),
-      he(HeroCurrencyEuro, 'CurrencyEuro'),
-      he(HeroBanknotes, 'Banknotes'),
-      io(IoEuro, 'Euro'),
-      io(IoWallet, 'Wallet'),
-      ri(RiTicket2Line, 'RiTicket2Line'),
-      ri(RiMoneyEuroCircleLine, 'RiMoneyEuroCircleLine'),
-    ],
+    options: [lu(Ticket, 'Ticket', 'Bilhete: entrada.', true), lu(Euro, 'Euro'), lu(Wallet, 'Wallet'), lu(Banknote, 'Banknote')],
   },
   {
     id: 'addCalendar',
@@ -639,15 +238,6 @@ const GROUPS: Group[] = [
       lu(CalendarPlus, 'CalendarPlus', 'Calendário com +.', true),
       lu(CalendarCheck, 'CalendarCheck'),
       lu(Bookmark, 'Bookmark', 'Guardar.'),
-      ph(CalendarPlusIcon, 'CalendarPlus'),
-      ph(CalendarCheckIcon, 'CalendarCheck'),
-      ph(BookmarkSimpleIcon, 'BookmarkSimple'),
-      tb(IconCalendarPlus, 'IconCalendarPlus'),
-      tb(IconCalendarCheck, 'IconCalendarCheck'),
-      tb(IconBookmark, 'IconBookmark'),
-      he(HeroPlusCircle, 'PlusCircle'),
-      io(IoCalendarPlus, 'CalendarPlus'),
-      ri(RiCalendarCheckLine, 'RiCalendarCheckLine'),
     ],
   },
   {
@@ -659,13 +249,6 @@ const GROUPS: Group[] = [
       lu(Download, 'Download', 'Seta para baixo.'),
       lu(FileDown, 'FileDown'),
       lu(CalendarArrowDown, 'CalendarArrowDown', 'Calendário com seta.', true),
-      ph(DownloadSimpleIcon, 'DownloadSimple'),
-      tb(IconDownload, 'IconDownload'),
-      tb(IconFileDownload, 'IconFileDownload'),
-      he(HeroArrowDownTray, 'ArrowDownTray'),
-      he(HeroDocumentArrowDown, 'DocumentArrowDown'),
-      io(IoDownload, 'Download'),
-      ri(RiDownloadLine, 'RiDownloadLine'),
     ],
   },
   {
@@ -673,74 +256,28 @@ const GROUPS: Group[] = [
     section: 'Card e detalhes',
     title: 'Compartilhar',
     where: 'Detalhes do evento.',
-    options: [
-      lu(Share2, 'Share2', 'Três pontos ligados.', true),
-      lu(Share, 'Share', 'Caixa com seta (padrão iOS).'),
-      lu(Send, 'Send'),
-      ph(ShareNetworkIcon, 'ShareNetwork'),
-      ph(ShareFatIcon, 'ShareFat'),
-      tb(IconShare, 'IconShare'),
-      tb(IconSend, 'IconSend'),
-      he(HeroShare, 'Share'),
-      he(HeroArrowUpOnSquare, 'ArrowUpOnSquare', 'Padrão iOS.'),
-      he(HeroPaperAirplane, 'PaperAirplane'),
-      io(IoShareIos, 'ShareIos'),
-      io(IoSend, 'Send'),
-      ri(RiShareLine, 'RiShareLine'),
-      ri(RiShareForwardLine, 'RiShareForwardLine'),
-    ],
+    options: [lu(Share2, 'Share2', 'Três pontos ligados.', true), lu(Share, 'Share', 'Caixa com seta (padrão iOS).'), lu(Send, 'Send')],
   },
   {
     id: 'directions',
     section: 'Card e detalhes',
     title: 'Como chegar',
     where: 'Detalhes do evento (abre o app de mapas).',
-    options: [
-      lu(Navigation, 'Navigation', 'Seta de navegação.', true),
-      lu(Route, 'Route'),
-      lu(Signpost, 'Signpost'),
-      ph(NavigationArrowIcon, 'NavigationArrow'),
-      ph(PathIcon, 'Path'),
-      ph(SignpostIcon, 'Signpost'),
-      tb(IconDirections, 'IconDirections'),
-      tb(IconRoute, 'IconRoute'),
-      io(IoNavigator, 'Navigator'),
-      io(IoMapsTurnRight, 'MapsTurnRight', 'Virar à direita.'),
-      ri(RiDirectionLine, 'RiDirectionLine'),
-    ],
+    options: [lu(Navigation, 'Navigation', 'Seta de navegação.', true), lu(Route, 'Route'), lu(Signpost, 'Signpost')],
   },
   {
     id: 'notify',
     section: 'Card e detalhes',
     title: 'Aviso de mudanças',
     where: 'Detalhes e o aviso no topo da lista.',
-    options: [
-      lu(BellRing, 'BellRing', 'Sino tocando.'),
-      lu(BellPlus, 'BellPlus', undefined, true),
-      ph(BellRingingIcon, 'BellRinging'),
-      tb(IconBellRinging, 'IconBellRinging'),
-      he(HeroBellAlert, 'BellAlert'),
-      io(IoBellNotification, 'BellNotification'),
-      io(IoBell, 'Bell'),
-      ri(RiNotification3Line, 'RiNotification3Line'),
-    ],
+    options: [lu(BellRing, 'BellRing', 'Sino tocando.'), lu(BellPlus, 'BellPlus', undefined, true)],
   },
   {
     id: 'openDetails',
     section: 'Card e detalhes',
     title: 'Abrir detalhes',
     where: 'Canto do card.',
-    options: [
-      lu(ChevronRight, 'ChevronRight', 'Seta fina.', true),
-      lu(ArrowRight, 'ArrowRight'),
-      ph(CaretRightIcon, 'CaretRight'),
-      tb(IconChevronRight, 'IconChevronRight'),
-      tb(IconArrowRight, 'IconArrowRight'),
-      he(HeroChevronRight, 'ChevronRight'),
-      he(HeroArrowRight, 'ArrowRight'),
-      io(IoNavArrowRight, 'NavArrowRight'),
-      ri(RiArrowRightSLine, 'RiArrowRightSLine'),
-    ],
+    options: [lu(ChevronRight, 'ChevronRight', 'Seta fina.', true), lu(ArrowRight, 'ArrowRight')],
   },
 ]
 
@@ -750,11 +287,10 @@ const currentIndex = (options: Option[]) =>
     0,
     options.findIndex((option) => option.current),
   )
-const keyOf = (option: Option) => `${option.lib}:${option.name}`
 
 /**
  * Página de teste (/teste/icones, pública mas sem link no app): opções para cada ícone do app (menu,
- * agenda e mapa, card e detalhes) em 6 bibliotecas, com uma amostra fixa das telas usando os
+ * agenda e mapa, card e detalhes), todas da Lucide, com uma amostra fixa das telas usando os
  * ícones escolhidos.
  */
 export default function Icons() {
@@ -767,7 +303,6 @@ export default function Icons() {
   const [choice, setChoice] = useState<Record<GroupId, number>>(
     () => Object.fromEntries(GROUPS.map((group) => [group.id, currentIndex(group.options)])) as Record<GroupId, number>,
   )
-  const [lib, setLib] = useState<Lib | 'all'>('all')
   const [copied, setCopied] = useState(false)
   // Acordeon: um grupo de opções aberto por vez (fechado, mostra só a escolha).
   const [openGroup, setOpenGroup] = useState<GroupId | null>(null)
@@ -778,9 +313,7 @@ export default function Icons() {
   }
 
   const copy = async () => {
-    await navigator.clipboard.writeText(
-      GROUPS.map((group) => `${group.title}: ${chosen(group.id).name} (${LIB_LABEL[chosen(group.id).lib]})`).join('\n'),
-    )
+    await navigator.clipboard.writeText(GROUPS.map((group) => `${group.title}: ${chosen(group.id).name}`).join('\n'))
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
@@ -792,18 +325,11 @@ export default function Icons() {
         <div>
           <h2 className="text-lg font-semibold">Ícones</h2>
           <p className="text-sm text-fg-muted">
-            Cada ícone do app com opções em 6 bibliotecas, todas com traço perto do da Lucide (Phosphor em bold; Heroicons e Iconoir com
-            traço 2). A amostra abaixo usa os escolhidos.
+            Cada ícone do app com opções da Lucide (a biblioteca do app). A amostra abaixo usa os escolhidos.
           </p>
         </div>
         <Sample icon={(id) => chosen(id).icon} />
         <div className="flex flex-wrap items-center gap-3">
-          <Segmented
-            label="Biblioteca"
-            options={[{ value: 'all' as const, label: 'Todas' }, ...LIBS.map((value) => ({ value, label: LIB_LABEL[value] }))]}
-            value={lib}
-            onChange={setLib}
-          />
           <Button onClick={copy}>
             {copied ? <Check className="size-4" aria-hidden="true" /> : <Copy className="size-4" aria-hidden="true" />}
             {copied ? 'Copiado' : 'Copiar escolha'}
@@ -818,7 +344,6 @@ export default function Icons() {
             <IconChoices
               key={group.id}
               group={group}
-              lib={lib}
               value={choice[group.id]}
               onChange={(index) => setChoice((current) => ({ ...current, [group.id]: index }))}
               open={openGroup === group.id}
@@ -997,14 +522,12 @@ function Preview({ title, className = '', children }: { title: string; className
 
 function IconChoices({
   group,
-  lib,
   value,
   onChange,
   open,
   onToggle,
 }: {
   group: Group
-  lib: Lib | 'all'
   value: number
   onChange: (index: number) => void
   open: boolean
@@ -1030,7 +553,6 @@ function IconChoices({
           <span className="ml-auto inline-flex items-center gap-2 text-sm">
             <Chosen className="size-5" />
             <span className="font-mono text-xs">{chosen.name}</span>
-            <LibTag lib={chosen.lib} />
           </span>
           <ChevronDown className={`size-5 shrink-0 text-fg-muted transition-transform ${open ? 'rotate-180' : ''}`} aria-hidden="true" />
         </button>
@@ -1038,11 +560,10 @@ function IconChoices({
       {open && (
         <div id={id} className="grid gap-2 border-t border-border p-4 sm:grid-cols-2 lg:grid-cols-3">
           {group.options.map((option, index) => {
-            if (lib !== 'all' && option.lib !== lib) return null
             const Icon = option.icon
             return (
               <button
-                key={keyOf(option)}
+                key={option.name}
                 type="button"
                 aria-pressed={index === value}
                 onClick={() => onChange(index)}
@@ -1057,7 +578,7 @@ function IconChoices({
                 )}
                 <Icon className="size-7 shrink-0" />
                 <span>
-                  <span className="font-mono text-xs font-semibold">{option.name}</span> <LibTag lib={option.lib} />
+                  <span className="font-mono text-xs font-semibold">{option.name}</span>
                   {option.note && <span className="mt-0.5 block text-xs text-fg-muted">{option.note}</span>}
                 </span>
               </button>
@@ -1066,14 +587,5 @@ function IconChoices({
         </div>
       )}
     </Card>
-  )
-}
-
-/** Selo da biblioteca do ícone. */
-function LibTag({ lib }: { lib: Lib }) {
-  return (
-    <span className="rounded bg-surface-muted px-1.5 py-0.5 align-middle font-sans text-[10px] font-medium text-fg-muted">
-      {LIB_LABEL[lib]}
-    </span>
   )
 }
