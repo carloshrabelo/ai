@@ -106,6 +106,7 @@
     --brand-fg: #ffffff;
     --brand-shadow: #4e2aa6;
     --brand-ink: #6d3fd9; /* textos e links: 5,8:1 sobre o fundo */
+    --pulse: #6d3fd9; /* pulso do pino no mapa */
     --accent: #0b7f9e; /* ciano da logo um tom mais escuro para texto: 4,6:1 */
     --badge: #e04fd6; /* rosa da logo, com texto marinho da logo: 5:1 */
     --badge-fg: #141450;
@@ -133,6 +134,7 @@
     --brand-fg: #ffffff;
     --brand-shadow: #4e2aa6;
     --brand-ink: #c98af5; /* lilás: o roxo como texto no escuro fica em 2,7:1; este, 5,5:1 */
+    --pulse: #c98af5; /* pulso do pino no mapa: o roxo some sobre o mapa escuro; o lilás aparece */
     --accent: #4dd4f5; /* ciano da logo: 7,9:1 */
     --badge: #e04fd6;
     --badge-fg: #141450;
@@ -237,9 +239,9 @@
   inset: -35%;
   border-radius: 9999px;
   /* Anel cheio e com brilho forte: sobre o mapa (cheio de detalhe), o brilho fino do original sumia. */
-  border: 3px solid var(--brand);
-  background: color-mix(in srgb, var(--brand) 25%, transparent);
-  box-shadow: 0 0 12px 4px var(--brand);
+  border: 3px solid var(--pulse);
+  background: color-mix(in srgb, var(--pulse) 25%, transparent);
+  box-shadow: 0 0 12px 4px var(--pulse);
   opacity: 0;
   animation: pin-pulsate 1.2s ease-out infinite;
   pointer-events: none;
