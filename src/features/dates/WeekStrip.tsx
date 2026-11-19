@@ -53,7 +53,7 @@ export function WeekStrip({ startDate, activeDay, onSelect, actions }: Props) {
         variant="tool"
         icon={<CalendarSearch className="size-6" aria-hidden="true" />}
         onClick={openPicker}
-        className="h-14"
+        className="size-14"
       />
       <input
         ref={dateInputRef}

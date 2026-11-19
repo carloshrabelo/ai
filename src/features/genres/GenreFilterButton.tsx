@@ -24,7 +24,7 @@ export function GenreFilterButton({ open, onToggle, controls, activeCount }: Pro
       aria-label={label}
       title={label}
       onClick={onToggle}
-      className={`relative inline-flex h-14 w-11 shrink-0 cursor-pointer items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${TOOL} ${
+      className={`relative inline-flex size-14 shrink-0 cursor-pointer items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${TOOL} ${
         open ? TOOL_ACTIVE : TOOL_IDLE
       }`}
     >
