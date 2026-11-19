@@ -389,12 +389,12 @@ const PIN_STYLE = {
 const iconCache = new Map<string, L.DivIcon>()
 
 /**
- * Pino selecionado pulsa: um anel roxo que cresce e some atrás do pino, sem parar. Com "reduzir
- * movimento", o pulso não aparece (motion-safe).
+ * Pino selecionado pulsa, como o leaflet-icon-pulse: anel com brilho que cresce e some (`.pin-pulse`
+ * em index.css). Com "reduzir movimento", o pulso não aparece.
  */
 function withPulse(pin: string, pulse: boolean): string {
   if (!pulse) return pin
-  return `<span class="relative flex size-full items-center justify-center"><span aria-hidden="true" class="absolute inset-0 rounded-full bg-brand/50 motion-safe:animate-ping"></span>${pin}</span>`
+  return `<span class="pin-pulse relative flex size-full items-center justify-center">${pin}</span>`
 }
 
 /** Pino de grupo: roxo da marca, maior, com o total de eventos. */
