@@ -8,9 +8,15 @@ importers:
 
   .:
     dependencies:
+      '@heroicons/react':
+        specifier: ^2.2.0
+        version: 2.2.0(react@19.3.1)
       '@phosphor-icons/react':
         specifier: ^2.1.10
         version: 2.1.10(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+      '@remixicon/react':
+        specifier: ^4.9.0
+        version: 4.9.0(react@19.3.1)
       '@tabler/icons-react':
         specifier: ^3.52.0
         version: 3.52.0(react@19.3.1)
@@ -26,6 +32,9 @@ importers:
       dompurify:
         specifier: ^3.4.18
         version: 3.4.18
+      iconoir-react:
+        specifier: ^7.12.2
+        version: 7.12.2(react@19.3.1)
       leaflet:
         specifier: ^1.9.4
         version: 1.9.4
@@ -658,6 +667,11 @@ packages:
 
   '@floating-ui/utils@0.2.12':
     resolution: {integrity: sha512-HpCo8tmWzLVad5s2d19EhAz5zqrrQ6s69qd6moPMQvkOuSwDT1YgRfWSVuc4ennqrgv3OHppiOGMQ7oC13yIww==}
+
+  '@heroicons/react@2.2.0':
+    resolution: {integrity: sha512-LMcepvRaS9LYHJGsF0zzmgKCUim/X3N/DQKc4jepAXJ7l8QxJ1PmxJzqplF2Z3FE4PqBAIGyJAQ/w4B5dsqbtQ==}
+    peerDependencies:
+      react: '>= 16 || ^19.0.0-rc'
 
   '@img/colour@1.1.0':
     resolution: {integrity: sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ==}
@@ -1355,6 +1369,11 @@ packages:
 
   '@remix-run/route-pattern@0.22.1':
     resolution: {integrity: sha512-czdGJWh09Lapvcqt7Vb09KlrU2PhRJ8xQaI+AItTuD9aDJ5MAgxnS38lnys6Ll+6RJEqPiaUqTwIQhVLwFvv+w==}
+
+  '@remixicon/react@4.9.0':
+    resolution: {integrity: sha512-5/jLDD4DtKxH2B4QVXTobvV1C2uL8ab9D5yAYNtFt+w80O0Ys1xFOrspqROL3fjrZi+7ElFUWE37hBfaAl6U+Q==}
+    peerDependencies:
+      react: '>=18.2.0'
 
   '@rolldown/binding-android-arm-eabi@1.2.19':
     resolution: {integrity: sha512-e+Ebe0WT+9tbXmNKPIiC8YrWAHYwug3m6i4p3rZGGulfZri1jtI4HslT+OZnFf/OIHowWF71DTlHwXBP2SiA7A==}
@@ -2500,6 +2519,11 @@ packages:
 
   ico-endec@0.1.6:
     resolution: {integrity: sha512-ZdLU38ZoED3g1j3iEyzcQj+wAkY2xfWNkymszfJPoxucIUhK7NayQ+/C4Kv0nDFMIsbtbEHldv3V8PU494/ueQ==}
+
+  iconoir-react@7.12.2:
+    resolution: {integrity: sha512-BDOIt6qcGY4pgJ+5et2ZjuWEbVKwnpRyTLq7viN3bF+BzpxVWCNDBkMd8iVeHx+QglqciiS8ftgU5Ddvz0Rn6A==}
+    peerDependencies:
+      react: 18 || 19
 
   idb@7.1.1:
     resolution: {integrity: sha512-gchesWBzyvGHRO9W8tzUWFDycow5gwjvFKfyV9FF32Y7F50yZMp7mP+T2mJIWFx49zicqyC4uefHM17o6xKIVQ==}
@@ -4276,6 +4300,10 @@ snapshots:
 
   '@floating-ui/utils@0.2.12': {}
 
+  '@heroicons/react@2.2.0(react@19.3.1)':
+    dependencies:
+      react: 19.3.1
+
   '@img/colour@1.1.0': {}
 
   '@img/sharp-darwin-arm64@0.35.5':
@@ -4698,6 +4726,10 @@ snapshots:
       react-dom: 19.3.1(react@19.3.1)
 
   '@remix-run/route-pattern@0.22.1': {}
+
+  '@remixicon/react@4.9.0(react@19.3.1)':
+    dependencies:
+      react: 19.3.1
 
   '@rolldown/binding-android-arm-eabi@1.2.19':
     optional: true
@@ -5716,6 +5748,10 @@ snapshots:
       - '@noble/hashes'
 
   ico-endec@0.1.6: {}
+
+  iconoir-react@7.12.2(react@19.3.1):
+    dependencies:
+      react: 19.3.1
 
   idb@7.1.1: {}
 

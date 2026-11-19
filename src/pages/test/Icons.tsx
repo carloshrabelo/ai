@@ -1,316 +1,785 @@
 import {
-  AudioLines,
-  CalendarDays,
-  CalendarHeart,
-  Check,
-  ChevronDown,
-  CircleEllipsis,
-  CircleHelp,
-  CircleUserRound,
-  Compass,
-  Copy,
-  Disc3,
-  Ellipsis,
-  Flame,
-  Footprints,
-  Funnel,
-  Heart,
-  HeartHandshake,
-  Earth,
-  Info,
-  LocateFixed,
-  ListFilter,
-  Map as MapIcon,
-  MapPin,
-  MapPinned,
-  Menu,
-  Music,
-  Navigation,
-  Music2,
-  Palette,
-  PartyPopper,
-  PersonStanding,
-  Radar,
-  Route,
-  Settings,
-  Settings2,
-  Shapes,
-  Signpost,
-  SlidersHorizontal,
-  SlidersVertical,
-  Sparkles,
-  SunMoon,
-  Tags,
-  BookOpen,
-  Contact,
-  Globe,
-  Handshake,
-  Megaphone,
-  MessagesSquare,
-  Network,
-  Share2,
-  Smile,
-  Sparkle,
-  Users,
-  UsersRound,
-} from 'lucide-react'
+  ArrowDownTrayIcon as HeroArrowDownTray,
+  ArrowRightIcon as HeroArrowRight,
+  ArrowsPointingOutIcon as HeroArrowsPointingOut,
+  ArrowUpOnSquareIcon as HeroArrowUpOnSquare,
+  ArrowUturnLeftIcon as HeroArrowUturnLeft,
+  BanknotesIcon as HeroBanknotes,
+  BellAlertIcon as HeroBellAlert,
+  BuildingOfficeIcon as HeroBuildingOffice,
+  CalendarDateRangeIcon as HeroCalendarDateRange,
+  CalendarDaysIcon as HeroCalendarDays,
+  ChatBubbleLeftRightIcon as HeroChatBubbleLeftRight,
+  ChevronRightIcon as HeroChevronRight,
+  ClockIcon as HeroClock,
+  CurrencyEuroIcon as HeroCurrencyEuro,
+  DocumentArrowDownIcon as HeroDocumentArrowDown,
+  FaceSmileIcon as HeroFaceSmile,
+  FunnelIcon as HeroFunnel,
+  AdjustmentsHorizontalIcon as HeroAdjustmentsHorizontal,
+  GlobeEuropeAfricaIcon as HeroGlobeEuropeAfrica,
+  InformationCircleIcon as HeroInformationCircle,
+  MapIcon as HeroMap,
+  MapPinIcon as HeroMapPin,
+  MusicalNoteIcon as HeroMusicalNote,
+  PaperAirplaneIcon as HeroPaperAirplane,
+  PlusCircleIcon as HeroPlusCircle,
+  ShareIcon as HeroShare,
+  SparklesIcon as HeroSparkles,
+  TicketIcon as HeroTicket,
+  UserGroupIcon as HeroUserGroup,
+  ViewfinderCircleIcon as HeroViewfinderCircle,
+  XCircleIcon as HeroXCircle,
+} from '@heroicons/react/24/outline'
 import {
-  AddressBookIcon,
+  ArrowCounterClockwiseIcon,
+  BellRingingIcon,
+  BookmarkSimpleIcon,
   BookOpenTextIcon,
+  BuildingsIcon,
+  CalendarBlankIcon,
+  CalendarCheckIcon,
+  CalendarDotsIcon,
+  CalendarPlusIcon,
+  CaretRightIcon,
   ChampagneIcon,
   ChatsCircleIcon,
-  ConfettiIcon,
+  ClockIcon,
+  CompassIcon,
+  CornersOutIcon,
+  CrosshairIcon,
+  CurrencyEurIcon,
   DiscoBallIcon,
-  DotsThreeCircleIcon,
-  GearIcon,
-  GlobeHemisphereWestIcon,
+  DownloadSimpleIcon,
+  FrameCornersIcon,
+  FunnelIcon,
+  FunnelSimpleIcon,
+  FunnelSimpleXIcon,
+  FunnelXIcon,
+  GpsFixIcon,
   HandHeartIcon,
-  HandshakeIcon,
   HandWavingIcon,
-  HeartIcon,
   InfoIcon,
-  MegaphoneIcon,
+  MapPinAreaIcon,
+  MapPinIcon,
+  MapTrifoldIcon,
   MusicNotesIcon,
+  NavigationArrowIcon,
+  PathIcon,
   PersonArmsSpreadIcon,
-  PersonSimpleTaiChiIcon,
   QuestionIcon,
+  ShareFatIcon,
   ShareNetworkIcon,
+  SignpostIcon,
+  SlidersHorizontalIcon,
   SmileyIcon,
   SneakerMoveIcon,
-  SparkleIcon,
+  TagIcon,
+  TicketIcon,
   UsersThreeIcon,
+  WalletIcon,
 } from '@phosphor-icons/react'
 import {
-  IconAddressBook,
-  IconAffiliate,
-  IconBook,
-  IconConfetti,
+  RiArrowGoBackLine,
+  RiArrowRightSLine,
+  RiBuildingLine,
+  RiCalendarCheckLine,
+  RiCalendarLine,
+  RiChat3Line,
+  RiCommunityLine,
+  RiCompass3Line,
+  RiCrosshair2Line,
+  RiDirectionLine,
+  RiDiscLine,
+  RiDownloadLine,
+  RiEqualizerLine,
+  RiFilter3Line,
+  RiFilterOffLine,
+  RiFocus3Line,
+  RiFootprintLine,
+  RiFullscreenLine,
+  RiGroupLine,
+  RiInformationLine,
+  RiMapLine,
+  RiMapPin2Line,
+  RiMoneyEuroCircleLine,
+  RiMusic2Line,
+  RiNotification3Line,
+  RiQuestionLine,
+  RiShareForwardLine,
+  RiShareLine,
+  RiTicket2Line,
+  RiTimeLine,
+  RiUserHeartLine,
+} from '@remixicon/react'
+import {
+  IconAdjustmentsHorizontal,
+  IconArrowRight,
+  IconBellRinging,
+  IconBookmark,
+  IconBuildingCommunity,
+  IconCalendar,
+  IconCalendarCheck,
+  IconCalendarEvent,
+  IconCalendarPlus,
+  IconCalendarSearch,
+  IconCash,
+  IconChevronRight,
+  IconClock,
+  IconCompass,
+  IconCurrencyEuro,
+  IconCurrentLocation,
+  IconDirections,
   IconDisc,
-  IconDots,
+  IconDownload,
+  IconEraser,
+  IconFileDownload,
+  IconFilter,
+  IconFilterOff,
+  IconFocus2,
   IconFriends,
+  IconGps,
   IconHandLoveYou,
-  IconHeart,
   IconHeartHandshake,
-  IconHelpCircle,
   IconInfoCircle,
   IconInfoSquareRounded,
+  IconMap,
+  IconMapPin,
+  IconMapSearch,
+  IconMaximize,
   IconMessages,
   IconMicrophone2,
-  IconMoodHappy,
-  IconMusic,
   IconPlaylist,
-  IconSettings,
+  IconRestore,
+  IconRoute,
+  IconSend,
+  IconShare,
   IconShoe,
-  IconSparkles,
-  IconSpeakerphone,
+  IconTags,
+  IconTicket,
   IconUsersGroup,
-  IconWorld,
+  IconZoomScan,
 } from '@tabler/icons-react'
-import { type ComponentType, type ReactNode, useState } from 'react'
+import {
+  Bell as IoBell,
+  BellNotification as IoBellNotification,
+  Building as IoBuilding,
+  Calendar as IoCalendar,
+  CalendarPlus as IoCalendarPlus,
+  ChatLines as IoChatLines,
+  Clock as IoClock,
+  Community as IoCommunity,
+  Compass as IoCompass,
+  Download as IoDownload,
+  Erase as IoErase,
+  Euro as IoEuro,
+  Expand as IoExpand,
+  Filter as IoFilter,
+  FilterList as IoFilterList,
+  Frame as IoFrame,
+  Gps as IoGps,
+  Group as IoGroup,
+  InfoCircle as IoInfoCircle,
+  Map as IoMap,
+  MapPin as IoMapPin,
+  MapsTurnRight as IoMapsTurnRight,
+  MusicDoubleNote as IoMusicDoubleNote,
+  NavArrowRight as IoNavArrowRight,
+  Navigator as IoNavigator,
+  Position as IoPosition,
+  Send as IoSend,
+  ShareIos as IoShareIos,
+  SoundHigh as IoSoundHigh,
+  Sparks as IoSparks,
+  Undo as IoUndo,
+  Wallet as IoWallet,
+  XmarkCircle as IoXmarkCircle,
+  HelpCircle as IoHelpCircle,
+  EmojiTalkingHappy as IoEmojiTalkingHappy,
+} from 'iconoir-react'
+import {
+  AlarmClock,
+  ArrowRight,
+  Banknote,
+  BellPlus,
+  BellRing,
+  BookOpen,
+  Bookmark,
+  Building2,
+  Calendar,
+  CalendarArrowDown,
+  CalendarCheck,
+  CalendarDays,
+  CalendarPlus,
+  CalendarSearch,
+  Check,
+  ChevronDown,
+  ChevronRight,
+  CircleHelp,
+  CircleX,
+  Clock,
+  Compass,
+  Copy,
+  Crosshair,
+  Disc3,
+  Download,
+  Euro,
+  Eraser,
+  FileDown,
+  Focus,
+  Footprints,
+  Funnel,
+  FunnelX,
+  Globe,
+  Heart,
+  HeartHandshake,
+  Info,
+  Landmark,
+  ListFilter,
+  Locate,
+  LocateFixed,
+  Map as MapIcon,
+  MapPin,
+  MapPinCheck,
+  MapPinned,
+  Maximize,
+  Megaphone,
+  MessagesSquare,
+  Music,
+  Navigation,
+  Palette,
+  PartyPopper,
+  Radar,
+  RotateCcw,
+  Route,
+  Scan,
+  Send,
+  Share,
+  Share2,
+  Signpost,
+  SlidersHorizontal,
+  Sparkles,
+  Tags,
+  Ticket,
+  Timer,
+  Users,
+  UsersRound,
+  Wallet,
+} from 'lucide-react'
+import { type ComponentType, createElement, type ReactNode, useState } from 'react'
 import { Button } from '../../components/ui/Button'
 import { Card } from '../../components/ui/Card'
 import { Segmented } from '../../components/ui/Segmented'
 import { siteUrl, useDocumentHead } from '../../seo/useDocumentHead'
 import { BackToTest } from './shared'
 
-/** Bibliotecas comparadas. O app usa a lucide-react; outra entraria como dependência nova. */
-const LIBS = ['lucide', 'phosphor', 'tabler'] as const
+// Ícones importados um a um: importar a biblioteca inteira deixaria esta página com vários MB (e o
+// cache offline do PWA recusa arquivos acima de 2 MB).
+
+/** Bibliotecas comparadas. O app usa a Lucide e, no menu, dois ícones do Phosphor (peso bold). */
+const LIBS = ['lucide', 'phosphor', 'tabler', 'heroicons', 'iconoir', 'remix'] as const
 type Lib = (typeof LIBS)[number]
-const LIB_LABEL: Record<Lib, string> = { lucide: 'Lucide', phosphor: 'Phosphor', tabler: 'Tabler' }
+const LIB_LABEL: Record<Lib, string> = {
+  lucide: 'Lucide',
+  phosphor: 'Phosphor',
+  tabler: 'Tabler',
+  heroicons: 'Heroicons',
+  iconoir: 'Iconoir',
+  remix: 'Remix',
+}
 type IconComponent = ComponentType<{ className?: string }>
 
-/**
- * `current`: o que o app usa hoje (marcado como "atual" e escolhido de início). Sem `lib`, Lucide.
- */
-type Option = { name: string; icon: IconComponent; note: string; lib?: Lib; current?: boolean }
-type NameOption = { pt: string; en: string; note: string; current?: boolean }
+/** `current`: o que o app usa hoje (marcado como "atual" e escolhido de início). */
+type Option = { lib: Lib; name: string; icon: IconComponent; note?: string; current?: boolean }
 
-const currentIndex = (options: { current?: boolean }[]) =>
+// Cada biblioteca com o traço mais perto do da Lucide (2px a 24px): Phosphor em "bold"; Heroicons e
+// Iconoir com strokeWidth 2 (o padrão deles é 1,5). Tabler e Lucide já são 2; Remix é preenchido.
+type AnyIcon = ComponentType<Record<string, unknown>>
+const withProps =
+  (Icon: unknown, extra: Record<string, unknown>): IconComponent =>
+  (props) =>
+    createElement(Icon as AnyIcon, { ...extra, ...props })
+
+function make(lib: Lib, name: string, icon: unknown, note?: string, current?: boolean): Option {
+  const extra = lib === 'phosphor' ? { weight: 'bold' } : lib === 'heroicons' || lib === 'iconoir' ? { strokeWidth: 2 } : null
+  return {
+    lib,
+    name,
+    icon: extra ? withProps(icon, extra) : (icon as IconComponent),
+    ...(note ? { note } : {}),
+    ...(current ? { current } : {}),
+  }
+}
+const lu = (icon: unknown, name: string, note?: string, current?: boolean) => make('lucide', name, icon, note, current)
+const ph = (icon: unknown, name: string, note?: string, current?: boolean) => make('phosphor', name, icon, note, current)
+const tb = (icon: unknown, name: string, note?: string) => make('tabler', name, icon, note)
+const he = (icon: unknown, name: string, note?: string) => make('heroicons', name, icon, note)
+const io = (icon: unknown, name: string, note?: string) => make('iconoir', name, icon, note)
+const ri = (icon: unknown, name: string, note?: string) => make('remix', name, icon, note)
+
+type GroupId =
+  | 'dance'
+  | 'explore'
+  | 'community'
+  | 'about'
+  | 'filter'
+  | 'clearFilter'
+  | 'datePicker'
+  | 'fitMap'
+  | 'locate'
+  | 'place'
+  | 'time'
+  | 'price'
+  | 'addCalendar'
+  | 'download'
+  | 'share'
+  | 'directions'
+  | 'notify'
+  | 'openDetails'
+
+type Group = { id: GroupId; section: string; title: string; where: string; options: Option[] }
+
+const GROUPS: Group[] = [
+  // ---- Menu
+  {
+    id: 'dance',
+    section: 'Menu',
+    title: 'Dança',
+    where: 'Barra inferior e menu lateral.',
+    options: [
+      ph(DiscoBallIcon, 'DiscoBall', 'Globo de discoteca: pista e noite.', true),
+      ph(SneakerMoveIcon, 'SneakerMove', 'Tênis em movimento.'),
+      ph(PersonArmsSpreadIcon, 'PersonArmsSpread', 'Braços abertos.'),
+      ph(MusicNotesIcon, 'MusicNotes'),
+      ph(ChampagneIcon, 'Champagne', 'Brinde: social.'),
+      lu(Disc3, 'Disc3', 'Vinil / DJ.'),
+      lu(Music, 'Music', 'Lembra app de música.'),
+      lu(Footprints, 'Footprints', 'Passos.'),
+      lu(PartyPopper, 'PartyPopper', 'Festa.'),
+      lu(Sparkles, 'Sparkles'),
+      tb(IconDisc, 'IconDisc'),
+      tb(IconShoe, 'IconShoe', 'Sapato.'),
+      tb(IconPlaylist, 'IconPlaylist', 'Agenda + música.'),
+      tb(IconMicrophone2, 'IconMicrophone2', 'DJ / ao vivo.'),
+      he(HeroMusicalNote, 'MusicalNote'),
+      he(HeroSparkles, 'Sparkles'),
+      io(IoMusicDoubleNote, 'MusicDoubleNote'),
+      io(IoSparks, 'Sparks', 'Faíscas.'),
+      io(IoSoundHigh, 'SoundHigh', 'Som alto: festa.'),
+      ri(RiDiscLine, 'RiDiscLine'),
+      ri(RiFootprintLine, 'RiFootprintLine', 'Pegadas.'),
+      ri(RiMusic2Line, 'RiMusic2Line'),
+    ],
+  },
+  {
+    id: 'explore',
+    section: 'Menu',
+    title: 'Explorar (mapa)',
+    where: 'Barra inferior, só no celular e tablet.',
+    options: [
+      lu(Compass, 'Compass', 'Bússola: explorar.', true),
+      lu(MapIcon, 'Map'),
+      lu(MapPinned, 'MapPinned'),
+      lu(Navigation, 'Navigation'),
+      lu(Radar, 'Radar', 'Por perto.'),
+      ph(CompassIcon, 'Compass'),
+      ph(MapTrifoldIcon, 'MapTrifold'),
+      ph(MapPinAreaIcon, 'MapPinArea', 'Pino com área.'),
+      tb(IconCompass, 'IconCompass'),
+      tb(IconMap, 'IconMap'),
+      tb(IconMapSearch, 'IconMapSearch', 'Mapa com lupa.'),
+      he(HeroMap, 'Map'),
+      he(HeroGlobeEuropeAfrica, 'GlobeEuropeAfrica', 'Globo com a Europa.'),
+      io(IoCompass, 'Compass'),
+      io(IoMap, 'Map'),
+      ri(RiCompass3Line, 'RiCompass3Line'),
+      ri(RiMapLine, 'RiMapLine'),
+    ],
+  },
+  {
+    id: 'community',
+    section: 'Menu',
+    title: 'Comunidade',
+    where: 'Barra inferior e menu lateral.',
+    options: [
+      lu(UsersRound, 'UsersRound', 'Pessoas.', true),
+      lu(Users, 'Users'),
+      lu(HeartHandshake, 'HeartHandshake', 'Parceria.'),
+      lu(MessagesSquare, 'MessagesSquare', 'Conversas (WhatsApp).'),
+      lu(Megaphone, 'Megaphone'),
+      lu(Globe, 'Globe', 'Outros sites.'),
+      ph(UsersThreeIcon, 'UsersThree', 'Grupo de três.'),
+      ph(ChatsCircleIcon, 'ChatsCircle'),
+      ph(HandHeartIcon, 'HandHeart'),
+      tb(IconUsersGroup, 'IconUsersGroup'),
+      tb(IconFriends, 'IconFriends', 'Par.'),
+      tb(IconMessages, 'IconMessages'),
+      tb(IconHeartHandshake, 'IconHeartHandshake'),
+      he(HeroUserGroup, 'UserGroup'),
+      he(HeroChatBubbleLeftRight, 'ChatBubbleLeftRight', 'Conversa.'),
+      io(IoCommunity, 'Community', 'Comunidade (nome literal).'),
+      io(IoGroup, 'Group'),
+      io(IoChatLines, 'ChatLines'),
+      ri(RiGroupLine, 'RiGroupLine'),
+      ri(RiCommunityLine, 'RiCommunityLine', 'Prédios: bairro.'),
+      ri(RiUserHeartLine, 'RiUserHeartLine'),
+      ri(RiChat3Line, 'RiChat3Line'),
+    ],
+  },
+  {
+    id: 'about',
+    section: 'Menu',
+    title: 'Sobre',
+    where: 'Barra inferior e menu lateral.',
+    options: [
+      ph(InfoIcon, 'Info', 'Info.', true),
+      ph(HandWavingIcon, 'HandWaving', 'Aceno: "olá".'),
+      ph(BookOpenTextIcon, 'BookOpenText'),
+      ph(QuestionIcon, 'Question'),
+      ph(SmileyIcon, 'Smiley'),
+      lu(Info, 'Info'),
+      lu(CircleHelp, 'CircleHelp'),
+      lu(BookOpen, 'BookOpen'),
+      lu(Heart, 'Heart', 'Quem faz.'),
+      tb(IconInfoCircle, 'IconInfoCircle'),
+      tb(IconInfoSquareRounded, 'IconInfoSquareRounded'),
+      tb(IconHandLoveYou, 'IconHandLoveYou'),
+      he(HeroInformationCircle, 'InformationCircle'),
+      he(HeroFaceSmile, 'FaceSmile'),
+      io(IoInfoCircle, 'InfoCircle'),
+      io(IoHelpCircle, 'HelpCircle'),
+      io(IoEmojiTalkingHappy, 'EmojiTalkingHappy', 'Rosto falando.'),
+      ri(RiInformationLine, 'RiInformationLine'),
+      ri(RiQuestionLine, 'RiQuestionLine'),
+    ],
+  },
+  // ---- Agenda e mapa
+  {
+    id: 'filter',
+    section: 'Agenda e mapa',
+    title: 'Filtro de estilos',
+    where: 'Botão ao lado da faixa de dias.',
+    options: [
+      lu(Funnel, 'Funnel', 'Funil: o mais reconhecido.', true),
+      lu(SlidersHorizontal, 'SlidersHorizontal'),
+      lu(ListFilter, 'ListFilter'),
+      lu(Tags, 'Tags', 'Estilos como etiquetas.'),
+      lu(Palette, 'Palette', 'Cada estilo tem uma cor.'),
+      ph(FunnelIcon, 'Funnel'),
+      ph(FunnelSimpleIcon, 'FunnelSimple'),
+      ph(SlidersHorizontalIcon, 'SlidersHorizontal'),
+      ph(TagIcon, 'Tag'),
+      tb(IconFilter, 'IconFilter'),
+      tb(IconAdjustmentsHorizontal, 'IconAdjustmentsHorizontal'),
+      tb(IconTags, 'IconTags'),
+      he(HeroFunnel, 'Funnel'),
+      he(HeroAdjustmentsHorizontal, 'AdjustmentsHorizontal'),
+      io(IoFilter, 'Filter'),
+      io(IoFilterList, 'FilterList'),
+      ri(RiFilter3Line, 'RiFilter3Line', 'Três linhas.'),
+      ri(RiEqualizerLine, 'RiEqualizerLine'),
+    ],
+  },
+  {
+    id: 'clearFilter',
+    section: 'Agenda e mapa',
+    title: 'Limpar filtros',
+    where: '"Limpar" no popover e no drawer de filtros.',
+    options: [
+      lu(FunnelX, 'FunnelX', 'Funil com X.', true),
+      lu(RotateCcw, 'RotateCcw', 'Voltar ao início.'),
+      lu(Eraser, 'Eraser'),
+      lu(CircleX, 'CircleX'),
+      ph(FunnelXIcon, 'FunnelX'),
+      ph(FunnelSimpleXIcon, 'FunnelSimpleX'),
+      ph(ArrowCounterClockwiseIcon, 'ArrowCounterClockwise'),
+      tb(IconFilterOff, 'IconFilterOff'),
+      tb(IconRestore, 'IconRestore'),
+      tb(IconEraser, 'IconEraser'),
+      he(HeroXCircle, 'XCircle'),
+      he(HeroArrowUturnLeft, 'ArrowUturnLeft'),
+      io(IoXmarkCircle, 'XmarkCircle'),
+      io(IoUndo, 'Undo'),
+      io(IoErase, 'Erase'),
+      ri(RiFilterOffLine, 'RiFilterOffLine'),
+      ri(RiArrowGoBackLine, 'RiArrowGoBackLine'),
+    ],
+  },
+  {
+    id: 'datePicker',
+    section: 'Agenda e mapa',
+    title: 'Escolher data',
+    where: 'Botão no começo da faixa de dias.',
+    options: [
+      lu(CalendarDays, 'CalendarDays', 'Calendário com dias.', true),
+      lu(Calendar, 'Calendar'),
+      lu(CalendarSearch, 'CalendarSearch', 'Procurar data.'),
+      ph(CalendarDotsIcon, 'CalendarDots'),
+      ph(CalendarBlankIcon, 'CalendarBlank'),
+      tb(IconCalendar, 'IconCalendar'),
+      tb(IconCalendarSearch, 'IconCalendarSearch'),
+      tb(IconCalendarEvent, 'IconCalendarEvent'),
+      he(HeroCalendarDays, 'CalendarDays'),
+      he(HeroCalendarDateRange, 'CalendarDateRange'),
+      io(IoCalendar, 'Calendar'),
+      ri(RiCalendarLine, 'RiCalendarLine'),
+    ],
+  },
+  {
+    id: 'fitMap',
+    section: 'Agenda e mapa',
+    title: 'Enquadrar mapa',
+    where: 'Botão no canto do mapa.',
+    options: [
+      lu(Focus, 'Focus', 'Mira com cantos.', true),
+      lu(Maximize, 'Maximize'),
+      lu(Scan, 'Scan'),
+      lu(Crosshair, 'Crosshair'),
+      ph(CornersOutIcon, 'CornersOut'),
+      ph(FrameCornersIcon, 'FrameCorners'),
+      ph(CrosshairIcon, 'Crosshair'),
+      tb(IconFocus2, 'IconFocus2'),
+      tb(IconMaximize, 'IconMaximize'),
+      tb(IconZoomScan, 'IconZoomScan', 'Zoom para caber.'),
+      he(HeroArrowsPointingOut, 'ArrowsPointingOut'),
+      he(HeroViewfinderCircle, 'ViewfinderCircle'),
+      io(IoExpand, 'Expand'),
+      io(IoFrame, 'Frame'),
+      ri(RiFullscreenLine, 'RiFullscreenLine'),
+      ri(RiFocus3Line, 'RiFocus3Line'),
+    ],
+  },
+  {
+    id: 'locate',
+    section: 'Agenda e mapa',
+    title: 'Distâncias (minha localização)',
+    where: '"Mostrar distâncias", no fim da barra lateral e no drawer.',
+    options: [
+      lu(LocateFixed, 'LocateFixed', 'Mira de localização.', true),
+      lu(Locate, 'Locate'),
+      lu(MapPinCheck, 'MapPinCheck'),
+      ph(GpsFixIcon, 'GpsFix'),
+      ph(NavigationArrowIcon, 'NavigationArrow'),
+      tb(IconCurrentLocation, 'IconCurrentLocation'),
+      tb(IconGps, 'IconGps'),
+      io(IoPosition, 'Position'),
+      io(IoGps, 'Gps'),
+      ri(RiCrosshair2Line, 'RiCrosshair2Line'),
+    ],
+  },
+  // ---- Card e detalhes
+  {
+    id: 'place',
+    section: 'Card e detalhes',
+    title: 'Local',
+    where: 'Card e detalhes do evento.',
+    options: [
+      lu(MapPin, 'MapPin', 'Pino: o padrão.', true),
+      lu(Building2, 'Building2', 'Prédio.'),
+      lu(Landmark, 'Landmark'),
+      ph(MapPinIcon, 'MapPin'),
+      ph(BuildingsIcon, 'Buildings'),
+      tb(IconMapPin, 'IconMapPin'),
+      tb(IconBuildingCommunity, 'IconBuildingCommunity'),
+      he(HeroMapPin, 'MapPin'),
+      he(HeroBuildingOffice, 'BuildingOffice'),
+      io(IoMapPin, 'MapPin'),
+      io(IoBuilding, 'Building'),
+      ri(RiMapPin2Line, 'RiMapPin2Line'),
+      ri(RiBuildingLine, 'RiBuildingLine'),
+    ],
+  },
+  {
+    id: 'time',
+    section: 'Card e detalhes',
+    title: 'Horário',
+    where: 'Card e detalhes do evento.',
+    options: [
+      lu(Clock, 'Clock', 'Relógio.', true),
+      lu(Timer, 'Timer'),
+      lu(AlarmClock, 'AlarmClock'),
+      ph(ClockIcon, 'Clock'),
+      tb(IconClock, 'IconClock'),
+      he(HeroClock, 'Clock'),
+      io(IoClock, 'Clock'),
+      ri(RiTimeLine, 'RiTimeLine'),
+    ],
+  },
+  {
+    id: 'price',
+    section: 'Card e detalhes',
+    title: 'Preço',
+    where: 'Card e detalhes do evento.',
+    options: [
+      lu(Ticket, 'Ticket', 'Bilhete: entrada.', true),
+      lu(Euro, 'Euro'),
+      lu(Wallet, 'Wallet'),
+      lu(Banknote, 'Banknote'),
+      ph(TicketIcon, 'Ticket'),
+      ph(CurrencyEurIcon, 'CurrencyEur'),
+      ph(WalletIcon, 'Wallet'),
+      tb(IconTicket, 'IconTicket'),
+      tb(IconCurrencyEuro, 'IconCurrencyEuro'),
+      tb(IconCash, 'IconCash'),
+      he(HeroTicket, 'Ticket'),
+      he(HeroCurrencyEuro, 'CurrencyEuro'),
+      he(HeroBanknotes, 'Banknotes'),
+      io(IoEuro, 'Euro'),
+      io(IoWallet, 'Wallet'),
+      ri(RiTicket2Line, 'RiTicket2Line'),
+      ri(RiMoneyEuroCircleLine, 'RiMoneyEuroCircleLine'),
+    ],
+  },
+  {
+    id: 'addCalendar',
+    section: 'Card e detalhes',
+    title: 'Adicionar ao calendário',
+    where: 'Canto do card e botão nos detalhes.',
+    options: [
+      lu(CalendarPlus, 'CalendarPlus', 'Calendário com +.', true),
+      lu(CalendarCheck, 'CalendarCheck'),
+      lu(Bookmark, 'Bookmark', 'Guardar.'),
+      ph(CalendarPlusIcon, 'CalendarPlus'),
+      ph(CalendarCheckIcon, 'CalendarCheck'),
+      ph(BookmarkSimpleIcon, 'BookmarkSimple'),
+      tb(IconCalendarPlus, 'IconCalendarPlus'),
+      tb(IconCalendarCheck, 'IconCalendarCheck'),
+      tb(IconBookmark, 'IconBookmark'),
+      he(HeroPlusCircle, 'PlusCircle'),
+      io(IoCalendarPlus, 'CalendarPlus'),
+      ri(RiCalendarCheckLine, 'RiCalendarCheckLine'),
+    ],
+  },
+  {
+    id: 'download',
+    section: 'Card e detalhes',
+    title: 'Baixar .ics',
+    where: 'Detalhes do evento (Apple, Outlook).',
+    options: [
+      lu(Download, 'Download', 'Seta para baixo.', true),
+      lu(FileDown, 'FileDown'),
+      lu(CalendarArrowDown, 'CalendarArrowDown', 'Calendário com seta.'),
+      ph(DownloadSimpleIcon, 'DownloadSimple'),
+      tb(IconDownload, 'IconDownload'),
+      tb(IconFileDownload, 'IconFileDownload'),
+      he(HeroArrowDownTray, 'ArrowDownTray'),
+      he(HeroDocumentArrowDown, 'DocumentArrowDown'),
+      io(IoDownload, 'Download'),
+      ri(RiDownloadLine, 'RiDownloadLine'),
+    ],
+  },
+  {
+    id: 'share',
+    section: 'Card e detalhes',
+    title: 'Compartilhar',
+    where: 'Detalhes do evento.',
+    options: [
+      lu(Share2, 'Share2', 'Três pontos ligados.', true),
+      lu(Share, 'Share', 'Caixa com seta (padrão iOS).'),
+      lu(Send, 'Send'),
+      ph(ShareNetworkIcon, 'ShareNetwork'),
+      ph(ShareFatIcon, 'ShareFat'),
+      tb(IconShare, 'IconShare'),
+      tb(IconSend, 'IconSend'),
+      he(HeroShare, 'Share'),
+      he(HeroArrowUpOnSquare, 'ArrowUpOnSquare', 'Padrão iOS.'),
+      he(HeroPaperAirplane, 'PaperAirplane'),
+      io(IoShareIos, 'ShareIos'),
+      io(IoSend, 'Send'),
+      ri(RiShareLine, 'RiShareLine'),
+      ri(RiShareForwardLine, 'RiShareForwardLine'),
+    ],
+  },
+  {
+    id: 'directions',
+    section: 'Card e detalhes',
+    title: 'Como chegar',
+    where: 'Detalhes do evento (abre o app de mapas).',
+    options: [
+      lu(Navigation, 'Navigation', 'Seta de navegação.', true),
+      lu(Route, 'Route'),
+      lu(Signpost, 'Signpost'),
+      ph(NavigationArrowIcon, 'NavigationArrow'),
+      ph(PathIcon, 'Path'),
+      ph(SignpostIcon, 'Signpost'),
+      tb(IconDirections, 'IconDirections'),
+      tb(IconRoute, 'IconRoute'),
+      io(IoNavigator, 'Navigator'),
+      io(IoMapsTurnRight, 'MapsTurnRight', 'Virar à direita.'),
+      ri(RiDirectionLine, 'RiDirectionLine'),
+    ],
+  },
+  {
+    id: 'notify',
+    section: 'Card e detalhes',
+    title: 'Aviso de mudanças',
+    where: 'Detalhes e o aviso no topo da lista.',
+    options: [
+      lu(BellRing, 'BellRing', 'Sino tocando.', true),
+      lu(BellPlus, 'BellPlus'),
+      ph(BellRingingIcon, 'BellRinging'),
+      tb(IconBellRinging, 'IconBellRinging'),
+      he(HeroBellAlert, 'BellAlert'),
+      io(IoBellNotification, 'BellNotification'),
+      io(IoBell, 'Bell'),
+      ri(RiNotification3Line, 'RiNotification3Line'),
+    ],
+  },
+  {
+    id: 'openDetails',
+    section: 'Card e detalhes',
+    title: 'Abrir detalhes',
+    where: 'Canto do card.',
+    options: [
+      lu(ChevronRight, 'ChevronRight', 'Seta fina.', true),
+      lu(ArrowRight, 'ArrowRight'),
+      ph(CaretRightIcon, 'CaretRight'),
+      tb(IconChevronRight, 'IconChevronRight'),
+      tb(IconArrowRight, 'IconArrowRight'),
+      he(HeroChevronRight, 'ChevronRight'),
+      he(HeroArrowRight, 'ArrowRight'),
+      io(IoNavArrowRight, 'NavArrowRight'),
+      ri(RiArrowRightSLine, 'RiArrowRightSLine'),
+    ],
+  },
+]
+
+const SECTIONS = [...new Set(GROUPS.map((group) => group.section))]
+const currentIndex = (options: Option[]) =>
   Math.max(
     0,
     options.findIndex((option) => option.current),
   )
-
-const DANCE: Option[] = [
-  { name: 'Music', icon: Music, note: 'Anterior. Genérico: lembra app de música.' },
-  { name: 'Footprints', icon: Footprints, note: 'Passos de dança; não confunde com player de música.' },
-  { name: 'PartyPopper', icon: PartyPopper, note: 'Festa, evento social.' },
-  { name: 'Disc3', icon: Disc3, note: 'Anterior. Vinil / DJ: noite, pista.' },
-  { name: 'CalendarHeart', icon: CalendarHeart, note: 'Agenda (o que a tela é) com afeto.' },
-  { name: 'CalendarDays', icon: CalendarDays, note: 'Agenda, direto ao ponto.' },
-  { name: 'Users', icon: Users, note: 'Pessoas, comunidade, social.' },
-  { name: 'HeartHandshake', icon: HeartHandshake, note: 'Dança a dois, parceria.' },
-  { name: 'PersonStanding', icon: PersonStanding, note: 'Pessoa; mais neutro.' },
-  { name: 'Sparkles', icon: Sparkles, note: 'Brilho, noite especial.' },
-  { name: 'Flame', icon: Flame, note: 'Energia, "hot", latino.' },
-  { name: 'Music2', icon: Music2, note: 'Variação da nota musical.' },
-  { name: 'AudioLines', icon: AudioLines, note: 'Som / ritmo, moderno.' },
-  { lib: 'phosphor', name: 'DiscoBall', icon: DiscoBallIcon, note: 'Globo de discoteca: pista e noite, sem parecer player de música.', current: true },
-  { lib: 'phosphor', name: 'SneakerMove', icon: SneakerMoveIcon, note: 'Tênis em movimento: dançar.' },
-  { lib: 'phosphor', name: 'PersonArmsSpread', icon: PersonArmsSpreadIcon, note: 'Pessoa de braços abertos: alegria, movimento.' },
-  { lib: 'phosphor', name: 'PersonSimpleTaiChi', icon: PersonSimpleTaiChiIcon, note: 'Pose em movimento; lembra um passo.' },
-  { lib: 'phosphor', name: 'MusicNotes', icon: MusicNotesIcon, note: 'Duas notas: música para dançar.' },
-  { lib: 'phosphor', name: 'Confetti', icon: ConfettiIcon, note: 'Festa.' },
-  { lib: 'phosphor', name: 'Champagne', icon: ChampagneIcon, note: 'Brinde: social, noite.' },
-  { lib: 'phosphor', name: 'Sparkle', icon: SparkleIcon, note: 'Brilho único, mais limpo que Sparkles.' },
-  { lib: 'tabler', name: 'IconDisc', icon: IconDisc, note: 'Disco, como o Disc3 atual, com traço Tabler.' },
-  { lib: 'tabler', name: 'IconShoe', icon: IconShoe, note: 'Sapato: dança.' },
-  { lib: 'tabler', name: 'IconMusic', icon: IconMusic, note: 'Nota musical.' },
-  { lib: 'tabler', name: 'IconPlaylist', icon: IconPlaylist, note: 'Lista com nota: agenda + música.' },
-  { lib: 'tabler', name: 'IconMicrophone2', icon: IconMicrophone2, note: 'Microfone: DJ, show ao vivo.' },
-  { lib: 'tabler', name: 'IconConfetti', icon: IconConfetti, note: 'Festa.' },
-  { lib: 'tabler', name: 'IconSparkles', icon: IconSparkles, note: 'Brilho.' },
-  { lib: 'tabler', name: 'IconMoodHappy', icon: IconMoodHappy, note: 'Sorriso: diversão.' },
-]
-
-const COMMUNITY_ICONS: Option[] = [
-  { name: 'UsersRound', icon: UsersRound, note: 'Pessoas: comunidade.', current: true },
-  { name: 'Users', icon: Users, note: 'Variação com cabeça redonda menor.' },
-  { name: 'HeartHandshake', icon: HeartHandshake, note: 'Apoio, parceria entre a comunidade.' },
-  { name: 'Handshake', icon: Handshake, note: 'Parceria, encontro.' },
-  { name: 'MessagesSquare', icon: MessagesSquare, note: 'Conversas: grupos do WhatsApp.' },
-  { name: 'Megaphone', icon: Megaphone, note: 'Divulgação, avisos.' },
-  { name: 'Globe', icon: Globe, note: 'Outros sites e calendários.' },
-  { name: 'Contact', icon: Contact, note: 'Contatos: perfis e grupos.' },
-  { name: 'Network', icon: Network, note: 'Rede de comunidades.' },
-  { name: 'Share2', icon: Share2, note: 'Conexões, compartilhar.' },
-  { lib: 'phosphor', name: 'UsersThree', icon: UsersThreeIcon, note: 'Três pessoas: grupo, comunidade.' },
-  { lib: 'phosphor', name: 'ChatsCircle', icon: ChatsCircleIcon, note: 'Conversas: grupos.' },
-  { lib: 'phosphor', name: 'Handshake', icon: HandshakeIcon, note: 'Parceria.' },
-  { lib: 'phosphor', name: 'HandHeart', icon: HandHeartIcon, note: 'Cuidado, comunidade.' },
-  { lib: 'phosphor', name: 'Megaphone', icon: MegaphoneIcon, note: 'Divulgação.' },
-  { lib: 'phosphor', name: 'GlobeHemisphereWest', icon: GlobeHemisphereWestIcon, note: 'Mundo (com a Europa/Atlântico).' },
-  { lib: 'phosphor', name: 'AddressBook', icon: AddressBookIcon, note: 'Agenda de contatos.' },
-  { lib: 'phosphor', name: 'ShareNetwork', icon: ShareNetworkIcon, note: 'Rede.' },
-  { lib: 'tabler', name: 'IconUsersGroup', icon: IconUsersGroup, note: 'Grupo de três: comunidade.' },
-  { lib: 'tabler', name: 'IconFriends', icon: IconFriends, note: 'Duas pessoas lado a lado: amizade, par.' },
-  { lib: 'tabler', name: 'IconMessages', icon: IconMessages, note: 'Conversas: grupos.' },
-  { lib: 'tabler', name: 'IconHeartHandshake', icon: IconHeartHandshake, note: 'Apoio, parceria.' },
-  { lib: 'tabler', name: 'IconAffiliate', icon: IconAffiliate, note: 'Rede ligada.' },
-  { lib: 'tabler', name: 'IconWorld', icon: IconWorld, note: 'Outros sites.' },
-  { lib: 'tabler', name: 'IconAddressBook', icon: IconAddressBook, note: 'Contatos.' },
-  { lib: 'tabler', name: 'IconSpeakerphone', icon: IconSpeakerphone, note: 'Divulgação.' },
-]
-
-const FILTER: Option[] = [
-  { name: 'SlidersHorizontal', icon: SlidersHorizontal, note: 'Anterior. Padrão de "ajustes de filtro".' },
-  { name: 'Funnel', icon: Funnel, note: 'Funil: o símbolo mais reconhecido de filtro.', current: true },
-  { name: 'ListFilter', icon: ListFilter, note: 'Filtro de lista, mais leve.' },
-  { name: 'SlidersVertical', icon: SlidersVertical, note: 'Variação vertical do atual.' },
-  { name: 'Tags', icon: Tags, note: 'Estilos como etiquetas (o filtro é por estilo).' },
-  { name: 'Palette', icon: Palette, note: 'Cada estilo tem uma cor.' },
-  { name: 'Shapes', icon: Shapes, note: 'Categorias / tipos.' },
-  { name: 'Settings2', icon: Settings2, note: 'Ajustes; menos claro como filtro.' },
-]
-
-const INFO_NAMES: NameOption[] = [
-  { pt: 'Info', en: 'Info', note: 'Anterior. Curto, mas vago.' },
-  { pt: 'Mais', en: 'More', note: 'Padrão de apps para "o resto": sobre, tema, idioma, instalar.' },
-  { pt: 'Ajustes', en: 'Settings', note: 'O que a tela mais tem: tema, idioma, instalar.' },
-  { pt: 'Sobre', en: 'About', note: 'Foca no texto sobre o app e o calendário.', current: true },
-  { pt: 'Menu', en: 'Menu', note: 'Genérico; combina com o ícone de menu.' },
-  { pt: 'App', en: 'App', note: 'Tudo sobre o app (versão, instalar, tema).' },
-]
-
-const INFO_ICONS: Option[] = [
-  { name: 'Info', icon: Info, note: 'Anterior. Combina com "Info" e "Sobre".' },
-  { name: 'Ellipsis', icon: Ellipsis, note: 'Combina com "Mais".' },
-  { name: 'CircleEllipsis', icon: CircleEllipsis, note: '"Mais" com o mesmo peso visual dos outros.' },
-  { name: 'Menu', icon: Menu, note: 'Combina com "Menu".' },
-  { name: 'Settings', icon: Settings, note: 'Combina com "Ajustes".' },
-  { name: 'SunMoon', icon: SunMoon, note: 'Tema; combina com "Ajustes".' },
-  { name: 'CircleUserRound', icon: CircleUserRound, note: 'Conta/perfil (o app não tem login).' },
-  { name: 'CircleHelp', icon: CircleHelp, note: 'Ajuda / dúvidas.' },
-  { name: 'Heart', icon: Heart, note: 'Sobre / quem faz.' },
-  { name: 'BookOpen', icon: BookOpen, note: 'Sobre / leia mais.' },
-  { name: 'Smile', icon: Smile, note: 'Amigável, "olá".' },
-  { name: 'Sparkle', icon: Sparkle, note: 'O app em si.' },
-  { lib: 'phosphor', name: 'Info', icon: InfoIcon, note: 'Info no traço Phosphor.', current: true },
-  { lib: 'phosphor', name: 'Question', icon: QuestionIcon, note: 'Ajuda.' },
-  { lib: 'phosphor', name: 'BookOpenText', icon: BookOpenTextIcon, note: 'Sobre / leia mais.' },
-  { lib: 'phosphor', name: 'DotsThreeCircle', icon: DotsThreeCircleIcon, note: '"Mais".' },
-  { lib: 'phosphor', name: 'Gear', icon: GearIcon, note: 'Ajustes.' },
-  { lib: 'phosphor', name: 'HandWaving', icon: HandWavingIcon, note: 'Aceno: "olá", quem somos.' },
-  { lib: 'phosphor', name: 'Heart', icon: HeartIcon, note: 'Feito com carinho.' },
-  { lib: 'phosphor', name: 'Smiley', icon: SmileyIcon, note: 'Amigável.' },
-  { lib: 'tabler', name: 'IconInfoCircle', icon: IconInfoCircle, note: 'Info no traço Tabler.' },
-  { lib: 'tabler', name: 'IconInfoSquareRounded', icon: IconInfoSquareRounded, note: 'Info em quadrado arredondado.' },
-  { lib: 'tabler', name: 'IconHelpCircle', icon: IconHelpCircle, note: 'Ajuda.' },
-  { lib: 'tabler', name: 'IconDots', icon: IconDots, note: '"Mais".' },
-  { lib: 'tabler', name: 'IconSettings', icon: IconSettings, note: 'Ajustes.' },
-  { lib: 'tabler', name: 'IconHeart', icon: IconHeart, note: 'Feito com carinho.' },
-  { lib: 'tabler', name: 'IconBook', icon: IconBook, note: 'Sobre / leia mais.' },
-  { lib: 'tabler', name: 'IconHandLoveYou', icon: IconHandLoveYou, note: 'Mão "amo você": comunidade, carinho.' },
-]
-
-const MAP_NAMES: NameOption[] = [
-  { pt: 'Mapa', en: 'Map', note: 'Anterior. Direto: o que a tela é.' },
-  { pt: 'Perto', en: 'Nearby', note: 'Foca no uso: o que tem perto de mim.' },
-  { pt: 'Onde', en: 'Where', note: 'Curto; pergunta que o mapa responde.' },
-  { pt: 'Locais', en: 'Venues', note: 'Os lugares dos eventos do dia.' },
-  { pt: 'Explorar', en: 'Explore', note: 'Convite a descobrir; mais vago.', current: true },
-]
-
-const MAP_ICONS: Option[] = [
-  { name: 'Map', icon: MapIcon, note: 'Anterior. Mapa dobrado: o padrão.' },
-  { name: 'MapPinned', icon: MapPinned, note: 'Mapa com pino: lugares dos eventos.' },
-  { name: 'MapPin', icon: MapPin, note: 'Só o pino: local, endereço.' },
-  { name: 'Compass', icon: Compass, note: 'Bússola: explorar, orientar-se.', current: true },
-  { name: 'Navigation', icon: Navigation, note: 'Seta de navegação: "ir até lá".' },
-  { name: 'LocateFixed', icon: LocateFixed, note: 'Mira: minha localização, perto de mim.' },
-  { name: 'Earth', icon: Earth, note: 'Globo; amplo demais para uma cidade.' },
-  { name: 'Route', icon: Route, note: 'Rota entre pontos: como chegar.' },
-  { name: 'Signpost', icon: Signpost, note: 'Placa de direção: onde ir.' },
-  { name: 'Radar', icon: Radar, note: 'Radar: o que acontece por perto.' },
-]
-
-const libOf = (option: Option): Lib => option.lib ?? 'lucide'
-const nameOf = (options: Option[], index: number) => `${options[index].name} (${LIB_LABEL[libOf(options[index])]})`
-const keyOf = (option: Option) => `${libOf(option)}:${option.name}`
+const keyOf = (option: Option) => `${option.lib}:${option.name}`
 
 /**
- * Página de teste (/teste/icones, pública mas sem link no app): opções de ícone para "Dança" e para
- * o botão de filtro, e de nome e ícone para "Info", com prévia na barra inferior, no menu lateral e
- * no botão de filtro.
+ * Página de teste (/teste/icones, pública mas sem link no app): opções para cada ícone do app (menu,
+ * agenda e mapa, card e detalhes) em 6 bibliotecas, com uma amostra fixa das telas usando os
+ * ícones escolhidos.
  */
 export default function Icons() {
   useDocumentHead({
     title: 'Ícones (teste)',
-    description: 'Sugestões de ícones e nomes',
+    description: 'Sugestões de ícones',
     canonical: `${siteUrl()}teste/icones`,
     noindex: true,
   })
-  const [dance, setDance] = useState(() => currentIndex(DANCE))
-  const [filter, setFilter] = useState(() => currentIndex(FILTER))
-  const [infoName, setInfoName] = useState(() => currentIndex(INFO_NAMES))
-  const [infoIcon, setInfoIcon] = useState(() => currentIndex(INFO_ICONS))
-  const [mapName, setMapName] = useState(() => currentIndex(MAP_NAMES))
-  const [mapIcon, setMapIcon] = useState(() => currentIndex(MAP_ICONS))
-  const [communityIcon, setCommunityIcon] = useState(() => currentIndex(COMMUNITY_ICONS))
-  // Filtro por biblioteca nas listas de opções (a escolhida continua na prévia).
+  const [choice, setChoice] = useState<Record<GroupId, number>>(
+    () => Object.fromEntries(GROUPS.map((group) => [group.id, currentIndex(group.options)])) as Record<GroupId, number>,
+  )
   const [lib, setLib] = useState<Lib | 'all'>('all')
   const [copied, setCopied] = useState(false)
   // Acordeon: um grupo de opções aberto por vez (fechado, mostra só a escolha).
-  const [openGroup, setOpenGroup] = useState<string | null>('dance')
-  const toggle = (group: string) => () => setOpenGroup((current) => (current === group ? null : group))
+  const [openGroup, setOpenGroup] = useState<GroupId | null>(null)
 
-  const nav = [
-    { label: 'Dança', icon: DANCE[dance].icon, active: true },
-    { label: MAP_NAMES[mapName].pt, icon: MAP_ICONS[mapIcon].icon, active: false },
-    { label: 'Comunidade', icon: COMMUNITY_ICONS[communityIcon].icon, active: false },
-    { label: INFO_NAMES[infoName].pt, icon: INFO_ICONS[infoIcon].icon, active: false },
-  ]
-  const FilterIcon = FILTER[filter].icon
+  const chosen = (id: GroupId) => {
+    const group = GROUPS.find((item) => item.id === id) as Group
+    return group.options[choice[id]]
+  }
 
   const copy = async () => {
     await navigator.clipboard.writeText(
-      [
-        `Dança: ${nameOf(DANCE, dance)}`,
-        `Filtro: ${nameOf(FILTER, filter)}`,
-        `Mapa: "${MAP_NAMES[mapName].pt}" / "${MAP_NAMES[mapName].en}", ícone ${nameOf(MAP_ICONS, mapIcon)}`,
-        `Comunidade: ${nameOf(COMMUNITY_ICONS, communityIcon)}`,
-        `Info: "${INFO_NAMES[infoName].pt}" / "${INFO_NAMES[infoName].en}", ícone ${nameOf(INFO_ICONS, infoIcon)}`,
-      ].join('\n'),
+      GROUPS.map((group) => `${group.title}: ${chosen(group.id).name} (${LIB_LABEL[chosen(group.id).lib]})`).join('\n'),
     )
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
@@ -321,69 +790,13 @@ export default function Icons() {
       <BackToTest />
       <Card className="space-y-4">
         <div>
-          <h2 className="text-lg font-semibold">Ícones e nomes</h2>
+          <h2 className="text-lg font-semibold">Ícones</h2>
           <p className="text-sm text-fg-muted">
-            Clique numa opção para ver na prévia. O app usa a Lucide; Phosphor e Tabler entram para comparar (usar uma delas no app seria
-            uma dependência nova, e misturar estilos de traço entre os ícones do menu fica desigual).
+            Cada ícone do app com opções em 6 bibliotecas, todas com traço perto do da Lucide (Phosphor em bold; Heroicons e Iconoir com
+            traço 2). A amostra abaixo usa os escolhidos.
           </p>
         </div>
-
-        <div className="grid gap-4 md:grid-cols-[1fr_auto_auto]">
-          <Preview title="Barra inferior (celular)">
-            <ul className="flex h-16 rounded-lg border border-border bg-surface">
-              {nav.map(({ label, icon: Icon, active }) => (
-                <li
-                  key={label}
-                  className={`flex flex-1 flex-col items-center justify-center gap-1 text-xs font-medium ${active ? 'text-brand' : 'text-fg-muted'}`}
-                >
-                  <Icon className="size-6" aria-hidden="true" />
-                  {label}
-                </li>
-              ))}
-            </ul>
-          </Preview>
-          <Preview title="Menu lateral (computador)">
-            <ul className="w-52 space-y-1 rounded-lg bg-surface-muted p-2">
-              {nav
-                .filter((_, index) => index !== 1) // o mapa só aparece na barra inferior
-                .map(({ label, icon: Icon, active }) => (
-                  <li
-                    key={label}
-                    className={`flex h-11 items-center gap-3 rounded-lg px-3 text-sm font-medium ${
-                      active ? 'bg-surface text-brand shadow-sm dark:shadow-none' : 'text-fg-muted'
-                    }`}
-                  >
-                    <Icon className="size-5" aria-hidden="true" />
-                    {label}
-                  </li>
-                ))}
-            </ul>
-          </Preview>
-          <Preview title="Filtro (fechado, aberto, com 2)">
-            <div className="flex gap-3">
-              {[
-                { open: false, count: 0 },
-                { open: true, count: 0 },
-                { open: false, count: 2 },
-              ].map(({ open, count }) => (
-                <span
-                  key={`${open}${count}`}
-                  className={`relative inline-flex h-14 w-11 items-center justify-center rounded-lg border ${
-                    open ? 'border-brand bg-brand text-brand-fg' : 'border-border bg-surface text-fg'
-                  }`}
-                >
-                  <FilterIcon className="size-6" aria-hidden="true" />
-                  {count > 0 && (
-                    <span className="absolute -top-1 -right-1 inline-flex size-5 items-center justify-center rounded-full bg-genre-red text-xs font-semibold text-genre-red-fg">
-                      {count}
-                    </span>
-                  )}
-                </span>
-              ))}
-            </div>
-          </Preview>
-        </div>
-
+        <Sample icon={(id) => chosen(id).icon} />
         <div className="flex flex-wrap items-center gap-3">
           <Segmented
             label="Biblioteca"
@@ -398,100 +811,211 @@ export default function Icons() {
         </div>
       </Card>
 
-      <IconChoices
-        lib={lib}
-        title="Ícone de Dança"
-        options={DANCE}
-        value={dance}
-        onChange={setDance}
-        open={openGroup === 'dance'}
-        onToggle={toggle('dance')}
-      />
-      <IconChoices
-        lib={lib}
-        title="Ícone do filtro de estilos"
-        options={FILTER}
-        value={filter}
-        onChange={setFilter}
-        open={openGroup === 'filter'}
-        onToggle={toggle('filter')}
-      />
-      <NameChoices
-        title="Nome do Mapa"
-        hint="Aba só do celular e tablet: mapa do dia com os eventos num carrossel."
-        options={MAP_NAMES}
-        value={mapName}
-        onChange={setMapName}
-        open={openGroup === 'mapName'}
-        onToggle={toggle('mapName')}
-      />
-      <IconChoices
-        lib={lib}
-        title="Ícone do Mapa"
-        options={MAP_ICONS}
-        value={mapIcon}
-        onChange={setMapIcon}
-        open={openGroup === 'mapIcon'}
-        onToggle={toggle('mapIcon')}
-      />
-      <IconChoices
-        lib={lib}
-        title="Ícone de Comunidade"
-        options={COMMUNITY_ICONS}
-        value={communityIcon}
-        onChange={setCommunityIcon}
-        open={openGroup === 'communityIcon'}
-        onToggle={toggle('communityIcon')}
-      />
-      <NameChoices
-        title="Nome de Sobre (antes Info)"
-        hint="A tela tem: sobre o app e o calendário, tema, idioma, conexão, instalar e versão."
-        options={INFO_NAMES}
-        value={infoName}
-        onChange={setInfoName}
-        open={openGroup === 'infoName'}
-        onToggle={toggle('infoName')}
-      />
-      <IconChoices
-        lib={lib}
-        title="Ícone de Sobre"
-        options={INFO_ICONS}
-        value={infoIcon}
-        onChange={setInfoIcon}
-        open={openGroup === 'infoIcon'}
-        onToggle={toggle('infoIcon')}
-      />
+      {SECTIONS.map((section) => (
+        <div key={section} className="space-y-2">
+          <h3 className="pt-2 text-sm font-semibold text-fg-muted">{section}</h3>
+          {GROUPS.filter((group) => group.section === section).map((group) => (
+            <IconChoices
+              key={group.id}
+              group={group}
+              lib={lib}
+              value={choice[group.id]}
+              onChange={(index) => setChoice((current) => ({ ...current, [group.id]: index }))}
+              open={openGroup === group.id}
+              onToggle={() => setOpenGroup((current) => (current === group.id ? null : group.id))}
+            />
+          ))}
+        </div>
+      ))}
     </section>
   )
 }
 
-function Preview({ title, children }: { title: string; children: ReactNode }) {
+/** Amostra fixa das telas (menu, faixa de dias, card, ações dos detalhes) com os ícones escolhidos. */
+function Sample({ icon }: { icon: (id: GroupId) => IconComponent }) {
+  const Dance = icon('dance')
+  const Explore = icon('explore')
+  const Community = icon('community')
+  const About = icon('about')
+  const Filter = icon('filter')
+  const Clear = icon('clearFilter')
+  const DatePicker = icon('datePicker')
+  const Fit = icon('fitMap')
+  const Locate = icon('locate')
+  const Place = icon('place')
+  const Time = icon('time')
+  const Price = icon('price')
+  const AddCalendar = icon('addCalendar')
+  const DownloadIcs = icon('download')
+  const ShareIcon = icon('share')
+  const Directions = icon('directions')
+  const Notify = icon('notify')
+  const Open = icon('openDetails')
+  const nav = [
+    { label: 'Dança', Icon: Dance, active: true },
+    { label: 'Explorar', Icon: Explore },
+    { label: 'Comunidade', Icon: Community },
+    { label: 'Sobre', Icon: About },
+  ]
+  const action = 'inline-flex h-11 items-center gap-2 rounded-lg border border-border bg-surface px-3 text-sm font-medium'
+
   return (
-    <figure className="space-y-2">
+    <div className="grid gap-4 lg:grid-cols-2">
+      <Preview title="Barra inferior (celular)">
+        <ul className="flex h-16 rounded-lg border border-border bg-surface">
+          {nav.map(({ label, Icon, active }) => (
+            <li
+              key={label}
+              className={`flex flex-1 flex-col items-center justify-center gap-1 text-xs font-medium ${active ? 'text-brand' : 'text-fg-muted'}`}
+            >
+              <Glyph icon={Icon} className="size-6" />
+              {label}
+            </li>
+          ))}
+        </ul>
+      </Preview>
+
+      <Preview title="Menu lateral (computador)">
+        <div className="space-y-2 rounded-lg bg-surface-muted p-2">
+          <ul className="space-y-1">
+            {nav
+              .filter(({ label }) => label !== 'Explorar')
+              .map(({ label, Icon, active }) => (
+                <li
+                  key={label}
+                  className={`flex h-11 items-center gap-3 rounded-lg px-3 text-sm font-medium ${
+                    active ? 'bg-surface text-brand shadow-sm dark:shadow-none' : 'text-fg-muted'
+                  }`}
+                >
+                  <Glyph icon={Icon} className="size-5" />
+                  {label}
+                </li>
+              ))}
+          </ul>
+          <span className={`${action} w-full justify-center`}>
+            <Glyph icon={Locate} className="size-5" />
+            Mostrar distâncias
+          </span>
+        </div>
+      </Preview>
+
+      <Preview title="Faixa de dias, filtro e mapa">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="inline-flex h-14 w-11 items-center justify-center rounded-lg border border-border bg-surface">
+            <Glyph icon={DatePicker} className="size-6" />
+          </span>
+          <span className="inline-flex h-14 items-center rounded-lg bg-surface px-3 text-sm text-fg-muted">18 · 19 · 20 · 21</span>
+          <span className="inline-flex h-14 w-11 items-center justify-center rounded-lg border border-border bg-surface">
+            <Glyph icon={Filter} className="size-6" />
+          </span>
+          <span className="relative inline-flex h-14 w-11 items-center justify-center rounded-lg border border-brand bg-brand text-brand-fg">
+            <Glyph icon={Filter} className="size-6" />
+            <span className="absolute -top-1 -right-1 inline-flex size-5 items-center justify-center rounded-full bg-genre-red text-xs font-semibold text-genre-red-fg">
+              2
+            </span>
+          </span>
+          <span className="inline-flex h-11 items-center gap-1 px-2 text-sm font-medium text-brand">
+            <Glyph icon={Clear} className="size-4" />
+            Limpar
+          </span>
+          <span className="inline-flex size-[30px] items-center justify-center rounded border border-border bg-white text-slate-800">
+            <Glyph icon={Fit} className="size-4" />
+          </span>
+        </div>
+      </Preview>
+
+      <Preview title="Card do evento">
+        <div className="space-y-1.5 rounded-xl bg-surface p-4 shadow-sm">
+          <div className="flex items-start justify-between gap-2">
+            <span className="text-lg font-semibold">Milonga de Mis Amores</span>
+            <Glyph icon={AddCalendar} className="size-5 shrink-0 text-fg-muted" />
+          </div>
+          <span className="flex items-center gap-2 text-sm text-fg-muted">
+            <Glyph icon={Place} className="size-4" />
+            Rua das Escolas Gerais
+          </span>
+          <span className="flex items-center gap-4 text-sm text-fg-muted">
+            <span className="flex items-center gap-2">
+              <Glyph icon={Time} className="size-4" />
+              20:00 – 23:00
+            </span>
+            <span className="flex items-center gap-2">
+              <Glyph icon={Price} className="size-4" />
+              6€
+            </span>
+          </span>
+          <div className="flex items-center justify-between">
+            <span className="inline-flex h-7 items-center rounded-full bg-genre-magenta px-3 text-xs font-medium text-genre-magenta-fg">
+              Tango
+            </span>
+            <Glyph icon={Open} className="size-5 text-fg-muted" />
+          </div>
+        </div>
+      </Preview>
+
+      <Preview title="Ações nos detalhes" className="lg:col-span-2">
+        <div className="flex flex-wrap gap-2">
+          <span className={action}>
+            <Glyph icon={AddCalendar} className="size-5" />
+            Google Agenda
+          </span>
+          <span className={action}>
+            <Glyph icon={DownloadIcs} className="size-5" />
+            Baixar .ics
+          </span>
+          <span className={action}>
+            <Glyph icon={ShareIcon} className="size-5" />
+            Compartilhar
+          </span>
+          <span className={action}>
+            <Glyph icon={Directions} className="size-5" />
+            Como chegar
+          </span>
+          <span className={action}>
+            <Glyph icon={Notify} className="size-5" />
+            Avisar mudanças
+          </span>
+        </div>
+      </Preview>
+    </div>
+  )
+}
+
+/** Desenha um ícone recebido por valor (o lint não confunde com componente criado na renderização). */
+function Glyph({ icon, className }: { icon: IconComponent; className: string }) {
+  return createElement(icon, { className })
+}
+
+function Preview({ title, className = '', children }: { title: string; className?: string; children: ReactNode }) {
+  return (
+    <figure className={`space-y-2 ${className}`} aria-hidden="true">
       <figcaption className="text-xs font-medium text-fg-muted">{title}</figcaption>
       {children}
     </figure>
   )
 }
 
-/** Grupo de opções que abre e fecha; fechado, mostra só o título e a opção escolhida. */
-function Accordion({
-  title,
-  chosen,
+function IconChoices({
+  group,
+  lib,
+  value,
+  onChange,
   open,
   onToggle,
-  children,
 }: {
-  title: string
-  chosen: ReactNode
+  group: Group
+  lib: Lib | 'all'
+  value: number
+  onChange: (index: number) => void
   open: boolean
   onToggle: () => void
-  children: ReactNode
 }) {
-  const id = `group-${title.replace(/\W+/g, '-')}`
+  const chosen = group.options[value]
+  const Chosen = chosen.icon
+  const id = `group-${group.id}`
   return (
     <Card className="p-0">
-      <h3>
+      <h4>
         <button
           type="button"
           aria-expanded={open}
@@ -499,108 +1023,49 @@ function Accordion({
           onClick={onToggle}
           className="flex min-h-14 w-full cursor-pointer items-center gap-3 px-4 text-left focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand"
         >
-          <span className="font-semibold">{title}</span>
-          <span className="ml-auto inline-flex items-center gap-2 text-sm">{chosen}</span>
+          <span>
+            <span className="block font-semibold">{group.title}</span>
+            <span className="block text-xs text-fg-muted">{group.where}</span>
+          </span>
+          <span className="ml-auto inline-flex items-center gap-2 text-sm">
+            <Chosen className="size-5" />
+            <span className="font-mono text-xs">{chosen.name}</span>
+            <LibTag lib={chosen.lib} />
+          </span>
           <ChevronDown className={`size-5 shrink-0 text-fg-muted transition-transform ${open ? 'rotate-180' : ''}`} aria-hidden="true" />
         </button>
-      </h3>
+      </h4>
       {open && (
-        <div id={id} className="space-y-3 border-t border-border p-4">
-          {children}
+        <div id={id} className="grid gap-2 border-t border-border p-4 sm:grid-cols-2 lg:grid-cols-3">
+          {group.options.map((option, index) => {
+            if (lib !== 'all' && option.lib !== lib) return null
+            const Icon = option.icon
+            return (
+              <button
+                key={keyOf(option)}
+                type="button"
+                aria-pressed={index === value}
+                onClick={() => onChange(index)}
+                className={`relative flex cursor-pointer items-start gap-3 rounded-lg border p-3 text-left text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${
+                  index === value ? 'border-brand bg-brand/10' : 'border-border bg-surface hover:bg-surface-muted'
+                }`}
+              >
+                {option.current && (
+                  <span className="absolute top-2 right-2 rounded bg-surface-muted px-1.5 text-[10px] font-medium text-fg-muted">
+                    atual
+                  </span>
+                )}
+                <Icon className="size-7 shrink-0" />
+                <span>
+                  <span className="font-mono text-xs font-semibold">{option.name}</span> <LibTag lib={option.lib} />
+                  {option.note && <span className="mt-0.5 block text-xs text-fg-muted">{option.note}</span>}
+                </span>
+              </button>
+            )
+          })}
         </div>
       )}
     </Card>
-  )
-}
-
-type ChoicesProps<T> = {
-  title: string
-  options: T[]
-  value: number
-  onChange: (index: number) => void
-  open: boolean
-  onToggle: () => void
-}
-
-function NameChoices({ title, hint, options, value, onChange, open, onToggle }: ChoicesProps<NameOption> & { hint: string }) {
-  return (
-    <Accordion title={title} chosen={<span className="font-semibold">{options[value].pt}</span>} open={open} onToggle={onToggle}>
-      <p className="text-sm text-fg-muted">{hint}</p>
-      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-        {options.map((option, index) => (
-          <ChoiceButton key={option.pt} selected={index === value} onClick={() => onChange(index)} current={!!option.current}>
-            <span className="font-semibold">{option.pt}</span>
-            <span className="text-fg-muted"> / {option.en}</span>
-            <span className="mt-1 block text-xs text-fg-muted">{option.note}</span>
-          </ChoiceButton>
-        ))}
-      </div>
-    </Accordion>
-  )
-}
-
-function IconChoices({ title, options, value, onChange, open, onToggle, lib }: ChoicesProps<Option> & { lib: Lib | 'all' }) {
-  const chosen = options[value]
-  const { icon: Chosen, name: chosenName } = chosen
-  return (
-    <Accordion
-      title={title}
-      chosen={
-        <>
-          <Chosen className="size-5" aria-hidden="true" />
-          <span className="font-mono text-xs">{chosenName}</span>
-          <LibTag lib={libOf(chosen)} />
-        </>
-      }
-      open={open}
-      onToggle={onToggle}
-    >
-      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-        {options.map((option, index) => {
-          if (lib !== 'all' && libOf(option) !== lib) return null
-          const { name, icon: Icon, note, current } = option
-          return (
-            <ChoiceButton key={keyOf(option)} selected={index === value} onClick={() => onChange(index)} current={!!current}>
-              <span className="flex items-start gap-3">
-                <Icon className="size-7 shrink-0" aria-hidden="true" />
-                <span>
-                  <span className="font-mono text-xs font-semibold">{name}</span> <LibTag lib={libOf(option)} />
-                  <span className="mt-0.5 block text-xs text-fg-muted">{note}</span>
-                </span>
-              </span>
-            </ChoiceButton>
-          )
-        })}
-      </div>
-    </Accordion>
-  )
-}
-
-function ChoiceButton({
-  selected,
-  current,
-  onClick,
-  children,
-}: {
-  selected: boolean
-  current: boolean
-  onClick: () => void
-  children: ReactNode
-}) {
-  return (
-    <button
-      type="button"
-      aria-pressed={selected}
-      onClick={onClick}
-      className={`relative cursor-pointer rounded-lg border p-3 text-left text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${
-        selected ? 'border-brand bg-brand/10' : 'border-border bg-surface hover:bg-surface-muted'
-      }`}
-    >
-      {current && (
-        <span className="absolute top-2 right-2 rounded bg-surface-muted px-1.5 text-[10px] font-medium text-fg-muted">atual</span>
-      )}
-      {children}
-    </button>
   )
 }
 
