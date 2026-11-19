@@ -11,6 +11,12 @@ const anchors = (html: string) => {
 }
 
 describe('renderDescription', () => {
+  it('tira a linha que só repete um link já citado e junta linhas em branco', () => {
+    const html = renderDescription('Mais info:\n@tropicavana_bar\n\n\n\n@tropicavana_bar\nVeja @tropicavana_bar hoje', labels)
+    expect(html.match(/instagram\.com\/tropicavana_bar/g)).toHaveLength(2) // a linha solta repetida sai; a frase fica
+    expect(html).not.toMatch(/(<br>\s*){3,}/)
+  })
+
   it('texto puro: quebras de linha viram <br> e URLs viram links curtos em nova aba', () => {
     const html = render('Mais info:\nhttps://linktr.ee/lisbonwestiefest.')
     expect(html).toBe(

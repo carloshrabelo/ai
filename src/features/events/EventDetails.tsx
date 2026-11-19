@@ -1,5 +1,13 @@
-import { BellRingingIcon, CalendarPlusIcon, ClockIcon, MapPinIcon, NavigationArrowIcon, TicketIcon } from '@phosphor-icons/react'
-import { type ReactNode, useMemo } from 'react'
+import {
+  BellRingingIcon,
+  CalendarPlusIcon,
+  CaretUpIcon,
+  ClockIcon,
+  MapPinIcon,
+  NavigationArrowIcon,
+  TicketIcon,
+} from '@phosphor-icons/react'
+import { type ReactNode, useEffect, useId, useMemo, useRef, useState } from 'react'
 import { Chip } from '../../components/ui/Chip'
 import { Skeleton } from '../../components/ui/Skeleton'
 import { lisbonDate } from '../../lib/dates'
@@ -37,7 +45,7 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
   const directions = venue ? navigationLink(venue) : undefined
 
   return (
-    <div className="space-y-4">
+    <div className="flex flex-1 flex-col gap-4">
       <div className="space-y-2">
         <h2 id={headingId} tabIndex={-1} className="text-2xl font-semibold outline-none">
           {event.title}
@@ -66,7 +74,7 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
               <a
                 href={directions.href}
                 {...(directions.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                className="inline-flex min-h-11 items-center gap-1 font-medium text-brand underline-offset-2 hover:underline"
+                className={buttonClassName('secondary', 'mt-2 h-9 px-3 text-xs')}
               >
                 <NavigationArrowIcon className="size-4" aria-hidden="true" />
                 {t.event.openInMaps}
@@ -83,59 +91,137 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
         </Row>
       </dl>
 
-      {/* Adicionar ao calendário da pessoa (sem login) e passar a acompanhar mudanças. */}
-      <div className="space-y-2">
-        <p className="text-sm font-medium">{t.event.addToCalendar}</p>
-        <div className="flex flex-wrap gap-2">
+      {/* Acompanhar mudanças: aparece depois de adicionar à agenda. */}
+      {tracked && (
+        <p className="flex flex-wrap items-center gap-x-2 text-sm text-fg-muted">
+          <BellRingingIcon className="size-4 shrink-0" aria-hidden="true" />
+          {t.tracking.tracked}
+          <button
+            type="button"
+            onClick={() => untrackEvent(event.id)}
+            className="min-h-11 cursor-pointer font-bold text-brand underline-offset-2 hover:underline"
+          >
+            {t.tracking.stop}
+          </button>
+        </p>
+      )}
+
+      {html && <Description html={html} />}
+
+      <ActionsBar event={event} />
+    </div>
+  )
+}
+
+/**
+ * Ações fixas no rodapé dos detalhes (sempre à vista, mesmo com descrição longa): "Adicionar à agenda"
+ * abre as opções (Google Agenda ou .ics para Apple/Outlook) e o compartilhar fica ao lado, só ícone.
+ */
+function ActionsBar({ event }: { event: DanceEvent }) {
+  const { t } = useI18n()
+  const [open, setOpen] = useState(false)
+  const barRef = useRef<HTMLDivElement>(null)
+  const menuId = useId()
+
+  useEffect(() => {
+    if (!open) return
+    const onPointer = (pointer: PointerEvent) => {
+      if (!barRef.current?.contains(pointer.target as Node)) setOpen(false)
+    }
+    const onKey = (key: KeyboardEvent) => {
+      if (key.key === 'Escape') {
+        key.stopPropagation()
+        setOpen(false)
+      }
+    }
+    document.addEventListener('pointerdown', onPointer)
+    document.addEventListener('keydown', onKey, true)
+    return () => {
+      document.removeEventListener('pointerdown', onPointer)
+      document.removeEventListener('keydown', onKey, true)
+    }
+  }, [open])
+
+  return (
+    <div
+      ref={barRef}
+      className="sticky bottom-0 z-10 -mx-4 mt-auto border-t-2 border-border bg-surface px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]"
+    >
+      {open && (
+        <div
+          id={menuId}
+          className="absolute inset-x-4 bottom-full mb-2 grid gap-2 rounded-2xl border-2 border-b-4 border-border bg-surface p-2 shadow-md"
+        >
           <a
             href={googleCalendarUrl(event, eventUrl(event.slug))}
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => {
               trackEvent(event)
+              setOpen(false)
             }}
-            className={buttonClassName()}
+            className={buttonClassName('primary', 'w-full')}
           >
             <CalendarPlusIcon className="size-5" aria-hidden="true" />
             {t.tracking.googleCalendar}
           </a>
           <Button
             variant="secondary"
+            className="w-full"
             onClick={() => {
               trackEvent(event)
               downloadIcs(event, eventUrl(event.slug), slugify(event.title) || 'evento')
+              setOpen(false)
             }}
           >
             <CalendarDownloadIcon className="size-5" />
             {t.tracking.icsCalendar}
           </Button>
-          <ShareButton event={event} />
         </div>
-        {tracked && (
-          <p className="flex flex-wrap items-center gap-x-2 text-sm text-fg-muted">
-            <BellRingingIcon className="size-4 shrink-0" aria-hidden="true" />
-            {t.tracking.tracked}
-            <button
-              type="button"
-              onClick={() => untrackEvent(event.id)}
-              className="min-h-11 cursor-pointer font-medium text-brand underline-offset-2 hover:underline"
-            >
-              {t.tracking.stop}
-            </button>
-          </p>
-        )}
-      </div>
-
-      {html && (
-        <section aria-label={t.event.description} className="border-t border-border pt-4">
-          <div
-            className="text-sm break-words text-fg [&_a]:text-brand [&_a]:underline"
-            // Sanitizado em renderDescription (DOMPurify).
-            dangerouslySetInnerHTML={{ __html: html }}
-          />
-        </section>
       )}
+      <div className="flex gap-2">
+        <Button className="flex-1" aria-expanded={open} aria-controls={menuId} onClick={() => setOpen((value) => !value)}>
+          <CalendarPlusIcon className="size-5" aria-hidden="true" />
+          {t.event.addToCalendar}
+          <CaretUpIcon className={`size-4 transition-transform ${open ? '' : 'rotate-180'}`} aria-hidden="true" />
+        </Button>
+        <ShareButton event={event} iconOnly />
+      </div>
     </div>
+  )
+}
+
+/** Descrição: recolhida em ~8 linhas quando é longa, com "Ver mais". */
+function Description({ html }: { html: string }) {
+  const { t } = useI18n()
+  const ref = useRef<HTMLDivElement>(null)
+  const [expanded, setExpanded] = useState(false)
+  const [long, setLong] = useState(false)
+
+  useEffect(() => {
+    const element = ref.current
+    if (element) setLong(element.scrollHeight > element.clientHeight + 4)
+  }, [html])
+
+  return (
+    <section aria-label={t.event.description} className="border-t-2 border-border pt-4">
+      <div
+        ref={ref}
+        className={`text-[15px] break-words text-fg [&_a]:text-brand [&_a]:underline ${expanded ? '' : 'line-clamp-8'}`}
+        // Sanitizado em renderDescription (DOMPurify).
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+      {(long || expanded) && (
+        <button
+          type="button"
+          aria-expanded={expanded}
+          onClick={() => setExpanded((value) => !value)}
+          className="mt-1 min-h-11 cursor-pointer font-bold text-brand underline-offset-2 hover:underline"
+        >
+          {expanded ? t.event.showLess : t.event.showMore}
+        </button>
+      )}
+    </section>
   )
 }
 

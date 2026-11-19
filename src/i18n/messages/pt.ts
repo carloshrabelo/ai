@@ -42,7 +42,9 @@ export const pt = {
     pausedNoOther: (genres: string, day: string) => `Nenhum outro evento de ${genres} até ${day}.`,
   },
   event: {
-    addToCalendar: 'Adicionar ao calendário',
+    addToCalendar: 'Adicionar à agenda',
+    showMore: 'Ver mais',
+    showLess: 'Ver menos',
     live: 'Agora',
     ended: 'Encerrado',
     addToCalendarFor: (title: string) => `Adicionar "${title}" ao calendário`,

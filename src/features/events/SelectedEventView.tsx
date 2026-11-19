@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, CalendarXIcon, XIcon } from '@phosphor-icons/react'
-import { type ReactNode, useEffect, useId, useRef } from 'react'
+import { type ReactNode, useEffect, useId, useRef, useState } from 'react'
 import { IconButton } from '../../components/ui/Button'
 import { Card } from '../../components/ui/Card'
 import type { IsoDate } from '../../lib/dates'
@@ -42,7 +42,7 @@ export function EventDetailsPanel({ startDate, slug, onClose, className = 'flex-
       variant="card"
       as="section"
       aria-labelledby={headingId}
-      className={`min-h-0 overflow-x-hidden overflow-y-auto ${className}`}
+      className={`min-h-0 overflow-x-hidden overflow-y-auto pb-0 ${className}`}
       onKeyDown={(event) => {
         if (event.key === 'Escape') onClose()
       }}
@@ -67,6 +67,23 @@ export function EventDetailsDrawer({ startDate, slug, onClose }: ViewProps) {
     document.getElementById(headingId)?.focus({ preventScroll: true })
   }, [headingId])
 
+  // Título do evento no header quando o título da página sai de vista (ao rolar).
+  const [titleOutOfView, setTitleOutOfView] = useState<string>()
+  useEffect(() => {
+    const heading = document.getElementById(headingId)
+    const root = dialogRef.current
+    if (!heading || !root) return
+    const observer = new IntersectionObserver(
+      ([entry]) => setTitleOutOfView(entry.isIntersecting ? undefined : (heading.textContent ?? undefined)),
+      {
+        root,
+        rootMargin: '-56px 0px 0px 0px',
+      },
+    )
+    observer.observe(heading)
+    return () => observer.disconnect()
+  }, [headingId, slug])
+
   return (
     <dialog
       ref={dialogRef}
@@ -80,15 +97,15 @@ export function EventDetailsDrawer({ startDate, slug, onClose }: ViewProps) {
         visible ? 'translate-x-0 backdrop:opacity-100' : 'translate-x-full backdrop:opacity-0'
       }`}
     >
-      <DrawerHeader onClose={requestClose} />
-      <div className="mx-auto max-w-3xl px-4 py-4 pb-[calc(1rem+env(safe-area-inset-bottom))] md:px-6">
+      <DrawerHeader onClose={requestClose} title={titleOutOfView} />
+      <div className="mx-auto flex min-h-[calc(100dvh-3.5rem-env(safe-area-inset-top))] max-w-3xl flex-col px-4 pt-4">
         <DetailsBody startDate={startDate} slug={slug} headingId={headingId} />
       </div>
     </dialog>
   )
 }
 
-function DrawerHeader({ onClose }: { onClose: () => void }): ReactNode {
+function DrawerHeader({ onClose, title }: { onClose: () => void; title?: string }): ReactNode {
   const { t } = useI18n()
   return (
     <header className="sticky top-0 z-10 border-b-2 border-border bg-header pt-[env(safe-area-inset-top)] text-header-fg">
@@ -99,7 +116,7 @@ function DrawerHeader({ onClose }: { onClose: () => void }): ReactNode {
           onClick={onClose}
           className="text-header-fg hover:bg-white/10 hover:text-header-fg"
         />
-        <p className="truncate text-lg font-semibold">{t.event.details}</p>
+        <p className="truncate text-lg font-semibold">{title ?? t.event.details}</p>
       </div>
     </header>
   )

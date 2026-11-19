@@ -11,7 +11,13 @@ import { formatDayHeading, formatTimeRange } from './format'
  * Partilhar o evento: no celular abre o menu de compartilhamento do sistema (Web Share API);
  * onde não existe (maioria dos desktops), copia o link e avisa "Link copiado".
  */
-export function ShareButton({ event }: { event: DanceEvent }) {
+export function ShareButton({
+  event,
+  iconOnly = false,
+}: {
+  event: DanceEvent
+  /** Só o ícone (texto para leitor de tela e tooltip). */ iconOnly?: boolean
+}) {
   const { t, locale } = useI18n()
   const [copied, setCopied] = useState(false)
 
@@ -43,9 +49,19 @@ export function ShareButton({ event }: { event: DanceEvent }) {
   }
 
   return (
-    <Button variant="secondary" onClick={share} aria-live="polite">
-      {copied ? <CheckIcon className="size-5" aria-hidden="true" /> : <ShareFatIcon className="size-5" aria-hidden="true" />}
-      {copied ? t.event.linkCopied : t.event.share}
+    <Button
+      variant="secondary"
+      onClick={share}
+      aria-live="polite"
+      title={iconOnly ? t.event.share : undefined}
+      className={iconOnly ? 'w-11 shrink-0 px-0' : ''}
+    >
+      {copied ? (
+        <CheckIcon className="size-5 shrink-0" aria-hidden="true" />
+      ) : (
+        <ShareFatIcon className="size-5 shrink-0" aria-hidden="true" />
+      )}
+      <span className={iconOnly ? 'sr-only' : ''}>{copied ? t.event.linkCopied : t.event.share}</span>
     </Button>
   )
 }

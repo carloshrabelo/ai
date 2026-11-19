@@ -47,9 +47,39 @@ export function renderDescription(raw: string, labels: DescriptionLabels): strin
     }
   }
 
+  removeRepeatedLinkLines(fragment)
+
   const container = document.createElement('div')
   container.append(fragment)
-  return container.innerHTML
+  // Mais de uma linha em branco seguida vira uma só.
+  return container.innerHTML.replace(/(<br>\s*){3,}/g, '<br><br>')
+}
+
+const isBlank = (node: ChildNode | null) => !node || (node.nodeType === Node.TEXT_NODE && !node.textContent?.trim())
+const isLineBreak = (node: ChildNode | null) => !node || (node instanceof HTMLElement && node.tagName === 'BR')
+
+/**
+ * Link repetido sozinho numa linha (ex.: "Mais info: @perfil" e, mais abaixo, só "@perfil"): a
+ * segunda linha sai. Links repetidos no meio de uma frase ficam.
+ */
+function removeRepeatedLinkLines(root: DocumentFragment) {
+  const seen = new Set<string>()
+  for (const anchor of [...root.querySelectorAll('a')]) {
+    // Mesmo destino, com ou sem www e barra final.
+    const key = anchor.href.toLowerCase().replace('://www.', '://').replace(/\/+$/, '')
+    if (!seen.has(key)) {
+      seen.add(key)
+      continue
+    }
+    let before = anchor.previousSibling
+    while (before && isBlank(before) && before.nodeType === Node.TEXT_NODE) before = before.previousSibling
+    let after = anchor.nextSibling
+    while (after && isBlank(after) && after.nodeType === Node.TEXT_NODE) after = after.nextSibling
+    if (isLineBreak(before) && isLineBreak(after)) {
+      after?.remove()
+      anchor.remove()
+    }
+  }
 }
 
 /**
