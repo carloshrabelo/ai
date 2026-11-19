@@ -24,4 +24,3 @@ export const VARIANTS = {
 export function buttonClassName(variant: keyof typeof VARIANTS = 'primary', className = '') {
   return `inline-flex h-11 cursor-pointer items-center justify-center gap-2 rounded-2xl px-4 text-sm font-extrabold tracking-wide uppercase transition disabled:cursor-default disabled:opacity-60 ${FOCUS} ${VARIANTS[variant]} ${className}`
 }
-
