@@ -34,7 +34,7 @@ export function ChangesBanner({ startDate, onOpenEvent }: { startDate: IsoDate; 
     <section
       role="status"
       aria-labelledby="changes-banner-title"
-      className="space-y-3 rounded-xl border border-genre-yellow bg-genre-yellow/15 p-4"
+      className="space-y-3 rounded-2xl border-2 border-b-4 border-genre-yellow bg-genre-yellow/15 p-4"
     >
       <h2 id="changes-banner-title" className="flex items-center gap-2 text-sm font-semibold">
         <BellRingingIcon className="size-5 shrink-0" aria-hidden="true" />

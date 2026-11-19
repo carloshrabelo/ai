@@ -197,8 +197,8 @@ function DayMap({ startDate }: { startDate: IsoDate }) {
                 <li
                   key={event.id}
                   data-slug={event.slug}
-                  className={`grid snap-center rounded-2xl transition-shadow ${
-                    event.slug === active ? 'shadow-lg ring-2 ring-brand' : 'shadow-md'
+                  className={`grid snap-center rounded-2xl transition-opacity ${
+                    event.slug === active ? 'ring-2 ring-brand' : 'opacity-85'
                   }`}
                 >
                   <EventCard event={event} onOpen={openEvent} />

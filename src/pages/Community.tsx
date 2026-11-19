@@ -1,4 +1,13 @@
-import { AtSign, CalendarDays, CalendarPlus, Check, Copy, ExternalLink, MessageCircle, type LucideIcon } from 'lucide-react'
+import {
+  ArrowSquareOutIcon,
+  CalendarDotsIcon,
+  CalendarPlusIcon,
+  CheckIcon,
+  CopyIcon,
+  type Icon,
+  InstagramLogoIcon,
+  WhatsappLogoIcon,
+} from '@phosphor-icons/react'
 import { type ReactNode, useState } from 'react'
 import { Card } from '../components/ui/Card'
 import {
@@ -40,12 +49,12 @@ export default function Community() {
         .
       </p>
 
-      <LinkSection title={t.community.otherCalendars} icon={CalendarDays} links={OTHER_CALENDARS} />
-      <LinkSection title={t.community.whatsapp} icon={MessageCircle} links={WHATSAPP_GROUPS} columns />
-      <LinkSection title={t.community.instagram} icon={AtSign} links={INSTAGRAM} />
+      <LinkSection title={t.community.otherCalendars} icon={CalendarDotsIcon} links={OTHER_CALENDARS} />
+      <LinkSection title={t.community.whatsapp} icon={WhatsappLogoIcon} links={WHATSAPP_GROUPS} columns />
+      <LinkSection title={t.community.instagram} icon={InstagramLogoIcon} links={INSTAGRAM} />
 
       <Card className="space-y-3">
-        <SectionTitle icon={CalendarPlus}>{t.community.subscribe}</SectionTitle>
+        <SectionTitle icon={CalendarPlusIcon}>{t.community.subscribe}</SectionTitle>
         <p className="text-sm text-fg-muted">{t.community.subscribeHint}</p>
         <ul className="divide-y divide-border">
           {PASDEDEUX_CALENDARS.map(({ name, id }) => (
@@ -55,7 +64,7 @@ export default function Community() {
                 href={webcalUrl(id)}
                 className="inline-flex h-11 items-center gap-1 rounded-lg px-3 text-sm font-medium text-brand hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-brand"
               >
-                <CalendarPlus className="size-4" aria-hidden="true" />
+                <CalendarPlusIcon className="size-4" aria-hidden="true" />
                 {t.community.subscribeAction}
               </a>
               <CopyButton text={icsUrl(id)} label={`${t.community.copyLink}: ${name}`} />
@@ -67,7 +76,7 @@ export default function Community() {
                 title={t.community.openGoogle}
                 className="inline-flex size-11 items-center justify-center rounded-lg text-fg-muted hover:bg-surface-muted hover:text-fg focus-visible:outline-2 focus-visible:outline-brand"
               >
-                <ExternalLink className="size-4" aria-hidden="true" />
+                <ArrowSquareOutIcon className="size-4" aria-hidden="true" />
               </a>
             </li>
           ))}
@@ -77,7 +86,7 @@ export default function Community() {
   )
 }
 
-function SectionTitle({ icon: Icon, children }: { icon: LucideIcon; children: ReactNode }) {
+function SectionTitle({ icon: Icon, children }: { icon: Icon; children: ReactNode }) {
   return (
     <h2 className="flex items-center gap-2 text-base font-semibold">
       <Icon className="size-5 text-fg-muted" aria-hidden="true" />
@@ -87,17 +96,7 @@ function SectionTitle({ icon: Icon, children }: { icon: LucideIcon; children: Re
 }
 
 /** Seção com uma lista de links externos; `columns`: 2 colunas a partir de `sm` (nomes curtos). */
-function LinkSection({
-  title,
-  icon,
-  links,
-  columns = false,
-}: {
-  title: string
-  icon: LucideIcon
-  links: CommunityLink[]
-  columns?: boolean
-}) {
+function LinkSection({ title, icon, links, columns = false }: { title: string; icon: Icon; links: CommunityLink[]; columns?: boolean }) {
   return (
     <Card className="space-y-2">
       <SectionTitle icon={icon}>{title}</SectionTitle>
@@ -109,7 +108,7 @@ function LinkSection({
                 <span className="block text-sm font-medium">{name}</span>
                 {detail && <span className="block truncate text-xs text-fg-muted">{detail}</span>}
               </span>
-              <ExternalLink className="size-4 shrink-0 text-fg-muted" aria-hidden="true" />
+              <ArrowSquareOutIcon className="size-4 shrink-0 text-fg-muted" aria-hidden="true" />
             </a>
           </li>
         ))}
@@ -134,7 +133,7 @@ function CopyButton({ text, label }: { text: string; label: string }) {
       }}
       className="inline-flex size-11 cursor-pointer items-center justify-center rounded-lg text-fg-muted hover:bg-surface-muted hover:text-fg focus-visible:outline-2 focus-visible:outline-brand"
     >
-      {copied ? <Check className="size-4 text-brand" aria-hidden="true" /> : <Copy className="size-4" aria-hidden="true" />}
+      {copied ? <CheckIcon className="size-4 text-brand" aria-hidden="true" /> : <CopyIcon className="size-4" aria-hidden="true" />}
     </button>
   )
 }

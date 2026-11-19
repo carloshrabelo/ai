@@ -1,4 +1,6 @@
+import { DownloadSimpleIcon } from '@phosphor-icons/react'
 import { promptInstall, useInstallPrompt } from '../pwa/installPrompt'
+import { Button } from './ui/Button'
 import { useI18n } from '../i18n/useI18n'
 
 const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent)
@@ -14,12 +16,10 @@ export default function InstallButton() {
 
   if (deferred) {
     return (
-      <button
-        className="min-h-11 w-full rounded-lg bg-brand px-4 text-sm font-medium text-brand-fg sm:w-auto"
-        onClick={() => void promptInstall()}
-      >
+      <Button className="w-full sm:w-auto" onClick={() => void promptInstall()}>
+        <DownloadSimpleIcon className="size-5" aria-hidden="true" />
         {t.info.installButton}
-      </button>
+      </Button>
     )
   }
 

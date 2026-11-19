@@ -21,7 +21,7 @@ export function Tooltip({ label, children, side = 'top', align = 'end', classNam
       {children}
       <span
         aria-hidden="true"
-        className={`pointer-events-none absolute z-20 whitespace-nowrap rounded-md bg-slate-900 px-2 py-1 text-xs font-medium text-white opacity-0 shadow-md transition-opacity delay-150 group-hover/tooltip:opacity-100 group-focus-within/tooltip:opacity-100 dark:bg-slate-100 dark:text-slate-900 ${position}`}
+        className={`pointer-events-none absolute z-20 whitespace-nowrap rounded-lg bg-fg px-2 py-1 text-xs font-bold text-bg opacity-0 transition-opacity delay-150 group-hover/tooltip:opacity-100 group-focus-within/tooltip:opacity-100 ${position}`}
       >
         {label}
       </span>

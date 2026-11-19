@@ -174,7 +174,8 @@ export const pt = {
     unknown: 'Erro desconhecido',
     reload: 'Recarregar',
     notFound: 'Página não encontrada.',
-    backHome: 'Voltar ao início',
+    backHome: 'Ver a agenda',
+    notFoundHint: 'O link pode estar errado ou o evento já saiu da agenda.',
   },
   /** Rótulos dos valores do preço em chips (ver src/features/price/PriceChips.tsx). */
   price: {

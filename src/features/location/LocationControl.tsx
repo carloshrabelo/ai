@@ -1,5 +1,4 @@
-import { RefreshCw } from 'lucide-react'
-import { GpsFixIcon } from '@phosphor-icons/react'
+import { ArrowsClockwiseIcon, GpsFixIcon } from '@phosphor-icons/react'
 import { Button } from '../../components/ui/Button'
 import { requestLocation, useUserLocation } from './userLocation'
 import { useI18n } from '../../i18n/useI18n'
@@ -22,7 +21,7 @@ export function LocationControl() {
             title={t.location.refresh}
             className="-my-2 -mr-2 inline-flex size-11 cursor-pointer items-center justify-center rounded-lg hover:bg-surface-muted hover:text-fg focus-visible:outline-2 focus-visible:outline-brand"
           >
-            <RefreshCw className="size-4" aria-hidden="true" />
+            <ArrowsClockwiseIcon className="size-4" aria-hidden="true" />
           </button>
         </div>
       )

@@ -1,5 +1,5 @@
+import { CalendarXIcon, MagnifyingGlassIcon } from '@phosphor-icons/react'
 import { QueryErrorResetBoundary, useSuspenseInfiniteQuery } from '@tanstack/react-query'
-import { CalendarX, SearchX } from 'lucide-react'
 import { Fragment, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { ErrorBoundary } from '../../components/ErrorBoundary'
 import { Button } from '../../components/ui/Button'
@@ -81,7 +81,7 @@ function EventFeedContent({ startDate, genres, onOpenEvent }: FeedProps) {
     <div className="space-y-6" aria-busy={isFetchingNextPage}>
       {days.length === 0 && !hasNextPage && (
         <div className="flex flex-col items-center gap-2 py-12 text-center text-fg-muted">
-          <CalendarX className="size-12" aria-hidden="true" />
+          <CalendarXIcon className="size-12" aria-hidden="true" />
           <p className="text-sm">{genres.length > 0 ? t.feed.emptyForGenres(genreNames) : t.feed.emptyFromDate}</p>
         </div>
       )}
@@ -126,7 +126,7 @@ function EventFeedContent({ startDate, genres, onOpenEvent }: FeedProps) {
         </div>
       ) : paused && !isFetchingNextPage ? (
         <div role="status" className="flex flex-col items-center gap-2 py-4 text-center">
-          <SearchX className="size-8 text-fg-muted" aria-hidden="true" />
+          <MagnifyingGlassIcon className="size-8 text-fg-muted" aria-hidden="true" />
           <p className="text-sm text-fg-muted">
             {(days.length === 0 ? t.feed.pausedNone : t.feed.pausedNoOther)(
               genreNames,

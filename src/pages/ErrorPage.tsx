@@ -1,4 +1,6 @@
 import { isRouteErrorResponse, useRouteError } from 'react-router'
+import { WarningCircleIcon } from '@phosphor-icons/react'
+import { Button } from '../components/ui/Button'
 import { useI18n } from '../i18n/useI18n'
 
 export default function ErrorPage() {
@@ -12,11 +14,10 @@ export default function ErrorPage() {
 
   return (
     <div className="flex min-h-dvh flex-col items-center justify-center gap-4 p-6 text-center">
-      <h1 className="text-2xl font-semibold">{t.errors.title}</h1>
+      <WarningCircleIcon className="size-16 text-brand" aria-hidden="true" />
+      <h1 className="text-2xl font-bold">{t.errors.title}</h1>
       <p className="text-fg-muted">{message}</p>
-      <button className="min-h-11 rounded-lg bg-brand px-4 text-sm font-medium text-brand-fg" onClick={() => window.location.reload()}>
-        {t.errors.reload}
-      </button>
+      <Button onClick={() => window.location.reload()}>{t.errors.reload}</Button>
     </div>
   )
 }

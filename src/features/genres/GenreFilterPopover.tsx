@@ -1,5 +1,4 @@
-import { X } from 'lucide-react'
-import { FunnelXIcon } from '@phosphor-icons/react'
+import { FunnelXIcon, XIcon } from '@phosphor-icons/react'
 import { type ReactNode, useEffect, useRef } from 'react'
 import { ToggleChip } from '../../components/ui/Chip'
 import { FILTER_VALUES, type GenreFilterValue, OTHER_GENRES } from '../../domain/genreFilter'
@@ -65,7 +64,7 @@ export function GenreFilterPopover({ id, onClose }: Props) {
       ref={ref}
       id={id}
       aria-labelledby={`${id}-title`}
-      className="absolute top-full right-6 left-8 z-20 mt-2 space-y-3 rounded-xl border border-border bg-surface p-4 shadow-lg"
+      className="absolute top-full right-6 left-8 z-20 mt-2 space-y-3 rounded-2xl border-2 border-b-4 border-border bg-surface p-4 shadow-lg"
     >
       <div className="flex items-center gap-2">
         <h2 id={`${id}-title`} className="flex-1 text-sm font-semibold">
@@ -89,7 +88,7 @@ export function GenreFilterPopover({ id, onClose }: Props) {
           title={t.filters.done}
           className="-my-2 -mr-2 inline-flex size-11 cursor-pointer items-center justify-center rounded-lg text-fg-muted hover:bg-surface-muted hover:text-fg focus-visible:outline-2 focus-visible:outline-brand"
         >
-          <X className="size-5" aria-hidden="true" />
+          <XIcon className="size-5" aria-hidden="true" />
         </button>
       </div>
 

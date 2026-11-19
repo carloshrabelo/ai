@@ -1,4 +1,4 @@
-import { ArrowLeft, CalendarX, X } from 'lucide-react'
+import { ArrowLeftIcon, CalendarXIcon, XIcon } from '@phosphor-icons/react'
 import { type ReactNode, useEffect, useId, useRef } from 'react'
 import { IconButton } from '../../components/ui/Button'
 import { Card } from '../../components/ui/Card'
@@ -17,7 +17,7 @@ function DetailsBody({ startDate, slug, headingId }: { startDate: IsoDate; slug:
   if (event === null) {
     return (
       <div className="flex flex-col items-center gap-2 py-12 text-center text-fg-muted">
-        <CalendarX className="size-12" aria-hidden="true" />
+        <CalendarXIcon className="size-12" aria-hidden="true" />
         <h2 id={headingId} tabIndex={-1} className="text-sm outline-none">
           {t.event.notFound}
         </h2>
@@ -39,7 +39,7 @@ export function EventDetailsPanel({ startDate, slug, onClose, className = 'flex-
 
   return (
     <Card
-      variant="panel"
+      variant="card"
       as="section"
       aria-labelledby={headingId}
       className={`min-h-0 overflow-x-hidden overflow-y-auto ${className}`}
@@ -49,7 +49,7 @@ export function EventDetailsPanel({ startDate, slug, onClose, className = 'flex-
     >
       <div className="-mt-2 mb-2 flex items-center justify-between gap-2">
         <p className="text-sm font-semibold text-fg-muted">{t.event.details}</p>
-        <IconButton label={t.event.closeDetails} icon={<X className="size-5" aria-hidden="true" />} onClick={onClose} />
+        <IconButton label={t.event.closeDetails} icon={<XIcon className="size-5" aria-hidden="true" />} onClick={onClose} />
       </div>
       <DetailsBody startDate={startDate} slug={slug} headingId={headingId} />
     </Card>
@@ -91,11 +91,11 @@ export function EventDetailsDrawer({ startDate, slug, onClose }: ViewProps) {
 function DrawerHeader({ onClose }: { onClose: () => void }): ReactNode {
   const { t } = useI18n()
   return (
-    <header className="sticky top-0 z-10 bg-header pt-[env(safe-area-inset-top)] text-header-fg shadow-sm dark:shadow-none">
+    <header className="sticky top-0 z-10 border-b-2 border-border bg-header pt-[env(safe-area-inset-top)] text-header-fg">
       <div className="flex h-14 items-center gap-2 px-2 md:px-4">
         <IconButton
           label={t.event.back}
-          icon={<ArrowLeft className="size-6" aria-hidden="true" />}
+          icon={<ArrowLeftIcon className="size-6" aria-hidden="true" />}
           onClick={onClose}
           className="text-header-fg hover:bg-white/10 hover:text-header-fg"
         />

@@ -39,10 +39,13 @@ export default function ReloadPrompt() {
   return (
     <div
       role="status"
-      className="fixed inset-x-4 bottom-[calc(5rem+env(safe-area-inset-bottom))] z-20 flex items-center gap-3 rounded-xl bg-slate-900 p-4 text-sm text-white shadow-lg xl:inset-x-auto xl:right-6 xl:bottom-6 xl:max-w-sm"
+      className="fixed inset-x-4 bottom-[calc(5rem+env(safe-area-inset-bottom))] z-20 flex items-center gap-3 rounded-2xl border-2 border-b-4 border-border bg-surface p-4 text-sm font-semibold text-fg shadow-lg xl:inset-x-auto xl:right-6 xl:bottom-6 xl:max-w-sm"
     >
       <span className="flex-1">{t.pwa.offlineReady}</span>
-      <button className="min-h-11 cursor-pointer px-2 text-slate-300" onClick={() => setOfflineReady(false)}>
+      <button
+        className="min-h-11 cursor-pointer rounded-xl px-3 font-bold text-accent hover:bg-surface-muted"
+        onClick={() => setOfflineReady(false)}
+      >
         {t.pwa.close}
       </button>
     </div>

@@ -46,7 +46,7 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
       onMouseLeave={unhover}
       onFocus={hover}
       onBlur={unhover}
-      className={`relative isolate flex flex-col gap-3 transition-shadow hover:shadow-md ${
+      className={`relative isolate flex flex-col gap-3 transition-colors hover:border-fg-muted/40 ${
         selected || highlighted ? 'ring-2 ring-brand' : ''
       } ${event.status === 'cancelled' ? 'opacity-75' : ''}`}
     >

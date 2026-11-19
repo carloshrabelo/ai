@@ -39,12 +39,12 @@ export default function Sidebar({ slotRef, bottomSlotRef }: { slotRef: SlotRef; 
                 to={to}
                 end={to === '/'}
                 className={({ isActive }) =>
-                  `flex h-11 items-center gap-3 rounded-lg px-3 text-sm font-medium ${FOCUS} ${
-                    isActive ? 'bg-surface text-brand shadow-sm dark:shadow-none' : 'text-fg-muted hover:text-fg'
+                  `flex h-12 items-center gap-3 rounded-2xl border-2 px-3 text-sm font-bold tracking-wide uppercase ${FOCUS} ${
+                    isActive ? 'border-brand/50 bg-brand/10 text-brand' : 'border-transparent text-fg-muted hover:bg-surface hover:text-fg'
                   }`
                 }
               >
-                <Icon className="size-5" aria-hidden="true" />
+                <Icon className="size-6" aria-hidden="true" />
                 {label(t)}
               </NavLink>
             </li>

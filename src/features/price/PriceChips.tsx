@@ -1,5 +1,17 @@
+import {
+  ClockIcon,
+  DoorOpenIcon,
+  GiftIcon,
+  GraduationCapIcon,
+  type Icon,
+  MoonIcon,
+  QuestionIcon,
+  ReceiptIcon,
+  UserCheckIcon,
+  UserIcon,
+  WineIcon,
+} from '@phosphor-icons/react'
 import { formatEuro } from '../../lib/money'
-import { CircleHelp, Clock, DoorOpen, Gift, GraduationCap, type LucideIcon, Moon, Receipt, User, UserCheck, Wine } from 'lucide-react'
 import { labeledPrice, type PriceLabel, type PriceOption } from '../../domain/price/labeledPrice'
 import type { Locale } from '../../i18n/locale'
 import { translatePrice } from '../../domain/price/translatePrice'
@@ -17,20 +29,20 @@ function labelText(label: PriceLabel, arg: string | undefined, locale: Locale): 
   return text[label]
 }
 
-const ICONS: Record<PriceLabel, LucideIcon> = {
-  members: UserCheck,
-  nonMembers: User,
-  students: GraduationCap,
-  door: DoorOpen,
-  drink: Wine,
-  withDrink: Wine,
-  minimum: Receipt,
-  until: Clock,
-  after: Moon,
+const ICONS: Record<PriceLabel, Icon> = {
+  members: UserCheckIcon,
+  nonMembers: UserIcon,
+  students: GraduationCapIcon,
+  door: DoorOpenIcon,
+  drink: WineIcon,
+  withDrink: WineIcon,
+  minimum: ReceiptIcon,
+  until: ClockIcon,
+  after: MoonIcon,
 }
 
 /** Valor da opção ("5€", "Gratuito", "Pago") e o rótulo dela, no idioma. */
-function describe(option: PriceOption, locale: Locale): { value: string; label?: string; icon?: LucideIcon; uncertain?: string } {
+function describe(option: PriceOption, locale: Locale): { value: string; label?: string; icon?: Icon; uncertain?: string } {
   const value =
     option.amount !== undefined
       ? formatEuro(option.amount, locale)
@@ -40,7 +52,7 @@ function describe(option: PriceOption, locale: Locale): { value: string; label?:
   const uncertain = option.uncertain ? MESSAGES[locale].price.uncertain : undefined
   if (option.label) return { value, uncertain, label: labelText(option.label, option.labelArg, locale), icon: ICONS[option.label] }
   if (option.rawLabel) return { value, uncertain, label: option.rawLabel }
-  return { value, uncertain, ...(option.free ? { icon: Gift } : {}) }
+  return { value, uncertain, ...(option.free ? { icon: GiftIcon } : {}) }
 }
 
 type Item = ReturnType<typeof describe> & { detail: boolean }
@@ -52,7 +64,7 @@ function Amount({ value, uncertain }: { value: string; uncertain?: string }) {
       {value}
       {uncertain && (
         <>
-          <CircleHelp className="size-3.5 text-fg-muted" aria-hidden="true" />
+          <QuestionIcon className="size-3.5 text-fg-muted" aria-hidden="true" />
           <span className="sr-only"> ({uncertain})</span>
         </>
       )}
@@ -63,9 +75,9 @@ function Amount({ value, uncertain }: { value: string; uncertain?: string }) {
 /** Chips unidos, separados por traço (valor e o seu detalhe, ou a variação "Grupo"). */
 function Joined({ items }: { items: Item[] }) {
   return (
-    <span className="inline-flex divide-x divide-border overflow-hidden rounded-full border border-border text-xs tabular-nums">
+    <span className="inline-flex h-7 items-stretch divide-x-2 divide-border overflow-hidden rounded-xl border-2 border-border text-[13px] font-bold tabular-nums">
       {items.map(({ value, label, uncertain }) => (
-        <span key={value + label} className="px-2 py-0.5 whitespace-nowrap">
+        <span key={value + label} className="flex items-center px-2 whitespace-nowrap">
           <Amount value={value} uncertain={uncertain} />
           {label && <span className="text-fg-muted"> {label}</span>}
         </span>
@@ -90,7 +102,9 @@ function groupDetails(items: Item[]): Item[][] {
  */
 export type PriceChipVariant = 'auto' | 'plain' | 'inline' | 'stacked' | 'icon' | 'primary' | 'segmented'
 
-const CHIP = 'inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 text-xs tabular-nums whitespace-nowrap'
+// Chip neutro do tema (moldura de 2px, cantos de 12px), sem a base 3D dos gêneros: preço não é clicável.
+const CHIP =
+  'inline-flex h-7 items-center gap-1 rounded-xl border-2 border-border px-2 text-[13px] font-bold tabular-nums whitespace-nowrap'
 
 /** Um preço do calendário (texto cru) em chips, na variação escolhida. */
 export function PriceChips({ price, variant, locale }: { price: string; variant: PriceChipVariant; locale: Locale }) {
@@ -104,7 +118,7 @@ export function PriceChips({ price, variant, locale }: { price: string; variant:
     note && parsed.note && /^\p{Ll}/u.test(parsed.note) ? note.charAt(0).toLowerCase() + note.slice(1) : note,
   ].filter(Boolean)
 
-  const trailing = extras.length > 0 && <span className="text-xs text-fg-muted">{extras.join(' · ')}</span>
+  const trailing = extras.length > 0 && <span className="text-[13px] text-fg-muted">{extras.join(' · ')}</span>
 
   if (variant === 'segmented') {
     return (
@@ -196,9 +210,9 @@ export function NoPriceChips({ hasDescription }: { hasDescription: boolean }) {
   const { t } = useI18n()
   const parts = [hasDescription ? t.event.seeDescription : undefined, t.event.askOrganizer].filter((part): part is string => !!part)
   return (
-    <span className="inline-flex divide-x divide-dashed divide-border overflow-hidden rounded-full border border-dashed border-border text-xs">
+    <span className="inline-flex h-7 items-stretch divide-x-2 divide-dashed divide-border overflow-hidden rounded-xl border-2 border-dashed border-border text-[13px] font-semibold text-fg">
       {parts.map((part) => (
-        <span key={part} className="px-2 py-0.5 whitespace-nowrap">
+        <span key={part} className="flex items-center px-2 whitespace-nowrap">
           {part}
         </span>
       ))}

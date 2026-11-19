@@ -46,7 +46,7 @@ export function MapPanel({ startDate, day, genres, onOpenEvent, className = 'h-f
     >
       {/* Resumo por cima do mapa (Leaflet usa z-index até 1000 dentro do próprio contexto).
           Com um evento aberto: nome, dia e horário dele; senão, o dia ativo e quantos eventos tem. */}
-      <div className="absolute inset-x-2 top-2 z-[1000] rounded-xl bg-surface/95 px-4 py-2 text-sm shadow-sm backdrop-blur">
+      <div className="absolute inset-x-2 top-2 z-[1000] rounded-xl border-2 border-border bg-surface/95 px-4 py-2 text-sm backdrop-blur">
         {selected ? (
           <>
             <p className="truncate font-semibold" title={selected.title}>

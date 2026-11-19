@@ -1,10 +1,10 @@
-import { CalendarClock, CircleX } from 'lucide-react'
+import { ClockCountdownIcon, XCircleIcon } from '@phosphor-icons/react'
 import type { DanceEvent } from '../../domain/event'
 import { useI18n } from '../../i18n/useI18n'
 
 const STATUS = {
-  cancelled: { icon: CircleX, classes: 'bg-genre-red text-genre-red-fg' },
-  postponed: { icon: CalendarClock, classes: 'bg-genre-yellow text-genre-yellow-fg' },
+  cancelled: { icon: XCircleIcon, classes: 'bg-genre-red text-genre-red-fg' },
+  postponed: { icon: ClockCountdownIcon, classes: 'bg-genre-yellow text-genre-yellow-fg' },
 } as const
 
 /** Aviso de evento cancelado ou adiado (marcado no título do calendário). */

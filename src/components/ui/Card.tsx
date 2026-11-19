@@ -9,7 +9,8 @@ type CardProps = HTMLAttributes<HTMLElement> & {
 // Estilo Duolingo: borda de 2px, um pouco mais grossa embaixo, cantos bem arredondados, sem sombra.
 const VARIANTS = {
   card: 'rounded-2xl border-2 border-b-4 border-border',
-  panel: 'rounded-2xl border-2 border-b-4 border-border shadow-lg',
+  // Painel flutuante (popup do mapa, popover): a única sombra do tema, suave, porque fica sobre o conteúdo.
+  panel: 'rounded-2xl border-2 border-b-4 border-border shadow-md',
 }
 
 /** Superfície padrão: p-4, sombra no claro, borda sutil e sem sombra no escuro. */

@@ -1,4 +1,6 @@
-type Option<T extends string> = { value: T; label: string; lang?: string }
+import type { ReactNode } from 'react'
+
+type Option<T extends string> = { value: T; label: string; lang?: string; /** Ícone decorativo antes do texto. */ icon?: ReactNode }
 
 type Props<T extends string> = {
   label: string
@@ -8,10 +10,14 @@ type Props<T extends string> = {
   className?: string
 }
 
-/** Grupo de opções exclusivas (radiogroup) em forma de botões lado a lado. */
+/** Grupo de opções exclusivas (radiogroup) em forma de botões lado a lado, na moldura do tema; a opção marcada fica roxa. */
 export function Segmented<T extends string>({ label, options, value, onChange, className = '' }: Props<T>) {
   return (
-    <div role="radiogroup" aria-label={label} className={`inline-flex rounded-lg bg-surface-muted p-0.5 ${className}`}>
+    <div
+      role="radiogroup"
+      aria-label={label}
+      className={`inline-flex gap-1 rounded-2xl border-2 border-b-4 border-border bg-surface p-1 ${className}`}
+    >
       {options.map((option) => (
         <button
           key={option.value}
@@ -20,10 +26,11 @@ export function Segmented<T extends string>({ label, options, value, onChange, c
           lang={option.lang}
           aria-checked={value === option.value}
           onClick={() => onChange(option.value)}
-          className={`h-10 min-w-20 flex-1 cursor-pointer rounded-md px-3 text-sm font-medium transition focus-visible:outline-2 focus-visible:outline-brand ${
-            value === option.value ? 'bg-surface text-fg shadow-sm' : 'text-fg-muted hover:text-fg'
+          className={`inline-flex h-10 min-w-20 flex-1 cursor-pointer items-center justify-center gap-2 rounded-xl px-3 text-sm font-bold transition focus-visible:outline-2 focus-visible:outline-brand ${
+            value === option.value ? 'bg-brand text-brand-fg' : 'text-fg-muted hover:bg-surface-muted hover:text-fg'
           }`}
         >
+          {option.icon}
           {option.label}
         </button>
       ))}

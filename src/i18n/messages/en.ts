@@ -170,7 +170,8 @@ export const en: Messages = {
     unknown: 'Unknown error',
     reload: 'Reload',
     notFound: 'Page not found.',
-    backHome: 'Back to home',
+    backHome: 'See events',
+    notFoundHint: 'The link may be wrong, or the event is no longer listed.',
   },
   price: {
     members: 'members',
