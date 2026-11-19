@@ -1,3 +1,5 @@
+import { CALENDARS } from '../domain/calendarSources'
+
 // Conteúdo da página Comunidade (/comunidade), espelho de https://pasdedeux.pt/outros.html:
 // outros calendários, grupos de WhatsApp, perfis do Instagram e os calendários do Pas de Deux para
 // assinar no app de agenda ou abrir no Google Agenda. Nomes são nomes próprios (sem tradução).
@@ -34,7 +36,7 @@ export const INSTAGRAM: CommunityLink[] = [
 
 /** Calendários do Pas de Deux: id do Google Agenda (assinar .ics e abrir no Google). */
 export const PASDEDEUX_CALENDARS: { name: string; id: string }[] = [
-  { name: 'Pas de Deux', id: 'pasdedeux.pt@gmail.com' },
+  { name: 'Pas de Deux', id: CALENDARS.pasdedeux.calendarId },
   { name: 'Pas de Deux Vintage', id: 'j67f6ur08g3np778li9t2ptf3g@group.calendar.google.com' },
   { name: 'Pas de Deux Brasileiras', id: 'omasrune89s6kj82at515p4mbc@group.calendar.google.com' },
   { name: 'Pas de Deux Afro-Latinas', id: '3dg3m7hn4dk3s85u2qusuarj3c@group.calendar.google.com' },

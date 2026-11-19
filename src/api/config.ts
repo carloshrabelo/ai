@@ -8,7 +8,6 @@ export const GOOGLE_API_KEY = env.VITE_GOOGLE_API_KEY ?? ''
 /** Atraso artificial do mock, em ms (0 = responde na hora). */
 export const MOCK_DELAY_MS = Math.max(0, Number(env.VITE_MOCK_DELAY_MS) || 0)
 
-export const CALENDAR_ID = 'pasdedeux.pt@gmail.com'
 export const TIME_ZONE = 'Europe/Lisbon'
 
 /** Tamanho de cada janela buscada na API, em dias. */

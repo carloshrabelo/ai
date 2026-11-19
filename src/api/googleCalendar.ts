@@ -1,6 +1,6 @@
-import { type CalendarSource, fromTangoLx, fromTradicionais, TANGO_CALENDAR_ID, TRADICIONAIS_CALENDAR_ID } from '../domain/calendarSources'
+import { CALENDAR_SOURCES, CALENDARS } from '../domain/calendarSources'
 import type { GCalDateTime, GCalEvent } from '../domain/gcal'
-import { CALENDAR_ID, GOOGLE_API_KEY, MOCK_DELAY_MS, USE_MOCK } from './config'
+import { GOOGLE_API_KEY, MOCK_DELAY_MS, USE_MOCK } from './config'
 import { lisbonMidnight, todayIso } from '../lib/dates'
 import { shiftMockEvents } from './mockDates'
 
@@ -15,15 +15,8 @@ export type FetchEventsParams = {
   signal?: AbortSignal
 }
 
-/**
- * Calendários lidos: o principal (pasdedeux.pt) e outros públicos, cada um com um adaptador que
- * converte o evento para o formato do principal (ver src/domain/calendarSources.ts).
- */
-const SOURCES: { source: CalendarSource; calendarId: string; adapt?: (event: GCalEvent) => GCalEvent }[] = [
-  { source: 'pasdedeux', calendarId: CALENDAR_ID },
-  { source: 'tradicionais', calendarId: TRADICIONAIS_CALENDAR_ID, adapt: fromTradicionais },
-  { source: 'tangolx', calendarId: TANGO_CALENDAR_ID, adapt: fromTangoLx },
-]
+/** Calendários lidos (ids e adaptadores em src/domain/calendarSources.ts). */
+const SOURCES = CALENDAR_SOURCES.map((source) => ({ source, ...CALENDARS[source] }))
 
 /** Eventos que se sobrepõem a [timeMin, timeMax), ordenados pelo início. */
 export function fetchEvents(params: FetchEventsParams): Promise<GCalEvent[]> {

@@ -2,7 +2,7 @@ import { Check, Copy } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
-import { CALENDAR_SOURCES, type CalendarSource, SOURCE_INFO } from '../domain/calendarSources'
+import { CALENDAR_SOURCES, CALENDARS, type CalendarSource } from '../domain/calendarSources'
 import { IGNORED_WORDS } from '../domain/spelling'
 import { RangeFields } from '../features/range/RangeFields'
 import { useEventsInRange } from '../features/range/useEventsInRange'
@@ -62,7 +62,7 @@ export default function Review() {
   const valueOf = (issue: FieldIssue) => (issue.id in choices ? choices[issue.id] : issue.suggestions[0])
 
   const copyAll = async () => {
-    const calendars = sources.map((source) => SOURCE_INFO[source].label)
+    const calendars = sources.map((source) => CALENDARS[source].label)
     await navigator.clipboard.writeText(buildReport(reviewed, valueOf, { calendars, from: range.from, to: range.to }))
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
@@ -108,7 +108,7 @@ export default function Review() {
           {CALENDAR_SOURCES.map((source) => (
             <CheckField
               key={source}
-              label={`${SOURCE_INFO[source].label} (${query.data ? perSource[source] : '…'})`}
+              label={`${CALENDARS[source].label} (${query.data ? perSource[source] : '…'})`}
               checked={sources.includes(source)}
               onChange={toggleSource(source)}
             />

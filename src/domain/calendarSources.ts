@@ -1,18 +1,34 @@
 import { addDays, type IsoDate, lisbonMidnight } from '../lib/dates'
 import type { GCalEvent } from './gcal'
 
-// Calendários além do principal (pasdedeux.pt). Cada um tem o próprio formato; o adaptador converte
-// o evento para o formato do principal ("Tag • Nome • Preço" no título, local em `location`, hora em
-// `dateTime`), e o resto do app (gêneros, preço, local, mapa) funciona igual.
+// Registro dos calendários lidos pelo app (o único lugar com os ids) e os adaptadores dos que não
+// seguem o formato do principal (pasdedeux.pt). O adaptador converte o evento para o formato do
+// principal ("Tag • Nome • Preço" no título, local em `location`, hora em `dateTime`), e o resto do
+// app (gêneros, preço, local, mapa) funciona igual.
 
-/** Calendário de onde veio cada evento (para a revisão por responsável, em /review). */
+/** Calendário de onde veio cada evento (também para a revisão por responsável, em /review). */
 export const CALENDAR_SOURCES = ['pasdedeux', 'tangolx', 'tradicionais'] as const
 export type CalendarSource = (typeof CALENDAR_SOURCES)[number]
 
-export const SOURCE_INFO: Record<CalendarSource, { label: string; owner: string }> = {
-  pasdedeux: { label: 'Pas de Deux', owner: '@ateterca' },
-  tangolx: { label: 'Tango (tangolx.com)', owner: 'tangolx.com' },
-  tradicionais: { label: 'Danças tradicionais', owner: 'Luís Manuel Guerra' },
+type Calendar = {
+  /** Id do Google Agenda (calendário público). */
+  calendarId: string
+  label: string
+  owner: string
+  /** Converte o evento para o formato do principal; o principal não tem. */
+  adapt?: (event: GCalEvent) => GCalEvent
+}
+
+/** Os calendários, na ordem da busca: o primeiro é o principal (se ele falhar, a busca falha). */
+export const CALENDARS: Record<CalendarSource, Calendar> = {
+  pasdedeux: { calendarId: 'pasdedeux.pt@gmail.com', label: 'Pas de Deux', owner: '@ateterca' },
+  tangolx: { calendarId: 'agendatangolx@gmail.com', label: 'Tango (tangolx.com)', owner: 'tangolx.com', adapt: fromTangoLx },
+  tradicionais: {
+    calendarId: 'europeias.agenda@gmail.com',
+    label: 'Danças tradicionais',
+    owner: 'Luís Manuel Guerra',
+    adapt: fromTradicionais,
+  },
 }
 
 /** Prefixo de situação ("(Cancelado) …") fica na frente da tag, onde o parseSummary procura. */
@@ -50,8 +66,6 @@ function field(rows: string[], label: RegExp): string | undefined {
 //
 // Título "Nome | Cidade" (às vezes "Nome | Data | CIDADE"), local em `location`, hora normal.
 
-export const TRADICIONAIS_CALENDAR_ID = 'europeias.agenda@gmail.com'
-
 export function fromTradicionais(event: GCalEvent): GCalEvent {
   const parts = (event.summary ?? '').split(/\s+\|\s+/).map((part) => part.trim())
   const [title] = parts
@@ -72,8 +86,6 @@ export function fromTradicionais(event: GCalEvent): GCalEvent {
 // Eventos de dia inteiro; hora, local e entrada vêm na descrição:
 //   Time: 20h00-22:30 / Where: LAGAR S. VICENTE - R. Prof. Francisco Gentil 33, 1600-622 Lisboa /
 //   Entrance: 6€ / DJ: …
-
-export const TANGO_CALENDAR_ID = 'agendatangolx@gmail.com'
 
 const TIME = /(\d{1,2})\s*[h:]\s*(\d{2})?\s*(?:-|–|—|to|às|a)\s*(\d{1,2})\s*[h:]*\s*(\d{2})?/i
 
