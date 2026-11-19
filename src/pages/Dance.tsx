@@ -1,4 +1,4 @@
-import { useCallback, useId, useLayoutEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { useLoaderData } from 'react-router'
 import type { EventsLoaderData } from '../api/eventsLoader'
 import { DayShortcuts } from '../features/dates/DayShortcuts'
@@ -33,6 +33,16 @@ export default function Dance() {
 function DanceFeed({ startDate, today }: EventsLoaderData) {
   const stickyRef = useRef<HTMLDivElement>(null)
   const { activeDay, selectDay } = useDayNavigation(startDate, stickyRef)
+  // Altura da barra fixa (atalhos, faixa de dias e filtros), para os títulos dos dias fixarem logo abaixo.
+  useEffect(() => {
+    const bar = stickyRef.current
+    if (!bar) return
+    const observer = new ResizeObserver(() => {
+      document.documentElement.style.setProperty('--feed-sticky-height', `${bar.offsetHeight}px`)
+    })
+    observer.observe(bar)
+    return () => observer.disconnect()
+  }, [])
   const { selected: genres } = useGenreFilter()
   const { selectedSlug: selectedInUrl, open, close } = useSelectedEvent()
   useLegacyEventRedirect(startDate)

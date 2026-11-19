@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { ArrowSquareOutIcon, CalendarPlusIcon, ClockIcon, MapPinIcon, TicketIcon } from '@phosphor-icons/react'
+import { CalendarPlusIcon, ClockIcon, MapPinIcon, TicketIcon } from '@phosphor-icons/react'
 import { Card } from '../../components/ui/Card'
 import { Chip } from '../../components/ui/Chip'
 import { Skeleton } from '../../components/ui/Skeleton'
@@ -9,6 +9,8 @@ import { visibleGenres } from '../../domain/genres'
 import { EventDistance } from '../location/EventDistance'
 import { eventFocus, useEventFocus } from './eventFocusStore'
 import { EventStatusBadge } from './EventStatusBadge'
+import { eventTiming } from './timing'
+import { useNow } from '../../hooks/useNow'
 import { NoPriceChips, PriceChips } from '../price/PriceChips'
 import { formatTimeRange } from './format'
 import { useI18n } from '../../i18n/useI18n'
@@ -38,6 +40,7 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
   const highlighted = useEventFocus((state) => state.hover?.source === 'map' && state.hover.ids.includes(event.id))
   const hover = () => eventFocus.hover([event.id], 'list')
   const unhover = () => eventFocus.unhover('list')
+  const timing = eventTiming(event, useNow())
 
   return (
     <Card
@@ -48,7 +51,7 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
       onBlur={unhover}
       className={`relative isolate flex flex-col gap-3 transition-colors hover:border-fg-muted/40 ${
         selected || highlighted ? 'ring-2 ring-brand' : ''
-      } ${event.status === 'cancelled' ? 'opacity-75' : ''}`}
+      } ${event.status === 'cancelled' ? 'opacity-75' : timing === 'ended' ? 'opacity-60' : ''}`}
     >
       {/* Cabeçalho: o título usa a largura toda e só a 1ª linha desvia do botão do calendário (um
           espaço flutuante dentro do título reserva o lugar; o botão fica por cima, absoluto no canto).
@@ -126,13 +129,12 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
       {/* mt-auto: as tags ficam sempre embaixo, mesmo num card esticado (grid da lista e do mapa). */}
       <div className="mt-auto flex items-center gap-2">
         <div className="flex min-w-0 flex-1 flex-wrap gap-2">
-          {event.status && <EventStatusBadge status={event.status} />}
+          {event.status ? <EventStatusBadge status={event.status} /> : timing !== 'upcoming' && <EventStatusBadge status={timing} />}
           {event.genres.length > 0
             ? visibleGenres(event.genres).map((genre) => <Chip key={genre} genre={genre} />)
             : event.rawTag && <Chip label={event.rawTag} />}
         </div>
         <EventDistance venue={event.venue} />
-        <ArrowSquareOutIcon className="size-5 shrink-0 text-fg-muted" aria-hidden="true" />
       </div>
     </Card>
   )

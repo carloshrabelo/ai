@@ -26,10 +26,12 @@ export default function Header() {
           </Link>
           {page && (
             <>
-              <span aria-hidden="true" className="text-lg opacity-60">
+              {/* Abaixo de `sm` não cabe: o nome da página fica só para leitor de tela (a barra inferior
+                  já mostra a página ativa). */}
+              <span aria-hidden="true" className="hidden text-lg opacity-60 sm:inline">
                 ·
               </span>
-              <span className="truncate text-lg font-semibold opacity-80 md:text-xl">{page}</span>
+              <span className="sr-only sm:not-sr-only sm:truncate sm:text-lg sm:font-semibold sm:opacity-80 md:text-xl">{page}</span>
             </>
           )}
         </h1>

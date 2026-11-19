@@ -12,6 +12,8 @@ import './i18n/locale'
 import './pwa/installPrompt'
 import { router } from './router'
 
+const SHOW_DEVTOOLS = import.meta.env.DEV && new URLSearchParams(window.location.search).has('devtools')
+
 // Em dev sem PWA_DEV: remove service workers e caches que sobraram de sessões antigas,
 // que serviriam arquivos velhos no localhost.
 if (import.meta.env.DEV && !__PWA_IN_DEV__ && 'serviceWorker' in navigator) {
@@ -31,7 +33,8 @@ createRoot(document.getElementById('root')!).render(
       <PersistQueryClientProvider client={queryClient} persistOptions={persistOptions}>
         <RouterProvider router={router} />
         {/* Não renderiza nada no build de produção. */}
-        <ReactQueryDevtools buttonPosition="top-right" />
+        {/* Só com ?devtools na URL: o botão flutuante cobria o header nos prints e testes visuais. */}
+        {SHOW_DEVTOOLS && <ReactQueryDevtools buttonPosition="bottom-left" />}
       </PersistQueryClientProvider>
     </IconContext.Provider>
   </StrictMode>,

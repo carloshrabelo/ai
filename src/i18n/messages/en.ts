@@ -37,6 +37,8 @@ export const en: Messages = {
   },
   event: {
     addToCalendar: 'Add to calendar',
+    live: 'Now',
+    ended: 'Ended',
     addToCalendarFor: (title) => `Add "${title}" to calendar`,
     time: 'Time',
     price: 'Price',

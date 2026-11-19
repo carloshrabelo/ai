@@ -31,18 +31,18 @@ describe('format pt-BR', () => {
 
 describe('format en-US', () => {
   it('cabeçalho do dia (mês antes do dia)', () => {
-    expect(formatDayHeading('2026-07-11', 'en-US')).toBe('Saturday, 07/11')
-    expect(formatDayInSentence('2026-07-11', 'en-US')).toBe('Saturday, 07/11')
+    expect(formatDayHeading('2026-07-11', 'en-US')).toBe('Saturday, 11/07')
+    expect(formatDayInSentence('2026-07-11', 'en-US')).toBe('Saturday, 11/07')
   })
 
   it('atalhos e faixa da semana', () => {
     expect(formatWeekdayShort('2026-07-13', 'en-US')).toBe('Mon')
-    expect(formatShortDay('2026-09-23', 'en-US')).toBe('Wed, 09/23')
+    expect(formatShortDay('2026-09-23', 'en-US')).toBe('Wed, 23/09')
   })
 
   it('horário (12h, fuso de Lisboa) e dia inteiro', () => {
     expect(formatTimeRange(timed, 'en-US').replace(/\s/g, ' ')).toBe('10:30 PM – 4:00 AM')
     expect(formatTimeRange(oneDay, 'en-US')).toBe('All day')
-    expect(formatTimeRange(festival, 'en-US')).toMatch(/^7\/30\s*–\s*8\/2$/) // formato de intervalo do Intl
+    expect(formatTimeRange(festival, 'en-US')).toMatch(/^30\/07\s*–\s*02\/08$/) // formato de intervalo do Intl
   })
 })

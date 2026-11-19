@@ -3,7 +3,9 @@ import { QueryErrorResetBoundary, useSuspenseInfiniteQuery } from '@tanstack/rea
 import { Fragment, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { ErrorBoundary } from '../../components/ErrorBoundary'
 import { Button } from '../../components/ui/Button'
-import type { IsoDate } from '../../lib/dates'
+import { addDays, type IsoDate, todayIso } from '../../lib/dates'
+import type { Locale } from '../../i18n/locale'
+import type { Messages } from '../../i18n/messages'
 import { eventsInfiniteQueryOptions, flattenEvents } from '../../api/queries'
 import { type GenreFilterValue, matchesGenres } from '../../domain/genreFilter'
 import { EventCard, EventCardSkeleton } from './EventCard'
@@ -13,7 +15,8 @@ import { useI18n } from '../../i18n/useI18n'
 import { genreLabel } from '../genres/genreLabel'
 import { groupByDay } from './groupByDay'
 
-const GRID = 'grid grid-cols-1 gap-3 xl:grid-cols-2 xl:gap-4'
+// 2 colunas só a partir de `2xl`: entre 1280 e 1535px, com a sidebar e o mapa, cada card teria ~260px.
+const GRID = 'grid grid-cols-1 gap-3 2xl:grid-cols-2 2xl:gap-4'
 
 /** Feed de eventos agrupado por dia, com skeleton, erro isolado e scroll infinito. */
 type FeedProps = {
@@ -39,6 +42,7 @@ export function EventFeed(props: FeedProps) {
 
 function EventFeedContent({ startDate, genres, onOpenEvent }: FeedProps) {
   const { t, locale, orList } = useI18n()
+  const today = todayIso()
   const genreNames = orList(genres.map((genre) => genreLabel(genre, t)))
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetchNextPageError } = useSuspenseInfiniteQuery(
     eventsInfiniteQueryOptions(startDate),
@@ -95,9 +99,9 @@ function EventFeedContent({ startDate, genres, onOpenEvent }: FeedProps) {
               <h2
                 id={`day-${day}`}
                 data-day={day}
-                className={`col-span-full text-sm font-semibold text-fg-muted ${index > 0 ? 'pt-3 xl:pt-2' : ''}`}
+                className={`sticky top-[calc(3.5rem+env(safe-area-inset-top)+var(--feed-sticky-height,0px))] z-[4] col-span-full -mx-1 bg-bg px-1 py-1 text-base font-bold text-fg ${index > 0 ? 'mt-3' : ''}`}
               >
-                {formatDayHeading(day, locale)}
+                {dayLabel(day, today, t, locale)}
               </h2>
               {events.map((event) => (
                 <EventCard key={`${day}-${event.id}`} event={event} onOpen={onOpenEvent} />
@@ -111,7 +115,7 @@ function EventFeedContent({ startDate, genres, onOpenEvent }: FeedProps) {
         <div className={GRID}>
           <span className="sr-only">{t.feed.loadingMore}</span>
           <EventCardSkeleton />
-          <EventCardSkeleton className="hidden xl:flex" />
+          <EventCardSkeleton className="hidden 2xl:flex" />
         </div>
       )}
 
@@ -152,6 +156,17 @@ function EventFeedContent({ startDate, genres, onOpenEvent }: FeedProps) {
   )
 }
 
+/**
+ * Título do dia: "Hoje · Quinta-feira, 19/11", "Amanhã · …" ou só a data. Fica fixo abaixo da faixa de
+ * dias enquanto os eventos dele rolam (o próximo título cobre o anterior).
+ */
+function dayLabel(day: IsoDate, today: IsoDate, t: Messages, locale: Locale): string {
+  const heading = formatDayHeading(day, locale)
+  if (day === today) return `${t.dates.today} · ${heading}`
+  if (day === addDays(today, 1)) return `${t.dates.tomorrow} · ${heading}`
+  return heading
+}
+
 /** Primeiro carregamento: 4 cards no mobile, 6 em 2 colunas a partir de `xl`. */
 function EventFeedSkeleton() {
   const { t } = useI18n()
@@ -161,7 +176,7 @@ function EventFeedSkeleton() {
       <div aria-hidden="true" className="h-5 w-32 animate-pulse rounded-md bg-genre-neutral" />
       <div className={GRID}>
         {Array.from({ length: 6 }, (_, i) => (
-          <EventCardSkeleton key={i} className={i >= 4 ? 'hidden xl:flex' : ''} />
+          <EventCardSkeleton key={i} className={i >= 4 ? 'hidden 2xl:flex' : ''} />
         ))}
       </div>
     </div>

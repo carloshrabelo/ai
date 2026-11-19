@@ -8,11 +8,17 @@ import { MESSAGES } from '../../i18n/messages'
 // Formatadores são caros de criar: um por idioma e formato.
 const cache = new Map<string, Intl.DateTimeFormat>()
 
-function formatter(locale: Locale, name: string, options: Intl.DateTimeFormatOptions): Intl.DateTimeFormat {
-  const key = `${locale}|${name}`
+/**
+ * Datas em inglês na ordem dia/mês (en-GB), como em Lisboa e no português: "Saturday, 11/07", não
+ * "07/11". As horas continuam no relógio de 12h do en-US.
+ */
+const dateLocale = (locale: Locale) => (locale === 'en-US' ? 'en-GB' : locale)
+
+function formatter(locale: Locale, name: string, options: Intl.DateTimeFormatOptions, intlLocale: string = locale): Intl.DateTimeFormat {
+  const key = `${intlLocale}|${name}`
   let format = cache.get(key)
   if (!format) {
-    format = new Intl.DateTimeFormat(locale, { ...options, timeZone: TIME_ZONE })
+    format = new Intl.DateTimeFormat(intlLocale, { ...options, timeZone: TIME_ZONE })
     cache.set(key, format)
   }
   return format
@@ -22,16 +28,19 @@ function formatter(locale: Locale, name: string, options: Intl.DateTimeFormatOpt
 const uses24h = (locale: Locale) =>
   ['h23', 'h24'].includes(new Intl.DateTimeFormat(locale, { hour: 'numeric' }).resolvedOptions().hourCycle ?? '')
 const time = (locale: Locale) => formatter(locale, 'time', { hour: uses24h(locale) ? '2-digit' : 'numeric', minute: '2-digit' })
-const shortDate = (locale: Locale) => formatter(locale, 'shortDate', { day: '2-digit', month: '2-digit' })
-const dayHeading = (locale: Locale) => formatter(locale, 'dayHeading', { weekday: 'long', day: '2-digit', month: '2-digit' })
+const shortDate = (locale: Locale) => formatter(locale, 'shortDate', { day: '2-digit', month: '2-digit' }, dateLocale(locale))
+const dayHeading = (locale: Locale) =>
+  formatter(locale, 'dayHeading', { weekday: 'long', day: '2-digit', month: '2-digit' }, dateLocale(locale))
 const weekdayShort = (locale: Locale) => formatter(locale, 'weekdayShort', { weekday: 'short' })
 const dayOfMonth = (locale: Locale) => formatter(locale, 'dayOfMonth', { day: 'numeric' })
 
 const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1)
+/** en-GB escreve "Saturday 11/07"; com vírgula, como no pt-BR ("Sábado, 11/07"). */
+const withComma = (text: string) => text.replace(/^(\p{L}+) (\d)/u, '$1, $2')
 
 /**
  * pt-BR: "20:30 – 01:00"; en-US: "8:30 PM – 1:00 AM".
- * Dia inteiro: "Dia inteiro" / "All day", ou o intervalo de datas ("30/07 – 02/08" / "07/30 – 08/02").
+ * Dia inteiro: "Dia inteiro" / "All day", ou o intervalo de datas ("30/07 – 02/08" nos dois idiomas).
  */
 export function formatTimeRange(event: DanceEvent, locale: Locale): string {
   if (!event.allDay) return `${time(locale).format(event.start)} – ${time(locale).format(event.end)}`
@@ -42,9 +51,9 @@ export function formatTimeRange(event: DanceEvent, locale: Locale): string {
   return dates.formatRange(event.start, lastDay)
 }
 
-/** pt-BR: "Sábado, 11/07"; en-US: "Saturday, 07/11". */
+/** pt-BR: "Sábado, 11/07"; en: "Saturday, 11/07". */
 export function formatDayHeading(day: IsoDate, locale: Locale): string {
-  return capitalize(dayHeading(locale).format(lisbonMidnight(day)))
+  return capitalize(withComma(dayHeading(locale).format(lisbonMidnight(day))))
 }
 
 /** pt-BR: "Seg"; en-US: "Mon". */
@@ -57,7 +66,7 @@ export function formatDayOfMonth(day: IsoDate, locale: Locale): string {
   return dayOfMonth(locale).format(lisbonMidnight(day))
 }
 
-/** pt-BR: "Qua, 22/09"; en-US: "Wed, 09/22". */
+/** pt-BR: "Qua, 22/09"; en: "Wed, 22/09". */
 export function formatShortDay(day: IsoDate, locale: Locale): string {
   return `${formatWeekdayShort(day, locale)}, ${shortDate(locale).format(lisbonMidnight(day))}`
 }
@@ -67,7 +76,7 @@ export function formatDateTime(date: Date, locale: Locale): string {
   return new Intl.DateTimeFormat(locale, { dateStyle: 'short', timeStyle: 'short' }).format(date)
 }
 
-/** Dia no meio de uma frase: pt-BR "terça-feira, 17/11" (minúscula); en-US "Tuesday, 11/17". */
+/** Dia no meio de uma frase: pt-BR "terça-feira, 17/11" (minúscula); en "Tuesday, 17/11". */
 export function formatDayInSentence(day: IsoDate, locale: Locale): string {
-  return dayHeading(locale).format(lisbonMidnight(day))
+  return withComma(dayHeading(locale).format(lisbonMidnight(day)))
 }

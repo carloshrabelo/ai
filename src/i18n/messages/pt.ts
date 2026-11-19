@@ -41,6 +41,8 @@ export const pt = {
   },
   event: {
     addToCalendar: 'Adicionar ao calendário',
+    live: 'Agora',
+    ended: 'Encerrado',
     addToCalendarFor: (title: string) => `Adicionar "${title}" ao calendário`,
     time: 'Horário',
     price: 'Preço',
