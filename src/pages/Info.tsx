@@ -1,4 +1,4 @@
-import { CalendarDotsIcon, CloudSlashIcon } from '@phosphor-icons/react'
+import { CalendarDotsIcon, CloudSlashIcon, HeartIcon } from '@phosphor-icons/react'
 import { type ReactNode, useEffect, useState } from 'react'
 import InstallButton from '../components/InstallButton'
 import LanguageToggle from '../components/LanguageToggle'
@@ -48,6 +48,13 @@ export default function Info() {
       <Card className="space-y-3">
         <h2 className="text-lg font-bold">{t.info.about}</h2>
         <p className="text-[15px]">{t.info.aboutText}</p>
+        {/* Agradecimento a quem mantém a lista dos eventos (pasdedeux.pt). */}
+        <p className="flex gap-3 rounded-2xl border-2 border-brand/30 bg-brand/5 p-3 text-sm">
+          <HeartIcon className="mt-0.5 size-5 shrink-0 text-brand" aria-hidden="true" />
+          <span>
+            {t.info.thanks[0]} <ExternalLink href="https://www.instagram.com/ateterca/">@ateterca</ExternalLink> {t.info.thanks[1]}
+          </span>
+        </p>
         <h3 className="pt-1 text-sm font-bold text-fg-muted">{t.info.sources}</h3>
         <ul className="space-y-2">
           {sources.map(({ label, link, by }) => (

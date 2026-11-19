@@ -123,6 +123,10 @@ export const en: Messages = {
   info: {
     about: 'About',
     aboutText: 'Listings of social dance practices, parties and other events in Lisbon.',
+    thanks: [
+      'Special thanks to',
+      'for carefully keeping the list of dance events on pasdedeux.pt. Without that work, this agenda would not exist.',
+    ],
     sources: 'Where the events come from',
     mainSource: 'Main calendar',
     tangoSource: 'Tango',

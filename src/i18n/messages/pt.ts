@@ -128,6 +128,10 @@ export const pt = {
   info: {
     about: 'Sobre',
     aboutText: 'Agenda de práticas, festas e outros eventos de dança social em Lisboa.',
+    thanks: [
+      'Um agradecimento especial a',
+      'por manter, com tanto cuidado, a lista dos eventos de dança do pasdedeux.pt. Sem esse trabalho, esta agenda não existiria.',
+    ],
     sources: 'De onde vêm os eventos',
     mainSource: 'Calendário principal',
     tangoSource: 'Tango',
