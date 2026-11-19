@@ -204,7 +204,7 @@ function FitBounds({ places, userCoords, inset }: FitProps) {
   return null
 }
 
-/** Botão "enquadrar" (junto do zoom, no visual dos controles do Leaflet): volta a mostrar todos os pinos. */
+/** Botão "enquadrar" (junto do zoom, no visual dos controles do Leaflet, ver index.css): volta a mostrar todos os pinos. */
 function FitControl({ position, label, ...fit }: FitProps & { position: L.ControlPosition; label: string }) {
   const map = useMap()
   // O React renderiza o botão dentro do contêiner do controle (portal).
@@ -230,9 +230,9 @@ function FitControl({ position, label, ...fit }: FitProps & { position: L.Contro
         map.stop()
         fitAll(map, fit, true)
       }}
-      className="flex size-[30px] cursor-pointer items-center justify-center rounded-[2px] bg-white text-black hover:bg-[#f4f4f4] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+      className="flex size-9 cursor-pointer items-center justify-center bg-surface text-fg hover:bg-surface-muted focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand"
     >
-      <ScanIcon className="size-4" aria-hidden="true" />
+      <ScanIcon className="size-5" aria-hidden="true" />
     </button>,
     container,
   )

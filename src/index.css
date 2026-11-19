@@ -188,3 +188,32 @@
 .text-brand {
   color: var(--brand-ink);
 }
+
+/* Controles do Leaflet (zoom e enquadrar) no padrão dos botões: borda de 2px, base de 4px, cantos
+   arredondados e cores do tema (claro e escuro). Seletores mais específicos que os do leaflet.css, que
+   é carregado depois (junto do mapa). */
+.leaflet-container .leaflet-control.leaflet-bar {
+  overflow: hidden;
+  border: 2px solid var(--border);
+  border-bottom-width: 4px;
+  border-radius: 0.75rem;
+  background: var(--surface);
+  box-shadow: none;
+}
+.leaflet-container .leaflet-control.leaflet-bar a {
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
+  border-radius: 0;
+  border-bottom-color: var(--border);
+  background: var(--surface);
+  color: var(--fg);
+}
+.leaflet-container .leaflet-control.leaflet-bar a:hover {
+  background: var(--surface-muted);
+}
+.leaflet-container .leaflet-control.leaflet-bar a.leaflet-disabled {
+  background: var(--surface-muted);
+  color: var(--fg-muted);
+  opacity: 0.6;
+}
