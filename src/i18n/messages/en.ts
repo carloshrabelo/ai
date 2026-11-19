@@ -98,6 +98,8 @@ export const en: Messages = {
     noLocation: 'not on the map',
     pin: (names) => `On the map: ${names}`,
     fit: 'Fit all events',
+    cluster: (n) => `${n} events close together: zoom in`,
+    outside: (n) => `+${n} outside Lisbon`,
   },
   mapPage: {
     events: 'Events of the day',

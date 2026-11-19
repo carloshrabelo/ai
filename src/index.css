@@ -217,3 +217,13 @@
   color: var(--fg-muted);
   opacity: 0.6;
 }
+
+/* Atribuição do mapa nas cores do tema (no escuro, o fundo branco do Leaflet destoava). */
+.leaflet-container .leaflet-control-attribution {
+  border-top-left-radius: 0.5rem;
+  background: color-mix(in srgb, var(--surface) 85%, transparent);
+  color: var(--fg-muted);
+}
+.leaflet-container .leaflet-control-attribution a {
+  color: var(--brand-ink);
+}

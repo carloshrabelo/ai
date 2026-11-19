@@ -174,6 +174,17 @@ function DayMap({ startDate }: { startDate: IsoDate }) {
           />
         </Suspense>
 
+        {/* Posição no carrossel ("2 / 6"), logo acima dele. */}
+        {events.length > 1 && (
+          <p
+            aria-hidden="true"
+            style={{ bottom: carouselHeight + 4 }}
+            className="absolute left-4 z-[1000] rounded-xl border-2 border-border bg-surface px-2 py-0.5 text-xs font-bold tabular-nums md:left-6"
+          >
+            {Math.max(1, events.findIndex((event) => event.slug === active) + 1)} / {events.length}
+          </p>
+        )}
+
         {/* Carrossel por cima do mapa (Leaflet usa z-index até 1000 dentro do próprio contexto). */}
         <h2 id={carouselTitleId} className="sr-only">
           {t.mapPage.events}

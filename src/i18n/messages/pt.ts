@@ -103,6 +103,8 @@ export const pt = {
     noLocation: 'sem local no mapa',
     pin: (names: string) => `Ver no mapa: ${names}`,
     fit: 'Enquadrar todos os eventos',
+    cluster: (n: number) => `${n} eventos aqui perto: aproximar`,
+    outside: (n: number) => `+${n} fora de Lisboa`,
   },
   mapPage: {
     events: 'Eventos do dia',
