@@ -128,7 +128,7 @@ export function WeekStrip({ startDate, activeDay, onSelect, genres = NO_GENRES, 
       {/* Moldura dos cards e botões (borda de 2px, base de 4px). Altura total 56px, igual aos botões ao
           lado: 2 + 4 de borda, 4 + 4 de padding e 42px de dia. A moldura fica por fora e a rolagem por
           dentro, para o degradê das bordas não apagar a borda. */}
-      <div className="min-w-0 flex-1 rounded-2xl border-2 border-b-4 border-border bg-surface p-1">
+      <div className="min-w-0 flex-1 rounded-2xl border-2 border-b-4 border-border bg-surface px-1.5 py-1">
         <ul
           ref={stripRef}
           aria-label={t.dates.days}
