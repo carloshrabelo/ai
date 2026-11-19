@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { CalendarPlusIcon, CaretRightIcon, ClockIcon, MapPinIcon, TicketIcon } from '@phosphor-icons/react'
+import { ArrowSquareOutIcon, CalendarPlusIcon, ClockIcon, MapPinIcon, TicketIcon } from '@phosphor-icons/react'
 import { Card } from '../../components/ui/Card'
 import { Chip } from '../../components/ui/Chip'
 import { Skeleton } from '../../components/ui/Skeleton'
@@ -118,7 +118,7 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
             : event.rawTag && <Chip label={event.rawTag} />}
         </div>
         <EventDistance venue={event.venue} />
-        <CaretRightIcon className="size-5 shrink-0 text-fg-muted" aria-hidden="true" />
+        <ArrowSquareOutIcon className="size-5 shrink-0 text-fg-muted" aria-hidden="true" />
       </div>
     </Card>
   )

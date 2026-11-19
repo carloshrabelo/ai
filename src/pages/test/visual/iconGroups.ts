@@ -6,7 +6,6 @@ import {
   ArrowBendUpRightIcon,
   ArrowCircleDownIcon,
   ArrowCounterClockwiseIcon,
-  ArrowDownIcon,
   ArrowSquareOutIcon,
   ArrowUpRightIcon,
   ArrowsOutIcon,
@@ -134,6 +133,7 @@ import {
   type Icon,
   type IconWeight,
 } from '@phosphor-icons/react'
+import { CalendarDownloadIcon } from '../../../components/icons/CalendarDownloadIcon'
 import { type ComponentType, createElement } from 'react'
 
 /** Ícone do Phosphor (aceita `weight`: duotone, fill, regular, bold…) ou composto (ver `composite`). */
@@ -406,8 +406,8 @@ export const GROUPS: Group[] = [
     title: 'Baixar .ics',
     where: 'Detalhes do evento (Apple, Outlook).',
     options: [
-      ph(DownloadSimpleIcon, 'DownloadSimple', 'Seta para baixo.', true),
-      ph(composite(CalendarBlankIcon, ArrowDownIcon), 'Calendário + seta', 'Composto: calendário com uma seta de download no canto.'),
+      ph(DownloadSimpleIcon, 'DownloadSimple', 'Seta para baixo.'),
+      ph(CalendarDownloadIcon, 'Calendário + seta', 'Calendário com uma seta de download no canto (componente do app).', true),
       ph(composite(CalendarDotsIcon, DownloadSimpleIcon), 'Calendário + download', 'Composto: calendário com o ícone de download.'),
       ph(CalendarBlankIcon, 'CalendarBlank', 'Calendário simples.'),
       ph(CalendarCheckIcon, 'CalendarCheck', 'Calendário com ✓ (guardado).'),
@@ -473,7 +473,7 @@ export const GROUPS: Group[] = [
     title: 'Abrir detalhes',
     where: 'Canto do card.',
     options: [
-      ph(CaretRightIcon, 'CaretRight', 'Seta fina.', true),
+      ph(CaretRightIcon, 'CaretRight', 'Seta fina.'),
       ph(DotsThreeIcon, 'DotsThree', 'Três pontos: "mais".'),
       ph(DotsThreeCircleIcon, 'DotsThreeCircle', 'Três pontos no círculo.'),
       ph(DotsThreeOutlineIcon, 'DotsThreeOutline', 'Três pontos cheios.'),
@@ -486,7 +486,7 @@ export const GROUPS: Group[] = [
       ph(ArticleIcon, 'Article', 'Texto do evento.'),
       ph(CaretCircleRightIcon, 'CaretCircleRight', 'Seta no círculo.'),
       ph(ArrowUpRightIcon, 'ArrowUpRight', 'Abrir.'),
-      ph(ArrowSquareOutIcon, 'ArrowSquareOut', 'Abrir (caixa com seta).'),
+      ph(ArrowSquareOutIcon, 'ArrowSquareOut', 'Abrir (caixa com seta).', true),
       ph(CaretDownIcon, 'CaretDown', 'Expandir para baixo.'),
     ],
   },

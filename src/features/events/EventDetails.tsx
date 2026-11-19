@@ -1,12 +1,4 @@
-import {
-  BellRingingIcon,
-  CalendarPlusIcon,
-  ClockIcon,
-  DownloadSimpleIcon,
-  MapPinIcon,
-  NavigationArrowIcon,
-  TicketIcon,
-} from '@phosphor-icons/react'
+import { BellRingingIcon, CalendarPlusIcon, ClockIcon, MapPinIcon, NavigationArrowIcon, TicketIcon } from '@phosphor-icons/react'
 import { type ReactNode, useMemo } from 'react'
 import { Chip } from '../../components/ui/Chip'
 import { Skeleton } from '../../components/ui/Skeleton'
@@ -19,6 +11,7 @@ import { navigationLink } from '../location/navigationLink'
 import { useGeocodedVenue } from '../location/useGeocodedEvents'
 import { EventStatusBadge } from './EventStatusBadge'
 import { formatDayHeading, formatTimeRange } from './format'
+import { CalendarDownloadIcon } from '../../components/icons/CalendarDownloadIcon'
 import { NoPriceChips, PriceChips } from '../price/PriceChips'
 import { ShareButton } from './ShareButton'
 import { useI18n } from '../../i18n/useI18n'
@@ -112,7 +105,7 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
               downloadIcs(event, eventUrl(event.slug), slugify(event.title) || 'evento')
             }}
           >
-            <DownloadSimpleIcon className="size-5" aria-hidden="true" />
+            <CalendarDownloadIcon className="size-5" />
             {t.tracking.icsCalendar}
           </Button>
           <ShareButton event={event} />
