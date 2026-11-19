@@ -1,6 +1,7 @@
 import { addDays, type IsoDate } from '../../lib/dates'
 import { formatShortDay } from '../events/format'
 import { useI18n } from '../../i18n/useI18n'
+import { TOOL, TOOL_ACTIVE, TOOL_IDLE } from '../../components/ui/Button'
 
 type Props = {
   today: IsoDate
@@ -8,8 +9,8 @@ type Props = {
   onSelect: (day: IsoDate) => void
 }
 
-const ITEM =
-  'inline-flex h-11 shrink-0 cursor-pointer items-center rounded-full px-3 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand'
+// Mesmo estilo dos botões de ferramenta (calendário e filtro): borda de 2px e base de 4px que afunda.
+const ITEM = `inline-flex h-11 shrink-0 cursor-pointer items-center px-3 text-sm font-bold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${TOOL}`
 
 /** Ontem / Hoje / Amanhã + o dia ativo quando não é nenhum dos três. */
 export function DayShortcuts({ today, activeDay, onSelect }: Props) {
@@ -31,13 +32,13 @@ export function DayShortcuts({ today, activeDay, onSelect }: Props) {
           onClick={() => {
             onSelect(day)
           }}
-          className={`${ITEM} ${day === activeDay ? 'bg-brand text-brand-fg' : 'bg-surface text-fg-muted hover:text-fg'}`}
+          className={`${ITEM} ${day === activeDay ? TOOL_ACTIVE : TOOL_IDLE}`}
         >
           {label}
         </button>
       ))}
       {!isShortcut && (
-        <span aria-current="date" className={`${ITEM} cursor-default bg-brand text-brand-fg tabular-nums`}>
+        <span aria-current="date" className={`${ITEM} cursor-default tabular-nums ${TOOL_ACTIVE}`}>
           {formatShortDay(activeDay, locale)}
         </span>
       )}

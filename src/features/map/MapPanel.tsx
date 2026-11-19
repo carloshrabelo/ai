@@ -39,9 +39,10 @@ export function MapPanel({ startDate, day, genres, onOpenEvent, className = 'h-f
   const resolvedSelected = mapEvents.find((event) => event.id === selected?.id)
 
   return (
+    // Moldura dos cards (borda de 2px, base de 4px), sem sombra.
     <section
       aria-label={t.map.label}
-      className={`relative isolate min-h-0 overflow-hidden rounded-2xl bg-genre-neutral shadow-md dark:border dark:border-border dark:shadow-none ${className}`}
+      className={`relative isolate min-h-0 overflow-hidden rounded-2xl border-2 border-b-4 border-border bg-genre-neutral ${className}`}
     >
       {/* Resumo por cima do mapa (Leaflet usa z-index até 1000 dentro do próprio contexto).
           Com um evento aberto: nome, dia e horário dele; senão, o dia ativo e quantos eventos tem. */}

@@ -69,10 +69,12 @@ export function WeekStrip({ startDate, activeDay, onSelect, actions }: Props) {
         }}
       />
 
+      {/* Moldura dos cards e botões (borda de 2px, base de 4px). Altura total 56px, igual aos botões ao
+          lado: 2 + 4 de borda, 4 + 4 de padding e 42px de dia. */}
       <ul
         ref={stripRef}
         aria-label={t.dates.days}
-        className="flex min-w-0 flex-1 snap-x gap-1 overflow-x-auto rounded-lg bg-surface p-1 [scrollbar-width:none]"
+        className="flex min-w-0 flex-1 snap-x gap-1 overflow-x-auto rounded-2xl border-2 border-b-4 border-border bg-surface p-1 [scrollbar-width:none]"
       >
         {days.map((day) => {
           const active = day === activeDay
@@ -85,7 +87,7 @@ export function WeekStrip({ startDate, activeDay, onSelect, actions }: Props) {
                 onClick={() => {
                   onSelect(day)
                 }}
-                className={`flex h-12 w-11 cursor-pointer flex-col items-center justify-center rounded-md tabular-nums transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand ${
+                className={`flex h-10.5 w-11 cursor-pointer flex-col items-center justify-center rounded-xl tabular-nums transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand ${
                   active ? 'bg-brand text-brand-fg' : 'text-fg hover:bg-surface-muted'
                 }`}
               >
