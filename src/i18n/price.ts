@@ -16,7 +16,7 @@ const NORMALIZE: Rule[] = [
   // Preços em inglês (calendário de tango): "€5" → "5€", e as palavras em português.
   [/€\s*(\d+(?:[.,]\d+)?)/g, '$1€'],
   [/\s*\bfor (?:non-?)?members\b/gi, ''], // "€5 for members / €10 for non-members" → "5€ / 10€"
-  [/(\d€)\s*\/\s*(?=\d)/g, '$1 ou '], // "5€ / 10€" → "5€ ou 10€"
+  [/(\d€)\s*[/|]\s*(?=\d)/g, '$1 ou '], // "5€ / 10€", "15€ | 20€" → "5€ ou 10€", "15€ ou 20€"
   [W('or'), 'ou'],
   [/(\d€) to (?=\d)/g, '$1 a '], // "5€ to 15€" → "5€ a 15€"
   [W('flexible'), 'flexível'],

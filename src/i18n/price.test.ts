@@ -31,7 +31,8 @@ const CASES: [raw: string, pt: string, en: string][] = [
   ['5€ to 15€ (flexible)', '5€ a 15€ (flexível)', '€5 to €15 (flexible)'],
   ['5€ / 3€ for students of LeT', '5€ ou 3€ para alunos de LeT', '€5 or €3 for students of LeT'],
   ['€12 or €17 or €20', '12€ ou 17€ ou 20€', '€12 or €17 or €20'],
-  ['Free', 'Gratuito', 'Free'],
+  // Tabela de valores lida da descrição ("1 class: 15€ | 2 classes: 20€").
+  ['15€ | 20€', '15€ ou 20€', '€15 or €20'],
 ]
 
 describe('translatePrice', () => {
