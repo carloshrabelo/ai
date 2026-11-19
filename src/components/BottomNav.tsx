@@ -17,13 +17,13 @@ export default function BottomNav() {
               to={to}
               end={to === '/'}
               className={({ isActive }) =>
-                `group flex h-full flex-col items-center justify-center gap-0.5 text-xs font-bold focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand ${
+                `flex h-full flex-col items-center justify-center gap-0.5 text-xs font-bold focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand ${
                   isActive ? 'text-brand' : 'text-fg-muted hover:text-fg'
                 }`
               }
             >
-              {/* Ativo: pílula roxa clara com borda atrás do ícone (estilo Duolingo). */}
-              <span className="flex h-8 w-12 items-center justify-center rounded-xl border-2 border-transparent group-aria-[current=page]:border-brand/40 group-aria-[current=page]:bg-brand/10">
+              {/* Ativo: só a cor (roxo), sem fundo nem borda. */}
+              <span className="flex h-8 w-12 items-center justify-center">
                 <Icon className="size-6" aria-hidden="true" />
               </span>
               {label(t)}
