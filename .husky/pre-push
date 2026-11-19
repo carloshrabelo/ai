@@ -1,0 +1,6 @@
+# Antes de cada push: as mesmas validações do CI (deploy.yml), no projeto inteiro.
+pnpm format:check
+pnpm lint
+pnpm knip
+pnpm exec tsc -b
+pnpm test

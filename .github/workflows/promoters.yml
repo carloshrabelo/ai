@@ -37,6 +37,9 @@ jobs:
           VITE_GOOGLE_API_KEY: ${{ secrets.VITE_GOOGLE_API_KEY }}
 
       - name: Commit do promoters.json
+        # Commit do bot: sem os hooks do husky (o deploy já roda as validações).
+        env:
+          HUSKY: 0
         run: |
           if git diff --quiet -- src/content/promoters.json; then
             echo "Sem mudanças."

@@ -1,0 +1,2 @@
+# Antes de cada commit: formata e checa só os arquivos no commit (ver lint-staged.config.js).
+pnpm exec lint-staged --concurrent false

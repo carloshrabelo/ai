@@ -40,6 +40,9 @@ jobs:
 
       - name: Commit do venues.json
         id: commit
+        # Commit do bot: sem os hooks do husky (o deploy já roda as validações).
+        env:
+          HUSKY: 0
         run: |
           if git diff --quiet -- src/content/venues.json; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
