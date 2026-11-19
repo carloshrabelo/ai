@@ -23,6 +23,8 @@ export const pt = {
     today: 'Hoje',
     tomorrow: 'Amanhã',
     pickDate: 'Escolher data',
+    previousMonth: 'Mês anterior',
+    nextMonth: 'Próximo mês',
     days: 'Dias',
   },
   feed: {

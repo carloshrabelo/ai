@@ -71,6 +71,11 @@ export function formatShortDay(day: IsoDate, locale: Locale): string {
   return `${formatWeekdayShort(day, locale)}, ${shortDate(locale).format(lisbonMidnight(day))}`
 }
 
+/** pt-BR: "novembro de 2026"; en: "November 2026". */
+export function formatMonthYear(day: IsoDate, locale: Locale): string {
+  return formatter(locale, 'monthYear', { month: 'long', year: 'numeric' }, dateLocale(locale)).format(lisbonMidnight(day))
+}
+
 /** Data e hora do build, na página Info. */
 export function formatDateTime(date: Date, locale: Locale): string {
   return new Intl.DateTimeFormat(locale, { dateStyle: 'short', timeStyle: 'short' }).format(date)

@@ -136,6 +136,7 @@ function DayMap({ startDate }: { startDate: IsoDate }) {
           startDate={startDate}
           activeDay={day}
           onSelect={selectDay}
+          genres={genres}
           actions={
             <GenreFilterButton
               open={filtersOpen}

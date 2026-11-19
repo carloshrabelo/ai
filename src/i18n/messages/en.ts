@@ -19,6 +19,8 @@ export const en: Messages = {
     today: 'Today',
     tomorrow: 'Tomorrow',
     pickDate: 'Pick a date',
+    previousMonth: 'Previous month',
+    nextMonth: 'Next month',
     days: 'Days',
   },
   feed: {

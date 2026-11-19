@@ -10,9 +10,12 @@ type Props = {
 }
 
 // Mesmo estilo dos botões de ferramenta (calendário e filtro): borda de 2px e base de 4px que afunda.
-const ITEM = `inline-flex h-11 shrink-0 cursor-pointer items-center px-3 text-sm font-bold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${TOOL}`
+const ITEM = `inline-flex h-11 shrink-0 cursor-pointer items-center justify-center px-3 xl:px-1 text-sm font-bold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand ${TOOL}`
 
-/** Ontem / Hoje / Amanhã + o dia ativo quando não é nenhum dos três. */
+/**
+ * Ontem / Hoje / Amanhã + o dia ativo quando não é nenhum dos três. Na sidebar (`xl`), os três numa
+ * linha, com a mesma largura.
+ */
 export function DayShortcuts({ today, activeDay, onSelect }: Props) {
   const { t, locale } = useI18n()
   const shortcuts = [
@@ -23,7 +26,11 @@ export function DayShortcuts({ today, activeDay, onSelect }: Props) {
   const isShortcut = shortcuts.some(({ day }) => day === activeDay)
 
   return (
-    <div role="group" aria-label={t.dates.shortcuts} className="flex gap-2 overflow-x-auto [scrollbar-width:none] xl:flex-wrap">
+    <div
+      role="group"
+      aria-label={t.dates.shortcuts}
+      className="flex gap-2 overflow-x-auto [scrollbar-width:none] xl:grid xl:grid-cols-3 xl:overflow-visible"
+    >
       {shortcuts.map(({ day, label }) => (
         <button
           key={label}
@@ -38,7 +45,7 @@ export function DayShortcuts({ today, activeDay, onSelect }: Props) {
         </button>
       ))}
       {!isShortcut && (
-        <span aria-current="date" className={`${ITEM} cursor-default tabular-nums ${TOOL_ACTIVE}`}>
+        <span aria-current="date" className={`${ITEM} cursor-default tabular-nums xl:col-span-3 ${TOOL_ACTIVE}`}>
           {formatShortDay(activeDay, locale)}
         </span>
       )}
