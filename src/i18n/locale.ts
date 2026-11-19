@@ -1,13 +1,13 @@
 import { useSyncExternalStore } from 'react'
 
 /** Idiomas suportados. Qualquer "pt-*" usa pt-BR; o resto (e a reserva), en-US. */
-export const LOCALES = ['pt-BR', 'en-US'] as const
+const LOCALES = ['pt-BR', 'en-US'] as const
 export type Locale = (typeof LOCALES)[number]
 
 /** "auto" segue o idioma do navegador; os outros fixam um idioma. */
 export type LocaleMode = 'auto' | Locale
 
-export const FALLBACK_LOCALE: Locale = 'en-US'
+const FALLBACK_LOCALE: Locale = 'en-US'
 
 /**
  * Primeiro idioma suportado na ordem de preferência do usuário (`navigator.languages`).
@@ -81,6 +81,3 @@ export function useLocaleState(): LocaleState {
     () => state,
   )
 }
-
-/** Idioma ativo, para quem precisa fora do React (formatação). */
-export const currentLocale = () => state.locale

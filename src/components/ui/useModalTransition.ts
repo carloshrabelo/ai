@@ -1,7 +1,7 @@
 import { type RefObject, useCallback, useEffect, useRef, useState } from 'react'
 
 /** Duração das animações de entrada e saída (igual ao `duration-300` das classes). */
-export const MODAL_TRANSITION_MS = 300
+const MODAL_TRANSITION_MS = 300
 
 /**
  * Abre um <dialog> como modal com animação de entrada e saída.

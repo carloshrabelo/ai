@@ -3,7 +3,7 @@ import type { DanceEventsPage } from '../../data/queries'
 import { type GenreFilterValue, matchesGenres } from '../../domain/genreFilter'
 
 /** Quantas janelas seguidas sem resultado o filtro busca sozinho antes de pausar. */
-export const MAX_FILTERED_MISSES = 3
+const MAX_FILTERED_MISSES = 3
 
 /**
  * Janelas seguidas, do fim para o começo, sem nenhum evento que passe no filtro.

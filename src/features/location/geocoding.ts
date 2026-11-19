@@ -9,7 +9,7 @@
 // - Photon (komoot): tolerante com nomes de estabelecimentos, com CORS; usado no navegador e como
 //   segunda tentativa no script.
 
-export type GeoProvider = 'nominatim' | 'photon'
+type GeoProvider = 'nominatim' | 'photon'
 
 export type GeoHit = {
   lat: number
@@ -38,7 +38,7 @@ const MIN_INTERVAL_MS: Record<GeoProvider, number> = { nominatim: 1100, photon: 
 // Consultas e validação
 
 /** "1200-443 Lisboa" → "12" (os 2 primeiros dígitos separam Lisboa, Cascais, Algarve…). */
-export function postalRegion(text: string): string | undefined {
+function postalRegion(text: string): string | undefined {
   return text.match(/\b(\d{2})\d{2}-\d{3}\b/)?.[1]
 }
 

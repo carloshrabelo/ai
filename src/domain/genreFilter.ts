@@ -13,7 +13,7 @@ export type GenreFilterValue = Genre | typeof OTHER_GENRES
 export const FILTER_VALUES: readonly GenreFilterValue[] = [...GENRES, OTHER_GENRES]
 
 /** Slug na URL: "west-coast-swing", "forro", "outros". */
-export function filterSlug(value: GenreFilterValue): string {
+function filterSlug(value: GenreFilterValue): string {
   return value === OTHER_GENRES ? 'outros' : genreSlug(value)
 }
 

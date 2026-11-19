@@ -124,7 +124,7 @@ export const GENRE_EMOJI: Partial<Record<Genre, string>> = {
  * Variações de um gênero: evento de Salsa Cubana também é de Salsa (aparece no filtro "Salsa"),
  * mas evento de Salsa não é de Salsa Cubana.
  */
-export const GENRE_PARENT: Partial<Record<Genre, Genre>> = {
+const GENRE_PARENT: Partial<Record<Genre, Genre>> = {
   'Salsa Cubana': 'Salsa',
 }
 
@@ -142,9 +142,6 @@ export const GENRE_GROUPS = Object.entries(GENRE_INCLUDES).map(([umbrella, genre
   umbrella: umbrella as Genre,
   genres: (genres as readonly Genre[]).flatMap((genre) => [genre, ...variantsOf(genre)]),
 }))
-
-/** O gênero é um conjunto (Latinas, Afro, BR)? */
-export const isUmbrella = (genre: Genre) => !!GENRE_INCLUDES[genre]
 
 /**
  * Gêneros para exibir nas tags. Um gênero "guarda-chuva" fica oculto quando algum dos gêneros
@@ -207,8 +204,4 @@ export function genreSlug(genre: Genre): string {
     .replace(/\p{Diacritic}/gu, '')
     .toLowerCase()
     .replace(/\s+/g, '-')
-}
-
-export function genreFromSlug(slug: string): Genre | undefined {
-  return GENRES.find((genre) => genreSlug(genre) === slug)
 }

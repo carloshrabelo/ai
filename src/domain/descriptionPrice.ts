@@ -2,7 +2,7 @@
 // Tabela de valores numa linha ("12€ | 10€"), valor com bebida ("10€ com bebida") ou entrada gratuita. Para revisar: /teste/sem-preco.
 
 /** Preço exibido para entrada gratuita (o tradutor de src/i18n/price.ts faz o en-US: "Free"). */
-export const FREE_PRICE = 'Gratuito'
+const FREE_PRICE = 'Gratuito'
 
 const FREE = '(?:gr[aá]tis|gratuit[ao]|livre|free)'
 // Gratuidade parcial não conta: "Free entry until 23h", "Entrada grátis antes das 22h", "… para sócios".

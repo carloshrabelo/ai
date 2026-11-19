@@ -12,7 +12,7 @@ export type EventSnapshot = {
   status: 'scheduled' | 'cancelled' | 'postponed'
 }
 
-export type ChangeField = 'title' | 'time' | 'location' | 'status'
+type ChangeField = 'title' | 'time' | 'location' | 'status'
 
 export type EventChange = {
   id: string

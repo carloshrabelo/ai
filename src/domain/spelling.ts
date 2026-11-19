@@ -7,7 +7,7 @@
 // marcados: ficam de fora as palavras sem sugestão parecida (ver `maxDistance`) e as da lista
 // `IGNORED_WORDS`.
 
-export type IssueKind = 'spelling' | 'alias'
+type IssueKind = 'spelling' | 'alias'
 
 export type Issue = {
   kind: IssueKind
@@ -177,7 +177,7 @@ function codeRanges(text: string): [number, number][] {
   return [...text.matchAll(pattern)].map((match) => [match.index ?? 0, (match.index ?? 0) + match[0].length])
 }
 
-export function levenshtein(a: string, b: string): number {
+function levenshtein(a: string, b: string): number {
   let previous = Array.from({ length: b.length + 1 }, (_, i) => i)
   for (let i = 1; i <= a.length; i++) {
     const current = [i]

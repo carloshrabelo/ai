@@ -11,7 +11,7 @@
 export const ROLES = ['promoter', 'dj', 'teacher', 'venue', 'other'] as const
 export type Role = (typeof ROLES)[number]
 
-export type Mention = { handle: string; role: Role }
+type Mention = { handle: string; role: Role }
 
 export type EventPromoters = {
   /** Perfis citados, em minúsculas, sem repetição, na ordem em que aparecem, com o papel no evento. */

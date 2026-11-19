@@ -113,7 +113,7 @@ function addJsonLd(html: string, data: Record<string, unknown>): string {
   return html.replace('</head>', `    <script type="application/ld+json" id="page-json-ld">${json}</script>\n  </head>`)
 }
 
-export function escapeHtml(text: string): string {
+function escapeHtml(text: string): string {
   return text.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;')
 }
 
