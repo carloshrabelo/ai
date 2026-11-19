@@ -1,5 +1,12 @@
 # UI — análise e sugestões de melhoria
 
+> **Status (19/11/2026):** aplicadas na `main`, exceto:
+> - **1.1:** o `/review` e as páginas de teste ainda usam Lucide. Por isso, `lucide-react` continua no `package.json`.
+> - **2.1:** abaixo de `sm`, o nome da página saiu do header (fica só para leitor de tela). O nome do app continua inteiro.
+> - **3.5:** o modo compacto não foi feito. Depende de decidir como ligar/desligar.
+> - **6.3:** os perfis citados não viraram chips com avatar. A descrição foi recolhida e as linhas repetidas saíram.
+> - **11.2:** o número do dia na faixa ficou em Nunito bold, não em Fredoka.
+
 Análise de todo o front (exceto `/test`), feita em 19/11/2026 sobre a `main`. Base:
 
 - prints em 390px (celular), 768px (tablet), 1280px, 1440px e 1920px, nos temas claro e escuro, em pt-BR e em inglês;
