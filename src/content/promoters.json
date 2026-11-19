@@ -58,6 +58,23 @@
     ],
     "lastSeen": "2026-12-02"
   },
+  "ballare_dance_studios": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/ballare_dance_studios/"
+    },
+    "venues": [
+      "Associação Luiz Pereira Motta"
+    ],
+    "genres": [
+      "Bachata",
+      "Kizomba",
+      "Salsa",
+      "Semba",
+      "Zouk"
+    ],
+    "lastSeen": "2026-11-29"
+  },
   "barracuda_da_costa": {
     "role": "promoter",
     "socials": {
@@ -685,6 +702,19 @@
     ],
     "lastSeen": "2026-10-16"
   },
+  "lydiacreativeworld": {
+    "role": "other",
+    "socials": {
+      "instagram": "https://www.instagram.com/lydiacreativeworld/"
+    },
+    "venues": [
+      "Studio Bacalhau"
+    ],
+    "genres": [
+      "Tango"
+    ],
+    "lastSeen": "2026-11-30"
+  },
   "ma.tuta": {
     "role": "other",
     "socials": {
@@ -986,6 +1016,19 @@
       "Zouk"
     ],
     "lastSeen": "2026-10-10"
+  },
+  "swingnsmile": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/swingnsmile/"
+    },
+    "venues": [
+      "Fábrica de Braço de Prata"
+    ],
+    "genres": [
+      "Swing"
+    ],
+    "lastSeen": "2026-11-18"
   },
   "timeoutmarketlisboa": {
     "role": "other",
