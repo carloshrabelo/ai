@@ -1,7 +1,7 @@
 import { addDays, type IsoDate } from '../../lib/dates'
 import { formatShortDay } from '../events/format'
 import { useI18n } from '../../i18n/useI18n'
-import { TOOL, TOOL_ACTIVE, TOOL_IDLE } from '../../components/ui/Button'
+import { TOOL, TOOL_ACTIVE, TOOL_IDLE } from '../../components/ui/buttonStyles'
 
 type Props = {
   today: IsoDate
