@@ -27,8 +27,9 @@ const NO_GENRES: readonly GenreFilterValue[] = []
 const FADE = 24
 
 /**
- * Botão de calendário + faixa de dias, do início do feed até o fim do que já foi carregado. Dias com
- * eventos ganham um ponto; as bordas da faixa esmaecem quando há mais dias para aquele lado.
+ * Botão de calendário + faixa de dias, do início do feed até o fim do que já foi carregado. As bordas
+ * da faixa esmaecem quando há mais dias para aquele lado. Os pontos de "tem evento" ficam só no
+ * calendário do mês.
  */
 export function WeekStrip({ startDate, activeDay, onSelect, genres = NO_GENRES, actions }: Props) {
   const { t, locale } = useI18n()
@@ -152,12 +153,6 @@ export function WeekStrip({ startDate, activeDay, onSelect, genres = NO_GENRES, 
                 >
                   <span className="text-sm leading-tight font-bold">{formatDayOfMonth(day, locale)}</span>
                   <span className={`text-[13px] leading-tight ${active ? '' : 'text-fg-muted'}`}>{formatWeekdayShort(day, locale)}</span>
-                  {eventDays.has(day) && (
-                    <span
-                      aria-hidden="true"
-                      className={`absolute top-1 right-1 size-1.5 rounded-full ${active ? 'bg-brand-fg' : 'bg-brand'}`}
-                    />
-                  )}
                 </button>
               </li>
             )

@@ -1,7 +1,7 @@
 import { FunnelXIcon, XIcon } from '@phosphor-icons/react'
 import { type ReactNode, useEffect, useRef } from 'react'
 import { ToggleChip } from '../../components/ui/Chip'
-import { FILTER_VALUES, type GenreFilterValue, OTHER_GENRES } from '../../domain/genreFilter'
+import { FILTER_VALUES, type GenreFilterValue, groupState, OTHER_GENRES } from '../../domain/genreFilter'
 import { type Genre, GENRE_GROUPS } from '../../domain/genres'
 import { useI18n } from '../../i18n/useI18n'
 import { GroupToggle } from './GroupToggle'
@@ -35,7 +35,7 @@ type Props = {
  * clique fora ou no botão. Fica em `top-full` do pai posicionado (a área fixa da agenda), alinhado ao conteúdo dela.
  */
 export function GenreFilterPopover({ id, onClose }: Props) {
-  const { selected, toggle, clear } = useGenreFilter()
+  const { selected, toggle, toggleAll, clear } = useGenreFilter()
   const { t } = useI18n()
   const ref = useRef<HTMLElement>(null)
 
@@ -116,9 +116,13 @@ export function GenreFilterPopover({ id, onClose }: Props) {
           ))}
           <div role="group" aria-labelledby={`${id}-others`} className="min-w-0 space-y-3">
             <ColumnHeader>
-              <span id={`${id}-others`} className="flex h-8 items-center px-1 text-xs font-semibold tracking-wide text-fg-muted">
-                {t.filters.otherStyles}
-              </span>
+              <GroupToggle
+                id={`${id}-others`}
+                label={t.filters.otherStyles}
+                pressed={groupState(STANDALONE, selected)}
+                onClick={() => toggleAll(STANDALONE)}
+                title={t.filters.allOfSet(t.filters.otherStyles)}
+              />
             </ColumnHeader>
             <div className="flex flex-wrap gap-2">
               {STANDALONE.map((value) => (

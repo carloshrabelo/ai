@@ -1,7 +1,7 @@
 import { FunnelIcon, FunnelXIcon } from '@phosphor-icons/react'
 import { Card } from '../../components/ui/Card'
 import { ToggleChip } from '../../components/ui/Chip'
-import { FILTER_VALUES, type GenreFilterValue, OTHER_GENRES } from '../../domain/genreFilter'
+import { FILTER_VALUES, type GenreFilterValue, groupState, OTHER_GENRES } from '../../domain/genreFilter'
 import { type Genre, GENRE_GROUPS } from '../../domain/genres'
 import { useGenreFilter } from './useGenreFilter'
 import { useI18n } from '../../i18n/useI18n'
@@ -19,7 +19,7 @@ const STANDALONE = FILTER_VALUES.filter((value) => !GROUPED.has(value))
  * estilos avulsos e "Outros". Todos sempre visíveis. Marcar um conjunto filtra o grupo todo.
  */
 export function GenreFilter({ plain = false }: { plain?: boolean } = {}) {
-  const { selected, toggle, clear } = useGenreFilter()
+  const { selected, toggle, toggleAll, clear } = useGenreFilter()
   const { t } = useI18n()
 
   return (
@@ -69,9 +69,13 @@ export function GenreFilter({ plain = false }: { plain?: boolean } = {}) {
           {/* Estilos fora dos conjuntos e "Outros". */}
           <div role="group" aria-labelledby="genre-filter-others" className="space-y-2">
             <div className="flex h-8 items-center gap-2">
-              <span id="genre-filter-others" className="px-1 text-xs font-semibold tracking-wide text-fg-muted">
-                {t.filters.otherStyles}
-              </span>
+              <GroupToggle
+                id="genre-filter-others"
+                label={t.filters.otherStyles}
+                pressed={groupState(STANDALONE, selected)}
+                onClick={() => toggleAll(STANDALONE)}
+                title={t.filters.allOfSet(t.filters.otherStyles)}
+              />
               <span aria-hidden="true" className="h-px flex-1 bg-border" />
             </div>
             <div className="flex flex-wrap gap-2">

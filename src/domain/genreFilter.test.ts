@@ -3,6 +3,7 @@ import {
   canonicalGenresSearch,
   coveringUmbrella,
   genresToParam,
+  groupState,
   matchesGenres,
   normalizeSlug,
   parseGenresParam,
@@ -180,5 +181,13 @@ describe('conjunto marcado inclui os estilos dele', () => {
   it('link antigo "latinas,salsa" vira só Latinas', () => {
     expect(parseGenresParam('latinas,salsa,kizomba')).toEqual(['Latinas', 'Kizomba'])
     expect(genresToParam(['Salsa', 'Latinas'])).toBe('latinas')
+  })
+})
+
+describe('groupState', () => {
+  it('nenhum, parte ou todos marcados', () => {
+    expect(groupState(['Swing', 'Tango'], [])).toBe(false)
+    expect(groupState(['Swing', 'Tango'], ['Tango', 'Salsa'])).toBe('mixed')
+    expect(groupState(['Swing', 'Tango'], ['Swing', 'Tango'])).toBe(true)
   })
 })

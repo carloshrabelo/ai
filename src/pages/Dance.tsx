@@ -16,7 +16,7 @@ import { LocationControl } from '../features/location/LocationControl'
 import { useGenreFilter } from '../features/genres/useGenreFilter'
 import { useFeedCount } from '../features/events/useFeedCount'
 import { MapPanel } from '../features/map/MapPanel'
-import { MD_QUERY, useMediaQuery, XL_QUERY, XXL_QUERY } from '../hooks/useMediaQuery'
+import { MD_QUERY, useMediaQuery, XL_QUERY } from '../hooks/useMediaQuery'
 import { SidebarPortal } from '../layouts/SidebarSlot'
 import { DanceHead } from '../seo/DanceHead'
 import { useI18n } from '../i18n/useI18n'
@@ -72,7 +72,6 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
   )
   const isXl = useMediaQuery(XL_QUERY)
   const isMd = useMediaQuery(MD_QUERY)
-  const isXxl = useMediaQuery(XXL_QUERY)
   const { t } = useI18n()
   const [filtersOpen, setFiltersOpen] = useState(false)
   const closeFilters = useCallback(() => setFiltersOpen(false), [])
@@ -100,21 +99,18 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
             activeDay={activeDay}
             onSelect={selectDay}
             genres={genres}
-            // A partir de `2xl` os filtros ficam fixos na sidebar: sem botão.
             actions={
-              !isXxl && (
-                <GenreFilterButton
-                  open={filtersOpen}
-                  onToggle={() => setFiltersOpen((value) => !value)}
-                  controls={filtersId}
-                  activeCount={genres.length}
-                />
-              )
+              <GenreFilterButton
+                open={filtersOpen}
+                onToggle={() => setFiltersOpen((value) => !value)}
+                controls={filtersId}
+                activeCount={genres.length}
+              />
             }
           />
 
           {/* A partir de `xl`: popover logo abaixo da faixa de dias. */}
-          {isXl && !isXxl && filtersOpen && <GenreFilterPopover id={filtersId} onClose={closeFilters} />}
+          {isXl && filtersOpen && <GenreFilterPopover id={filtersId} onClose={closeFilters} />}
 
           {/* Até 1279px: os filtros abrem num drawer que sobe de baixo. */}
           {!isXl && filtersOpen && (
@@ -133,10 +129,7 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
           )}
         </div>
 
-        <SidebarPortal>
-          {shortcuts}
-          {isXxl && <GenreFilter plain />}
-        </SidebarPortal>
+        <SidebarPortal>{shortcuts}</SidebarPortal>
         <SidebarPortal position="bottom">
           <LocationControl />
         </SidebarPortal>

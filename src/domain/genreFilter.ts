@@ -51,6 +51,12 @@ function withoutCovered(values: readonly GenreFilterValue[]): GenreFilterValue[]
  * Marca ou desmarca uma opção. Marcar um conjunto tira os estilos dele que estavam marcados
  * (redundantes); estilo incluído num conjunto marcado não muda (fica bloqueado).
  */
+/** Estado da caixa de um grupo: todos marcados, parte (mixed) ou nenhum. */
+export function groupState(values: readonly GenreFilterValue[], selected: readonly GenreFilterValue[]): boolean | 'mixed' {
+  const count = values.filter((value) => selected.includes(value)).length
+  return count === 0 ? false : count === values.length ? true : 'mixed'
+}
+
 export function toggleFilter(selected: readonly GenreFilterValue[], value: GenreFilterValue): GenreFilterValue[] {
   if (coveringUmbrella(value, selected)) return [...selected]
   return selected.includes(value) ? selected.filter((item) => item !== value) : withoutCovered([...selected, value])

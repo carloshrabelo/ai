@@ -33,9 +33,22 @@ export function useGenreFilter() {
 
   const toggle = useCallback((genre: GenreFilterValue) => update(toggleFilter(selected, genre)), [selected, update])
 
+  /** Marca todos os valores do grupo; se já estão todos marcados, desmarca o grupo. */
+  const toggleAll = useCallback(
+    (values: readonly GenreFilterValue[]) => {
+      const allSelected = values.every((value) => selected.includes(value))
+      update(
+        allSelected
+          ? selected.filter((value) => !values.includes(value))
+          : [...selected, ...values.filter((value) => !selected.includes(value))],
+      )
+    },
+    [selected, update],
+  )
+
   const clear = useCallback(() => {
     update([])
   }, [update])
 
-  return { selected, toggle, clear }
+  return { selected, toggle, toggleAll, clear }
 }
