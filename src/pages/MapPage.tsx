@@ -180,10 +180,14 @@ function DayMap({ startDate }: { startDate: IsoDate }) {
         <ul
           ref={carouselRef}
           aria-labelledby={carouselTitleId}
-          className="absolute inset-x-0 bottom-0 z-[1000] flex snap-x snap-mandatory items-end gap-3 overflow-x-auto scroll-px-4 px-4 pb-3 [scrollbar-width:none] md:scroll-px-6 md:px-6"
+          // Grid: todos os cards com a altura do maior. pt-3: espaço para o contorno do selecionado (a
+          // lista rola na horizontal e corta o que passa da borda).
+          className={`absolute inset-x-0 bottom-0 z-[1000] grid snap-x snap-mandatory gap-3 overflow-x-auto scroll-px-4 px-4 pt-3 pb-3 [scrollbar-width:none] md:scroll-px-6 md:px-6 ${
+            events.length === 0 ? 'grid-cols-1' : 'auto-cols-[85%] grid-flow-col sm:auto-cols-[24rem]'
+          }`}
         >
           {events.length === 0 ? (
-            <li className="w-full shrink-0">
+            <li>
               <Card className="text-center text-sm text-fg-muted">{isPending ? t.map.loading : t.map.none}</Card>
             </li>
           ) : (
@@ -193,7 +197,7 @@ function DayMap({ startDate }: { startDate: IsoDate }) {
                 <li
                   key={event.id}
                   data-slug={event.slug}
-                  className={`w-[85%] max-w-sm shrink-0 snap-center rounded-xl transition-shadow ${
+                  className={`grid snap-center rounded-xl transition-shadow ${
                     event.slug === active ? 'shadow-lg ring-2 ring-brand' : 'shadow-md'
                   }`}
                 >
