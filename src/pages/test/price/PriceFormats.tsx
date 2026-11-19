@@ -1,14 +1,15 @@
 import { Clock, MapPin, Ticket } from 'lucide-react'
 import { useState } from 'react'
-import { Card } from '../../components/ui/Card'
-import { Segmented } from '../../components/ui/Segmented'
-import { PriceChips } from '../../features/events/PriceChips'
-import { PriceFormat } from '../../features/events/PriceFormat'
-import { PRICE_CHIP_VARIANTS, type PriceChipVariant } from '../../features/events/priceChipVariants'
-import { PRICE_FORMATS, type PriceFormatId } from '../../features/events/priceFormats'
-import type { Locale } from '../../i18n/locale'
-import { siteUrl, useDocumentHead } from '../../seo/useDocumentHead'
-import { BackToTest } from './shared'
+import { Card } from '../../../components/ui/Card'
+import { Segmented } from '../../../components/ui/Segmented'
+import { PriceChips } from '../../../features/price/PriceChips'
+import { PriceFormat } from './PriceFormat'
+import type { PriceChipVariant } from '../../../features/price/PriceChips'
+import { PRICE_CHIP_VARIANTS } from './chipVariants'
+import { PRICE_FORMATS, type PriceFormatId } from './formatOptions'
+import type { Locale } from '../../../i18n/locale'
+import { siteUrl, useDocumentHead } from '../../../seo/useDocumentHead'
+import { BackToTest } from '../shared'
 
 /** Preços como vêm do calendário (os reais, de /teste/precos, e casos de borda). */
 const SAMPLES = [
@@ -83,8 +84,8 @@ export default function PriceFormats() {
       <Card className="space-y-3">
         <h2 className="text-lg font-semibold">Formato de preços</h2>
         <p className="text-sm text-fg-muted">
-          Preços com mais de um valor, em cada formato. O texto do calendário é padronizado (src/i18n/price.ts) e separado em partes
-          (src/domain/priceParts.ts); preço de um valor só aparece igual em todos.
+          Preços com mais de um valor, em cada formato. O texto do calendário é padronizado (src/domain/price/translatePrice.ts) e separado
+          em partes (src/domain/price/priceParts.ts); preço de um valor só aparece igual em todos.
         </p>
         <Segmented
           label="Idioma"
@@ -174,7 +175,7 @@ export default function PriceFormats() {
         <h2 className="text-lg font-semibold">Chips com rótulos</h2>
         <p className="text-sm text-fg-muted">
           Cada valor com a sua qualificação (sócios, alunos, bebida, porta, até 1h…), lida do texto do calendário sem descartar nada
-          (src/domain/labeledPrice.ts).
+          (src/domain/price/labeledPrice.ts).
         </p>
       </Card>
 

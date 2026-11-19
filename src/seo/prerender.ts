@@ -8,7 +8,7 @@ import { visibleGenres } from '../domain/genres'
 import { formatDayHeading, formatTimeRange } from '../features/events/format'
 import { MESSAGES } from '../i18n/messages'
 import { eventJsonLd, eventListJsonLd } from './eventJsonLd'
-import { translatePrice } from '../i18n/price'
+import { translatePrice } from '../domain/price/translatePrice'
 
 /** As páginas estáticas saem em pt-BR (o idioma do index.html). */
 const LOCALE = 'pt-BR'

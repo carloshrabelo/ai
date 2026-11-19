@@ -1,10 +1,9 @@
 import { formatEuro } from '../../lib/money'
 import { CircleHelp, Clock, DoorOpen, Gift, GraduationCap, type LucideIcon, Moon, Receipt, User, UserCheck, Wine } from 'lucide-react'
-import { labeledPrice, type PriceLabel, type PriceOption } from '../../domain/labeledPrice'
+import { labeledPrice, type PriceLabel, type PriceOption } from '../../domain/price/labeledPrice'
 import type { Locale } from '../../i18n/locale'
-import { translatePrice } from '../../i18n/price'
+import { translatePrice } from '../../domain/price/translatePrice'
 import { useI18n } from '../../i18n/useI18n'
-import type { PriceChipVariant } from './priceChipVariants'
 
 // Preço em chips, cada valor com o seu rótulo ("5€ sócios", "3€ alunos LeT"), em variações para
 // comparar em /teste/formato-precos.
@@ -105,6 +104,12 @@ function groupDetails(items: Item[]): Item[][] {
   }
   return groups
 }
+
+/**
+ * Variações de chips. O app usa `auto` (rótulo no chip; valor com detalhe unido a ele); as outras
+ * ficam para comparar em /teste/formato-precos.
+ */
+export type PriceChipVariant = 'auto' | 'plain' | 'inline' | 'stacked' | 'icon' | 'primary' | 'segmented'
 
 const CHIP = 'inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 text-xs tabular-nums whitespace-nowrap'
 

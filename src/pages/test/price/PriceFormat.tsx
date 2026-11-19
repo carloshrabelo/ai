@@ -1,8 +1,8 @@
-import { formatEuro } from '../../lib/money'
-import { type PriceParts, priceParts } from '../../domain/priceParts'
-import type { Locale } from '../../i18n/locale'
-import { normalizePrice, translatePrice } from '../../i18n/price'
-import type { PriceFormatId } from './priceFormats'
+import { formatEuro } from '../../../lib/money'
+import { type PriceParts, priceParts } from '../../../domain/price/priceParts'
+import type { Locale } from '../../../i18n/locale'
+import { normalizePrice, translatePrice } from '../../../domain/price/translatePrice'
+import type { PriceFormatId } from './formatOptions'
 
 // Jeitos de exibir um preço com mais de um valor ("5€ ou 10€", "5€ a 15€"), para comparar em
 // /teste/formato-precos. Preço com um valor só (ou texto como "Pago") aparece igual em todos.

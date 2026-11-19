@@ -3,8 +3,8 @@ import { useMemo, useState } from 'react'
 import { Link } from 'react-router'
 import { Button } from '../../components/ui/Button'
 import { Card } from '../../components/ui/Card'
-import { PriceChips } from '../../features/events/PriceChips'
-import { normalizePrice, translatePrice } from '../../i18n/price'
+import { PriceChips } from '../../features/price/PriceChips'
+import { normalizePrice, translatePrice } from '../../domain/price/translatePrice'
 import { siteUrl, useDocumentHead } from '../../seo/useDocumentHead'
 import { BackToTest, RangeFields } from './shared'
 import { useEventsInRange } from './useEventsInRange'
@@ -34,7 +34,7 @@ type PriceRow = { price: string; count: number; pt: string; en: string; untransl
 
 /**
  * Página de teste (/teste/precos, pública mas sem link no app): todos os preços distintos dos
- * eventos do período e a tradução de cada um (src/i18n/price.ts), para revisar e completar o
+ * eventos do período e a tradução de cada um (src/domain/price/translatePrice.ts), para revisar e completar o
  * dicionário. Sem i18n: é ferramenta interna.
  */
 export default function Prices() {

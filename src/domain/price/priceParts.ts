@@ -1,4 +1,4 @@
-// Partes de um preço já padronizado em português (ver normalizePrice em src/i18n/price.ts), para
+// Partes de um preço já padronizado em português (ver normalizePrice em src/domain/price/translatePrice.ts), para
 // exibir de outros jeitos: "5€ ou 10€" → alternativas [5€, 10€]; "5€ a 15€ (flexível)" → faixa de 5
 // a 15 com a observação "(flexível)"; "10€ (8€ bebida incluída)" → valor único com observação.
 
