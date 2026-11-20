@@ -1,11 +1,31 @@
 {
+  "A Beneficência Familiar - ASM do Porto": {
+    "name": "A Beneficência Familiar - ASM do Porto",
+    "lat": 41.147724,
+    "lng": -8.607477
+  },
   "A Lanchonete - Benfica, Av. Gomes Pereira 104A, 1500-332 Lisboa, Portugal": {
     "name": "A Lanchonete - Benfica",
     "lat": 38.745197,
     "lng": -9.198144
   },
+  "Academia do Lumiar, Largo Júlio Castilho 3, 1600-483 Lisboa": {
+    "name": "Academia do Lumiar",
+    "lat": 38.775464,
+    "lng": -9.164331
+  },
   "Academia Dramática Familiar 1º de Novembro de 1898 (ADF), R. da Praia de Pedrouços 76, 1400-282 Lisboa, Portugal": {
     "name": "Academia Dramática Familiar 1º de Novembro de 1898 (ADF)",
+    "lat": 38.694505,
+    "lng": -9.217889
+  },
+  "Academia Musical do Lumiar, Largo Júlio Castilho 3, Lisboa": {
+    "name": "Academia Musical do Lumiar",
+    "lat": 38.775453,
+    "lng": -9.164325
+  },
+  "ADF - Academia Dramática Familiar 1º de Novembro de 1898": {
+    "name": "ADF - Academia Dramática Familiar 1º de Novembro de 1898",
     "lat": 38.694505,
     "lng": -9.217889
   },
@@ -14,10 +34,25 @@
     "lat": 38.703296,
     "lng": -9.300812
   },
+  "Almada, Portugal, Trafaria": {
+    "name": "Almada",
+    "lat": 38.672083,
+    "lng": -9.233444
+  },
   "Armazém Cultural Lisboa, R. António Pedro 66B, 1000-039 Lisboa, Portugal": {
     "name": "Armazém Cultural Lisboa",
     "lat": 38.732673,
     "lng": -9.135056
+  },
+  "Associação Luiz Pereira Motta, Praceta António Francisco da Silva Penetra, nº 6, 2670-400 Loures, Portugal": {
+    "name": "Associação Luiz Pereira Motta",
+    "lat": 38.832454,
+    "lng": -9.177684
+  },
+  "Av. da Liberdade 157, 1250-196 Lisboa, Portugal": {
+    "name": "Av. da Liberdade 157",
+    "lat": 38.724751,
+    "lng": -9.149713
   },
   "Av. Luísa Todi 233, Av. Luísa Todi 233, 2900-463 Setúbal, Portugal": {
     "name": "Av. Luísa Todi 233",
@@ -44,6 +79,11 @@
     "lat": 38.679906,
     "lng": -9.152008
   },
+  "Bombeiros Voluntarios Vila Nova Da Barquinha": {
+    "name": "Bombeiros Voluntarios Vila Nova Da Barquinha",
+    "lat": 39.460669,
+    "lng": -8.435203
+  },
   "BreakPoint Ericeira, Urbanização Moinhos do Mar Rua 6 Lote C, 2655-319 Ericeira, Portugal": {
     "name": "BreakPoint Ericeira",
     "lat": 38.955242,
@@ -64,15 +104,30 @@
     "lat": 38.730887,
     "lng": -9.10728
   },
+  "Casa De Cultura Jaime Lobo E Silva, Ericeira [Mafra]": {
+    "name": "Casa De Cultura Jaime Lobo E Silva",
+    "lat": 38.963178,
+    "lng": -9.417753
+  },
   "Casa de Pedra, Av. Dr. Arlindo Vicente, 1950-079 Lisboa, Portugal": {
     "name": "Casa de Pedra",
     "lat": 38.751852,
     "lng": -9.125493
   },
+  "Casa do Concelho de Castanheira de Pera, Rua Alves Torgo 37, 1000-034, Lisboa, Portugal": {
+    "name": "Casa do Concelho de Castanheira de Pera",
+    "lat": 38.73337,
+    "lng": -9.135634
+  },
   "Casa do Concelho de Tomar, R. Flores do Lima 8, 1700-196 Lisboa, Portugal": {
     "name": "Casa do Concelho de Tomar",
     "lat": 38.748133,
     "lng": -9.145282
+  },
+  "Centro Norton de Matos (CNM), Coimbra": {
+    "name": "Centro Norton de Matos (CNM)",
+    "lat": 40.199147,
+    "lng": -8.410383
   },
   "Complexo Municipal dos Desportos da Cidade de Almada, Alameda de Guerra Junqueiro 35, 2810-075 Almada, Portugal": {
     "name": "Complexo Municipal dos Desportos da Cidade de Almada",
@@ -83,6 +138,11 @@
     "name": "Dança Mais com Camila Delphim",
     "lat": 38.717959,
     "lng": -9.16296
+  },
+  "Évora": {
+    "name": "Évora",
+    "lat": 38.570774,
+    "lng": -7.909281
   },
   "Fábrica de Braço de Prata, R. Fábrica de Material de Guerra 1, 1950-128 Lisboa, Portugal": {
     "name": "Fábrica de Braço de Prata",
@@ -98,6 +158,11 @@
     "name": "Galeria Antecâmara - Galeria e Rádio",
     "lat": 38.725354,
     "lng": -9.131589
+  },
+  "Galeria Antecâmara, Rua de Cabo Verde 17A": {
+    "name": "Galeria Antecâmara",
+    "lat": 41.147153,
+    "lng": -8.614376
   },
   "Hall Entrada Estação comboios do Cais do Sodré, PC Duque da Terceira, 1200-161 Lisboa, Portugal": {
     "name": "Hall Entrada Estação comboios do Cais do Sodré",
@@ -124,10 +189,40 @@
     "lat": 38.705976,
     "lng": -9.152525
   },
+  "LAGAR S. VICENTE, R. Prof. Francisco Gentil 33, 1600-622 Lisboa": {
+    "name": "LAGAR S. VICENTE",
+    "lat": 38.76024,
+    "lng": -9.169058
+  },
+  "Largo das Fontaínhas 19, 1300-023 Lisboa, Portugal": {
+    "name": "Largo das Fontaínhas 19",
+    "lat": 38.704614,
+    "lng": -9.177044
+  },
+  "Largo S. Pedro 49 4300-473 PORTO ·": {
+    "name": "Largo S. Pedro 49 4300-473 PORTO ·",
+    "lat": 41.147478,
+    "lng": -8.573649
+  },
+  "Lisboa em Tango - Espaço Argentino de Tango, Rua de Santa Apolónia 59, 1100-468 Lisboa": {
+    "name": "Lisboa em Tango - Espaço Argentino de Tango",
+    "lat": 38.718463,
+    "lng": -9.118395
+  },
   "Little Big Apple, R. Prof. Mira Fernandes 10A Lj. B, 1900-381 Lisboa, Portugal": {
     "name": "Little Big Apple",
     "lat": 38.738237,
     "lng": -9.122744
+  },
+  "Mafondana Café - Espaço Gemini, R. Sousa Lopes 12B Loja 33, 1600-207 Lisboa": {
+    "name": "Mafondana Café - Espaço Gemini",
+    "lat": 38.744014,
+    "lng": -9.153622
+  },
+  "Milonga d'A Barraca-Tango Argentino, Largo Santos 2, 1200-808 Lisboa": {
+    "name": "Milonga d'A Barraca-Tango Argentino",
+    "lat": 38.707185,
+    "lng": -9.155201
   },
   "Mirage Lounge, R. Heróis de Chaimite 31, 2675-376 Odivelas, Portugal": {
     "name": "Mirage Lounge",
@@ -139,10 +234,30 @@
     "lat": 38.727582,
     "lng": -9.137332
   },
+  "Musa da Bica, Calçada de Salvador Correia de Sá 2A, 1200-399 Lisboa, Portugal": {
+    "name": "Musa da Bica",
+    "lat": 38.708699,
+    "lng": -9.147302
+  },
+  "nº25, ATL Esq., Avenida 25 de Abril, 1675-185 Odivelas": {
+    "name": "nº25",
+    "lat": 38.763565,
+    "lng": -9.19937
+  },
   "O Melhor Bolo de Chocolate do Mundo, Avenida da Liberdade, Quiosques Liberdade - Posto 4, Rua das Pretas, 1250-145 Lisboa, Portugal": {
     "name": "O Melhor Bolo de Chocolate do Mundo",
     "lat": 38.718359,
     "lng": -9.143573
+  },
+  "OMA - Oficina de Música de Aveiro": {
+    "name": "OMA - Oficina de Música de Aveiro",
+    "lat": 40.597309,
+    "lng": -8.503995
+  },
+  "Praça 25 de Abril de 1974, Algés, Portugal": {
+    "name": "Praça 25 de Abril de 1974",
+    "lat": 38.698841,
+    "lng": -9.229869
   },
   "Praça do Bocage, Praça de Bocage, 2900-276 Setúbal, Portugal": {
     "name": "Praça do Bocage",
@@ -153,6 +268,11 @@
     "name": "R. da Voz do Operário 13",
     "lat": 38.715546,
     "lng": -9.129319
+  },
+  "R. dos Fanqueiros 286, 1100-213 Lisboa, Portugal": {
+    "name": "R. dos Fanqueiros 286",
+    "lat": 38.711731,
+    "lng": -9.136328
   },
   "R. dos Fanqueiros 286, R. dos Fanqueiros 286, 1100-226 Lisboa, Portugal": {
     "name": "R. dos Fanqueiros 286",
@@ -169,25 +289,90 @@
     "lat": 38.708862,
     "lng": -9.141372
   },
+  "Recreios Desportivos da Trafaria": {
+    "name": "Recreios Desportivos da Trafaria",
+    "lat": 38.672598,
+    "lng": -9.231537
+  },
   "Recreios Desportivos da Trafaria - Casino, R. Guedes Coelho n.º 7, 2825-854 Trafaria, Portugal": {
     "name": "Recreios Desportivos da Trafaria - Casino",
     "lat": 38.672598,
     "lng": -9.231537
+  },
+  "Rua das Escolas Gerais, 82, 1100-220 Lisboa": {
+    "name": "Rua das Escolas Gerais",
+    "lat": 38.712922,
+    "lng": -9.128188
+  },
+  "Rua de Santa Apolónia 59, 1100-468 Lisboa": {
+    "name": "Rua de Santa Apolónia 59",
+    "lat": 38.718463,
+    "lng": -9.118395
+  },
+  "Rua de Santa Apolónia 59, 1100-468 Lisboa, Portugal": {
+    "name": "Rua de Santa Apolónia 59",
+    "lat": 38.718399,
+    "lng": -9.11838
+  },
+  "Rua de Santa Apolonia n 59 Lisboa": {
+    "name": "Rua de Santa Apolonia n 59 Lisboa",
+    "lat": 38.723035,
+    "lng": -9.310335
+  },
+  "Rua do Telhado 261, Vila Nova de Gaia, Portugal": {
+    "name": "Rua do Telhado 261",
+    "lat": 41.117486,
+    "lng": -8.607643
+  },
+  "Salão Nobre do Hospital Júlio de Matos, Av. do Brasil 53, 1700-036 Lisboa, Portugal": {
+    "name": "Salão Nobre do Hospital Júlio de Matos",
+    "lat": 38.75854,
+    "lng": -9.146882
   },
   "Smile & Move, Rua Túlipas 52, 2775-668 Carcavelos": {
     "name": "Smile & Move",
     "lat": 38.684175,
     "lng": -9.329564
   },
+  "Sociedade Recreativa Musical de Carcavelos R. Júlio Moreira 5, 2775-562 Carcavelos": {
+    "name": "Sociedade Recreativa Musical de Carcavelos R. Júlio Moreira 5",
+    "lat": 38.689542,
+    "lng": -9.334354
+  },
+  "Sociedade Recreativa Musical de Carcavelos, R. Júlio Moreira 5, 2775-562 Carcavelos": {
+    "name": "Sociedade Recreativa Musical de Carcavelos",
+    "lat": 38.689542,
+    "lng": -9.334354
+  },
+  "Sonora da Voz do Operário, R. da Voz do Operário 9, 1100-620 Lisboa, Portugal": {
+    "name": "Sonora da Voz do Operário",
+    "lat": 38.71538,
+    "lng": -9.128923
+  },
   "Split Sky Club, R. Guilherme Gomes Fernandes 13, 2900-633 Setúbal, Portugal": {
     "name": "Split Sky Club",
     "lat": 38.519928,
     "lng": -8.901985
   },
+  "Studio Bacalhau, R. Ocidental do Convento 19 Loja 3, 2900-514 Setúbal": {
+    "name": "Studio Bacalhau",
+    "lat": 38.524753,
+    "lng": -8.90703
+  },
   "Teatro A Barraca, Largo Santos 2A, 1200-656 Lisboa, Portugal": {
     "name": "Teatro A Barraca",
     "lat": 38.707185,
     "lng": -9.155201
+  },
+  "Teatro da Luz, Lisboa": {
+    "name": "Teatro da Luz",
+    "lat": 38.760724,
+    "lng": -9.184355
+  },
+  "Teatro Dom Luiz Filipe (Teatro da Luz), Largo da Luz 2, 1600-458 Lisboa, Portugal": {
+    "name": "Teatro Dom Luiz Filipe (Teatro da Luz)",
+    "lat": 38.760473,
+    "lng": -9.184978
   },
   "The Dog House, Rua da Manutenção 38, 1900-319 Lisboa, Portugal": {
     "name": "The Dog House",
@@ -218,5 +403,10 @@
     "name": "Tropicavana Bar",
     "lat": 38.747459,
     "lng": -9.138844
+  },
+  "U Dance School": {
+    "name": "U Dance School",
+    "lat": 41.18317,
+    "lng": -8.689757
   }
 }
