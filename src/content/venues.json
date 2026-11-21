@@ -74,6 +74,11 @@
     "lat": 38.7008,
     "lng": -9.176189
   },
+  "Barrio Latino, R. da Cintura do Porto de Lisboa Armazem i, Edifício 78, Santos, 1200-109 Lisboa, Portugal": {
+    "name": "Barrio Latino",
+    "lat": 38.706151,
+    "lng": -9.149906
+  },
   "Beira Mar Atlético Clube de Almada": {
     "name": "Beira Mar Atlético Clube de Almada",
     "lat": 38.679906,
@@ -164,6 +169,11 @@
     "lat": 41.147153,
     "lng": -8.614376
   },
+  "Grupo Dramático e Escolar \"Os Combatentes\", Rua do Possolo 5-9 1350, 1350-046 Lisboa, Portugal": {
+    "name": "Grupo Dramático e Escolar \"Os Combatentes\"",
+    "lat": 38.711599,
+    "lng": -9.166415
+  },
   "Hall Entrada Estação comboios do Cais do Sodré, PC Duque da Terceira, 1200-161 Lisboa, Portugal": {
     "name": "Hall Entrada Estação comboios do Cais do Sodré",
     "lat": 38.705645,
@@ -253,6 +263,11 @@
     "name": "OMA - Oficina de Música de Aveiro",
     "lat": 40.597309,
     "lng": -8.503995
+  },
+  "Praça 1° de Maio, Costa da Caparica": {
+    "name": "Praça 1° de Maio",
+    "lat": 38.576667,
+    "lng": -9.198149
   },
   "Praça 25 de Abril de 1974, Algés, Portugal": {
     "name": "Praça 25 de Abril de 1974",
@@ -353,6 +368,11 @@
     "name": "Split Sky Club",
     "lat": 38.519928,
     "lng": -8.901985
+  },
+  "Stellae Studio | Escola de Dança Yoga e Pilates, Praça Natália Correia 14A, Damaia, 2720-414 Amadora, Portugal": {
+    "name": "Stellae Studio | Escola de Dança Yoga e Pilates",
+    "lat": 38.742992,
+    "lng": -9.217344
   },
   "Studio Bacalhau, R. Ocidental do Convento 19 Loja 3, 2900-514 Setúbal": {
     "name": "Studio Bacalhau",
