@@ -164,7 +164,7 @@
       "Bachata",
       "Salsa"
     ],
-    "lastSeen": "2026-11-21"
+    "lastSeen": "2026-12-19"
   },
   "dalebachata.pt": {
     "role": "promoter",
@@ -179,7 +179,7 @@
       "Bachata",
       "Salsa"
     ],
-    "lastSeen": "2026-11-21"
+    "lastSeen": "2026-12-19"
   },
   "dalemamboeuropa": {
     "role": "promoter",
@@ -211,7 +211,7 @@
       "Bachata",
       "Salsa"
     ],
-    "lastSeen": "2026-11-21"
+    "lastSeen": "2026-12-19"
   },
   "dancanapraia.ericeira": {
     "role": "promoter",
@@ -860,6 +860,19 @@
     ],
     "lastSeen": "2026-12-26"
   },
+  "osnuinos": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/osnuinos/"
+    },
+    "venues": [
+      "Stellae Studio | Escola de Dança Yoga e Pilates"
+    ],
+    "genres": [
+      "Zouk"
+    ],
+    "lastSeen": "2026-12-12"
+  },
   "paulofilipe77": {
     "role": "dj",
     "socials": {
@@ -1028,7 +1041,7 @@
     "genres": [
       "Zouk"
     ],
-    "lastSeen": "2026-10-10"
+    "lastSeen": "2026-12-12"
   },
   "swingnsmile": {
     "role": "promoter",
