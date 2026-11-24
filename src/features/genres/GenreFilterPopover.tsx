@@ -1,10 +1,11 @@
 import { FunnelXIcon, XIcon } from '@phosphor-icons/react'
 import { type ReactNode, useEffect, useRef } from 'react'
 import { ToggleChip } from '../../components/ui/Chip'
-import { FILTER_VALUES, type GenreFilterValue, groupState, OTHER_GENRES } from '../../domain/genreFilter'
-import { type Genre, GENRE_GROUPS } from '../../domain/genres'
+import { FILTER_VALUES, type GenreFilterValue, groupState, OTHER_GENRES, umbrellaState } from '../../domain/genreFilter'
+import { GENRE_GROUPS } from '../../domain/genres'
 import { useI18n } from '../../i18n/useI18n'
 import { GroupToggle } from './GroupToggle'
+import { MemberChip } from './MemberChip'
 import { genreLabel } from './genreLabel'
 import { useGenreFilter } from './useGenreFilter'
 
@@ -102,14 +103,14 @@ export function GenreFilterPopover({ id, onClose }: Props) {
               <ColumnHeader>
                 <GroupToggle
                   genre={umbrella}
-                  pressed={selected.includes(umbrella)}
+                  pressed={umbrellaState(umbrella, selected)}
                   onClick={() => toggle(umbrella)}
                   title={t.filters.allOfSet(umbrella)}
                 />
               </ColumnHeader>
               <div className="flex flex-wrap gap-2">
                 {members.map((genre) => (
-                  <MemberChip key={genre} genre={genre} umbrella={umbrella} selected={selected} onToggle={toggle} />
+                  <MemberChip key={genre} genre={genre} selected={selected} onToggle={toggle} />
                 ))}
               </div>
             </div>
@@ -139,33 +140,5 @@ export function GenreFilterPopover({ id, onClose }: Props) {
         </div>
       </div>
     </section>
-  )
-}
-
-/**
- * Estilo de um conjunto. Com o conjunto marcado, aparece marcado e bloqueado ("Incluído em Latinas"):
- * o conjunto já traz o grupo todo.
- */
-function MemberChip({
-  genre,
-  umbrella,
-  selected,
-  onToggle,
-}: {
-  genre: Genre
-  umbrella: Genre
-  selected: readonly GenreFilterValue[]
-  onToggle: (genre: GenreFilterValue) => void
-}) {
-  const { t } = useI18n()
-  const locked = selected.includes(umbrella)
-  return (
-    <ToggleChip
-      genre={genre}
-      pressed={locked || selected.includes(genre)}
-      disabled={locked}
-      title={locked ? t.filters.includedIn(umbrella) : undefined}
-      onClick={() => onToggle(genre)}
-    />
   )
 }

@@ -33,33 +33,64 @@ const UMBRELLA_OF = new Map<GenreFilterValue, Genre>(
   GENRE_GROUPS.flatMap(({ umbrella, genres }) => genres.map((genre) => [genre, umbrella] as const)),
 )
 
-/**
- * Conjunto marcado que já inclui este estilo, se houver. Com "Latinas" marcada, Salsa, Bachata etc.
- * aparecem marcados e bloqueados no filtro: o conjunto já traz o grupo todo.
- */
+/** Conjunto → estilos dele na tela de filtros (Latinas → Salsa, Salsa Cubana, Bachata, Merengue). */
+const MEMBERS_OF = new Map<GenreFilterValue, readonly Genre[]>(GENRE_GROUPS.map(({ umbrella, genres }) => [umbrella, genres]))
+
+/** Conjunto marcado que já inclui este estilo, se houver (com "Latinas" marcada, Salsa aparece marcada). */
 export function coveringUmbrella(value: GenreFilterValue, selected: readonly GenreFilterValue[]): Genre | undefined {
   const umbrella = UMBRELLA_OF.get(value)
   return umbrella && selected.includes(umbrella) ? umbrella : undefined
 }
 
-/** Tira os estilos já incluídos num conjunto marcado ("latinas,salsa" → "latinas"). */
-function withoutCovered(values: readonly GenreFilterValue[]): GenreFilterValue[] {
-  return values.filter((value) => !coveringUmbrella(value, values))
+/**
+ * Forma canônica: estilos já incluídos num conjunto marcado saem ("latinas,salsa" → Latinas), e um
+ * conjunto com todos os estilos marcados vira o próprio conjunto (Salsa + Salsa Cubana + Bachata +
+ * Merengue → Latinas). Os dois filtram os mesmos eventos: o estilo pega também os eventos marcados só
+ * com o conjunto.
+ */
+function canonical(values: readonly GenreFilterValue[]): GenreFilterValue[] {
+  let result = values.filter((value) => !coveringUmbrella(value, values))
+  for (const [umbrella, members] of MEMBERS_OF) {
+    if (members.every((member) => result.includes(member)))
+      result = [...result.filter((value) => !members.includes(value as Genre)), umbrella]
+  }
+  return result
 }
 
-/**
- * Marca ou desmarca uma opção. Marcar um conjunto tira os estilos dele que estavam marcados
- * (redundantes); estilo incluído num conjunto marcado não muda (fica bloqueado).
- */
 /** Estado da caixa de um grupo: todos marcados, parte (mixed) ou nenhum. */
 export function groupState(values: readonly GenreFilterValue[], selected: readonly GenreFilterValue[]): boolean | 'mixed' {
   const count = values.filter((value) => selected.includes(value)).length
   return count === 0 ? false : count === values.length ? true : 'mixed'
 }
 
+/**
+ * Caixa de um conjunto: marcada com o conjunto no filtro; "mixed" (intermediária) quando só parte dos
+ * estilos dele está marcada — aí o conjunto em si não está no filtro, só os estilos.
+ */
+export function umbrellaState(umbrella: Genre, selected: readonly GenreFilterValue[]): boolean | 'mixed' {
+  if (selected.includes(umbrella)) return true
+  return groupState(MEMBERS_OF.get(umbrella) ?? [], selected)
+}
+
+/**
+ * Marca ou desmarca uma opção.
+ * - Conjunto: desmarcado ou intermediário → marca o grupo todo (só o conjunto fica no filtro);
+ *   marcado → desmarca o grupo todo.
+ * - Estilo de um conjunto marcado: o conjunto sai do filtro e os outros estilos dele ficam marcados
+ *   (a caixa do conjunto passa a intermediária). Nada fica bloqueado.
+ * - Marcar o último estilo que faltava num conjunto volta a marcar o conjunto.
+ */
 export function toggleFilter(selected: readonly GenreFilterValue[], value: GenreFilterValue): GenreFilterValue[] {
-  if (coveringUmbrella(value, selected)) return [...selected]
-  return selected.includes(value) ? selected.filter((item) => item !== value) : withoutCovered([...selected, value])
+  const members = MEMBERS_OF.get(value)
+  if (members) {
+    const rest = selected.filter((item) => item !== value && !members.includes(item as Genre))
+    return selected.includes(value) ? rest : [...rest, value]
+  }
+  const umbrella = coveringUmbrella(value, selected)
+  if (umbrella) {
+    return [...selected.filter((item) => item !== umbrella), ...(MEMBERS_OF.get(umbrella) ?? []).filter((member) => member !== value)]
+  }
+  return canonical(selected.includes(value) ? selected.filter((item) => item !== value) : [...selected, value])
 }
 
 const BY_SLUG = new Map(FILTER_VALUES.map((value) => [filterSlug(value), value]))
@@ -67,7 +98,7 @@ const BY_SLUG = new Map(FILTER_VALUES.map((value) => [filterSlug(value), value])
 /**
  * Valor cru do parâmetro → opções válidas, sem repetição, na ordem de FILTER_VALUES.
  * Cada item é normalizado (caixa baixa, sem acento); o que não bate com nenhuma opção é descartado,
- * e estilos incluídos num conjunto também marcado saem ("latinas,salsa" → Latinas).
+ * na forma canônica ("latinas,salsa" → Latinas; todos os estilos de um conjunto → o conjunto).
  */
 export function parseGenresParam(raw: string | null): GenreFilterValue[] {
   if (!raw) return []
@@ -77,12 +108,14 @@ export function parseGenresParam(raw: string | null): GenreFilterValue[] {
       .map((part) => BY_SLUG.get(normalizeSlug(part)))
       .filter((value): value is GenreFilterValue => !!value),
   )
-  return withoutCovered(FILTER_VALUES.filter((value) => found.has(value)))
+  const values = canonical(FILTER_VALUES.filter((value) => found.has(value)))
+  return FILTER_VALUES.filter((value) => values.includes(value))
 }
 
 /** Opções → valor canônico do parâmetro ('' quando vazio). */
 export function genresToParam(values: readonly GenreFilterValue[]): string {
-  return withoutCovered(FILTER_VALUES.filter((value) => values.includes(value)))
+  const result = canonical(values)
+  return FILTER_VALUES.filter((value) => result.includes(value))
     .map(filterSlug)
     .join(',')
 }

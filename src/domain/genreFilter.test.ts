@@ -4,6 +4,7 @@ import {
   coveringUmbrella,
   genresToParam,
   groupState,
+  umbrellaState,
   matchesGenres,
   normalizeSlug,
   parseGenresParam,
@@ -166,11 +167,27 @@ describe('conjunto marcado inclui os estilos dele', () => {
     expect(toggleFilter(['Salsa', 'Bachata', 'Kizomba'], 'Latinas')).toEqual(['Kizomba', 'Latinas'])
   })
 
-  it('estilo incluído num conjunto marcado fica bloqueado (não muda)', () => {
-    expect(toggleFilter(['Latinas'], 'Salsa')).toEqual(['Latinas'])
-    expect(toggleFilter(['Latinas'], 'Salsa Cubana')).toEqual(['Latinas'])
+  it('estilo incluído num conjunto marcado aparece marcado', () => {
     expect(coveringUmbrella('Salsa Cubana', ['Latinas'])).toBe('Latinas')
     expect(coveringUmbrella('Kizomba', ['Latinas'])).toBeUndefined()
+  })
+
+  it('desmarcar um estilo de um conjunto marcado: o conjunto sai e os outros estilos ficam (intermediário)', () => {
+    const next = toggleFilter(['Latinas', 'Kizomba'], 'Bachata')
+    expect(next).toEqual(['Kizomba', 'Salsa', 'Salsa Cubana', 'Merengue'])
+    expect(umbrellaState('Latinas', next)).toBe('mixed')
+    expect(umbrellaState('Afro', next)).toBe('mixed')
+    expect(umbrellaState('BR', next)).toBe(false)
+  })
+
+  it('conjunto intermediário: clicar marca o grupo todo; marcado: desmarca o grupo todo', () => {
+    expect(toggleFilter(['Salsa', 'Kizomba'], 'Latinas')).toEqual(['Kizomba', 'Latinas'])
+    expect(toggleFilter(['Latinas', 'Kizomba'], 'Latinas')).toEqual(['Kizomba'])
+  })
+
+  it('marcar o último estilo que faltava volta a marcar o conjunto', () => {
+    expect(toggleFilter(['Salsa', 'Salsa Cubana', 'Merengue'], 'Bachata')).toEqual(['Latinas'])
+    expect(umbrellaState('Latinas', ['Latinas'])).toBe(true)
   })
 
   it('desmarcar o conjunto libera os estilos', () => {
@@ -181,6 +198,11 @@ describe('conjunto marcado inclui os estilos dele', () => {
   it('link antigo "latinas,salsa" vira só Latinas', () => {
     expect(parseGenresParam('latinas,salsa,kizomba')).toEqual(['Latinas', 'Kizomba'])
     expect(genresToParam(['Salsa', 'Latinas'])).toBe('latinas')
+  })
+
+  it('todos os estilos de um conjunto na URL viram o conjunto', () => {
+    expect(parseGenresParam('salsa,salsa-cubana,bachata,merengue,zouk')).toEqual(['Zouk', 'Latinas'])
+    expect(genresToParam(['Salsa', 'Salsa Cubana', 'Bachata', 'Merengue'])).toBe('latinas')
   })
 })
 

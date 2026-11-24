@@ -1,11 +1,12 @@
 import { FunnelIcon, FunnelXIcon } from '@phosphor-icons/react'
 import { Card } from '../../components/ui/Card'
 import { ToggleChip } from '../../components/ui/Chip'
-import { FILTER_VALUES, type GenreFilterValue, groupState, OTHER_GENRES } from '../../domain/genreFilter'
-import { type Genre, GENRE_GROUPS } from '../../domain/genres'
+import { FILTER_VALUES, type GenreFilterValue, groupState, OTHER_GENRES, umbrellaState } from '../../domain/genreFilter'
+import { GENRE_GROUPS } from '../../domain/genres'
 import { useGenreFilter } from './useGenreFilter'
 import { useI18n } from '../../i18n/useI18n'
 import { GroupToggle } from './GroupToggle'
+import { MemberChip } from './MemberChip'
 import { genreLabel } from './genreLabel'
 import type { ReactNode } from 'react'
 
@@ -16,7 +17,7 @@ const STANDALONE = FILTER_VALUES.filter((value) => !GROUPED.has(value))
 
 /**
  * Painel "Filtros": os conjuntos (Latinas, Afro, BR), cada um com seus gêneros, e depois os
- * estilos avulsos e "Outros". Todos sempre visíveis. Marcar um conjunto filtra o grupo todo.
+ * estilos avulsos e "Outros". Todos sempre visíveis. Marcar um conjunto filtra o grupo todo; desmarcar parte dos estilos deixa o conjunto intermediário.
  */
 export function GenreFilter({ plain = false }: { plain?: boolean } = {}) {
   const { selected, toggle, toggleAll, clear } = useGenreFilter()
@@ -52,7 +53,7 @@ export function GenreFilter({ plain = false }: { plain?: boolean } = {}) {
               <div className="flex items-center gap-2">
                 <GroupToggle
                   genre={umbrella}
-                  pressed={selected.includes(umbrella)}
+                  pressed={umbrellaState(umbrella, selected)}
                   onClick={() => toggle(umbrella)}
                   title={t.filters.allOfSet(umbrella)}
                 />
@@ -60,7 +61,7 @@ export function GenreFilter({ plain = false }: { plain?: boolean } = {}) {
               </div>
               <div className="flex flex-wrap gap-2">
                 {members.map((genre) => (
-                  <MemberChip key={genre} genre={genre} umbrella={umbrella} selected={selected} onToggle={toggle} />
+                  <MemberChip key={genre} genre={genre} selected={selected} onToggle={toggle} />
                 ))}
               </div>
             </div>
@@ -105,33 +106,5 @@ function Container({ plain, children }: { plain: boolean; children: ReactNode })
     <Card variant="panel" as="section" aria-labelledby="genre-filter-title" className="space-y-2">
       {children}
     </Card>
-  )
-}
-
-/**
- * Estilo de um conjunto. Com o conjunto marcado, aparece marcado e bloqueado ("Incluído em Latinas"):
- * o conjunto já traz o grupo todo.
- */
-function MemberChip({
-  genre,
-  umbrella,
-  selected,
-  onToggle,
-}: {
-  genre: Genre
-  umbrella: Genre
-  selected: readonly GenreFilterValue[]
-  onToggle: (genre: GenreFilterValue) => void
-}) {
-  const { t } = useI18n()
-  const locked = selected.includes(umbrella)
-  return (
-    <ToggleChip
-      genre={genre}
-      pressed={locked || selected.includes(genre)}
-      disabled={locked}
-      title={locked ? t.filters.includedIn(umbrella) : undefined}
-      onClick={() => onToggle(genre)}
-    />
   )
 }

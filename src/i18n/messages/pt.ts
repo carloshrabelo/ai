@@ -77,7 +77,6 @@ export const pt = {
     genres: 'Gêneros',
     set: (name: string) => `Conjunto ${name}`,
     allOfSet: (name: string) => `Todos de ${name}`,
-    includedIn: (name: string) => `Incluído em ${name}`,
     otherStyles: 'Outros estilos',
     /** Botão que fecha os filtros, com quantos eventos passam por eles. */
     close: 'Fechar filtros',

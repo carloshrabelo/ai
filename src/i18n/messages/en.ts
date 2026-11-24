@@ -73,7 +73,6 @@ export const en: Messages = {
     genres: 'Genres',
     set: (name) => `${name} set`,
     allOfSet: (name) => `All of ${name}`,
-    includedIn: (name) => `Included in ${name}`,
     otherStyles: 'Other styles',
     close: 'Close filters',
     done: (count) => (count === 0 ? 'Show events' : count === 1 ? 'Show 1 event' : `Show ${count} events`),
