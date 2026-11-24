@@ -1,6 +1,6 @@
 import { Link, useMatches } from 'react-router'
 import { APP_NAME, type RouteHandle } from '../app'
-import logo from '../assets/logo.png'
+import { Logo } from './Logo'
 import { useI18n } from '../i18n/useI18n'
 import { track } from '../analytics/track'
 
@@ -23,7 +23,7 @@ export default function Header() {
             to="/"
             className="flex shrink-0 items-center gap-2 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
           >
-            <img src={logo} alt="" width={48} height={40} className="h-10 w-auto shrink-0 xl:hidden" />
+            <Logo className="h-10 w-auto shrink-0 xl:hidden" />
             <span className="text-xl md:text-2xl">{APP_NAME}</span>
           </Link>
           {page && (

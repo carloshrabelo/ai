@@ -1,6 +1,6 @@
 import { Link, NavLink } from 'react-router'
 import { APP_NAME } from '../app'
-import logo from '../assets/logo.png'
+import { Logo } from './Logo'
 import { NAV_ITEMS } from './navItems'
 import { useI18n } from '../i18n/useI18n'
 import { track } from '../analytics/track'
@@ -26,7 +26,7 @@ export default function Sidebar({ slotRef, bottomSlotRef }: { slotRef: SlotRef; 
           title={APP_NAME}
           className={`rounded-lg ${FOCUS.replace('-outline-offset-2', 'outline-offset-2')}`}
         >
-          <img src={logo} alt="" width={48} height={40} className="h-11 w-auto" />
+          <Logo className="h-11 w-auto" />
         </Link>
       </div>
 
