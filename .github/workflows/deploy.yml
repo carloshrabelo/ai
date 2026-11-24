@@ -50,6 +50,16 @@ jobs:
       - run: pnpm knip
       - run: pnpm test
 
+      # Ponta a ponta e acessibilidade (Playwright + axe), no mock: fluxos principais no celular e no desktop.
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-traces
+          path: test-results/
+          retention-days: 7
+
       - run: pnpm build
         env:
           GITHUB_PAGES: 'true'

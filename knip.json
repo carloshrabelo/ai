@@ -1,12 +1,11 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "entry": [
-    "scripts/*.{ts,mjs}",
+    "scripts/*.ts",
     "src/api/config.ts",
     "src/lib/dates.ts",
     "src/api/loadEvents.ts",
     "src/domain/promoterDirectory.ts",
     "src/seo/prerender.ts"
-  ],
-  "ignoreDependencies": ["axe-core"]
+  ]
 }

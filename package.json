@@ -14,7 +14,8 @@
     "test:watch": "vitest",
     "venues:check": "node scripts/venues-check.ts",
     "promoters:update": "node scripts/promoters-update.ts",
-    "a11y": "node scripts/a11y-check.mjs",
+    "e2e": "playwright test",
+    "a11y": "playwright test e2e/a11y.spec.ts",
     "preview": "vite preview --host",
     "analyze": "ANALYZE=true vite build",
     "generate-pwa-assets": "pwa-assets-generator",
@@ -36,6 +37,8 @@
     "zustand": "^5.1.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.65.1",
     "@tailwindcss/vite": "^4.3.5",
     "@tanstack/react-query-devtools": "^5.107.1",
     "@testing-library/dom": "^10.4.2",
@@ -46,7 +49,6 @@
     "@types/react-dom": "^19.3.0",
     "@vite-pwa/assets-generator": "^2.0.0",
     "@vitejs/plugin-react": "^6.1.2",
-    "axe-core": "^4.14.1",
     "husky": "^9.1.7",
     "jsdom": "^31.0.1",
     "knip": "^6.45.1",

@@ -1,3 +1,4 @@
+/// <reference types="vitest/config" />
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { copyFileSync, mkdirSync, writeFileSync } from 'node:fs'
@@ -66,6 +67,8 @@ const appVersion = (process.env.GITHUB_SHA ?? '').slice(0, 7) || 'local'
 // https://vite.dev/config/
 export default defineConfig({
   base,
+  // Vitest: os testes de ponta a ponta (e2e/) são do Playwright (`pnpm e2e`).
+  test: { exclude: ['**/node_modules/**', 'e2e/**'] },
   define: {
     __APP_VERSION__: JSON.stringify(appVersion),
     __APP_BUILD_TIME__: JSON.stringify(new Date().toISOString()),

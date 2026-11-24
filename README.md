@@ -64,7 +64,7 @@
 
 ## Stack
 
-React 19 · TypeScript 7 · Vite 8 (Rolldown) · React Router 8 (data router) · TanStack Query 5 (dados do servidor, com persistência offline) · Zustand 5 (estado do app) · Tailwind CSS v4 · Leaflet / react-leaflet · vite-plugin-pwa (Workbox) · DOMPurify · Phosphor Icons · Vitest · oxlint / oxfmt · Knip · pnpm.
+React 19 · TypeScript 7 · Vite 8 (Rolldown) · React Router 8 (data router) · TanStack Query 5 (dados do servidor, com persistência offline) · Zustand 5 (estado do app) · Tailwind CSS v4 · Leaflet / react-leaflet · vite-plugin-pwa (Workbox) · DOMPurify · Phosphor Icons · Vitest + Testing Library · Playwright + axe · oxlint / oxfmt · Knip · pnpm.
 
 Análise de cada escolha, limitações e recomendações: [`Stack.MD`](Stack.MD).
 
@@ -111,12 +111,13 @@ pnpm dev
 | `pnpm build` | Checagem de tipos + build de produção + páginas estáticas dos eventos (`scripts/prerender.ts`). |
 | `pnpm preview` | Serve o build localmente. |
 | `pnpm analyze` | Build com a análise do bundle: gera e abre `bundle-stats.html` (ver abaixo). |
-| `pnpm test` / `pnpm test:watch` | Testes (Vitest). |
+| `pnpm test` / `pnpm test:watch` | Testes (Vitest): domínio e componentes (React Testing Library, em jsdom; apoio em `src/test/`). |
 | `pnpm lint` | Lint (oxlint). |
 | `pnpm format` / `pnpm format:check` | Formata o código (oxfmt: aspas simples, sem ponto e vírgula, 140 colunas; Markdown fica de fora) / só confere, como no CI. |
 | `pnpm knip` | Arquivos, exportações e dependências sem uso (Knip). Roda no CI. |
 | `pnpm venues:check [dias] [--fix]` | Lista os locais dos próximos eventos sem coordenadas; com `--fix`, busca e grava em `src/content/venues.json`. |
-| `pnpm a11y [url]` | Auditoria de acessibilidade (axe-core, WCAG 2.1 AA) nas telas principais; precisa do `pnpm preview` rodando. |
+| `pnpm e2e` | Testes de ponta a ponta (Playwright, em `e2e/`): fluxos principais no celular e no desktop, com o mock. Sobe o `pnpm dev` sozinho; localmente usa o Chrome instalado. Roda no CI antes do build. |
+| `pnpm a11y` | Só a parte de acessibilidade do `e2e` (axe-core, WCAG 2.1 AA + boas práticas) nas telas principais, nos dois temas. |
 | `pnpm generate-pwa-assets` | Gera os ícones do PWA a partir de `docs/assets/logo_square.png`. |
 | `pnpm promoters:update` | Atualiza `src/content/promoters.json` (roda também numa Action). |
 
@@ -152,7 +153,8 @@ src/
   seo/         <head> por página, JSON-LD, páginas estáticas (prerender)
   components/  layout (header, sidebar, bottom nav) e componentes base (Chip, Card, Button…)
   pages/       Dança (/ e /event/<slug>/), Mapa (/map, celular), Comunidade (/community), Sobre (/about), Escolas (/schools, oculta)
-scripts/       prerender.ts, venues-check.ts, promoters-update.ts, a11y-check.mjs
+scripts/       prerender.ts, venues-check.ts, promoters-update.ts
+e2e/           testes de ponta a ponta e acessibilidade (Playwright)
 docs/          prints, logo e protótipos de referência
 ```
 

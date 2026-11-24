@@ -40,3 +40,7 @@ coverage
 
 # Análise do bundle (pnpm analyze)
 bundle-stats.html
+
+# Playwright
+test-results
+playwright-report
