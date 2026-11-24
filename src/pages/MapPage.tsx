@@ -6,6 +6,7 @@ import { Card } from '../components/ui/Card'
 import { type IsoDate, isIsoDate } from '../lib/dates'
 import type { EventsLoaderData } from '../api/eventsLoader'
 import { toSearchString } from '../domain/genreFilter'
+import { useFocusedDay } from '../features/dates/focusedDayStore'
 import { WeekStrip } from '../features/dates/WeekStrip'
 import { EventCard } from '../features/events/EventCard'
 import { eventFocus } from '../features/events/eventFocusStore'
@@ -61,21 +62,39 @@ function DayMap({ startDate }: { startDate: IsoDate }) {
   const dayParam = searchParams.get(DAY_PARAM)
   const day: IsoDate = isIsoDate(dayParam) && dayParam >= startDate ? dayParam : startDate
 
+  const { events, isPending, isError, refetch, loadedEnd } = useDayEvents(startDate, day, genres)
+
+  /**
+   * Busca de datas independente da agenda: dia dentro do que já foi carregado → só troca ?day=; antes
+   * do início ou depois do carregado (seletor de data, ou dias anteriores da faixa) → a janela passa
+   * a começar nesse dia (?date=) e o loader busca os eventos dele.
+   */
   const selectDay = useCallback(
     (next: IsoDate) => {
       const params = new URLSearchParams(searchParams)
-      if (next < startDate) {
-        // Antes do início do feed (seletor de data): o feed passa a começar nesse dia.
+      if (next < startDate || (loadedEnd && next >= loadedEnd)) {
         params.set('date', next)
         params.delete(DAY_PARAM)
       } else if (next === startDate) params.delete(DAY_PARAM)
       else params.set(DAY_PARAM, next)
       setSearchParams(params, { replace: true, preventScrollReset: true })
     },
-    [searchParams, setSearchParams, startDate],
+    [searchParams, setSearchParams, startDate, loadedEnd],
   )
 
-  const { events, isPending } = useDayEvents(startDate, day, genres)
+  // Dia em foco compartilhado com a agenda: abrir o mapa (sem ?day/?date na URL) continua no dia que
+  // estava na agenda, e voltar para a agenda continua no dia escolhido aqui.
+  const setFocusedDay = useFocusedDay((state) => state.setDay)
+  const restore = useRef(searchParams.has(DAY_PARAM) || searchParams.has('date') ? null : useFocusedDay.getState().day)
+  useEffect(() => {
+    const target = restore.current
+    if (!target) return
+    // Depois do início: espera saber até onde a janela vai (dentro → ?day=; depois → ?date=).
+    if (target > startDate && isPending) return
+    restore.current = null
+    if (target !== startDate) selectDay(target)
+  }, [isPending, selectDay, startDate])
+  useEffect(() => setFocusedDay(day), [day, setFocusedDay])
   const { events: mapEvents } = useGeocodedEvents(events)
 
   // Card em foco no carrossel (o mais visível). Volta ao primeiro quando o dia muda.
@@ -199,7 +218,18 @@ function DayMap({ startDate }: { startDate: IsoDate }) {
         >
           {events.length === 0 ? (
             <li>
-              <Card className="text-center text-sm text-fg-muted">{isPending ? t.map.loading : t.map.none}</Card>
+              {isError ? (
+                <Card role="alert" className="flex flex-col items-center gap-2 text-center text-sm text-fg-muted">
+                  {t.feed.loadError}
+                  <Button variant="secondary" onClick={() => void refetch()}>
+                    {t.feed.retry}
+                  </Button>
+                </Card>
+              ) : (
+                <Card role="status" className="text-center text-sm text-fg-muted">
+                  {isPending ? t.map.loading : t.map.none}
+                </Card>
+              )}
             </li>
           ) : (
             events.map((event) => {
@@ -212,7 +242,7 @@ function DayMap({ startDate }: { startDate: IsoDate }) {
                     event.slug === active ? 'ring-2 ring-brand' : 'opacity-85'
                   }`}
                 >
-                  <EventCard event={event} onOpen={openEvent} />
+                  <EventCard event={event} onOpen={openEvent} clampTitle />
                   {!located && <span className="sr-only">{t.mapPage.noLocation}</span>}
                 </li>
               )

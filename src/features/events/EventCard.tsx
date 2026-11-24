@@ -26,6 +26,8 @@ const ICON_LINK =
 type Props = {
   event: DanceEvent
   onOpen: (slug: string) => void
+  /** Título em no máximo 2 linhas, com reticências (carrossel do mapa: cards da mesma altura). */
+  clampTitle?: boolean
 }
 
 /**
@@ -33,7 +35,7 @@ type Props = {
  * O link do calendário fica por cima e continua clicável.
  * Seleção e hover vêm do eventFocusStore (fonte única, compartilhada com o mapa).
  */
-export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
+export const EventCard = memo(function EventCard({ event, onOpen, clampTitle = false }: Props) {
   const { t, locale } = useI18n()
   // Só este card re-renderiza quando a seleção ou o hover dele mudam.
   const selected = useEventFocus((state) => state.selectedSlug === event.slug)
@@ -55,7 +57,8 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
     >
       {/* Cabeçalho: o título usa a largura toda e só a 1ª linha desvia do botão do calendário (um
           espaço flutuante dentro do título reserva o lugar; o botão fica por cima, absoluto no canto).
-          Sem line-clamp: o overflow:hidden dele faria o título inteiro desviar do espaço. */}
+          Sem line-clamp na lista: o overflow:hidden dele faria o título inteiro desviar do espaço. No mapa
+          (`clampTitle`), 2 linhas com reticências. */}
       <header>
         <h3 className="text-lg font-semibold">
           <button
@@ -66,9 +69,19 @@ export const EventCard = memo(function EventCard({ event, onOpen }: Props) {
               event.status === 'cancelled' ? 'line-through decoration-2' : ''
             }`}
           >
-            {/* Reserva só o lugar do ícone (20px + 4px), na 1ª linha (28px de altura). */}
-            <span aria-hidden="true" className="float-right ml-1 h-7 w-5" />
-            {event.title}
+            {clampTitle ? (
+              // Com reticências o espaço flutuante não funciona (o bloco cortado desvia dele por inteiro):
+              // as 2 linhas deixam o lugar do ícone (pr-6) e o título completo fica no `title`.
+              <span title={event.title} className="line-clamp-2 pr-6 break-words">
+                {event.title}
+              </span>
+            ) : (
+              <>
+                {/* Reserva só o lugar do ícone (20px + 4px), na 1ª linha (28px de altura). */}
+                <span aria-hidden="true" className="float-right ml-1 h-7 w-5" />
+                {event.title}
+              </>
+            )}
           </button>
         </h3>
         {/* No canto do card (relativo ao article, não ao header, para o título continuar esticado sobre

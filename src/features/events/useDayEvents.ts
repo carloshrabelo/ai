@@ -8,7 +8,7 @@ import { groupByDay } from './groupByDay'
 
 /** Eventos de um dia do feed, já com o filtro de gêneros (mesma regra da lista). */
 export function useDayEvents(startDate: IsoDate, day: IsoDate, genres: readonly GenreFilterValue[]) {
-  const { data, isPending } = useInfiniteQuery(eventsInfiniteQueryOptions(startDate))
+  const { data, isPending, isError, refetch } = useInfiniteQuery(eventsInfiniteQueryOptions(startDate))
 
   const events = useMemo((): DanceEvent[] => {
     const pages = data?.pages ?? []
@@ -17,5 +17,8 @@ export function useDayEvents(startDate: IsoDate, day: IsoDate, genres: readonly 
     return groupByDay(filtered, startDate, rangeEnd).find((group) => group.day === day)?.events ?? []
   }, [data, startDate, day, genres])
 
-  return { events, isPending }
+  /** Fim (exclusivo) do que já foi carregado: dias a partir daqui ainda não têm eventos buscados. */
+  const loadedEnd = data?.pages.at(-1)?.end
+
+  return { events, isPending, isError, refetch, loadedEnd }
 }
