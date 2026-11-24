@@ -111,7 +111,8 @@ export function DayShortcuts({ today, activeDay, onSelect }: Props) {
           aria-pressed={isCustom}
           aria-expanded={pickerOpen}
           aria-haspopup="dialog"
-          aria-label={showDate ? `${t.dates.pickDate}: ${formatShortDay(activeDay, locale)}` : t.dates.pickDate}
+          // O nome acessível começa pelo texto visível (WCAG 2.5.3: quem usa comando de voz fala o que vê).
+          aria-label={showDate ? `${formatShortDay(activeDay, locale)} (${t.dates.otherDate})` : undefined}
           onClick={() => setPickerOpen((open) => !open)}
           className={`${ITEM} tabular-nums xl:col-span-full ${isCustom ? TOOL_ACTIVE : TOOL_IDLE}`}
         >

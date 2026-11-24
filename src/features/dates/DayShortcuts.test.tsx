@@ -36,7 +36,7 @@ describe('DayShortcuts', () => {
     render(<DayShortcuts today={TODAY} activeDay="2026-11-23" onSelect={() => {}} />)
     expect(buttons().map((button) => button.textContent)).toEqual(['Ontem', 'Hoje', 'Amanhã', 'Seg, 23/11'])
     expect(screen.getAllByRole('button', { pressed: true }).map((button) => button.textContent)).toEqual(['Ontem'])
-    expect(buttons().at(-1)!.getAttribute('aria-label')).toBe('Escolher data: Seg, 23/11')
+    expect(buttons().at(-1)!.getAttribute('aria-label')).toBe('Seg, 23/11 (Outra data)')
   })
 
   it('atalho escolhe o dia', () => {
@@ -54,13 +54,13 @@ describe('DayShortcuts', () => {
     const other = buttons().at(-1)!
     expect(other.getAttribute('aria-pressed')).toBe('true')
     expect(other.textContent).toBe('Qui, 10/12')
-    expect(other.getAttribute('aria-label')).toBe('Escolher data: Qui, 10/12')
+    expect(other.getAttribute('aria-label')).toBe('Qui, 10/12 (Outra data)')
   })
 
   it('"Outra data" abre o calendário numa folha (celular) e escolher um dia chama onSelect', () => {
     const onSelect = vi.fn()
     render(<DayShortcuts today={TODAY} activeDay={TODAY} onSelect={onSelect} />)
-    fireEvent.click(screen.getByRole('button', { name: 'Escolher data' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Outra data' }))
     const sheet = document.querySelector('dialog[open]') as HTMLElement
     expect(sheet.getAttribute('aria-label')).toBe('Escolher data')
     fireEvent.click(within(sheet).getByRole('button', { name: /, 10\/11/ }))
@@ -70,7 +70,7 @@ describe('DayShortcuts', () => {
   it('no desktop (xl), o calendário abre num popover e fecha com Esc', () => {
     setViewport(1440)
     render(<DayShortcuts today={TODAY} activeDay={TODAY} onSelect={() => {}} />)
-    fireEvent.click(screen.getByRole('button', { name: 'Escolher data' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Outra data' }))
     expect(screen.getByRole('dialog', { name: 'Escolher data' }).tagName).toBe('DIV')
     fireEvent.keyDown(document, { key: 'Escape' })
     expect(screen.queryByRole('dialog')).toBeNull()
