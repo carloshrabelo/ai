@@ -15,6 +15,8 @@
   /* Troca de mês no calendário (botões, teclado ou deslize): o mês novo entra pelo lado certo. */
   --animate-month-next: month-next 200ms ease-out;
   --animate-month-previous: month-previous 200ms ease-out;
+  /* Dias e cards do feed entram aos poucos (ao carregar as próximas semanas). */
+  --animate-fade-in: fade-in 250ms ease-out;
 }
 
 @theme inline {
@@ -272,6 +274,12 @@
 @media (prefers-reduced-motion: reduce) {
   .pin-pulse::after {
     display: none;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
   }
 }
 

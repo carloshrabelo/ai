@@ -94,13 +94,13 @@ function EventFeedContent({ startDate, genres, onOpenEvent }: FeedProps) {
       {/* Uma grade só: o cabeçalho do dia ocupa a linha inteira e os cards seguem em 2 colunas
           a partir de `xl`. `data-day` é usado pela navegação por dia (useDayNavigation). */}
       {days.length > 0 && (
-        <div className={GRID}>
+        <div className={`${GRID} motion-safe:*:animate-fade-in`}>
           {days.map(({ day, events }, index) => (
             <Fragment key={day}>
               <h2
                 id={`day-${day}`}
                 data-day={day}
-                className={`sticky top-[calc(3.5rem+env(safe-area-inset-top)+var(--feed-sticky-height,0px))] z-[4] col-span-full -mx-1 bg-bg px-1 py-1 text-base font-bold text-fg ${index > 0 ? 'mt-3' : ''}`}
+                className={`sticky top-[calc(3.5rem+env(safe-area-inset-top)+var(--feed-sticky-height,0px))] z-[4] col-span-full -mx-1 bg-bg px-1 py-1 text-base font-bold text-fg after:pointer-events-none after:absolute after:inset-x-0 after:top-full after:h-6 after:bg-linear-to-b after:from-bg after:to-transparent ${index > 0 ? 'mt-3' : ''}`}
               >
                 {dayLabel(day, today, t, locale)}
               </h2>
