@@ -12,6 +12,9 @@
 @theme {
   --font-sans: 'Nunito', ui-sans-serif, system-ui, sans-serif;
   --font-display: 'Fredoka', 'Nunito', ui-sans-serif, system-ui, sans-serif;
+  /* Troca de mês no calendário (botões, teclado ou deslize): o mês novo entra pelo lado certo. */
+  --animate-month-next: month-next 200ms ease-out;
+  --animate-month-previous: month-previous 200ms ease-out;
 }
 
 @theme inline {
@@ -262,5 +265,19 @@
 @media (prefers-reduced-motion: reduce) {
   .pin-pulse::after {
     display: none;
+  }
+}
+
+@keyframes month-next {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+}
+
+@keyframes month-previous {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
   }
 }

@@ -1,15 +1,13 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { CalendarDotsIcon } from '@phosphor-icons/react'
-import { type ReactNode, useCallback, useEffect, useRef, useState } from 'react'
-import { BottomSheet } from '../../components/ui/BottomSheet'
-import { useMediaQuery, XL_QUERY } from '../../hooks/useMediaQuery'
-import { CalendarPicker } from './CalendarPicker'
+import { type ReactNode, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { IconButton } from '../../components/ui/Button'
 import { WINDOW_DAYS } from '../../api/config'
-import { addDays, type IsoDate, todayIso } from '../../lib/dates'
+import { addDays, type IsoDate } from '../../lib/dates'
 import { eventsInfiniteQueryOptions } from '../../api/queries'
 import { formatDayHeading, formatDayOfMonth, formatWeekdayShort } from '../events/format'
 import { useI18n } from '../../i18n/useI18n'
+import { DatePickerPopup } from './DatePickerPopup'
 
 type Props = {
   startDate: IsoDate
@@ -20,24 +18,31 @@ type Props = {
 }
 
 const FADE = 24
+/** Dias antes do início do feed mostrados na faixa. Escolher um deles recomeça o feed nesse dia. */
+const PAST_DAYS = 7
+/** Perto do fim da faixa (px), busca mais 2 semanas: a faixa não depende de a lista ter rolado. */
+const LOAD_MORE_AT = 120
+
+const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 /**
- * Botão de calendário + faixa de dias, do início do feed até o fim do que já foi carregado. As bordas
- * da faixa esmaecem quando há mais dias para aquele lado.
+ * Botão de calendário + faixa de dias: uma semana antes do início do feed até o fim do que já foi
+ * carregado (e busca mais ao chegar perto do fim). O dia ativo fica sempre no centro da faixa. As
+ * bordas esmaecem quando há mais dias para aquele lado.
  */
 export function WeekStrip({ startDate, activeDay, onSelect, actions }: Props) {
   const { t, locale } = useI18n()
-  const isXl = useMediaQuery(XL_QUERY)
-  // Só lê o cache (mesma query do feed): a faixa cresce conforme novas janelas chegam.
-  const { data } = useInfiniteQuery(eventsInfiniteQueryOptions(startDate))
+  // Mesma query do feed: a faixa cresce conforme novas janelas chegam (pela lista ou pela própria faixa).
+  const { data, hasNextPage, isFetchingNextPage, fetchNextPage } = useInfiniteQuery(eventsInfiniteQueryOptions(startDate))
   const end = data?.pages.at(-1)?.end ?? addDays(startDate, WINDOW_DAYS)
   const days: IsoDate[] = []
-  for (let day = startDate; day < end; day = addDays(day, 1)) days.push(day)
+  for (let day = addDays(startDate, -PAST_DAYS); day < end; day = addDays(day, 1)) days.push(day)
 
   const stripRef = useRef<HTMLUListElement>(null)
   const [edges, setEdges] = useState({ start: false, end: false })
   const [pickerOpen, setPickerOpen] = useState(false)
-  const pickerRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const closePicker = useCallback(() => setPickerOpen(false), [])
 
   const updateEdges = useCallback(() => {
     const strip = stripRef.current
@@ -47,49 +52,64 @@ export function WeekStrip({ startDate, activeDay, onSelect, actions }: Props) {
     setEdges((current) => (current.start === start && current.end === endEdge ? current : { start, end: endEdge }))
   }, [])
 
+  /**
+   * Põe o dia ativo no centro da faixa, sem rolar a página. Mede pela própria faixa (e não por
+   * offsetLeft, que conta a partir do contêiner `relative` e incluía a largura do botão do calendário,
+   * deixando o dia ~72px à esquerda do centro).
+   */
+  const center = useCallback(
+    (behavior: ScrollBehavior) => {
+      const strip = stripRef.current
+      const item = strip?.querySelector<HTMLElement>(`[data-strip-day="${activeDay}"]`)
+      if (!strip || !item) return
+      const stripRect = strip.getBoundingClientRect()
+      const itemRect = item.getBoundingClientRect()
+      const left = strip.scrollLeft + itemRect.left - stripRect.left - (strip.clientWidth - itemRect.width) / 2
+      strip.scrollTo({ left, behavior })
+    },
+    [activeDay],
+  )
+
+  // Mudou a largura (fontes, botões ao lado, rotação): recentra sem animação. Só quando a largura muda
+  // de fato: o observer dispara ao ser criado (e é recriado quando chegam mais dias), e recentrar aí
+  // puxava a faixa de volta para o dia ativo enquanto o usuário a rolava até o fim.
+  const stripWidth = useRef(0)
   useEffect(() => {
     const strip = stripRef.current
     if (!strip) return
     updateEdges()
-    const observer = new ResizeObserver(updateEdges)
+    const observer = new ResizeObserver(() => {
+      const width = strip.clientWidth
+      if (stripWidth.current && width !== stripWidth.current) center('auto')
+      stripWidth.current = width
+      updateEdges()
+    })
     observer.observe(strip)
     return () => observer.disconnect()
-  }, [updateEdges, days.length])
+  }, [updateEdges, center, days.length])
 
-  // Mantém o dia ativo visível na faixa, sem rolar a página.
-  useEffect(() => {
+  // Só ao rolar a faixa (não ao montar ou redimensionar): numa tela larga, a faixa inteira cabe e
+  // buscaria janelas sem ninguém pedir.
+  const onStripScroll = () => {
+    updateEdges()
     const strip = stripRef.current
-    const item = strip?.querySelector<HTMLElement>(`[data-strip-day="${activeDay}"]`)
-    if (!strip || !item) return
-    strip.scrollTo({ left: item.offsetLeft - strip.clientWidth / 2 + item.clientWidth / 2, behavior: 'smooth' })
-  }, [activeDay])
-
-  // Popover (desktop): fecha com Esc ou clique fora.
-  useEffect(() => {
-    if (!pickerOpen || !isXl) return
-    const onPointer = (event: PointerEvent) => {
-      if (!pickerRef.current?.contains(event.target as Node)) setPickerOpen(false)
-    }
-    const onKey = (event: globalThis.KeyboardEvent) => {
-      if (event.key === 'Escape') setPickerOpen(false)
-    }
-    document.addEventListener('pointerdown', onPointer)
-    document.addEventListener('keydown', onKey)
-    return () => {
-      document.removeEventListener('pointerdown', onPointer)
-      document.removeEventListener('keydown', onKey)
-    }
-  }, [pickerOpen, isXl])
-
-  const pick = (day: IsoDate) => {
-    setPickerOpen(false)
-    onSelect(day)
+    if (!strip) return
+    const remaining = strip.scrollWidth - strip.clientWidth - strip.scrollLeft
+    if (remaining < LOAD_MORE_AT && hasNextPage && !isFetchingNextPage) void fetchNextPage()
   }
-  const picker = <CalendarPicker value={activeDay} today={todayIso()} onSelect={pick} />
+
+  // Dia ativo no centro. Na montagem (e ao trocar o início do feed), vai direto, sem animação: a faixa
+  // já aparece centrada. Depois, anima.
+  const centered = useRef(false)
+  useLayoutEffect(() => {
+    center(centered.current && !prefersReducedMotion() ? 'smooth' : 'auto')
+    centered.current = true
+  }, [center, startDate])
+
   const mask = `linear-gradient(to right, ${edges.start ? 'transparent' : 'black'}, black ${FADE}px, black calc(100% - ${FADE}px), ${edges.end ? 'transparent' : 'black'})`
 
   return (
-    <div ref={pickerRef} className="relative flex items-center gap-2">
+    <div ref={containerRef} className="relative flex items-center gap-2">
       <IconButton
         label={t.dates.pickDate}
         variant="tool"
@@ -99,43 +119,29 @@ export function WeekStrip({ startDate, activeDay, onSelect, actions }: Props) {
         onClick={() => setPickerOpen((open) => !open)}
         className="size-14"
       />
-      {pickerOpen && isXl && (
-        <div
-          role="dialog"
-          aria-label={t.dates.pickDate}
-          className="absolute top-full left-0 z-20 mt-2 rounded-2xl border-2 border-b-4 border-border bg-surface p-3 shadow-md"
-        >
-          {picker}
-        </div>
-      )}
-      {pickerOpen && !isXl && (
-        <BottomSheet label={t.dates.pickDate} onClose={() => setPickerOpen(false)}>
-          <div className="flex justify-center pt-2">{picker}</div>
-        </BottomSheet>
-      )}
+      {pickerOpen && <DatePickerPopup value={activeDay} onSelect={onSelect} onClose={closePicker} containerRef={containerRef} />}
 
       {/* Moldura dos cards e botões (borda de 2px, base de 4px). Altura total 56px, igual aos botões ao
           lado: 2 + 4 de borda, 4 + 4 de padding e 42px de dia. A moldura fica por fora e a rolagem por
-          dentro, para o degradê das bordas não apagar a borda. */}
+          dentro, para o degradê das bordas não apagar a borda. Sem scroll-snap: o snap puxava a faixa
+          para o início do item e tirava o dia ativo do centro. */}
       <div className="min-w-0 flex-1 rounded-2xl border-2 border-b-4 border-border bg-surface px-1.5 py-1">
         <ul
           ref={stripRef}
           aria-label={t.dates.days}
-          onScroll={updateEdges}
+          onScroll={onStripScroll}
           style={{ maskImage: mask, WebkitMaskImage: mask }}
-          className="flex snap-x gap-1 overflow-x-auto [scrollbar-width:none]"
+          className="flex gap-1 overflow-x-auto overscroll-x-contain [scrollbar-width:none]"
         >
           {days.map((day) => {
             const active = day === activeDay
             return (
-              <li key={day} data-strip-day={day} className="flex-1 shrink-0 snap-start">
+              <li key={day} data-strip-day={day} className="flex-1 shrink-0">
                 <button
                   type="button"
                   aria-pressed={active}
                   aria-label={formatDayHeading(day, locale)}
-                  onClick={() => {
-                    onSelect(day)
-                  }}
+                  onClick={() => onSelect(day)}
                   className={`relative flex h-10.5 w-full min-w-11 cursor-pointer flex-col items-center justify-center rounded-xl tabular-nums transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand ${
                     active ? 'bg-brand text-brand-fg' : 'text-fg hover:bg-surface-muted'
                   }`}

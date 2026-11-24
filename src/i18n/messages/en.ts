@@ -19,6 +19,7 @@ export const en: Messages = {
     today: 'Today',
     tomorrow: 'Tomorrow',
     pickDate: 'Pick a date',
+    otherDate: 'Other date',
     previousMonth: 'Previous month',
     nextMonth: 'Next month',
     days: 'Days',
