@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { ALIAS } from './genres'
-import { parseGenres } from './parseGenres'
+import { genresInTitleWords, parseGenres } from './parseGenres'
 
 describe('parseGenres', () => {
   it.each([
@@ -86,5 +86,28 @@ describe('parseGenres', () => {
 
   it.each(['Vários', 'Fusão', ''])('%j → nenhum gênero', (tag) => {
     expect(parseGenres(tag)).toEqual([])
+  })
+})
+
+describe('genresInTitleWords', () => {
+  it.each([
+    ['Salsaviva Festa_', ['Salsa']],
+    ['Milonga TangoLX ed. 2027', ['Tango']],
+    ['Vitrola Forrozeira', ['Forró']],
+    ['Bachatazo de Verão', ['Bachata']],
+    ['ZOUKANDO', ['Zouk']],
+  ] as const)('%j → %j', (title, genres) => {
+    expect(genresInTitleWords(title)).toEqual(genres)
+  })
+
+  it.each([
+    'Salsa no Parque', // palavra igual ao estilo: fica com genresInText
+    'Latinidades', // conjuntos (Latinas, Afro, BR) não contam colados
+    'Afrobeat Night',
+    'Brasileirinho',
+    'Westie Fest',
+    'Noite Africana',
+  ])('%j → nenhum', (title) => {
+    expect(genresInTitleWords(title)).toEqual([])
   })
 })

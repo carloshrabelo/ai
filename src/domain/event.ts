@@ -3,7 +3,7 @@ import { lisbonMidnight } from '../lib/dates'
 import type { GCalDateTime, GCalEvent } from './gcal'
 import type { CalendarSource } from './calendarSources'
 import { confirmedUmbrellas, GENRES, type Genre } from './genres'
-import { genresInText } from './parseGenres'
+import { genresInText, genresInTitleWords } from './parseGenres'
 import { priceFromDescription } from './price/descriptionPrice'
 import { type EventStatus, parseSummary } from './parseSummary'
 import { eventSlug } from './slug'
@@ -55,7 +55,8 @@ export function toDanceEvent(event: GCalEvent): DanceEvent {
   // (ex.: tag "Bachata & Kizomba" com "70% Bachata / 30% Salsa" na descrição → inclui Salsa).
   // Inclusive os que a tag já implica: "Latinas" com Salsa e Bachata na descrição mostra os três.
   const text = `${title}\n${htmlToText(description, { tagSeparator: ' ' })}`
-  const textGenres = genresInText(text)
+  // Também estilos colados no começo de uma palavra do título ("Salsaviva" → Salsa).
+  const textGenres = [...new Set([...genresInText(text), ...genresInTitleWords(title)])]
   // Tag composta ("Afro-Latinas"): só as partes que o conteúdo confirma.
   const fromTag = confirmedUmbrellas(tagGenres, textGenres, text)
   const genres = GENRES.filter((genre) => fromTag.includes(genre) || textGenres.includes(genre))

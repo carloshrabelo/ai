@@ -95,6 +95,17 @@ describe('toDanceEvent', () => {
     expect(visibleGenres(event.genres)).toEqual(['Latinas', 'Afro'])
   })
 
+  it('"Afro-Latinas" com o estilo colado no nome da festa: "Salsaviva" confirma Latinas e vira Salsa', () => {
+    // Evento de 12/12/2026: a descrição só tem os DJs e um link, sem "salsa" solto.
+    const event = toDanceEvent({
+      ...base,
+      summary: 'Afro-Latinas • Salsaviva Festa_ • 5€',
+      description: 'Mais info:\n\nDj\nNuno Melo\nJosé Tavares\nLuís Monteiro\n\nhttps://www.facebook.com/share/1D1iAEtYVh/',
+    })
+    expect(event.genres).toEqual(['Salsa', 'Latinas'])
+    expect(visibleGenres(event.genres)).toEqual(['Salsa'])
+  })
+
   it('"Afro" com Kizomba na descrição: exibe Kizomba, oculta Afro', () => {
     const event = toDanceEvent({ ...base, summary: 'Pista Africana • Noite', description: 'Kizomba até de manhã' })
     expect(visibleGenres(event.genres)).toEqual(['Kizomba'])

@@ -61,3 +61,29 @@ export function genresInText(text: string): Genre[] {
   }
   return GENRES.filter((genre) => found.has(genre))
 }
+
+/** Sem acento e em maiúsculas: "Forrozeira" e "Forró" comparam como FORROZEIRA e FORRO. */
+const plain = (text: string) => text.normalize('NFD').replace(/\p{M}/gu, '').toUpperCase()
+
+/**
+ * Estilos de uma palavra só que podem aparecer colados no começo de outra palavra no título. Os
+ * conjuntos (Latinas, Afro…) ficam de fora pelo mesmo motivo de NOT_IN_TEXT, e os de várias palavras
+ * (West Coast Swing, Salsa Cubana, Urban Kiz) não fazem sentido colados.
+ */
+const PREFIX_GENRES = GENRES.filter((genre) => !genre.includes(' ') && !NOT_IN_TEXT.has(genre))
+  .sort(byLengthDesc)
+  .map((genre) => ({ genre, prefix: plain(genre) }))
+
+/**
+ * Estilos no começo de uma palavra mais longa do título, como nome de festa ou de grupo: "Salsaviva"
+ * → Salsa, "Milonga TangoLX" → Tango, "Forrozeira" → Forró, "Bachatazo" → Bachata. Só no título: na
+ * descrição, links e @perfis dariam falsos positivos. A palavra igual ao estilo fica com genresInText.
+ */
+export function genresInTitleWords(title: string): Genre[] {
+  const found = new Set<Genre>()
+  for (const word of plain(title).match(/[\p{L}\p{N}]+/gu) ?? []) {
+    const match = PREFIX_GENRES.find(({ prefix }) => word.length > prefix.length && word.startsWith(prefix))
+    if (match) found.add(match.genre)
+  }
+  return GENRES.filter((genre) => found.has(genre))
+}
