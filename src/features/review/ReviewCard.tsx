@@ -1,4 +1,4 @@
-import { Check, Copy, ExternalLink } from 'lucide-react'
+import { ArrowSquareOutIcon, CheckIcon, CopyIcon } from '@phosphor-icons/react'
 import { useState } from 'react'
 import { Link } from 'react-router'
 import { Button } from '../../components/ui/Button'
@@ -6,6 +6,7 @@ import { Card } from '../../components/ui/Card'
 import { eventPath } from '../events/useSelectedEvent'
 import { IssueRow } from './IssueRow'
 import { corrected, type FieldIssue, type Reviewed, type ValueOf, when } from './review'
+import { copyText } from '../../lib/clipboard'
 
 const LINK = 'font-medium text-brand hover:underline'
 
@@ -25,19 +26,20 @@ async function copy(text: string, html?: string) {
       // sem suporte a HTML: só o texto
     }
   }
-  await navigator.clipboard.writeText(text)
+  await copyText(text, 'Copie o texto:')
 }
 
 type Props = Reviewed & {
-  valueOf: ValueOf
+  /** Valor escolhido para cada erro (sugestão, outra opção ou null = manter). */
+  chosenValue: ValueOf
   onChoose: (issue: FieldIssue, value: string | null) => void
   onIgnore: (word: string) => void
 }
 
 /** Um grupo de eventos com erros: datas (links do Google Agenda), cada erro e o texto corrigido. */
-export function ReviewCard({ group, issues, valueOf, onChoose, onIgnore }: Props) {
+export function ReviewCard({ group, issues, chosenValue, onChoose, onIgnore }: Props) {
   const [copied, setCopied] = useState<'title' | 'description' | null>(null)
-  const fixed = corrected(group, issues, valueOf)
+  const fixed = corrected(group, issues, chosenValue)
   const [first] = group.events
 
   const copyField = async (field: 'title' | 'description') => {
@@ -48,7 +50,7 @@ export function ReviewCard({ group, issues, valueOf, onChoose, onIgnore }: Props
     setTimeout(() => setCopied((current) => (current === field ? null : current)), 2000)
   }
   const icon = (field: 'title' | 'description') =>
-    copied === field ? <Check className="size-4" aria-hidden="true" /> : <Copy className="size-4" aria-hidden="true" />
+    copied === field ? <CheckIcon className="size-4" aria-hidden="true" /> : <CopyIcon className="size-4" aria-hidden="true" />
 
   return (
     <Card className="space-y-3">
@@ -68,7 +70,7 @@ export function ReviewCard({ group, issues, valueOf, onChoose, onIgnore }: Props
                 className={`${LINK} inline-flex items-center gap-1 tabular-nums`}
               >
                 {when(event)}
-                <ExternalLink className="size-3" aria-hidden="true" />
+                <ArrowSquareOutIcon className="size-3" aria-hidden="true" />
               </a>
             </li>
           ))}
@@ -84,7 +86,7 @@ export function ReviewCard({ group, issues, valueOf, onChoose, onIgnore }: Props
             key={issue.id}
             issue={issue}
             text={group.texts.find((text) => text.field === issue.field)?.plain.text ?? ''}
-            value={valueOf(issue)}
+            value={chosenValue(issue)}
             onChange={(value) => onChoose(issue, value)}
             onIgnore={issue.kind === 'spelling' ? () => onIgnore(issue.word) : undefined}
           />
@@ -93,13 +95,13 @@ export function ReviewCard({ group, issues, valueOf, onChoose, onIgnore }: Props
 
       <div className="flex flex-wrap gap-2">
         {fixed.title?.changed && (
-          <Button variant="secondary" onClick={() => copyField('title')}>
+          <Button variant="secondary" onClick={() => void copyField('title')}>
             {icon('title')}
             Copiar título corrigido
           </Button>
         )}
         {fixed.description?.changed && (
-          <Button variant="secondary" onClick={() => copyField('description')}>
+          <Button variant="secondary" onClick={() => void copyField('description')}>
             {icon('description')}
             Copiar descrição corrigida
           </Button>

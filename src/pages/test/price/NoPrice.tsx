@@ -1,4 +1,4 @@
-import { X } from 'lucide-react'
+import { XIcon } from '@phosphor-icons/react'
 import { useEffect, useId, useMemo, useState } from 'react'
 import { Link } from 'react-router'
 import { IconButton } from '../../../components/ui/Button'
@@ -173,7 +173,7 @@ function DetailsAside({ row, onClose }: { row?: Row; onClose: () => void }) {
               </a>
             </p>
           </div>
-          <IconButton label="Fechar detalhes" icon={<X className="size-5" aria-hidden="true" />} onClick={onClose} />
+          <IconButton label="Fechar detalhes" icon={<XIcon className="size-5" aria-hidden="true" />} onClick={onClose} />
         </div>
         <hr className="border-border" />
         <EventDetails key={event.id} event={event} headingId={headingId} />

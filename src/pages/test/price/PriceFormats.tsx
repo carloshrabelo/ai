@@ -1,4 +1,4 @@
-import { Clock, MapPin, Ticket } from 'lucide-react'
+import { ClockIcon, MapPinIcon, TicketIcon } from '@phosphor-icons/react'
 import { useState } from 'react'
 import { Card } from '../../../components/ui/Card'
 import { Segmented } from '../../../components/ui/Segmented'
@@ -154,16 +154,16 @@ export default function PriceFormats() {
             <div key={card.title} className="space-y-1.5 rounded-xl border border-border bg-surface p-4">
               <p className="text-lg font-semibold">{card.title}</p>
               <p className="flex items-center gap-2 text-sm text-fg-muted">
-                <MapPin className="size-4 shrink-0" aria-hidden="true" />
+                <MapPinIcon className="size-4 shrink-0" aria-hidden="true" />
                 {card.place}
               </p>
               <p className="flex items-start gap-4 text-sm text-fg-muted">
                 <span className="flex items-center gap-2 whitespace-nowrap">
-                  <Clock className="size-4 shrink-0" aria-hidden="true" />
+                  <ClockIcon className="size-4 shrink-0" aria-hidden="true" />
                   {card.time}
                 </span>
                 <span className="flex min-w-0 items-start gap-2">
-                  <Ticket className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
+                  <TicketIcon className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
                   <PriceFormat price={card.price} format={format} locale={locale} />
                 </span>
               </p>
@@ -235,15 +235,15 @@ export default function PriceFormats() {
             <div key={card.title} className="space-y-1.5 rounded-xl border border-border bg-surface p-4">
               <p className="text-lg font-semibold">{card.title}</p>
               <p className="flex items-center gap-2 text-sm text-fg-muted">
-                <MapPin className="size-4 shrink-0" aria-hidden="true" />
+                <MapPinIcon className="size-4 shrink-0" aria-hidden="true" />
                 {card.place}
               </p>
               <p className="flex items-center gap-2 text-sm text-fg-muted">
-                <Clock className="size-4 shrink-0" aria-hidden="true" />
+                <ClockIcon className="size-4 shrink-0" aria-hidden="true" />
                 {card.time}
               </p>
               <p className="flex items-start gap-2 text-sm">
-                <Ticket className="mt-0.5 size-4 shrink-0 text-fg-muted" aria-hidden="true" />
+                <TicketIcon className="mt-0.5 size-4 shrink-0 text-fg-muted" aria-hidden="true" />
                 <PriceChips price={card.price} variant={chipVariant} locale={locale} />
               </p>
             </div>

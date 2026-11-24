@@ -1,4 +1,4 @@
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeftIcon } from '@phosphor-icons/react'
 import { Link } from 'react-router'
 
 // Peças comuns das páginas da área de teste (/test). O período (RangeFields) está em features/range.
@@ -7,7 +7,7 @@ import { Link } from 'react-router'
 export function BackToTest() {
   return (
     <Link to="/test" className="inline-flex items-center gap-1 text-sm font-medium text-brand hover:underline">
-      <ArrowLeft className="size-4" aria-hidden="true" />
+      <ArrowLeftIcon className="size-4" aria-hidden="true" />
       Teste
     </Link>
   )

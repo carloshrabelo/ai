@@ -1,4 +1,4 @@
-import { Check, ChevronDown, Copy } from 'lucide-react'
+import { CaretDownIcon, CheckIcon, CopyIcon } from '@phosphor-icons/react'
 import type { IconWeight } from '@phosphor-icons/react'
 import { createContext, createElement, type ReactNode, use, useState } from 'react'
 import { Button } from '../../../components/ui/Button'
@@ -7,6 +7,7 @@ import { Segmented } from '../../../components/ui/Segmented'
 import { siteUrl, useDocumentHead } from '../../../seo/useDocumentHead'
 import { BackToTest } from '../shared'
 import { currentIndex, type Group, type GroupId, GROUPS, type IconComponent, SECTIONS } from './iconGroups'
+import { copyText } from '../../../lib/clipboard'
 
 /** Peso dos ícones do Phosphor na página (o escolhido foi o Duotone). */
 const WeightContext = createContext<IconWeight>('duotone')
@@ -43,9 +44,8 @@ export default function Icons() {
   }
 
   const copy = async () => {
-    await navigator.clipboard.writeText(
-      [`Phosphor, peso ${weight}`, ...GROUPS.map((group) => `${group.title}: ${chosen(group.id).name}`)].join('\n'),
-    )
+    const text = [`Phosphor, peso ${weight}`, ...GROUPS.map((group) => `${group.title}: ${chosen(group.id).name}`)].join('\n')
+    if (!(await copyText(text, 'Copie:'))) return
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
@@ -84,8 +84,8 @@ export default function Icons() {
             <Card className="space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <h2 className="text-lg font-semibold">Prévia</h2>
-                <Button onClick={copy}>
-                  {copied ? <Check className="size-4" aria-hidden="true" /> : <Copy className="size-4" aria-hidden="true" />}
+                <Button onClick={() => void copy()}>
+                  {copied ? <CheckIcon className="size-4" aria-hidden="true" /> : <CopyIcon className="size-4" aria-hidden="true" />}
                   {copied ? 'Copiado' : 'Copiar escolha'}
                 </Button>
               </div>
@@ -296,7 +296,7 @@ function IconChoices({
             <Glyph icon={chosen.icon} className="size-5" />
             <span className="font-mono text-xs">{chosen.name}</span>
           </span>
-          <ChevronDown className={`size-5 shrink-0 text-fg-muted transition-transform ${open ? 'rotate-180' : ''}`} aria-hidden="true" />
+          <CaretDownIcon className={`size-5 shrink-0 text-fg-muted transition-transform ${open ? 'rotate-180' : ''}`} aria-hidden="true" />
         </button>
       </h4>
       {open && (

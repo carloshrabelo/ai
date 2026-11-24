@@ -1,9 +1,20 @@
-import { BookUser, ChevronRight, Shapes, SpellCheck, type LucideIcon, UsersRound, Megaphone, Tag, Ticket, TicketX } from 'lucide-react'
+import {
+  AddressBookIcon,
+  CaretRightIcon,
+  MegaphoneIcon,
+  ProhibitInsetIcon,
+  ShapesIcon,
+  TagIcon,
+  TextAaIcon,
+  TicketIcon,
+  UsersIcon,
+  type Icon,
+} from '@phosphor-icons/react'
 import { Link } from 'react-router'
 import { Card } from '../../components/ui/Card'
 import { siteUrl, useDocumentHead } from '../../seo/useDocumentHead'
 
-type Tool = { to: string; title: string; description: string; icon: LucideIcon }
+type Tool = { to: string; title: string; description: string; icon: Icon }
 type Section = { title: string; description: string; tools: Tool[] }
 
 /** Ferramentas da área de teste, por seção. Página nova: criar em src/pages/test/, registrar a rota
@@ -17,7 +28,7 @@ const SECTIONS: Section[] = [
         to: '/test/icons',
         title: 'Ícones e nomes',
         description: 'Sugestões de ícone para Dança e para o filtro, e de nome e ícone para Mapa e Sobre, com prévia.',
-        icon: Shapes,
+        icon: ShapesIcon,
       },
     ],
   },
@@ -29,19 +40,19 @@ const SECTIONS: Section[] = [
         to: '/test/prices',
         title: 'Preços',
         description: 'Preços distintos dos eventos, com a versão em pt-BR e en-US e o que ficou sem tradução.',
-        icon: Tag,
+        icon: TagIcon,
       },
       {
         to: '/test/price-formats',
         title: 'Formato de preços',
         description: 'Jeitos de exibir preços com mais de um valor ("5€ ou 10€"), lado a lado e num card de evento.',
-        icon: Ticket,
+        icon: TicketIcon,
       },
       {
         to: '/test/no-price',
         title: 'Eventos sem preço',
         description: 'Eventos sem preço no título, com o trecho da descrição que cita valor, quando houver.',
-        icon: TicketX,
+        icon: ProhibitInsetIcon,
       },
     ],
   },
@@ -53,7 +64,7 @@ const SECTIONS: Section[] = [
         to: '/test/promoters',
         title: 'Responsáveis pelos eventos',
         description: 'Perfis do Instagram e "Organização: …" citados nos eventos, por promotor ou por evento.',
-        icon: Megaphone,
+        icon: MegaphoneIcon,
       },
     ],
   },
@@ -65,19 +76,19 @@ const SECTIONS: Section[] = [
         to: '/test/promoter-directory',
         title: 'Promotores: redes, locais e estilos',
         description: 'Um registro por perfil, com as redes sociais, os locais e os estilos dos eventos e o último evento.',
-        icon: BookUser,
+        icon: AddressBookIcon,
       },
       {
         to: '/test/people',
         title: 'Envolvidos por grupo',
         description: 'Promotores, professores, DJs, locais e outros, com foto (ou iniciais) e o @ de cada um.',
-        icon: UsersRound,
+        icon: UsersIcon,
       },
       {
         to: '/review',
         title: 'Revisão do texto dos eventos (pública)',
         description: 'Ortografia e perfis escritos errado, com o texto corrigido para copiar e o link do Google Agenda.',
-        icon: SpellCheck,
+        icon: TextAaIcon,
       },
     ],
   },
@@ -116,7 +127,7 @@ export default function TestIndex() {
                     </h3>
                     <p className="text-sm text-fg-muted">{description}</p>
                   </div>
-                  <ChevronRight className="size-5 shrink-0 text-fg-muted" aria-hidden="true" />
+                  <CaretRightIcon className="size-5 shrink-0 text-fg-muted" aria-hidden="true" />
                 </Card>
               </li>
             ))}

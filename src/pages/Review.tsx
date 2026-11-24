@@ -1,4 +1,4 @@
-import { Check, Copy } from 'lucide-react'
+import { CheckIcon, CopyIcon } from '@phosphor-icons/react'
 import { useMemo, useState } from 'react'
 import { Button } from '../components/ui/Button'
 import { Card } from '../components/ui/Card'
@@ -12,6 +12,7 @@ import { buildReport, type FieldIssue, findIssues, groupEvents, VENUE_WORDS } fr
 import { useSpellcheck } from '../features/review/useSpellcheck'
 import { useIgnoredWords } from '../features/review/ignoredWords'
 import { siteUrl, useDocumentHead } from '../seo/useDocumentHead'
+import { copyText } from '../lib/clipboard'
 
 /**
  * O que verificar: ortografia (LanguageTool, mais lento) e perfis escritos errado. Ao abrir, sempre só
@@ -61,7 +62,7 @@ export default function Review() {
 
   const copyAll = async () => {
     const calendars = sources.map((source) => CALENDARS[source].label)
-    await navigator.clipboard.writeText(buildReport(reviewed, valueOf, { calendars, from: range.from, to: range.to }))
+    if (!(await copyText(buildReport(reviewed, valueOf, { calendars, from: range.from, to: range.to }), 'Copie o relatório:'))) return
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
@@ -118,8 +119,8 @@ export default function Review() {
           <CheckField label="Ortografia (LanguageTool)" checked={checks.spelling} onChange={toggle('spelling')} />
         </fieldset>
         <div className="flex flex-wrap items-center gap-3">
-          <Button onClick={copyAll} disabled={reviewed.length === 0}>
-            {copied ? <Check className="size-4" aria-hidden="true" /> : <Copy className="size-4" aria-hidden="true" />}
+          <Button onClick={() => void copyAll()} disabled={reviewed.length === 0}>
+            {copied ? <CheckIcon className="size-4" aria-hidden="true" /> : <CopyIcon className="size-4" aria-hidden="true" />}
             {copied ? 'Copiado' : 'Copiar tudo corrigido, com os links'}
           </Button>
           {ignored.length > 0 && (
@@ -135,7 +136,7 @@ export default function Review() {
           key={group.key}
           group={group}
           issues={issues}
-          valueOf={valueOf}
+          chosenValue={valueOf}
           onChoose={(issue, value) => setChoices((current) => ({ ...current, [issue.id]: value }))}
           onIgnore={(word) => setIgnored([...new Set([...ignored, word.toLowerCase()])])}
         />

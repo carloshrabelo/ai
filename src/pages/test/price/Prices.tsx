@@ -1,4 +1,4 @@
-import { CircleHelp, Ticket } from 'lucide-react'
+import { QuestionIcon, TicketIcon } from '@phosphor-icons/react'
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router'
 import { Button } from '../../../components/ui/Button'
@@ -9,6 +9,7 @@ import { siteUrl, useDocumentHead } from '../../../seo/useDocumentHead'
 import { RangeFields } from '../../../features/range/RangeFields'
 import { BackToTest } from '../shared'
 import { useEventsInRange } from '../../../features/range/useEventsInRange'
+import { copyText } from '../../../lib/clipboard'
 
 /**
  * Sugestões de texto para evento sem preço identificado; o app usa o grupo "Ver descrição | Consultar
@@ -69,7 +70,7 @@ export default function Prices() {
   }, [query.data])
 
   const copy = async (label: string, text: string) => {
-    await navigator.clipboard.writeText(text)
+    if (!(await copyText(text, 'Copie:'))) return
     setCopied(label)
     setTimeout(() => setCopied(null), 2000)
   }
@@ -91,10 +92,10 @@ export default function Prices() {
               : `${query.data.length} eventos · ${withPrice} com preço · ${rows.length} preços distintos · ${untranslated} sem tradução`}
         </p>
         <div className="flex flex-wrap gap-2">
-          <Button variant="secondary" disabled={rows.length === 0} onClick={() => copy('list', asList())}>
+          <Button variant="secondary" disabled={rows.length === 0} onClick={() => void copy('list', asList())}>
             {copied === 'list' ? 'Copiado!' : 'Copiar lista'}
           </Button>
-          <Button variant="secondary" disabled={rows.length === 0} onClick={() => copy('json', asJson())}>
+          <Button variant="secondary" disabled={rows.length === 0} onClick={() => void copy('json', asJson())}>
             {copied === 'json' ? 'Copiado!' : 'Copiar JSON (dicionário)'}
           </Button>
         </div>
@@ -189,7 +190,7 @@ function NoPriceTerms({ total, withPrice }: { total?: number; withPrice: number 
 function TermChip({ text, icon, label }: { text: string; icon?: boolean; label: string }) {
   return (
     <span className="flex items-center gap-2 text-fg-muted">
-      <Ticket className="size-4 shrink-0" aria-hidden="true" />
+      <TicketIcon className="size-4 shrink-0" aria-hidden="true" />
       <span
         className="inline-flex w-fit items-center gap-1 rounded-full border border-dashed border-border px-2 py-0.5 text-xs whitespace-nowrap"
         title={icon ? label : undefined}
@@ -201,7 +202,7 @@ function TermChip({ text, icon, label }: { text: string; icon?: boolean; label: 
               </span>
             ))
           : text}
-        {icon && <CircleHelp className="size-3.5" aria-hidden="true" />}
+        {icon && <QuestionIcon className="size-3.5" aria-hidden="true" />}
         {icon && !text && <span className="sr-only">{label}</span>}
       </span>
     </span>
