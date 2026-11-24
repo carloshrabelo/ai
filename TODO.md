@@ -45,11 +45,10 @@ antigo, `carloshrabelo.dev/ai/`, era de teste e não tinha usuários: ficou sem 
 
 - [x] **Enforce HTTPS** e certificado: `http://` redireciona para `https://` (conferido em 24/11).
 - [x] A chave do Google aceita `https://lisbondance.com/` (conferido em 24/11: eventos reais carregam no site).
-- [ ] Tirar os referrers antigos da chave (`carloshrabelo.dev/ai/*`, `carloshrabelo.github.io/ai/*`).
+- [ ] Restringir a chave do Google ao domínio novo (seção 5).
 - [ ] **AAAA** (IPv6, opcional): `2606:50c0:8000::153`, `8001::153`, `8002::153`, `8003::153` no domínio raiz.
-- [ ] **Renovação automática** ligada nos dois painéis e o cartão válido. Lembrete no calendário ~1 mês antes do
-  vencimento de cada domínio.
-- [ ] **Dynadot:** conferir que a privacidade do WHOIS ficou ligada (é automática).
+- [x] **Renovação automática** e privacidade do WHOIS na Dynadot (24/11).
+- [ ] Lembrete no calendário ~1 mês antes do vencimento de cada domínio.
 - [ ] **`.pt`** (depois da validação): conferir o titular e o e-mail de contato no registrador (o `.pt` exige dados
   corretos; e-mail não verificado pode levar à suspensão) e redirecionar 301 para `https://lisbondance.com`:
   - Dynadot: *Domain → Forwarding* (URL forwarding, permanente/301).
@@ -197,7 +196,12 @@ Usa a **Instagram Graph API oficial (Business Discovery)**. O endpoint interno `
 ### 5. Chave da Google Calendar API
 
 - [x] Projeto, Google Calendar API ativada e API key criada (o site publicado mostra os eventos reais: só 8 dos 71 títulos do sitemap existem no mock).
-- [ ] Conferir as restrições da chave (ela fica visível no JavaScript publicado):
+- [ ] **A chave não tem restrição de domínio** (testado em 24/11: funciona sem referer e com qualquer site). Ela fica
+  visível no JavaScript publicado, então qualquer um pode usá-la na Calendar API e gastar a cota (o site para de
+  carregar eventos). Outras APIs não estão ativadas no projeto dela (Maps, Drive, Sheets, YouTube negados). Não se
+  sabe em que conta do Google ela foi criada (17/11): procurar em console.cloud.google.com → *APIs & Services →
+  Credentials* em cada conta, ou criar um projeto e uma chave novos e trocar o secret `VITE_GOOGLE_API_KEY` no GitHub
+  e no `.env.local`. Restrições:
   - *Application restrictions* → **HTTP referrers**: `https://lisbondance.com/*` e, para desenvolvimento, `http://localhost:*/*`. O build das páginas estáticas (`scripts/prerender.ts`) envia o referer do site.
   - *API restrictions* → só **Google Calendar API**.
 - [ ] Nunca commitar o `.env.local` (já está no `.gitignore`). Se a chave vazar, gerar outra e apagar a antiga.
