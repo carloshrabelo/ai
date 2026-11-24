@@ -19,6 +19,6 @@ export function useLegacyEventRedirect(startDate: IsoDate) {
     if (!legacyId || event === undefined) return
     const params = new URLSearchParams(location.search)
     params.delete(LEGACY_EVENT_PARAM)
-    navigate({ pathname: event ? eventPath(event.slug) : '/', search: toSearchString(params) }, { replace: true })
+    void navigate({ pathname: event ? eventPath(event.slug) : '/', search: toSearchString(params) }, { replace: true })
   }, [legacyId, event, location.search, navigate])
 }

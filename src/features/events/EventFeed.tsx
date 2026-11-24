@@ -124,7 +124,7 @@ function EventFeedContent({ startDate, genres, onOpenEvent }: FeedProps) {
       {isFetchNextPageError ? (
         <div className="flex flex-col items-center gap-2 text-center">
           <p className="text-sm text-fg-muted">{t.feed.loadMoreError}</p>
-          <Button variant="secondary" onClick={() => fetchNextPage()}>
+          <Button variant="secondary" onClick={() => void fetchNextPage()}>
             {t.feed.retry}
           </Button>
         </div>
@@ -142,7 +142,7 @@ function EventFeedContent({ startDate, genres, onOpenEvent }: FeedProps) {
       ) : hasNextPage ? (
         !isFetchingNextPage && (
           <div className="flex justify-center">
-            <Button variant="secondary" onClick={() => fetchNextPage()}>
+            <Button variant="secondary" onClick={() => void fetchNextPage()}>
               {t.feed.loadMore}
             </Button>
           </div>

@@ -87,6 +87,7 @@ export function WeekStrip({ startDate, activeDay, onSelect, actions }: Props) {
     })
     observer.observe(strip)
     return () => observer.disconnect()
+    // oxlint-disable-next-line react/exhaustive-effect-dependencies -- gatilho: novos dias chegando recriam o observer (a lista mudou de tamanho)
   }, [updateEdges, center, days.length])
 
   // Só ao rolar a faixa (não ao montar ou redimensionar): numa tela larga, a faixa inteira cabe e
@@ -105,6 +106,7 @@ export function WeekStrip({ startDate, activeDay, onSelect, actions }: Props) {
   useLayoutEffect(() => {
     center(centered.current && !prefersReducedMotion() ? 'smooth' : 'auto')
     centered.current = true
+    // oxlint-disable-next-line react/exhaustive-effect-dependencies -- gatilho: trocar o início do feed recentra a faixa, sem animação na primeira vez
   }, [center, startDate])
 
   const mask = `linear-gradient(to right, ${edges.start ? 'transparent' : 'black'}, black ${FADE}px, black calc(100% - ${FADE}px), ${edges.end ? 'transparent' : 'black'})`

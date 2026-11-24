@@ -83,6 +83,7 @@ export function EventDetailsPanel({ startDate, slug, onClose, className = 'flex-
   // Leva o foco para o título ao abrir/trocar de evento.
   useEffect(() => {
     document.getElementById(headingId)?.focus({ preventScroll: true })
+    // oxlint-disable-next-line react/exhaustive-effect-dependencies -- gatilho: trocar de evento leva o foco de novo para o título
   }, [slug, headingId])
 
   return (

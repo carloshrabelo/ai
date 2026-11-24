@@ -36,7 +36,7 @@ export function useSelectedEvent() {
     (slug: string) => {
       const alreadyOpen = selectedSlug !== null
       // Trocar de um evento para outro não empilha histórico.
-      navigate(
+      void navigate(
         { pathname: eventPath(slug), search: searchWithoutLegacy() },
         {
           replace: alreadyOpen,
@@ -49,8 +49,8 @@ export function useSelectedEvent() {
   )
 
   const close = useCallback(() => {
-    if ((location.state as OpenedState)?.openedFromList) navigate(-1)
-    else navigate({ pathname: '/', search: searchWithoutLegacy() }, { replace: true, preventScrollReset: true })
+    if ((location.state as OpenedState)?.openedFromList) void navigate(-1)
+    else void navigate({ pathname: '/', search: searchWithoutLegacy() }, { replace: true, preventScrollReset: true })
   }, [navigate, searchWithoutLegacy, location.state])
 
   return { selectedSlug, open, close }

@@ -4,6 +4,7 @@
 // - checa os tipos do projeto (tsc -b não aceita lista de arquivos: roda inteiro se há TS no commit).
 export default {
   '*': 'oxfmt --no-error-on-unmatched-pattern',
-  '*.{ts,tsx,js,mjs,cjs}': 'oxlint',
+  // --type-aware: regras que usam os tipos (promises esquecidas, async em onClick…).
+  '*.{ts,tsx,js,mjs,cjs}': 'oxlint --type-aware',
   '*.{ts,tsx}': () => 'tsc -b',
 }

@@ -26,7 +26,7 @@ export function useGenreFilter() {
       if (value) params.set(GENRES_PARAM, value)
       else params.delete(GENRES_PARAM)
       // Filtro não cria entrada no histórico nem rola a página.
-      navigate({ pathname, search: toSearchString(params) }, { replace: true, preventScrollReset: true })
+      void navigate({ pathname, search: toSearchString(params) }, { replace: true, preventScrollReset: true })
     },
     [navigate, pathname, search],
   )

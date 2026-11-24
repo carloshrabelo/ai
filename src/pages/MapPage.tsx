@@ -123,11 +123,13 @@ function DayMap({ startDate }: { startDate: IsoDate }) {
       resize.disconnect()
       visible.disconnect()
     }
+    // oxlint-disable-next-line react/exhaustive-effect-dependencies -- gatilho: a lista de eventos mudou: observar os cards novos do carrossel
   }, [events])
 
   // Volta o carrossel ao início ao trocar de dia.
   useEffect(() => {
     carouselRef.current?.scrollTo({ left: 0 })
+    // oxlint-disable-next-line react/exhaustive-effect-dependencies -- gatilho: trocar de dia volta o carrossel ao início
   }, [day])
 
   /** Pino tocado: traz o card do evento para o centro do carrossel. */
@@ -143,7 +145,7 @@ function DayMap({ startDate }: { startDate: IsoDate }) {
     (slug: string) => {
       const params = new URLSearchParams(searchParams)
       params.delete(DAY_PARAM)
-      navigate({ pathname: eventPath(slug), search: toSearchString(params) }, { state: { openedFromList: true } })
+      void navigate({ pathname: eventPath(slug), search: toSearchString(params) }, { state: { openedFromList: true } })
     },
     [navigate, searchParams],
   )
