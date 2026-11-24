@@ -1,5 +1,7 @@
-import { readText, writeText } from '../lib/storage'
-import { useSyncExternalStore } from 'react'
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
+import { useShallow } from 'zustand/react/shallow'
+import { legacyStorage } from '../lib/persistStorage'
 
 /** Idiomas suportados. Qualquer "pt-*" usa pt-BR; o resto (e a reserva), en-US. */
 const LOCALES = ['pt-BR', 'en-US'] as const
@@ -25,12 +27,6 @@ export function detectLocale(languages: readonly string[]): Locale {
 
 const STORAGE_KEY = 'locale'
 
-function readMode(): LocaleMode {
-  if (!IN_BROWSER) return 'auto'
-  const value = readText(STORAGE_KEY)
-  return value === 'pt-BR' || value === 'en-US' ? value : 'auto'
-}
-
 const IN_BROWSER = typeof window !== 'undefined' && typeof document !== 'undefined'
 
 const browserLanguages = (): readonly string[] =>
@@ -42,34 +38,42 @@ function resolve(mode: LocaleMode): LocaleState {
   return { mode, locale: mode === 'auto' ? detectLocale(browserLanguages()) : mode }
 }
 
-let state = resolve(readMode())
-const listeners = new Set<() => void>()
+/**
+ * Idioma escolhido e idioma ativo. Só o modo é salvo, no formato antigo: `locale` guarda "pt-BR" ou
+ * "en-US" em texto puro, e "Automático" apaga a chave.
+ */
+const useLocaleStore = create<LocaleState>()(
+  persist(() => resolve('auto'), {
+    name: STORAGE_KEY,
+    partialize: ({ mode }) => ({ mode }),
+    storage: legacyStorage<{ mode: LocaleMode }>({
+      parse: (text) => (text === 'pt-BR' || text === 'en-US' ? { mode: text } : undefined),
+      serialize: ({ mode }) => (mode === 'auto' ? null : mode),
+    }),
+    // O idioma ativo é derivado do modo salvo.
+    merge: (persisted, current) => ({ ...current, ...resolve((persisted as Partial<LocaleState> | undefined)?.mode ?? current.mode) }),
+  }),
+)
 
-function apply(next: LocaleState) {
-  state = next
-  if (IN_BROWSER) document.documentElement.lang = next.locale
-  for (const listener of listeners) listener()
+const applyLang = (locale: Locale) => {
+  if (IN_BROWSER) document.documentElement.lang = locale
 }
-apply(state)
+applyLang(useLocaleStore.getState().locale)
+useLocaleStore.subscribe((state, previous) => {
+  if (state.locale !== previous.locale) applyLang(state.locale)
+})
 
 // Mudou o idioma do sistema/navegador com o app aberto.
 if (IN_BROWSER) {
   window.addEventListener('languagechange', () => {
-    if (state.mode === 'auto') apply(resolve('auto'))
+    if (useLocaleStore.getState().mode === 'auto') useLocaleStore.setState(resolve('auto'))
   })
 }
 
 export function setLocaleMode(mode: LocaleMode) {
-  writeText(STORAGE_KEY, mode === 'auto' ? null : mode) // sem storage: vale só nesta sessão
-  apply(resolve(mode))
+  useLocaleStore.setState(resolve(mode))
 }
 
 export function useLocaleState(): LocaleState {
-  return useSyncExternalStore(
-    (listener) => {
-      listeners.add(listener)
-      return () => listeners.delete(listener)
-    },
-    () => state,
-  )
+  return useLocaleStore(useShallow(({ mode, locale }) => ({ mode, locale })))
 }

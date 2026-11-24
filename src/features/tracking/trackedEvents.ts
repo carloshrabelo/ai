@@ -1,5 +1,7 @@
-import { useSyncExternalStore } from 'react'
-import { readJson, writeJson } from '../../lib/storage'
+import { useMemo } from 'react'
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
+import { jsonCodec, legacyStorage } from '../../lib/persistStorage'
 import type { DanceEvent } from '../../domain/event'
 import { type EventChange, type EventSnapshot, snapshotOf } from './changes'
 
@@ -11,54 +13,53 @@ const STORAGE_KEY = 'tracked-events'
 /** Depois do fim do evento, deixa de acompanhar. */
 const KEEP_AFTER_END_MS = 24 * 60 * 60_000
 
-type Store = Record<string, EventSnapshot>
+type Snapshots = Record<string, EventSnapshot>
 
-const isStore = (value: unknown): value is Store => typeof value === 'object' && value !== null && !Array.isArray(value)
+const isSnapshots = (value: unknown): value is Snapshots => typeof value === 'object' && value !== null && !Array.isArray(value)
 
-function read(): Store {
-  const now = Date.now()
-  // Descarta eventos que já acabaram.
-  return Object.fromEntries(
-    Object.entries(readJson(STORAGE_KEY, {}, isStore)).filter(([, s]) => new Date(s.end).getTime() + KEEP_AFTER_END_MS > now),
-  )
-}
+/** Descarta eventos que já acabaram. */
+const withoutEnded = (snapshots: Snapshots, now = Date.now()): Snapshots =>
+  Object.fromEntries(Object.entries(snapshots).filter(([, s]) => new Date(s.end).getTime() + KEEP_AFTER_END_MS > now))
 
-let store: Store = read()
-let snapshots: EventSnapshot[] = Object.values(store)
-const listeners = new Set<() => void>()
+const json = jsonCodec(isSnapshots)
 
-function save(next: Store) {
-  store = next
-  snapshots = Object.values(next)
-  writeJson(STORAGE_KEY, next) // sem storage: vale só nesta sessão
-  for (const listener of listeners) listener()
-}
+/** Formato antigo mantido: `tracked-events` guarda o objeto { [id]: snapshot } em JSON, sem envelope. */
+const useTrackedStore = create<{ snapshots: Snapshots }>()(
+  persist(() => ({ snapshots: {} as Snapshots }), {
+    name: STORAGE_KEY,
+    storage: legacyStorage<{ snapshots: Snapshots }>({
+      parse: (text) => {
+        const snapshots = json.parse(text)
+        return snapshots && { snapshots: withoutEnded(snapshots) }
+      },
+      serialize: ({ snapshots }) => json.serialize(snapshots),
+    }),
+  }),
+)
+
+const save = (snapshots: Snapshots) => useTrackedStore.setState({ snapshots })
 
 /** Começa (ou atualiza) o acompanhamento com o estado atual do evento. */
 export function trackEvent(event: DanceEvent) {
-  save({ ...store, [event.id]: snapshotOf(event) })
+  save({ ...useTrackedStore.getState().snapshots, [event.id]: snapshotOf(event) })
 }
 
 export function untrackEvent(id: string) {
-  const { [id]: _, ...rest } = store
+  const { [id]: _, ...rest } = useTrackedStore.getState().snapshots
   save(rest)
 }
 
 /** "Ok" no aviso: passa a considerar o estado novo (ou para de acompanhar, se foi removido). */
 export function acknowledgeChange(change: EventChange) {
   if (change.kind === 'removed' || !change.after) untrackEvent(change.id)
-  else save({ ...store, [change.id]: change.after })
-}
-
-const subscribe = (listener: () => void) => {
-  listeners.add(listener)
-  return () => listeners.delete(listener)
+  else save({ ...useTrackedStore.getState().snapshots, [change.id]: change.after })
 }
 
 export function useTrackedSnapshots(): EventSnapshot[] {
-  return useSyncExternalStore(subscribe, () => snapshots)
+  const snapshots = useTrackedStore((state) => state.snapshots)
+  return useMemo(() => Object.values(snapshots), [snapshots])
 }
 
 export function useIsTracked(id: string): boolean {
-  return useSyncExternalStore(subscribe, () => id in store)
+  return useTrackedStore((state) => id in state.snapshots)
 }

@@ -8,6 +8,8 @@ import { persistOptions, queryClient } from './api/queryClient'
 import './index.css'
 // Idioma (navegador ou escolha salva) aplicado no <html lang> antes do primeiro render.
 import './i18n/locale'
+// Tema salvo (Zustand) aplicado e acompanhando o sistema em qualquer página.
+import './theme/useTheme'
 // Captura o convite de instalação do PWA assim que o app abre (ver o arquivo).
 import './pwa/installPrompt'
 import { router } from './router'

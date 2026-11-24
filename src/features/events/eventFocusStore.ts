@@ -1,4 +1,5 @@
-import { useSyncExternalStore } from 'react'
+import { useStore } from 'zustand'
+import { createStore } from 'zustand/vanilla'
 
 /** De onde veio o hover: card da lista ou pino do mapa. */
 export type HoverSource = 'list' | 'map'
@@ -23,16 +24,16 @@ export type EventFocusState = {
  *   traz a URL para cá, e todos os componentes leem daqui.
  */
 const INITIAL: EventFocusState = { selectedSlug: null, selectedFrom: null, hover: null }
-let state = INITIAL
-const listeners = new Set<() => void>()
+/** Store Zustand (vanilla: também usado fora do React, nos handlers do mapa e nos testes). */
+const store = createStore<EventFocusState>()(() => INITIAL)
 
 /** Origem da próxima seleção, gravada antes de a URL mudar (ver `willSelectFrom`). */
 let pendingSource: HoverSource | null = null
 
 function setState(next: EventFocusState) {
+  const state = store.getState()
   if (next.selectedSlug === state.selectedSlug && next.selectedFrom === state.selectedFrom && next.hover === state.hover) return
-  state = next
-  for (const listener of listeners) listener()
+  store.setState(next, true)
 }
 
 const sameIds = (a: readonly string[], b: readonly string[]) => a.length === b.length && a.every((id, i) => id === b[i])
@@ -41,13 +42,10 @@ const sameIds = (a: readonly string[], b: readonly string[]) => a.length === b.l
 const canHover = () => typeof window === 'undefined' || !window.matchMedia || window.matchMedia('(hover: hover)').matches
 
 export const eventFocus = {
-  getState: () => state,
+  getState: store.getState,
 
   subscribe(listener: () => void) {
-    listeners.add(listener)
-    return () => {
-      listeners.delete(listener)
-    }
+    return store.subscribe(listener)
   },
 
   /**
@@ -55,6 +53,7 @@ export const eventFocus = {
    * Se o evento já está aberto, a URL não muda: atualiza a origem na hora.
    */
   willSelectFrom(source: HoverSource, slug: string) {
+    const state = store.getState()
     if (slug === state.selectedSlug) setState({ ...state, selectedFrom: source })
     else pendingSource = source
   },
@@ -63,6 +62,7 @@ export const eventFocus = {
   syncSelectedFromUrl(selectedSlug: string | null) {
     const selectedFrom = selectedSlug ? pendingSource : null
     pendingSource = null
+    const state = store.getState()
     if (selectedSlug === state.selectedSlug && selectedFrom === state.selectedFrom) return
     setState({ selectedSlug, selectedFrom, hover: null })
   },
@@ -72,11 +72,13 @@ export const eventFocus = {
     // (pulso no mapa) ficava preso. Lá, só o selecionado é destacado.
     if (!canHover()) return
     if (ids.length === 0) return eventFocus.unhover(source)
+    const state = store.getState()
     if (state.hover?.source === source && sameIds(state.hover.ids, ids)) return
     setState({ ...state, hover: { ids, source } })
   },
 
   unhover(source: HoverSource) {
+    const state = store.getState()
     if (state.hover?.source === source) setState({ ...state, hover: null })
   },
 
@@ -92,5 +94,5 @@ export const eventFocus = {
  * estado (assim o componente só re-renderiza quando essa fatia muda).
  */
 export function useEventFocus<T>(selector: (state: EventFocusState) => T): T {
-  return useSyncExternalStore(eventFocus.subscribe, () => selector(state))
+  return useStore(store, selector)
 }

@@ -1,4 +1,4 @@
-import { useSyncExternalStore } from 'react'
+import { create } from 'zustand'
 import type { Coords } from './distance'
 
 export type LocationState =
@@ -9,26 +9,23 @@ export type LocationState =
   | { status: 'unavailable' }
 
 /**
- * Localização do usuário, compartilhada pelo app (cards, mapa, filtros).
+ * Localização do usuário, compartilhada pelo app (cards, mapa, filtros). Não é salva: a permissão
+ * do navegador é que fica.
  * Só pede permissão quando o usuário pede; se a permissão já foi dada antes, carrega sozinha.
  */
-let state: LocationState = { status: 'idle' }
-const listeners = new Set<() => void>()
+const useLocationStore = create<{ location: LocationState }>()(() => ({ location: { status: 'idle' } }))
 
-function setState(next: LocationState) {
-  state = next
-  for (const listener of listeners) listener()
-}
+const setLocation = (location: LocationState) => useLocationStore.setState({ location })
 
 export function requestLocation() {
   if (!('geolocation' in navigator)) {
-    setState({ status: 'unavailable' })
+    setLocation({ status: 'unavailable' })
     return
   }
-  if (state.status !== 'granted') setState({ status: 'pending' })
+  if (useLocationStore.getState().location.status !== 'granted') setLocation({ status: 'pending' })
   navigator.geolocation.getCurrentPosition(
-    ({ coords }) => setState({ status: 'granted', coords: { lat: coords.latitude, lng: coords.longitude } }),
-    (error) => setState({ status: error.code === error.PERMISSION_DENIED ? 'denied' : 'unavailable' }),
+    ({ coords }) => setLocation({ status: 'granted', coords: { lat: coords.latitude, lng: coords.longitude } }),
+    (error) => setLocation({ status: error.code === error.PERMISSION_DENIED ? 'denied' : 'unavailable' }),
     { enableHighAccuracy: false, maximumAge: 5 * 60_000, timeout: 15_000 },
   )
 }
@@ -42,11 +39,5 @@ void navigator.permissions
   .catch(() => {})
 
 export function useUserLocation(): LocationState {
-  return useSyncExternalStore(
-    (listener) => {
-      listeners.add(listener)
-      return () => listeners.delete(listener)
-    },
-    () => state,
-  )
+  return useLocationStore((state) => state.location)
 }

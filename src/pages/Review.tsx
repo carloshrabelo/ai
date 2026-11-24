@@ -10,11 +10,8 @@ import { ReviewCard } from '../features/review/ReviewCard'
 import { CheckField, ReviewCardSkeleton, SpellingProgress } from '../features/review/ReviewParts'
 import { buildReport, type FieldIssue, findIssues, groupEvents, VENUE_WORDS } from '../features/review/review'
 import { useSpellcheck } from '../features/review/useSpellcheck'
-import { usePersistentState } from '../hooks/usePersistentState'
+import { useIgnoredWords } from '../features/review/ignoredWords'
 import { siteUrl, useDocumentHead } from '../seo/useDocumentHead'
-
-const IGNORE_KEY = 'lisbon-social-dance:review-ignored'
-const isWordList = (value: unknown): value is string[] => Array.isArray(value) && value.every((word) => typeof word === 'string')
 
 /**
  * O que verificar: ortografia (LanguageTool, mais lento) e perfis escritos errado. Ao abrir, sempre só
@@ -35,7 +32,8 @@ export default function Review() {
   useDocumentHead({ title: 'Revisão', description: 'Erros de texto nos eventos', canonical: `${siteUrl()}review/`, noindex: true })
   const { query, ...range } = useEventsInRange(90)
   // Palavras ignoradas: salvas no aparelho de quem revisa.
-  const [ignored, setIgnored] = usePersistentState<string[]>(IGNORE_KEY, [], isWordList)
+  const ignored = useIgnoredWords((state) => state.words)
+  const setIgnored = useIgnoredWords((state) => state.setWords)
   const [checks, setChecks] = useState(DEFAULT_CHECKS)
   const toggle = (key: keyof Checks) => (on: boolean) => setChecks((current) => ({ ...current, [key]: on }))
   const [sources, setSources] = useState<CalendarSource[]>(DEFAULT_SOURCES)
