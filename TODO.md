@@ -21,12 +21,11 @@ evidência entre parênteses.
 
 ## A. Projetos
 
-### 1. Domínio próprio — `minhasdancasemlisboa.pt`
+### 1. Domínio próprio — `lisbondance.com`
 
-> **`minhasdancasemlisboa.pt` é um nome fictício**, usado aqui e no código até a compra: o repositório é público, e
-> anunciar o domínio escolhido antes de registrá-lo deixa alguém registrar primeiro. Depois da compra, trocar por
-> todo o repositório (`grep -rn minhasdancasemlisboa`). Comparação de registradores e preços: `docs/dominios.md`
-> (arquivo local, fora do git pelo mesmo motivo).
+> **Principal: `lisbondance.com`** (Dynadot, comprado em 24/11/2026). **Secundário: `lisbondance.pt`**, comprado e em
+> validação no DNS.PT; quando sair, redireciona para o `.com`. Comparação de registradores e preços:
+> `docs/dominios.md` (arquivo local, fora do git).
 
 Hoje o projeto (`ai`) é publicado em `carloshrabelo.dev/ai/`, porque o site do usuário (`carloshrabelo.github.io`)
 tem o domínio `carloshrabelo.dev`. Com um *Custom domain* no repositório `ai`, o GitHub passa a servir o app no domínio
@@ -35,22 +34,21 @@ novo e redireciona `carloshrabelo.dev/ai/` e `carloshrabelo.github.io/ai/` para 
 
 #### Fase 1 — Compra e preparação (sem mexer no site)
 
-Registradores: **Dynadot** e **OVHcloud** (os dois domínios, `minhasdancasemlisboa.pt` e `.com`, divididos entre eles).
 Cada domínio tem o DNS e o redirecionamento configurados no painel do seu registrador.
 
-- [ ] Registrar os dois domínios, com **renovação automática** ligada nos dois painéis e o cartão válido nos dois.
-  Anotar onde ficou cada um e a data de vencimento.
+- [x] Registrar os dois domínios (24/11/2026). O `.pt` ainda está em validação.
+- [ ] **Renovação automática** ligada nos dois painéis e o cartão válido nos dois. Anotar a data de vencimento.
 - [ ] **Dynadot:** conferir que a privacidade do WHOIS ficou ligada (é automática) e que o domínio usa os
   *nameservers* da Dynadot (o encaminhamento de e-mail grátis só funciona com eles).
-- [ ] **OVHcloud:** conferir o titular e o e-mail de contato (o `.pt` exige dados corretos; e-mail não verificado
-  pode levar à suspensão), e que a zona DNS está na OVHcloud.
+- [ ] **`.pt`** (depois da validação): conferir o titular e o e-mail de contato no registrador (o `.pt` exige dados
+  corretos; e-mail não verificado pode levar à suspensão).
 - [ ] **Verificar o domínio na conta do GitHub** (perfil → Settings → Pages → *Verified domains*, registro TXT no DNS):
   impede que outra conta use o domínio no GitHub Pages enquanto o DNS aponta para lá.
-- [ ] Acrescentar `https://minhasdancasemlisboa.pt/*` nos referrers da chave do Google (seção 5). Sem isso, os eventos
+- [ ] Acrescentar `https://lisbondance.com/*` nos referrers da chave do Google (seção 5). Sem isso, os eventos
   param de carregar no domínio novo.
 - [ ] Não criar uma pasta `ai/` no repositório `carloshrabelo.github.io` (concorreria com o projeto nesse caminho).
-- [ ] **E-mail `contato@minhasdancasemlisboa.pt`** (usado pelo formulário, seção 2): encaminhamento grátis na
-  **Dynadot** ou a caixa inclusa na **OVHcloud**, conforme onde ficar o `.pt`. Registros **MX** e **SPF** (TXT) do
+- [ ] **E-mail `contato@lisbondance.com`** (usado pelo formulário, seção 2): encaminhamento grátis na
+  **Dynadot** (*Email Forwarding*). Registros **MX** e **SPF** (TXT) do
   painel do registrador. Não depende da troca do site: dá para configurar logo depois da compra. Não apagar esses
   registros ao configurar o GitHub Pages (fase 3).
 
@@ -62,7 +60,7 @@ quando `sw.js` passa a responder com redirecionamento. Sem esta fase, essas pess
 
 - [ ] Código: ao abrir, o app confere se `/ai/sw.js` responde com redirecionamento (`fetch(…, { redirect: 'manual' })`
   → `opaqueredirect`). Se sim: desregistra o service worker, limpa os caches e vai para a mesma página em
-  `https://minhasdancasemlisboa.pt` (mesmo caminho sem o `/ai`, mesma query). Antes da troca não faz nada.
+  `https://lisbondance.com` (mesmo caminho sem o `/ai`, mesma query). Antes da troca não faz nada.
 - [ ] Levar junto os dados salvos no aparelho, que são por domínio e se perderiam: eventos adicionados ao calendário
   (`tracked-events`, os avisos de mudança), tema, idioma e o aviso de instalação dispensado. Ex.: no redirecionamento,
   mandar os dados no fragmento da URL (`#migrate=…`, não vai para o servidor) e o domínio novo grava e limpa a URL.
@@ -71,21 +69,21 @@ quando `sw.js` passa a responder com redirecionamento. Sem esta fase, essas pess
 
 #### Fase 3 — DNS e troca (um deploy só)
 
-- [ ] DNS do domínio **principal** (`.pt`), no painel do registrador dele: registros **A** `185.199.108.153`,
+- [ ] DNS do domínio **principal** (`.com`, Dynadot), no painel do registrador dele: registros **A** `185.199.108.153`,
   `185.199.109.153`, `185.199.110.153`, `185.199.111.153` (e **AAAA** `2606:50c0:8000::153` … `8003::153` para
   IPv6); `www` como **CNAME** → `carloshrabelo.github.io`. Apagar os registros A/CNAME de "página estacionada" que o
   registrador cria por padrão.
-- [ ] Domínio **secundário** (`.com`) redirecionando 301 para `https://minhasdancasemlisboa.pt`, no painel dele:
+- [ ] Domínio **secundário** (`.pt`, depois da validação) redirecionando 301 para `https://lisbondance.com`, no painel dele:
   - Dynadot: *Domain → Forwarding* (URL forwarding, permanente/301).
   - OVHcloud: *Domínios → Redirecionamento* (redirecionamento visível permanente, 301), não o "invisível" (frame).
   - Testar `http://` e `https://` do secundário: o redirecionamento do registrador pode não ter certificado HTTPS; se
     o `https://` falhar, alternativa é apontar o secundário também para o GitHub Pages num repositório só de redirect.
-- [ ] Repositório `ai` → **Settings → Pages → Custom domain** = `minhasdancasemlisboa.pt`.
+- [ ] Repositório `ai` → **Settings → Pages → Custom domain** = `lisbondance.com`.
 - [ ] No mesmo deploy:
   - [ ] `vite.config.ts`: `base: '/'` (hoje `'/ai/'` quando `GITHUB_PAGES` está definido; sem isso, os arquivos
     apontam para `/ai/…` e a página abre em branco). Revisar tudo que depende do `base`: `start_url`/`scope` do
     manifest, `navigateFallback` do Workbox, `PUBLIC_ROUTES`, os `href` do `index.html` (`/favicon.ico` etc.).
-  - [ ] `SITE_URL: https://minhasdancasemlisboa.pt/` no `.github/workflows/deploy.yml` (canonical, Open Graph,
+  - [ ] `SITE_URL: https://lisbondance.com/` no `.github/workflows/deploy.yml` (canonical, Open Graph,
     JSON-LD, `sitemap.xml`, `robots.txt`).
   - [ ] `PUBLISHED_URL` de `scripts/lib/app.ts` (referer do prerender) e o link do README.
   - [ ] As cópias do `index.html` por rota (`map/`, `community/`, `about/`) e o prerender continuam iguais, só sem o
@@ -94,7 +92,7 @@ quando `sw.js` passa a responder com redirecionamento. Sem esta fase, essas pess
 
 #### Fase 4 — Conferir depois da troca
 
-- [ ] `https://minhasdancasemlisboa.pt/` abre com eventos; `http://` redireciona para `https://`.
+- [ ] `https://lisbondance.com/` abre com eventos; `http://` redireciona para `https://`.
 - [ ] `carloshrabelo.dev/ai/` e `carloshrabelo.dev/ai/event/<slug>/` redirecionam para o mesmo caminho no domínio novo
   (links compartilhados continuam valendo).
 - [ ] Num aparelho com o app instalado no domínio antigo: abrir → vai para o novo, com os eventos acompanhados
@@ -128,8 +126,8 @@ pasdedeux.pt, mantido por @ateterca: a sugestão não publica nada sozinha).
 
 - [ ] Serviço: **[Web3Forms](https://web3forms.com)** (grátis até 250 envios/mês; o site é estático e o JS do
   navegador não envia e-mail sozinho). O app faz `POST` para `https://api.web3forms.com/submit` com a chave pública.
-- [ ] Destino: `contato@minhasdancasemlisboa.pt` (seção 1, fase 1), encaminhado para o nosso e-mail pela Dynadot
-  (encaminhamento grátis) ou caixa da OVHcloud. Até o domínio existir, um e-mail pessoal.
+- [ ] Destino: `contato@lisbondance.com` (seção 1, fase 1), encaminhado para o nosso e-mail pela Dynadot
+  (encaminhamento grátis). Até o domínio existir, um e-mail pessoal.
 - [ ] Chave em `VITE_WEB3FORMS_KEY` (variable do repositório no deploy; `.env.example` e README). Sem a chave, o
   link "Sugerir evento" não aparece (como o GoatCounter sem o código).
 - [ ] Assunto do e-mail: `Sugestão de evento: <nome> — <dia>`; `replyTo` = e-mail de quem sugeriu (responder sai
@@ -250,7 +248,7 @@ Usa a **Instagram Graph API oficial (Business Discovery)**. O endpoint interno `
 
 - [x] Projeto, Google Calendar API ativada e API key criada (o site publicado mostra os eventos reais: só 8 dos 71 títulos do sitemap existem no mock).
 - [ ] Conferir as restrições da chave (ela fica visível no JavaScript publicado):
-  - *Application restrictions* → **HTTP referrers**: `https://carloshrabelo.dev/ai/*` (domínio atual), `https://carloshrabelo.github.io/ai/*` e, para desenvolvimento, `http://localhost:*/*`. O build das páginas estáticas (`scripts/prerender.ts`) envia o referer do site. Na migração de domínio, acrescentar `https://minhasdancasemlisboa.pt/*` **antes** de trocar (seção 1, fase 1).
+  - *Application restrictions* → **HTTP referrers**: `https://carloshrabelo.dev/ai/*` (domínio atual), `https://carloshrabelo.github.io/ai/*` e, para desenvolvimento, `http://localhost:*/*`. O build das páginas estáticas (`scripts/prerender.ts`) envia o referer do site. Na migração de domínio, acrescentar `https://lisbondance.com/*` **antes** de trocar (seção 1, fase 1).
   - *API restrictions* → só **Google Calendar API**.
 - [ ] Nunca commitar o `.env.local` (já está no `.gitignore`). Se a chave vazar, gerar outra e apagar a antiga.
 
