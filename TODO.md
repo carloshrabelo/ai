@@ -11,11 +11,11 @@ evidência entre parênteses.
 
 ## Prioridade
 
-1. **Domínio próprio** (seção 1): concluir a troca (HTTPS, conferir) e configurar o e-mail e o `.pt`.
+1. **Domínio próprio** (seção 1): no ar desde 24/11; falta o e-mail, o `.pt` (em validação) e a renovação automática.
 2. **Barra de status do iPhone** (seção 8): com o header branco, o relógio e a bateria podem sumir no app instalado.
    Conferir num aparelho; a correção é de uma linha.
 3. **Formulário "Sugerir evento"** (seção 2): só precisa do e-mail do domínio (seção 1) ou de um e-mail pessoal até lá.
-4. **Analytics** (seção 3): publicar a branch e ligar o GoatCounter; os cliques do formulário entram junto.
+4. **Analytics** (seção 3): no `main` desde 24/11; conferir o painel do GoatCounter depois do deploy.
 5. **JSON-LD dos eventos** (seção 10): 9 eventos sem local, que o Google exige; `image` e `organizer` ausentes.
 
 ## A. Projetos
@@ -43,9 +43,9 @@ antigo, `carloshrabelo.dev/ai/`, era de teste e não tinha usuários: ficou sem 
 
 #### Falta
 
-- [ ] **Enforce HTTPS** no repositório `lisbon-social-dances` quando o certificado sair (minutos a horas).
-- [ ] Conferir que `https://lisbondance.com/*` está nos referrers da chave do Google (seção 5): em 24/11 a chave já
-  aceitava o domínio novo. Tirar os referrers antigos (`carloshrabelo.dev/ai/*`, `carloshrabelo.github.io/ai/*`).
+- [x] **Enforce HTTPS** e certificado: `http://` redireciona para `https://` (conferido em 24/11).
+- [x] A chave do Google aceita `https://lisbondance.com/` (conferido em 24/11: eventos reais carregam no site).
+- [ ] Tirar os referrers antigos da chave (`carloshrabelo.dev/ai/*`, `carloshrabelo.github.io/ai/*`).
 - [ ] **AAAA** (IPv6, opcional): `2606:50c0:8000::153`, `8001::153`, `8002::153`, `8003::153` no domínio raiz.
 - [ ] **Renovação automática** ligada nos dois painéis e o cartão válido. Lembrete no calendário ~1 mês antes do
   vencimento de cada domínio.
@@ -61,8 +61,9 @@ antigo, `carloshrabelo.dev/ai/`, era de teste e não tinha usuários: ficou sem 
 
 #### Conferir
 
-- [ ] `https://lisbondance.com/` abre com eventos; `http://` e `www` redirecionam para `https://lisbondance.com/`.
-- [ ] `robots.txt` e `sitemap.xml` na raiz respondem 200.
+- [x] `https://lisbondance.com/` abre com eventos (14 dias, 65 eventos em 24/11); `http://`, `www` e
+  `carloshrabelo.dev/lisbon-social-dances/` redirecionam para `https://lisbondance.com/`.
+- [x] `robots.txt` e `sitemap.xml` na raiz respondem 200.
 - [ ] Google Search Console: propriedade do domínio novo e enviar o `sitemap.xml`.
 - [ ] Previews de link (WhatsApp, Facebook Sharing Debugger) com o domínio novo.
 
@@ -140,14 +141,13 @@ pasdedeux.pt, mantido por @ateterca: a sugestão não publica nada sozinha).
   uma página interna de revisão, como a `/review`.
 - [ ] Combinar com @ateterca o fluxo de repasse (encaminhar o e-mail, ou ela receber cópia direto).
 
-### 3. Analytics (GoatCounter) — branch `feat/seo-ssg-share-analytics`
+### 3. Analytics (GoatCounter)
 
-A branch foi refeita sobre o `main` (1 commit): o GoatCounter conta as páginas vistas e recebe todos os cliques com `data-track` por um listener só (`connectTrackedClicks`), sem chamadas nos componentes. Desligado sem `VITE_GOATCOUNTER_CODE` e sempre em `pnpm dev`.
+No `main` desde 24/11 (branch `feat/seo-ssg-share-analytics`): o GoatCounter conta as páginas vistas e recebe todos os cliques com `data-track` por um listener só (`connectTrackedClicks`), sem chamadas nos componentes. Desligado sem `VITE_GOATCOUNTER_CODE` e sempre em `pnpm dev`.
 
-- [ ] Publicar a branch refeita: `git push --force-with-lease origin feat/seo-ssg-share-analytics` (a cópia no GitHub é a antiga, de antes do rebase).
+- [x] Publicar a branch refeita e fazer o merge no `main` (24/11).
 - [x] Criar a conta e o site em [goatcounter.com](https://www.goatcounter.com): código `cid360` (`https://cid360.goatcounter.com`).
 - [x] Em **Settings → Secrets and variables → Actions**, criar a variable `VITE_GOATCOUNTER_CODE` com esse código.
-- [ ] Fazer o merge da branch: https://github.com/carloshrabelo/lisbon-social-dances/compare/main...feat/seo-ssg-share-analytics
 - [ ] Depois do deploy, conferir no painel: páginas vistas e eventos como `filters.genre/Salsa`, `event.open/<slug>`, `dates.strip-day/<dia>` (a lista de nomes está em `src/analytics/track.ts`).
 - [x] `event.open`: os dois, o total (`event.open`) e qual evento (`event.open/<slug>`). Quem abre o evento direto pelo link (`/event/<slug>/`) conta como página vista, não como clique.
 
@@ -208,7 +208,7 @@ Usa a **Instagram Graph API oficial (Business Discovery)**. O endpoint interno `
 - [x] Secret `VITE_GOOGLE_API_KEY` e variable `VITE_USE_MOCK` = `false` (eventos reais no ar).
 - [x] Action **Update venues** e **Update promoters** gravando no `main` (commits do bot de 21 e 22/11).
 - [ ] Conferir se o deploy diário (05:30 UTC) roda sozinho em **Actions → Deploy to GitHub Pages** (não deu para ver pela API pública: limite de requisições).
-- [ ] *Custom domain* e **Enforce HTTPS** do domínio novo: seção 1.
+- [x] *Custom domain* `lisbondance.com` e **Enforce HTTPS** (seção 1).
 
 ### 7. SEO e compartilhamento
 
@@ -277,7 +277,7 @@ Os itens que dependem do domínio (`SITE_URL`, `robots.txt`, Google Search Conso
 ### 11. Repositório local
 
 - [ ] `stash@{0}` ("WIP", de um `stash pop` com conflito no `venues.json`): o conteúdo já está nos commits. Conferir com `git stash show -p stash@{0}` e apagar com `git stash drop`.
-- [ ] `Ajusts.md` (fora do git): o plano já foi implementado; apagar ou mover para `docs/` se quiser manter o histórico.
+- [x] `Ajusts.md` (fora do git): já não existe (conferido em 24/11).
 
 ### 12. Opcional
 
