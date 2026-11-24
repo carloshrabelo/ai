@@ -7,6 +7,7 @@
  */
 
 import { onTrackedClick, type TrackId } from './track'
+import { countVisit } from './visits'
 
 type GoatCounter = {
   count: (vars: { path: string; title?: string; event?: boolean }) => void
@@ -56,6 +57,15 @@ export function trackPageview(path: string, title = document.title) {
  */
 function trackAction(name: string, title?: string) {
   send({ path: name, title: title ?? name, event: true })
+}
+
+/**
+ * Recorrência: uma vez por dia por aparelho, "visit.new" ou "visit.return" com as faixas de dias com visita
+ * e do intervalo desde a última (src/analytics/visits.ts; nenhum identificador sai do aparelho).
+ */
+export function trackVisit() {
+  if (!ENABLED) return
+  for (const name of countVisit()) trackAction(name)
 }
 
 /** Cliques contados também sem o valor: o painel mostra o total pronto, além do detalhe por valor. */

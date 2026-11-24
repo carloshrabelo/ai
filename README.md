@@ -53,7 +53,7 @@
 - **Adicionar ao calendário** sem login (Google Agenda preenchido ou `.ics` para Apple/Outlook) e **aviso de mudanças** nos eventos adicionados (horário, local, cancelamento), guardados no aparelho.
 - **Compartilhar** pelo menu do sistema ou copiando o link.
 - **Comunidade**: outros calendários, grupos e perfis; os calendários do Pas de Deux podem ser assinados no Google Agenda (Android), no Calendário da Apple (iPhone/Mac, `webcal://`) ou por link `.ics`.
-- **Analytics** sem cookies (GoatCounter): páginas vistas e os cliques marcados com `data-track` (filtros, datas, eventos abertos, calendário, compartilhar, rotas, mapa, comunidade). Desligado sem `VITE_GOATCOUNTER_CODE`.
+- **Analytics** sem cookies (GoatCounter): páginas vistas, os cliques marcados com `data-track` (filtros, datas, eventos abertos, calendário, compartilhar, rotas, mapa, comunidade) e a recorrência das visitas, sem identificador. Desligado sem `VITE_GOATCOUNTER_CODE`.
 - **PWA**: instalável (aviso de instalação com o convite do navegador, ou instruções no iPhone/iPad; dispensado, só volta depois de 30 dias), abre offline com os últimos eventos carregados e se atualiza sozinho a cada deploy.
 
 ## Dados e créditos
@@ -166,7 +166,7 @@ docs/          prints, logo e protótipos de referência
 
 Os elementos clicáveis relevantes têm `data-track="<área>.<ação>"` e, quando há um valor, `data-track-value` (dia, slug do evento, gênero, rota, id do calendário…). Os nomes ficam num catálogo tipado em `src/analytics/track.ts` (`TrackId`) e são aplicados com `{...track('event.open', event.slug)}`. A página do clique vem de `location.pathname` (o mesmo `event.open` serve na lista, no mapa e no popup do pino).
 
-- **GoatCounter** (`src/analytics/analytics.ts`): com `VITE_GOATCOUNTER_CODE`, conta as páginas vistas (a cada troca de rota) e manda cada clique rastreado como evento `<id>/<valor>` (ex.: `filters.genre/Salsa`, `event.open/<slug>`), com a página no título; o `event.open` vai também sem o slug, para o total de eventos abertos, via `onTrackedClick` — um listener só, delegado no `document`. Desligado em `pnpm dev`.
+- **GoatCounter** (`src/analytics/analytics.ts`): com `VITE_GOATCOUNTER_CODE`, conta as páginas vistas (a cada troca de rota) e manda cada clique rastreado como evento `<id>/<valor>` (ex.: `filters.genre/Salsa`, `event.open/<slug>`), com a página no título; o `event.open` vai também sem o slug, para o total de eventos abertos, via `onTrackedClick` — um listener só, delegado no `document`. Recorrência (`src/analytics/visits.ts`): uma vez por dia por aparelho, `visit.new` ou `visit.return` com as faixas `visit.count/…` (dias com visita) e `visit.gap/…` (intervalo); o `localStorage` guarda só a primeira e a última data e o total de dias, sem identificador. Desligado em `pnpm dev`.
 - Outra ferramenta: troque o `send` de `connectTrackedClicks`. Ferramentas que leem atributos (GTM com gatilho por atributo, PostHog autocapture, Plausible) podem usar `data-track` direto.
 - Para conferir em dev: abra o app com `?track` na URL; cada clique rastreado aparece no console como `[track] { id, value, path }`.
 - Áreas: `nav`, `dates`, `filters`, `event`, `map`, `location`, `community`, `settings`, `pwa`, `about`.

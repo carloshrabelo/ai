@@ -149,8 +149,11 @@ No `main` desde 24/11 (branch `feat/seo-ssg-share-analytics`): o GoatCounter con
 - [x] Publicar a branch refeita e fazer o merge no `main` (24/11).
 - [x] Criar a conta e o site em [goatcounter.com](https://www.goatcounter.com): código `cid360` (`https://cid360.goatcounter.com`).
 - [x] Em **Settings → Secrets and variables → Actions**, criar a variable `VITE_GOATCOUNTER_CODE` com esse código.
-- [ ] Depois do deploy, conferir no painel: páginas vistas e eventos como `filters.genre/Salsa`, `event.open/<slug>`, `dates.strip-day/<dia>` (a lista de nomes está em `src/analytics/track.ts`).
+- [x] Conferido em 24/11: o script carrega e a visita chega ao GoatCounter (`cid360`).
+- [ ] Acompanhar no painel: páginas vistas e eventos como `filters.genre/Salsa`, `event.open/<slug>`, `dates.strip-day/<dia>` (a lista de nomes está em `src/analytics/track.ts`).
 - [x] `event.open`: os dois, o total (`event.open`) e qual evento (`event.open/<slug>`). Quem abre o evento direto pelo link (`/event/<slug>/`) conta como página vista, não como clique.
+- [x] **Recorrência** (`src/analytics/visits.ts`): uma vez por dia por aparelho, `visit.new` ou `visit.return`, com `visit.count/<dias com visita>` (1, 2, 3-5, 6-10, 11+) e `visit.gap/<intervalo>` (1d, 2-7d, 8-30d, 30d+). Sem identificador: o aparelho guarda só a primeira e a última data e o total de dias. Nos primeiros dias, quem já usava o site conta como `visit.new` (não havia registro).
+- [ ] Mencionar na página Sobre o que o analytics registra (páginas, cliques e recorrência, sem identificar ninguém).
 
 ### 4. Fotos dos perfis (promotores, DJs, professores) — branch `feature/promoter-photos`
 
@@ -198,17 +201,15 @@ Usa a **Instagram Graph API oficial (Business Discovery)**. O endpoint interno `
 ### 5. Chave da Google Calendar API
 
 - [x] Projeto, Google Calendar API ativada e API key criada (o site publicado mostra os eventos reais: só 8 dos 71 títulos do sitemap existem no mock).
-- [x] **Chave nova** num projeto nosso (24/11), já no `.env.local` (termina em `…qUiA`). A antiga (`…AXxs`, criada
-  em 17/11 numa conta não identificada) não tinha restrição de domínio.
-- [ ] Trocar o secret `VITE_GOOGLE_API_KEY` no GitHub pela chave nova e rodar o deploy: em 24/11 o site publicado ainda
-  usava a antiga.
-- [ ] Conferir as restrições da chave nova (o Google leva até 5 minutos para aplicar): logo depois de configurada, ela
-  ainda aceitava qualquer referer. Teste: `curl -H "Referer: https://example.org/" …` deve dar 403.
-  - *Application restrictions* → **HTTP referrers**: `https://lisbondance.com/*` e, para desenvolvimento,
-    `http://localhost:*/*`. O build (`scripts/events-cache.ts`, prerender) e a Action diária mandam o referer do site.
-  - *API restrictions* → só **Google Calendar API**.
-- [ ] Com o site usando a chave nova: apagar a antiga, se for encontrada a conta dela (sem restrição, ela continua
-  utilizável por quem a copiou; sem custo, só cota).
+- [x] **Duas chaves** num projeto nosso (24/11):
+  - **Produção** (secret `VITE_GOOGLE_API_KEY` no GitHub, termina em `…wOV4`): só `https://lisbondance.com/*` (e
+    `www`). Conferido em 24/11: aceita o domínio, recusa sem referer, `example.org`, `localhost` e
+    `carloshrabelo.dev` (403). O build e a Action diária mandam o referer do site.
+  - **Desenvolvimento** (`.env.local`, termina em `…qUiA`): para `pnpm dev` e os scripts locais. Restringir a
+    `http://localhost:*/*` (em 24/11 ainda aceitava qualquer referer); os scripts locais mandam o referer do site,
+    então incluir também `https://lisbondance.com/*` se forem rodados com ela.
+- [ ] A antiga (`…AXxs`, criada em 17/11 numa conta não identificada, sem restrição) saiu do site; apagar se a conta
+  for encontrada (utilizável por quem a copiou; sem custo, só cota).
 - [ ] Nunca commitar o `.env.local` (já está no `.gitignore`). Se a chave vazar, gerar outra e apagar a antiga.
 
 ### 6. GitHub (Settings do repositório)
