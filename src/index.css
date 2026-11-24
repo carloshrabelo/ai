@@ -163,6 +163,10 @@
   }
 
   html {
+    /* Fundo do "canvas" na cor da barra inferior: no app instalado (viewport-fit=cover), a faixa abaixo do
+       conteúdo, junto da barra do sistema (indicador de início do iPhone), mostrava o branco padrão do
+       navegador nos dois temas. O tema está no próprio <html> (data-theme), então a cor acompanha. */
+    background-color: var(--surface);
     -webkit-tap-highlight-color: transparent;
     -webkit-text-size-adjust: 100%;
   }
