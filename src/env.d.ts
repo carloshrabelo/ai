@@ -3,6 +3,8 @@ interface ImportMetaEnv {
   readonly VITE_USE_MOCK?: 'true' | 'false'
   /** Chave da Google Calendar API, obrigatória quando VITE_USE_MOCK=false. */
   readonly VITE_GOOGLE_API_KEY?: string
+  /** Código do site no GoatCounter (vazio = analytics desligado). */
+  readonly VITE_GOATCOUNTER_CODE?: string
   /** Só no mock: atraso artificial da resposta, em ms. */
   readonly VITE_MOCK_DELAY_MS?: string
   /** "true" liga as páginas de teste (/test/prices). Só para uso local: não configure no deploy. */

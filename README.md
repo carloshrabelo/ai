@@ -53,6 +53,7 @@
 - **Adicionar ao calendário** sem login (Google Agenda preenchido ou `.ics` para Apple/Outlook) e **aviso de mudanças** nos eventos adicionados (horário, local, cancelamento), guardados no aparelho.
 - **Compartilhar** pelo menu do sistema ou copiando o link.
 - **Comunidade**: outros calendários, grupos e perfis; os calendários do Pas de Deux podem ser assinados no Google Agenda (Android), no Calendário da Apple (iPhone/Mac, `webcal://`) ou por link `.ics`.
+- **Analytics** sem cookies (GoatCounter): páginas vistas e os cliques marcados com `data-track` (filtros, datas, eventos abertos, calendário, compartilhar, rotas, mapa, comunidade). Desligado sem `VITE_GOATCOUNTER_CODE`.
 - **PWA**: instalável (aviso de instalação com o convite do navegador, ou instruções no iPhone/iPad; dispensado, só volta depois de 30 dias), abre offline com os últimos eventos carregados e se atualiza sozinho a cada deploy.
 
 ## Dados e créditos
@@ -102,6 +103,7 @@ pnpm dev
 | `VITE_GOOGLE_API_KEY` | Chave da Google Calendar API (obrigatória com `VITE_USE_MOCK=false`). Restrinja por *HTTP referrer* no Google Cloud: ela fica visível no JavaScript publicado. |
 | `VITE_MOCK_DELAY_MS` | Atraso artificial do mock, para ver os skeletons. |
 | `VITE_TEST_PAGES` | `true` mostra o link "Teste" no menu (só local, não configure no deploy). A área `/test`, com as ferramentas internas (como `/test/prices`, que lista os preços distintos dos eventos e a tradução de cada um), existe também no site publicado para quem tem o link, sem link no app e com noindex. |
+| `VITE_GOATCOUNTER_CODE` | Código do site no [GoatCounter](https://www.goatcounter.com) (analytics sem cookies). Vazio = desligado; em `pnpm dev` fica sempre desligado. |
 
 ### Scripts
 
@@ -151,6 +153,7 @@ src/
     tracking/  eventos adicionados ao calendário e aviso de mudanças
     review/    revisão de texto dos eventos (/review)
   seo/         <head> por página, JSON-LD, páginas estáticas (prerender)
+  analytics/   rastreamento de cliques (data-track) e GoatCounter
   components/  layout (header, sidebar, bottom nav) e componentes base (Chip, Card, Button…)
   pages/       Dança (/ e /event/<slug>/), Mapa (/map, celular), Comunidade (/community), Sobre (/about), Escolas (/schools, oculta)
 scripts/       prerender.ts, venues-check.ts, promoters-update.ts
@@ -162,7 +165,8 @@ docs/          prints, logo e protótipos de referência
 
 Os elementos clicáveis relevantes têm `data-track="<área>.<ação>"` e, quando há um valor, `data-track-value` (dia, slug do evento, gênero, rota, id do calendário…). Os nomes ficam num catálogo tipado em `src/analytics/track.ts` (`TrackId`) e são aplicados com `{...track('event.open', event.slug)}`. A página do clique vem de `location.pathname` (o mesmo `event.open` serve na lista, no mapa e no popup do pino).
 
-- Para ligar uma ferramenta: `onTrackedClick(({ id, value, path }) => analytics.track(id, { value, path }))`, um listener só, delegado no `document` (fase de captura). Ferramentas que leem atributos (GTM com gatilho por atributo, PostHog autocapture, Plausible) podem usar `data-track` direto.
+- **GoatCounter** (`src/analytics/analytics.ts`): com `VITE_GOATCOUNTER_CODE`, conta as páginas vistas (a cada troca de rota) e manda cada clique rastreado como evento `<id>/<valor>` (ex.: `filters.genre/Salsa`, `event.open/<slug>`), com a página no título, via `onTrackedClick` — um listener só, delegado no `document`. Desligado em `pnpm dev`.
+- Outra ferramenta: troque o `send` de `connectTrackedClicks`. Ferramentas que leem atributos (GTM com gatilho por atributo, PostHog autocapture, Plausible) podem usar `data-track` direto.
 - Para conferir em dev: abra o app com `?track` na URL; cada clique rastreado aparece no console como `[track] { id, value, path }`.
 - Áreas: `nav`, `dates`, `filters`, `event`, `map`, `location`, `community`, `settings`, `pwa`, `about`.
 
@@ -203,6 +207,7 @@ Em **Settings → Secrets and variables → Actions**:
 |---|---|---|
 | `VITE_GOOGLE_API_KEY` | Secret | Chave da Google Calendar API |
 | `VITE_USE_MOCK` | Variable | `false` para usar a API (sem ela, o site publica com o mock) |
+| `VITE_GOATCOUNTER_CODE` | Variable | Código do site no GoatCounter (opcional) |
 
 O workflow `.github/workflows/venues.yml` (**Update venues**) roda todo dia às 05:00 UTC e também pode ser disparado manualmente.
 

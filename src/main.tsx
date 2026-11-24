@@ -15,12 +15,17 @@ import './theme/useTheme'
 import './pwa/installPrompt'
 import { router } from './router'
 import { onTrackedClick } from './analytics/track'
+import { connectTrackedClicks, initAnalytics } from './analytics/analytics'
 
 // Em dev, ?track na URL mostra no console os cliques rastreados (data-track), para conferir os nomes
 // antes de ligar uma ferramenta de analytics (ver src/analytics/track.ts).
 if (import.meta.env.DEV && new URLSearchParams(window.location.search).has('track')) {
   onTrackedClick((click) => console.info('[track]', click))
 }
+
+// GoatCounter: só com VITE_GOATCOUNTER_CODE e fora do `pnpm dev` (ver src/analytics/analytics.ts).
+initAnalytics()
+connectTrackedClicks()
 
 const SHOW_DEVTOOLS = import.meta.env.DEV && new URLSearchParams(window.location.search).has('devtools')
 

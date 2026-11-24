@@ -1,5 +1,6 @@
-import { useMemo, useState } from 'react'
-import { Outlet, useNavigation } from 'react-router'
+import { useEffect, useMemo, useState } from 'react'
+import { Outlet, useLocation, useNavigation } from 'react-router'
+import { trackPageview } from '../analytics/analytics'
 import BottomNav from '../components/BottomNav'
 import Header from '../components/Header'
 import InstallBanner from '../components/InstallBanner'
@@ -13,6 +14,12 @@ import { SidebarSlotContext } from './sidebarSlotContext'
  */
 export default function AppLayout() {
   const navigation = useNavigation()
+  const { pathname } = useLocation()
+
+  // Página vista a cada troca de rota (filtros e data na query não contam como página nova).
+  useEffect(() => {
+    trackPageview(pathname)
+  }, [pathname])
   const [top, setTop] = useState<HTMLElement | null>(null)
   const [bottom, setBottom] = useState<HTMLElement | null>(null)
   const slots = useMemo(() => ({ top, bottom }), [top, bottom])
