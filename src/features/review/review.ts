@@ -1,6 +1,6 @@
 import promoters from '../../content/promoters.json'
 import venues from '../../content/venues.json'
-import type { CalendarSource } from '../../domain/calendarSources'
+import { type CalendarSource, CALENDARS } from '../../domain/calendarSources'
 import type { DanceEvent } from '../../domain/event'
 import type { PromoterDirectory } from '../../domain/promoterDirectory'
 import {
@@ -61,6 +61,31 @@ export function groupEvents(events: readonly DanceEvent[], sources: readonly Cal
   return [...byText.values()]
 }
 
+/** Nome comparável: sem maiúsculas, acentos e pontuação ("Noite  Dominicana!" = "noite dominicana"). */
+const sameName = (title: string) =>
+  title
+    .normalize('NFKD')
+    .replace(/\p{M}/gu, '')
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, ' ')
+    .trim()
+
+/**
+ * Eventos com o mesmo nome no mesmo dia (Lisboa): quase sempre o mesmo evento cadastrado duas vezes
+ * (ex.: um às 19:00 e outro às 07:00 por engano). Entra o grupo que tem algum evento dos calendários
+ * marcados; os outros calendários entram juntos (o mesmo evento em dois calendários também conta).
+ * Cancelados e adiados ficam de fora: o novo no mesmo dia costuma ser a remarcação.
+ */
+export function findDuplicates(events: readonly DanceEvent[], sources: readonly CalendarSource[]): DanceEvent[][] {
+  const byDayAndName = new Map<string, DanceEvent[]>()
+  for (const event of events) {
+    if (event.status) continue
+    const key = `${lisbonDate(event.start)}\u0000${sameName(event.title)}`
+    byDayAndName.set(key, [...(byDayAndName.get(key) ?? []), event])
+  }
+  return [...byDayAndName.values()].filter((same) => same.length > 1 && same.some((event) => sources.includes(event.source)))
+}
+
 type FindOptions = {
   aliases: boolean
   /** Respostas do LanguageTool por texto (uma lista por língua); sem ortografia, undefined. */
@@ -106,12 +131,23 @@ export const when = (event: DanceEvent) => `${formatShortDay(lisbonDate(event.st
 
 const day = (iso: string) => iso.split('-').reverse().join('/')
 
-/** Relatório de tudo: por evento, as correções, o link do Google Agenda e o texto corrigido. */
+/** Relatório de tudo: os repetidos e, por evento, as correções, o link do Google Agenda e o texto corrigido. */
 export function buildReport(
   reviewed: readonly Reviewed[],
   valueOf: ValueOf,
-  { calendars, from, to }: { calendars: readonly string[]; from: string; to: string },
+  {
+    calendars,
+    from,
+    to,
+    duplicates = [],
+  }: { calendars: readonly string[]; from: string; to: string; duplicates?: readonly DanceEvent[][] },
 ): string {
+  const repeated = duplicates.map((same) =>
+    [
+      `Repetido no mesmo dia: ${same[0].title} (apagar o que estiver errado)`,
+      ...same.map((event) => `- ${when(event)} · ${CALENDARS[event.source].label}: ${event.calendarUrl}`),
+    ].join('\n'),
+  )
   const blocks = reviewed.map(({ group, issues }) => {
     const fixed = corrected(group, issues, valueOf)
     const [first, ...rest] = group.events
@@ -129,5 +165,6 @@ export function buildReport(
     if (fixed.description?.changed) lines.push('Descrição corrigida:', fixed.description.text)
     return lines.join('\n')
   })
-  return `Revisão da agenda: ${calendars.join(', ')} (${day(from)} a ${day(to)}): ${reviewed.length} eventos com correções\n\n${blocks.join('\n\n---\n\n')}\n`
+  const counts = [duplicates.length > 0 ? `${duplicates.length} repetidos` : null, `${reviewed.length} eventos com correções`]
+  return `Revisão da agenda: ${calendars.join(', ')} (${day(from)} a ${day(to)}): ${counts.filter(Boolean).join(', ')}\n\n${[...repeated, ...blocks].join('\n\n---\n\n')}\n`
 }

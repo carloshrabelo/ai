@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { DanceEvent } from '../../domain/event'
-import { buildReport, corrected, findIssues, groupEvents, type FieldIssue } from './review'
+import { buildReport, corrected, findDuplicates, findIssues, groupEvents, type FieldIssue } from './review'
 
 const event = (over: Partial<DanceEvent>): DanceEvent => ({
   id: 'e1',
@@ -57,5 +57,42 @@ describe('review', () => {
     expect(report).toContain('Google Agenda: https://www.google.com/calendar/event?eid=e1')
     expect(report).toContain('Corrigir: @tropicavana.bar → @tropicavana_bar')
     expect(report).toContain('Descrição corrigida:\nMais info:\n@tropicavana_bar')
+  })
+
+  describe('repetidos no mesmo dia', () => {
+    // Caso real (26/11): o mesmo evento às 19:00 e, por engano, às 07:00, com tags diferentes.
+    const evening = event({ id: 'n1', title: 'Noite Dominicana', start: new Date('2026-11-26T19:00:00Z') })
+    const morning = event({ id: 'n2', title: 'Noite  dominicana!', start: new Date('2026-11-26T07:00:00Z') })
+
+    it('acha o mesmo nome no mesmo dia, sem ligar para maiúsculas, acentos e pontuação', () => {
+      expect(findDuplicates([evening, morning, ...weekly], ['pasdedeux']).map((same) => same.map((item) => item.id))).toEqual([
+        ['n1', 'n2'],
+      ])
+    })
+
+    it('ignora a repetição semanal, os cancelados e os grupos fora dos calendários marcados', () => {
+      expect(findDuplicates(weekly, ['pasdedeux'])).toEqual([])
+      expect(findDuplicates([evening, { ...morning, status: 'cancelled' }], ['pasdedeux'])).toEqual([])
+      expect(findDuplicates([evening, morning], ['tangolx'])).toEqual([])
+    })
+
+    it('o mesmo dia é o de Lisboa (01:00 em Lisboa no verão é 00:00 UTC)', () => {
+      const late = event({ id: 'l1', start: new Date('2026-07-10T22:30:00Z') })
+      const nextDay = event({ id: 'l2', start: new Date('2026-07-10T23:30:00Z') })
+      expect(findDuplicates([late, nextDay], ['pasdedeux'])).toEqual([])
+    })
+
+    it('entra no relatório com o link de cada um', () => {
+      const report = buildReport([], first, {
+        calendars: ['Pas de Deux'],
+        from: '2026-11-19',
+        to: '2027-02-17',
+        duplicates: [[evening, morning]],
+      })
+      expect(report).toContain('1 repetidos, 0 eventos com correções')
+      expect(report).toContain('Repetido no mesmo dia: Noite Dominicana')
+      expect(report).toContain('- Qui, 26/11 07:00')
+      expect(report).toContain('Pas de Deux: https://www.google.com/calendar/event?eid=e1')
+    })
   })
 })

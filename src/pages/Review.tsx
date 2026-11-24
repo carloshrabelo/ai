@@ -8,18 +8,19 @@ import { RangeFields } from '../features/range/RangeFields'
 import { useEventsInRange } from '../features/range/useEventsInRange'
 import { ReviewCard } from '../features/review/ReviewCard'
 import { CheckField, ReviewCardSkeleton, SpellingProgress } from '../features/review/ReviewParts'
-import { buildReport, type FieldIssue, findIssues, groupEvents, VENUE_WORDS } from '../features/review/review'
+import { DuplicateCard } from '../features/review/DuplicateCard'
+import { buildReport, type FieldIssue, findDuplicates, findIssues, groupEvents, VENUE_WORDS } from '../features/review/review'
 import { useSpellcheck } from '../features/review/useSpellcheck'
 import { useIgnoredWords } from '../features/review/ignoredWords'
 import { siteUrl, useDocumentHead } from '../seo/useDocumentHead'
 import { copyText } from '../lib/clipboard'
 
 /**
- * O que verificar: ortografia (LanguageTool, mais lento) e perfis escritos errado. Ao abrir, sempre só
- * os perfis (não fica salvo).
+ * O que verificar: ortografia (LanguageTool, mais lento), perfis escritos errado e eventos repetidos. Ao
+ * abrir, sempre sem a ortografia (não fica salvo).
  */
-type Checks = { spelling: boolean; aliases: boolean }
-const DEFAULT_CHECKS: Checks = { spelling: false, aliases: true }
+type Checks = { spelling: boolean; aliases: boolean; duplicates: boolean }
+const DEFAULT_CHECKS: Checks = { spelling: false, aliases: true, duplicates: true }
 /** Calendários revisados ao abrir: só o principal; cada responsável marca o seu. */
 const DEFAULT_SOURCES: CalendarSource[] = ['pasdedeux']
 
@@ -58,11 +59,16 @@ export default function Review() {
     () => findIssues(groups, { aliases: checks.aliases, spelling: checks.spelling ? spelling.data : undefined, ignored: ignoredSet }),
     [groups, checks, spelling.data, ignoredSet],
   )
+  const duplicates = useMemo(
+    () => (checks.duplicates ? findDuplicates(query.data ?? [], sources) : []),
+    [query.data, sources, checks.duplicates],
+  )
   const valueOf = (issue: FieldIssue) => (issue.id in choices ? choices[issue.id] : issue.suggestions[0])
 
   const copyAll = async () => {
     const calendars = sources.map((source) => CALENDARS[source].label)
-    if (!(await copyText(buildReport(reviewed, valueOf, { calendars, from: range.from, to: range.to }), 'Copie o relatório:'))) return
+    if (!(await copyText(buildReport(reviewed, valueOf, { calendars, from: range.from, to: range.to, duplicates }), 'Copie o relatório:')))
+      return
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
@@ -84,6 +90,7 @@ export default function Review() {
               : spelling.isFetching
                 ? 'verificando ortografia…'
                 : null,
+          checks.duplicates ? `${duplicates.length} repetidos no mesmo dia` : null,
           `${reviewed.length} com correções (${aliasCount} com perfil errado)`,
         ]
           .filter(Boolean)
@@ -95,7 +102,8 @@ export default function Review() {
         <h2 className="text-lg font-semibold">Revisão do texto dos eventos</h2>
         <p className="text-sm text-fg-muted">
           Erros de ortografia (LanguageTool, em português de Portugal e do Brasil, inglês e espanhol: só conta a palavra que todos marcam) e
-          perfis do Instagram escritos errado. Eventos que se repetem com o mesmo texto aparecem uma vez só.
+          perfis do Instagram escritos errado, e eventos com o mesmo nome no mesmo dia (cadastrados duas vezes). Eventos que se repetem com
+          o mesmo texto aparecem uma vez só.
         </p>
         <RangeFields {...range} />
         <p className="text-sm text-fg-muted" aria-live="polite">
@@ -117,9 +125,10 @@ export default function Review() {
           <legend className="mb-1 text-xs font-medium text-fg-muted">Verificar</legend>
           <CheckField label="Perfis escritos errado (aliases)" checked={checks.aliases} onChange={toggle('aliases')} />
           <CheckField label="Ortografia (LanguageTool)" checked={checks.spelling} onChange={toggle('spelling')} />
+          <CheckField label="Repetidos no mesmo dia" checked={checks.duplicates} onChange={toggle('duplicates')} />
         </fieldset>
         <div className="flex flex-wrap items-center gap-3">
-          <Button onClick={() => void copyAll()} disabled={reviewed.length === 0}>
+          <Button onClick={() => void copyAll()} disabled={reviewed.length === 0 && duplicates.length === 0}>
             {copied ? <CheckIcon className="size-4" aria-hidden="true" /> : <CopyIcon className="size-4" aria-hidden="true" />}
             {copied ? 'Copiado' : 'Copiar tudo corrigido, com os links'}
           </Button>
@@ -131,6 +140,9 @@ export default function Review() {
         </div>
       </Card>
 
+      {duplicates.map((events) => (
+        <DuplicateCard key={events.map((event) => event.id).join()} events={events} />
+      ))}
       {reviewed.map(({ group, issues }) => (
         <ReviewCard
           key={group.key}
