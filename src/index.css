@@ -223,13 +223,16 @@
   opacity: 0.6;
 }
 
-/* Atribuição do mapa nas cores do tema (no escuro, o fundo branco do Leaflet destoava). */
-.leaflet-container .leaflet-control-attribution {
+/* Atribuição do mapa nas cores do tema (no escuro, o fundo branco do Leaflet destoava). `.leaflet-control`
+   a mais: o leaflet.css carrega depois e tem a mesma especificidade em `.leaflet-container
+   .leaflet-control-attribution`, e o fundo branco dele vencia (link lilás sobre branco, contraste 2,3:1). */
+.leaflet-container .leaflet-control.leaflet-control-attribution {
   border-top-left-radius: 0.5rem;
-  background: color-mix(in srgb, var(--surface) 85%, transparent);
+  /* Opaco: com transparência, o mapa por baixo clareava o fundo e o link caía para 3,7:1 no escuro. */
+  background: var(--surface);
   color: var(--fg-muted);
 }
-.leaflet-container .leaflet-control-attribution a {
+.leaflet-container .leaflet-control.leaflet-control-attribution a {
   color: var(--brand-ink);
 }
 
