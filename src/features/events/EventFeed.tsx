@@ -3,6 +3,7 @@ import { QueryErrorResetBoundary, useSuspenseInfiniteQuery } from '@tanstack/rea
 import { Fragment, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { ErrorBoundary } from '../../components/ErrorBoundary'
 import { Button } from '../../components/ui/Button'
+import { Skeleton } from '../../components/ui/Skeleton'
 import { addDays, agendaToday, type IsoDate } from '../../lib/dates'
 import type { Locale } from '../../i18n/locale'
 import type { Messages } from '../../i18n/messages'
@@ -114,6 +115,7 @@ function EventFeedContent({ startDate, genres, onOpenEvent }: FeedProps) {
       {isFetchingNextPage && (
         <div className={GRID}>
           <span className="sr-only">{t.feed.loadingMore}</span>
+          <DayHeadingSkeleton className="mt-3" />
           <EventCardSkeleton />
           <EventCardSkeleton className="hidden 2xl:flex" />
         </div>
@@ -165,14 +167,26 @@ function dayLabel(day: IsoDate, today: IsoDate, t: Messages, locale: Locale): st
   return heading
 }
 
-/** Primeiro carregamento: 4 cards no mobile, 6 em 2 colunas a partir de `xl`. */
+/**
+ * Lugar do título do dia ("Sábado, 28/11") enquanto carrega: mesma caixa do título de verdade (linha inteira da
+ * grade, `py-1` e linha de 24px), para nada pular quando os eventos chegam.
+ */
+function DayHeadingSkeleton({ className = '' }: { className?: string }) {
+  return (
+    <div aria-hidden="true" className={`col-span-full -mx-1 px-1 py-1 ${className}`}>
+      <Skeleton className="h-6 w-44" />
+    </div>
+  )
+}
+
+/** Primeiro carregamento: título do dia e 4 cards no mobile, 6 em 2 colunas a partir de `xl`. */
 function EventFeedSkeleton() {
   const { t } = useI18n()
   return (
     <div aria-busy="true" className="space-y-2">
       <span className="sr-only">{t.feed.loading}</span>
-      <div aria-hidden="true" className="h-5 w-32 animate-pulse rounded-md bg-genre-neutral" />
       <div className={GRID}>
+        <DayHeadingSkeleton />
         {Array.from({ length: 6 }, (_, i) => (
           <EventCardSkeleton key={i} className={i >= 4 ? 'hidden 2xl:flex' : ''} />
         ))}
