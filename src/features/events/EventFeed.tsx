@@ -3,7 +3,7 @@ import { QueryErrorResetBoundary, useSuspenseInfiniteQuery } from '@tanstack/rea
 import { Fragment, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { ErrorBoundary } from '../../components/ErrorBoundary'
 import { Button } from '../../components/ui/Button'
-import { addDays, type IsoDate, todayIso } from '../../lib/dates'
+import { addDays, agendaToday, type IsoDate } from '../../lib/dates'
 import type { Locale } from '../../i18n/locale'
 import type { Messages } from '../../i18n/messages'
 import { eventsInfiniteQueryOptions, flattenEvents } from '../../api/queries'
@@ -42,7 +42,7 @@ export function EventFeed(props: FeedProps) {
 
 function EventFeedContent({ startDate, genres, onOpenEvent }: FeedProps) {
   const { t, locale, orList } = useI18n()
-  const today = todayIso()
+  const today = agendaToday()
   const genreNames = orList(genres.map((genre) => genreLabel(genre, t)))
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isFetchNextPageError } = useSuspenseInfiniteQuery(
     eventsInfiniteQueryOptions(startDate),

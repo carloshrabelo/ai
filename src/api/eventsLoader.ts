@@ -3,14 +3,14 @@ import { toDanceEvent } from '../domain/event'
 import { canonicalGenresSearch, toSearchString } from '../domain/genreFilter'
 import { slugDate } from '../domain/slug'
 import { WINDOW_DAYS } from './config'
-import { addDays, type IsoDate, isIsoDate, todayIso } from '../lib/dates'
+import { addDays, agendaToday, type IsoDate, isIsoDate } from '../lib/dates'
 import { eventsInfiniteQueryOptions } from './queries'
 import { queryClient } from './queryClient'
 
 export type EventsLoaderData = {
-  /** Primeiro dia do feed (?date= ou hoje). */
+  /** Primeiro dia do feed (?date= ou o "hoje" da agenda). */
   startDate: IsoDate
-  /** "Hoje" para os atalhos (fuso de Lisboa). */
+  /** "Hoje" da agenda para os atalhos (Lisboa; até as 05:00 ainda é o dia anterior, ver agendaToday). */
   today: IsoDate
 }
 
@@ -26,7 +26,8 @@ export function eventsLoader({ request, params }: LoaderFunctionArgs): EventsLoa
   if (canonical) return replace(`${appPath(url.pathname)}${toSearchString(canonical)}`)
 
   const param = url.searchParams.get('date')
-  const today = todayIso()
+  // Até as 05:00, "hoje" ainda é o dia anterior (ver agendaToday).
+  const today = agendaToday()
   const startDate = isIsoDate(param) ? param : today
 
   // Link direto para um evento fora da primeira janela (ex.: semana que vem, ou já passou):

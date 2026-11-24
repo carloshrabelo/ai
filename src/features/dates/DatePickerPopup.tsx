@@ -2,7 +2,7 @@ import { type RefObject, useEffect } from 'react'
 import { BottomSheet } from '../../components/ui/BottomSheet'
 import { useMediaQuery, XL_QUERY } from '../../hooks/useMediaQuery'
 import { useI18n } from '../../i18n/useI18n'
-import { type IsoDate, todayIso } from '../../lib/dates'
+import { agendaToday, type IsoDate } from '../../lib/dates'
 import { CalendarPicker } from './CalendarPicker'
 
 type Props = {
@@ -41,7 +41,7 @@ export function DatePickerPopup({ value, onSelect, onClose, containerRef }: Prop
     onClose()
     onSelect(day)
   }
-  const picker = <CalendarPicker value={value} today={todayIso()} onSelect={pick} />
+  const picker = <CalendarPicker value={value} today={agendaToday()} onSelect={pick} />
 
   if (isXl) {
     return (

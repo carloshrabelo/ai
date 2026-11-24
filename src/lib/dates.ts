@@ -21,6 +21,17 @@ export function todayIso(now = new Date()): IsoDate {
   return lisbonDate(now)
 }
 
+/** Hora (de Lisboa) em que a agenda passa para o dia seguinte. */
+export const AGENDA_DAY_START_HOUR = 5
+
+/**
+ * "Hoje" da agenda: o dia de calendário até as 05:00 do dia seguinte, em Lisboa. Quem abre o app à 1h da manhã
+ * ainda está na noite anterior (festas que vão até as 3h, 4h): a agenda abre nesse dia, e ele aparece como "Hoje".
+ */
+export function agendaToday(now = new Date()): IsoDate {
+  return lisbonDate(new Date(now.getTime() - AGENDA_DAY_START_HOUR * 60 * 60_000))
+}
+
 export function addDays(date: IsoDate, days: number): IsoDate {
   const d = new Date(`${date}T00:00:00Z`)
   d.setUTCDate(d.getUTCDate() + days)

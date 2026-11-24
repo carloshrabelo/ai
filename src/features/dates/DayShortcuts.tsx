@@ -1,6 +1,7 @@
 import { CalendarDotsIcon } from '@phosphor-icons/react'
 import { useCallback, useLayoutEffect, useRef, useState } from 'react'
-import { addDays, type IsoDate } from '../../lib/dates'
+import { addDays, agendaToday, type IsoDate, todayIso } from '../../lib/dates'
+import { useNow } from '../../hooks/useNow'
 import { formatShortDay } from '../events/format'
 import { useI18n } from '../../i18n/useI18n'
 import { TOOL, TOOL_ACTIVE, TOOL_IDLE } from '../../components/ui/buttonStyles'
@@ -20,18 +21,28 @@ const ITEM = `inline-flex h-11 flex-1 shrink-0 cursor-pointer items-center justi
 const FADE = 16
 
 /**
- * Ontem / Hoje / Amanhã / Outra data. "Outra data" abre o calendário e, com um dia fora dos atalhos
- * ativo, mostra esse dia. No celular, a linha rola para o lado quando não cabe (o botão ativo é
- * trazido para a vista); na sidebar (`xl`), os três atalhos numa linha e "Outra data" embaixo.
+ * Hoje / Amanhã / Outra data, e Ontem só de madrugada. "Outra data" abre o calendário e, com um dia fora dos
+ * atalhos ativo, mostra esse dia. No celular, a linha rola para o lado quando não cabe (o botão ativo é trazido
+ * para a vista); na sidebar (`xl`), os atalhos numa linha e "Outra data" embaixo.
+ *
+ * "Ontem" aparece da 00:00 às 05:00 (nesse intervalo o "Hoje" da agenda ainda é a noite anterior, ver
+ * agendaToday, e "Ontem" é o dia antes dela) e sempre que o dia em foco é ontem: "Ontem" aparece marcado e
+ * "Outra data" mostra a data dele, sem marcar. No resto do tempo fica escondido. O relógio (useNow) atualiza a cada minuto: o botão
+ * aparece e some sozinho.
  */
 export function DayShortcuts({ today, activeDay, onSelect }: Props) {
   const { t, locale } = useI18n()
+  const now = new Date(useNow())
+  const yesterday = addDays(today, -1)
+  const showYesterday = todayIso(now) !== agendaToday(now) || activeDay === yesterday
   const shortcuts = [
-    { day: addDays(today, -1), label: t.dates.yesterday, id: 'yesterday' },
+    ...(showYesterday ? [{ day: yesterday, label: t.dates.yesterday, id: 'yesterday' }] : []),
     { day: today, label: t.dates.today, id: 'today' },
     { day: addDays(today, 1), label: t.dates.tomorrow, id: 'tomorrow' },
   ]
   const isCustom = !shortcuts.some(({ day }) => day === activeDay)
+  // Com ontem em foco, "Outra data" também mostra a data (sem ficar marcado: quem fica marcado é "Ontem").
+  const showDate = isCustom || activeDay === yesterday
   const [pickerOpen, setPickerOpen] = useState(false)
   const closePicker = useCallback(() => setPickerOpen(false), [setPickerOpen])
   const containerRef = useRef<HTMLDivElement>(null)
@@ -80,7 +91,7 @@ export function DayShortcuts({ today, activeDay, onSelect }: Props) {
         style={{ maskImage: mask, WebkitMaskImage: mask }}
         // -m-1 p-1: 4px de folga dentro da área que rola para o contorno de foco (2px + 2px de distância), que o
         // overflow cortaria; a margem negativa desfaz o padding, e o layout não muda.
-        className="-m-1 flex gap-1.5 overflow-x-auto overscroll-x-contain p-1 [scrollbar-width:none] xl:m-0 xl:grid xl:grid-cols-3 xl:gap-2 xl:overflow-visible xl:p-0"
+        className={`-m-1 flex gap-1.5 overflow-x-auto overscroll-x-contain p-1 [scrollbar-width:none] xl:m-0 xl:grid xl:gap-2 xl:overflow-visible xl:p-0 ${showYesterday ? 'xl:grid-cols-3' : 'xl:grid-cols-2'}`}
       >
         {shortcuts.map(({ day, label, id }) => (
           <button
@@ -100,12 +111,12 @@ export function DayShortcuts({ today, activeDay, onSelect }: Props) {
           aria-pressed={isCustom}
           aria-expanded={pickerOpen}
           aria-haspopup="dialog"
-          aria-label={isCustom ? `${t.dates.pickDate}: ${formatShortDay(activeDay, locale)}` : t.dates.pickDate}
+          aria-label={showDate ? `${t.dates.pickDate}: ${formatShortDay(activeDay, locale)}` : t.dates.pickDate}
           onClick={() => setPickerOpen((open) => !open)}
-          className={`${ITEM} tabular-nums xl:col-span-3 ${isCustom ? TOOL_ACTIVE : TOOL_IDLE}`}
+          className={`${ITEM} tabular-nums xl:col-span-full ${isCustom ? TOOL_ACTIVE : TOOL_IDLE}`}
         >
           <CalendarDotsIcon className="size-5 shrink-0" aria-hidden="true" />
-          {isCustom ? formatShortDay(activeDay, locale) : t.dates.otherDate}
+          {showDate ? formatShortDay(activeDay, locale) : t.dates.otherDate}
         </button>
       </div>
       {pickerOpen && <DatePickerPopup value={activeDay} onSelect={onSelect} onClose={closePicker} containerRef={containerRef} />}
