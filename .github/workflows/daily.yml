@@ -1,0 +1,77 @@
+name: Update data
+
+# Uma vez por dia: gera o cache dos eventos (os três calendários, 30 dias atrás a 90 à frente) e, a
+# partir dele, geocodifica os locais novos (src/content/venues.json) e atualiza os promotores
+# (src/content/promoters.json). Um commit só com o que mudou e, no fim, o deploy (páginas estáticas
+# dos eventos e o cache publicado em /events-cache.json, o fallback do app quando a API falha).
+on:
+  schedule:
+    - cron: '0 5 * * *' # 05:00 UTC
+  workflow_dispatch:
+
+concurrency:
+  group: daily-data
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      sha: ${{ steps.commit.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.9.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # Se a API falhar, usa o cache publicado no site como base (o passo não falha).
+      - name: Cache dos eventos
+        run: pnpm events:cache
+        env:
+          VITE_GOOGLE_API_KEY: ${{ secrets.VITE_GOOGLE_API_KEY }}
+
+      - name: Geocodificar locais novos
+        run: pnpm venues:check 90 --fix
+
+      - name: Atualizar promotores
+        run: pnpm promoters:update
+
+      - name: Commit de venues.json e promoters.json
+        id: commit
+        # Commit do bot: sem os hooks do husky (o deploy já roda as validações).
+        env:
+          HUSKY: 0
+        run: |
+          if git diff --quiet -- src/content/venues.json src/content/promoters.json; then
+            echo "Sem mudanças."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add src/content/venues.json src/content/promoters.json
+            git commit -m "Update venues and promoters from calendar events"
+            git pull --rebase
+            git push
+          fi
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+  # Sempre: as páginas dos eventos e o /events-cache.json acompanham o calendário.
+  deploy:
+    needs: update
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/deploy.yml
+    with:
+      ref: ${{ needs.update.outputs.sha }}
+    secrets: inherit

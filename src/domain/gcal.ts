@@ -17,6 +17,8 @@ export type GCalEvent = {
   start: GCalDateTime
   end: GCalDateTime
   recurringEventId?: string
+  /** Última alteração no calendário (ISO). */
+  updated?: string
   /** Calendário de origem: preenchido pelo app depois da busca (não vem da API). Sem ele, o principal. */
   source?: CalendarSource
 }

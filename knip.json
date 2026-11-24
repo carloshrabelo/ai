@@ -6,6 +6,8 @@
     "src/lib/dates.ts",
     "src/api/loadEvents.ts",
     "src/domain/promoterDirectory.ts",
-    "src/seo/prerender.ts"
+    "src/seo/prerender.ts",
+    "src/api/eventsCache.ts",
+    "src/api/googleCalendar.ts"
   ]
 }

@@ -15,6 +15,5 @@ export type DatesModule = {
   todayIso: () => IsoDate
   addDays: (date: IsoDate, days: number) => IsoDate
   lisbonDate: (at: Date) => IsoDate
+  lisbonMidnight: (day: IsoDate) => Date
 }
-
-export type LoadEventsModule = { loadEvents: (from: IsoDate, to: IsoDate) => Promise<ScriptEvent[]> }

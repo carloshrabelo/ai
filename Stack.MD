@@ -24,7 +24,7 @@ Retrato da stack atual, avaliação da arquitetura e recomendações. Os tamanho
 | Testes | **Vitest 5** + **React Testing Library** (jsdom); **Playwright** + **axe** | Domínio e componentes (`pnpm test`); fluxos e acessibilidade no celular e no desktop (`pnpm e2e`, no CI). |
 | Qualidade | **oxlint**, **oxfmt**, **Knip**, husky + lint-staged, `pnpm a11y` (axe-core via Chrome headless) | Lint, formatação, código morto e acessibilidade (WCAG 2.1 AA). |
 | Análise de bundle | **rollup-plugin-visualizer 7** (`pnpm analyze`) | Treemap do bundle sob demanda. |
-| Deploy | GitHub Pages + GitHub Actions (deploy diário, venues, promoters) | Sem servidor próprio; a chave da Google Calendar API fica no JavaScript publicado (restrita por referrer). |
+| Deploy | GitHub Pages + GitHub Actions (Update data diário: cache dos eventos, venues, promoters e deploy) | Sem servidor próprio; a chave da Google Calendar API fica no JavaScript publicado. O cache publicado (`/events-cache.json`) é o fallback quando a API falha. |
 
 ### Bundle (build de produção)
 

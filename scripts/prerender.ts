@@ -4,11 +4,14 @@
 //   dist/404.html                  — fallback de SPA (cópia do index.html original)
 //   dist/sitemap.xml               — rotas fixas + eventos futuros
 //   dist/evento/<slug>/, mapa/…    — redirecionam das rotas antigas (em português) para as novas
-// Os dados vêm da mesma fonte do app (mock ou API, conforme VITE_USE_MOCK). Se a API falhar, o
-// build segue só com as páginas fixas.
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+//   dist/events-cache.json         — cache dos eventos (o app o usa quando a Google Calendar API falha)
+// Com o mock (VITE_USE_MOCK), os eventos vêm dele; com a API, do cache (scripts/lib/eventsCache.ts:
+// gerado de novo se tiver mais de 6 horas, com o publicado no site como base se a API falhar). Sem
+// nenhum, o build segue só com as páginas fixas.
+import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { root, startApp } from './lib/app.ts'
+import { CACHE_PATH, loadCachedEvents } from './lib/eventsCache.ts'
 import type { DatesModule, IsoDate, ScriptEvent } from './lib/types.ts'
 
 type PrerenderModule = {
@@ -34,6 +37,7 @@ try {
   const { legacyEventPagePath, loadEvents, renderEventPage, renderHomePage, renderRedirectPage, renderSitemap } =
     await app.load<PrerenderModule>('/src/seo/prerender.ts')
   const { addDays, todayIso } = await app.load<DatesModule>('/src/lib/dates.ts')
+  const { USE_MOCK } = await app.load<{ USE_MOCK: boolean }>('/src/api/config.ts')
 
   const template = readFileSync(join(outDir, 'index.html'), 'utf8')
   writeFileSync(join(outDir, '404.html'), template)
@@ -41,7 +45,12 @@ try {
   const today = todayIso()
   let events: ScriptEvent[] = []
   try {
-    events = await loadEvents(addDays(today, -DAYS_BEFORE), addDays(today, DAYS_AFTER))
+    const [from, to] = [addDays(today, -DAYS_BEFORE), addDays(today, DAYS_AFTER)]
+    if (USE_MOCK) events = await loadEvents(from, to)
+    else {
+      events = await loadCachedEvents(app, from, to)
+      copyFileSync(CACHE_PATH, join(outDir, 'events-cache.json'))
+    }
   } catch (error) {
     console.warn(`prerender: eventos indisponíveis (${error instanceof Error ? error.message : String(error)}); só páginas fixas.`)
   }

@@ -1,7 +1,8 @@
-import { CALENDAR_SOURCES, CALENDARS } from '../domain/calendarSources'
-import type { GCalDateTime, GCalEvent } from '../domain/gcal'
+import { CALENDAR_SOURCES, CALENDARS, type CalendarSource } from '../domain/calendarSources'
+import type { GCalEvent } from '../domain/gcal'
 import { GOOGLE_API_KEY, MOCK_DELAY_MS, USE_MOCK } from './config'
-import { lisbonMidnight, todayIso } from '../lib/dates'
+import { fetchPublishedCache, itemsInWindow, startOf } from './eventsCache'
+import { todayIso } from '../lib/dates'
 import { shiftMockEvents } from './mockDates'
 
 type GCalEventsResponse = {
@@ -27,22 +28,47 @@ export function fetchEvents(params: FetchEventsParams): Promise<GCalEvent[]> {
 // API
 
 /**
- * Todos os calendários em paralelo, juntos e ordenados pelo início. Se um calendário extra falhar,
- * a agenda segue com os outros; só o principal derruba a busca.
+ * Todos os calendários em paralelo, juntos e ordenados pelo início. O calendário que falhar entra
+ * pelo cache publicado (/events-cache.json, ver eventsCache.ts); sem cache, um extra que falha fica
+ * de fora e o principal derruba a busca.
  */
 async function fetchAllCalendars(params: FetchEventsParams): Promise<GCalEvent[]> {
-  const results = await Promise.allSettled(
-    SOURCES.map(async ({ source, calendarId, adapt }) => {
-      const items = await fetchApiEvents(calendarId, params)
-      return items.map((item) => ({ ...(adapt ? adapt(item) : item), source }))
-    }),
-  )
-  const [main] = results
-  if (main.status === 'rejected') throw main.reason
+  const results = await Promise.allSettled(SOURCES.map(({ source }) => fetchCalendarItems(source, params)))
+  const failed = results.some((result) => result.status === 'rejected')
+  const cache = failed && !params.signal?.aborted ? await fetchPublishedCache() : undefined
+  return mergeCalendarResults(results, cache?.items, params)
+}
+
+/** Eventos de um calendário, já adaptados ao formato do principal e com `source`. */
+export async function fetchCalendarItems(source: CalendarSource, params: FetchEventsParams): Promise<GCalEvent[]> {
+  const { calendarId, adapt } = CALENDARS[source]
+  const items = await fetchApiEvents(calendarId, params)
+  return items.map((item) => ({ ...(adapt ? adapt(item) : item), source }))
+}
+
+/**
+ * Junta o resultado de cada calendário (na ordem de SOURCES). Quem falhou entra pelos itens do cache
+ * daquele calendário na janela; sem cache, um extra fica de fora e o principal lança o erro.
+ */
+export function mergeCalendarResults(
+  results: readonly PromiseSettledResult<GCalEvent[]>[],
+  cached: readonly GCalEvent[] | undefined,
+  { timeMin, timeMax, signal }: FetchEventsParams,
+): GCalEvent[] {
   const items: GCalEvent[] = []
   results.forEach((result, index) => {
-    if (result.status === 'fulfilled') items.push(...result.value)
-    else if (!params.signal?.aborted) console.warn(`Calendário ${SOURCES[index].calendarId} indisponível:`, result.reason)
+    const { source, calendarId } = SOURCES[index]
+    if (result.status === 'fulfilled') {
+      items.push(...result.value)
+      return
+    }
+    if (cached) {
+      if (!signal?.aborted) console.warn(`Calendário ${calendarId} indisponível; usando o cache.`, result.reason)
+      items.push(...itemsInWindow(cached, timeMin, timeMax).filter((item) => (item.source ?? 'pasdedeux') === source))
+      return
+    }
+    if (index === 0) throw result.reason
+    if (!signal?.aborted) console.warn(`Calendário ${calendarId} indisponível:`, result.reason)
   })
   return items.sort((a, b) => startOf(a).getTime() - startOf(b).getTime())
 }
@@ -90,20 +116,7 @@ async function fetchMockEvents({ timeMin, timeMax, signal }: FetchEventsParams):
   if (MOCK_DELAY_MS) await delay(MOCK_DELAY_MS, signal)
 
   // Mesma regra da API: termina depois de timeMin e começa antes de timeMax.
-  return items.filter((e) => endOf(e) > timeMin && startOf(e) < timeMax).sort((a, b) => startOf(a).getTime() - startOf(b).getTime())
-}
-
-function startOf(event: GCalEvent): Date {
-  return toDate(event.start)
-}
-
-function endOf(event: GCalEvent): Date {
-  return toDate(event.end)
-}
-
-function toDate(value: GCalDateTime): Date {
-  if (value.dateTime) return new Date(value.dateTime)
-  return lisbonMidnight(value.date ?? '1970-01-01')
+  return itemsInWindow(items, timeMin, timeMax)
 }
 
 function delay(ms: number, signal?: AbortSignal): Promise<void> {

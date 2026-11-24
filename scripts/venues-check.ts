@@ -1,18 +1,19 @@
 // Lista os locais (campo `location`) dos próximos eventos que ainda não estão em
-// src/content/venues.json. Esses eventos aparecem sem pino no mapa e sem distância. Lê os mesmos
-// calendários do app (principal, tango e danças tradicionais), já com os adaptadores: o local do
-// tango vem da descrição ("Where: …") e o das danças tradicionais leva a cidade.
+// src/content/venues.json. Esses eventos aparecem sem pino no mapa e sem distância. Lê o cache dos
+// eventos (pnpm events:cache: os mesmos calendários do app, já com os adaptadores: o local do tango
+// vem da descrição, "Where: …", e o das danças tradicionais leva a cidade).
 //
 // Uso: pnpm venues:check [dias] [--fix]   (padrão: 60 dias a partir de hoje)
 //   --fix  busca as coordenadas dos locais que faltam (Nominatim e Photon, dados do OpenStreetMap)
 //          e grava em src/content/venues.json. Roda todo dia na Action "Update venues".
 // Saída: 2 quando faltam locais (sem --fix); 0 com --fix, mesmo que alguns não sejam encontrados.
-// Lê VITE_GOOGLE_API_KEY do ambiente ou do .env.local.
+// Cache com mais de 6 horas é gerado de novo (VITE_GOOGLE_API_KEY do ambiente ou do .env.local).
 import { readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { geocodeLocation } from '../src/features/location/geocoding.ts'
 import { root, startApp } from './lib/app.ts'
-import type { DatesModule, LoadEventsModule } from './lib/types.ts'
+import { loadCachedEvents } from './lib/eventsCache.ts'
+import type { DatesModule } from './lib/types.ts'
 
 type Venues = Record<string, { name: string; lat: number; lng: number }>
 
@@ -24,12 +25,9 @@ const days = Number(args.find((arg) => /^\d+$/.test(arg))) || 60
 const locations = new Map<string, number>() // location → nº de eventos
 const app = await startApp({ name: 'venues', realData: true })
 try {
-  const { GOOGLE_API_KEY } = await app.load<{ GOOGLE_API_KEY: string }>('/src/api/config.ts')
-  if (!GOOGLE_API_KEY) throw new Error('VITE_GOOGLE_API_KEY não encontrada (ambiente ou .env.local).')
-  const { loadEvents } = await app.load<LoadEventsModule>('/src/api/loadEvents.ts')
   const { addDays, todayIso } = await app.load<DatesModule>('/src/lib/dates.ts')
   const today = todayIso()
-  for (const event of await loadEvents(today, addDays(today, days))) {
+  for (const event of await loadCachedEvents(app, today, addDays(today, days))) {
     const location = event.venue?.location
     if (location) locations.set(location, (locations.get(location) ?? 0) + 1)
   }

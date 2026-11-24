@@ -117,11 +117,12 @@ pnpm dev
 | `pnpm lint` | Lint (oxlint). |
 | `pnpm format` / `pnpm format:check` | Formata o código (oxfmt: aspas simples, sem ponto e vírgula, 140 colunas; Markdown fica de fora) / só confere, como no CI. |
 | `pnpm knip` | Arquivos, exportações e dependências sem uso (Knip). Roda no CI. |
-| `pnpm venues:check [dias] [--fix]` | Lista os locais dos próximos eventos sem coordenadas; com `--fix`, busca e grava em `src/content/venues.json`. |
+| `pnpm events:cache` | Gera o cache dos eventos (`.cache/events.json`): os três calendários, de 30 dias atrás a 90 à frente. Se a API falhar, usa o publicado no site. Base de `venues:check`, `promoters:update` e do prerender. |
+| `pnpm venues:check [dias] [--fix]` | Lista os locais dos próximos eventos (do cache) sem coordenadas; com `--fix`, busca e grava em `src/content/venues.json`. |
 | `pnpm e2e` | Testes de ponta a ponta (Playwright, em `e2e/`): fluxos principais no celular e no desktop, com o mock. Sobe o `pnpm dev` sozinho; localmente usa o Chrome instalado. Roda no CI antes do build. |
 | `pnpm a11y` | Só a parte de acessibilidade do `e2e` (axe-core, WCAG 2.1 AA + boas práticas) nas telas principais, nos dois temas. |
 | `pnpm generate-pwa-assets` | Gera os ícones do PWA a partir de `docs/assets/logo_square.png`. |
-| `pnpm promoters:update` | Atualiza `src/content/promoters.json` (roda também numa Action). |
+| `pnpm promoters:update` | Atualiza `src/content/promoters.json` a partir do cache dos eventos (roda também na Action diária). |
 
 ### Analisar o bundle
 
@@ -184,7 +185,7 @@ O título dos eventos segue o padrão `Tag • Nome • Preço` (ex.: `SBK • F
 O texto de `location` de cada evento é a chave em `src/content/venues.json`. Locais que ainda não estão no arquivo:
 
 1. são buscados **no navegador** (Photon) na primeira vez que o mapa, a distância ou a rota precisam deles, e ficam salvos no aparelho;
-2. são gravados no arquivo pela Action diária **Update venues**, que roda `venues:check --fix` (Nominatim + Photon, só aceitando resultados da mesma região postal) e publica o site.
+2. são gravados no arquivo pela Action diária **Update data**, que roda `venues:check --fix` (Nominatim + Photon, só aceitando resultados da mesma região postal) e publica o site.
 
 Para corrigir um ponto, edite as coordenadas no `venues.json`: a busca automática só adiciona locais novos.
 
@@ -193,13 +194,13 @@ Para corrigir um ponto, edite as coordenadas no `venues.json`: a busca automáti
 - Tags fixas no `index.html` (lidas por buscadores e redes sociais sem JavaScript): título, descrição, canonical, `hreflang`, Open Graph e Twitter Card com `public/og-image.jpg`.
 - `<head>` dinâmico por página (`src/seo/`): título e descrição próprios, canonical, `noindex` para 404 e eventos inexistentes, e Schema.org em JSON-LD (`ItemList` na agenda, `DanceEvent` no evento aberto).
 - No build: `sitemap.xml`, `robots.txt` e uma cópia do `index.html` por rota fixa (`map/`, `community/`, `about/`), para `/about` responder 200 no GitHub Pages em vez de cair no 404.
-- Páginas estáticas (SSG, `scripts/prerender.ts` depois do `vite build`): uma por evento em `event/<slug>/index.html` (de 1 semana atrás a 90 dias à frente), com título, descrição, canonical, Open Graph, JSON-LD e o conteúdo do evento no HTML; a agenda (`index.html`) traz a lista dos próximos eventos com links; o `sitemap.xml` inclui os eventos futuros. No navegador, o React substitui esse conteúdo pelo app. O deploy roda todo dia para as páginas acompanharem o calendário. Se a API falhar no build, saem só as páginas fixas.
+- Páginas estáticas (SSG, `scripts/prerender.ts` depois do `vite build`): uma por evento em `event/<slug>/index.html` (de 1 semana atrás a 90 dias à frente), com título, descrição, canonical, Open Graph, JSON-LD e o conteúdo do evento no HTML; a agenda (`index.html`) traz a lista dos próximos eventos com links; o `sitemap.xml` inclui os eventos futuros. No navegador, o React substitui esse conteúdo pelo app. O deploy roda todo dia para as páginas acompanharem o calendário. Os eventos vêm do cache (`pnpm events:cache`); se a API falhar, do cache publicado no deploy anterior; sem nenhum, saem só as páginas fixas.
 - Slug do evento: dia de Lisboa + título + hash curto do id do Google (`src/domain/slug.ts`), sempre o mesmo para o mesmo evento. Links antigos (`?event=<id>`) são redirecionados para o novo endereço.
 - Limitações do GitHub Pages: não há redirecionamento 301 (evento removido recebe `noindex` e aponta para a agenda).
 
 ## Deploy
 
-GitHub Pages, pelo workflow `.github/workflows/deploy.yml` a cada push no `main` e todo dia às 05:30 UTC, para as páginas dos eventos acompanharem o calendário (lint e testes antes do build).
+GitHub Pages, pelo workflow `.github/workflows/deploy.yml` a cada push no `main` e todo dia pela Action **Update data**, para as páginas dos eventos acompanharem o calendário (lint e testes antes do build).
 
 Em **Settings → Secrets and variables → Actions**:
 
@@ -209,7 +210,11 @@ Em **Settings → Secrets and variables → Actions**:
 | `VITE_USE_MOCK` | Variable | `false` para usar a API (sem ela, o site publica com o mock) |
 | `VITE_GOATCOUNTER_CODE` | Variable | Código do site no GoatCounter (opcional) |
 
-O workflow `.github/workflows/venues.yml` (**Update venues**) roda todo dia às 05:00 UTC e também pode ser disparado manualmente.
+O workflow `.github/workflows/daily.yml` (**Update data**) roda todo dia às 05:00 UTC (ou à mão): gera o cache dos eventos, geocodifica os locais novos e atualiza os promotores a partir dele, faz um commit só com o que mudou e chama o deploy.
+
+### Cache dos eventos (fallback)
+
+O build publica o cache como `/events-cache.json` (~700 KB, fora do precache do service worker). O app continua buscando os eventos na Google Calendar API; se um calendário falhar (cota, erro, chave), os eventos dele vêm do cache, na mesma janela (`src/api/eventsCache.ts` e `mergeCalendarResults` em `src/api/googleCalendar.ts`). O cache cobre de 30 dias atrás a 90 à frente, a partir da manhã do último deploy.
 
 O que ainda precisa ser feito ou conferido à mão (chaves, configurações, verificações) está em [`TODO.md`](TODO.md).
 

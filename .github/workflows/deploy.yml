@@ -4,11 +4,8 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
-  # Todo dia: as páginas estáticas dos eventos (e o sitemap) acompanham o calendário.
-  schedule:
-    - cron: '30 5 * * *'
-  # Chamado pela Action "Update venues" depois de gravar o venues.json: um push feito com o
-  # GITHUB_TOKEN não dispara este workflow sozinho.
+  # Chamado todo dia pela Action "Update data" (daily.yml), depois de gerar o cache dos eventos e
+  # gravar venues e promoters: um push feito com o GITHUB_TOKEN não dispara este workflow sozinho.
   workflow_call:
     inputs:
       ref:

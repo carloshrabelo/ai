@@ -12,6 +12,7 @@
     "knip": "knip",
     "test": "vitest run",
     "test:watch": "vitest",
+    "events:cache": "node scripts/events-cache.ts",
     "venues:check": "node scripts/venues-check.ts",
     "promoters:update": "node scripts/promoters-update.ts",
     "e2e": "playwright test",

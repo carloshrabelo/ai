@@ -6,11 +6,13 @@
 // digitação) para juntar com "aliases". Roda todo dia na Action "Update promoters".
 //
 // Uso: pnpm promoters:update [dias à frente] [dias para trás]   (padrão: 90 e 30)
-// Usa sempre a Google Calendar API (nunca o mock). Lê VITE_GOOGLE_API_KEY do ambiente ou do .env.local.
+// Lê o cache dos eventos (pnpm events:cache; nunca o mock). Cache com mais de 6 horas é gerado de novo
+// (VITE_GOOGLE_API_KEY do ambiente ou do .env.local).
 import { readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { root, startApp } from './lib/app.ts'
-import type { DatesModule, LoadEventsModule, ScriptEvent } from './lib/types.ts'
+import { loadCachedEvents } from './lib/eventsCache.ts'
+import type { DatesModule, ScriptEvent } from './lib/types.ts'
 
 type Entry = { role: string; aliases?: string[] }
 type Directory = Record<string, Entry>
@@ -28,14 +30,11 @@ const [daysAfter = 90, daysBefore = 30] = process.argv
 
 const app = await startApp({ name: 'promoters', realData: true })
 try {
-  const { GOOGLE_API_KEY } = await app.load<{ GOOGLE_API_KEY: string }>('/src/api/config.ts')
-  if (!GOOGLE_API_KEY) throw new Error('VITE_GOOGLE_API_KEY não encontrada (ambiente ou .env.local).')
-  const { loadEvents } = await app.load<LoadEventsModule>('/src/api/loadEvents.ts')
   const { addDays, lisbonDate, todayIso } = await app.load<DatesModule>('/src/lib/dates.ts')
   const { collectPromoters, mergePromoters, similarHandles } = await app.load<PromoterDirectoryModule>('/src/domain/promoterDirectory.ts')
 
   const today = todayIso()
-  const events = await loadEvents(addDays(today, -daysBefore), addDays(today, daysAfter))
+  const events = await loadCachedEvents(app, addDays(today, -daysBefore), addDays(today, daysAfter))
   const found = collectPromoters(events, (event) => lisbonDate(event.start))
 
   const existing = JSON.parse(readFileSync(FILE, 'utf8')) as Directory

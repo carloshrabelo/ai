@@ -186,7 +186,7 @@ Usa a **Instagram Graph API oficial (Business Discovery)**. O endpoint interno `
 
 #### Depois (opcional)
 
-- [ ] Automatizar: secrets `IG_ACCESS_TOKEN` e `IG_USER_ID` no GitHub e `pnpm promoters:photos` na Action diária `.github/workflows/promoters.yml`, commitando também `public/promoters/`.
+- [ ] Automatizar: secrets `IG_ACCESS_TOKEN` e `IG_USER_ID` no GitHub e `pnpm promoters:photos` na Action diária `.github/workflows/daily.yml`, commitando também `public/promoters/`.
 - [ ] Token que não vence: **usuário do sistema** (Meta Business Suite → Configurações do negócio → Usuários do sistema), em vez de renovar o de 60 dias.
 - [ ] Atualizar fotos de tempos em tempos com `--force` (ex.: uma vez por mês).
 - [ ] Usar no app: decidir onde a foto aparece (card do evento, bloco "Organização" nos detalhes, página de promotores), reduzir as imagens (ex.: 96×96 WebP) e manter o `"photo": false` para quem pedir para sair.
@@ -210,8 +210,8 @@ Usa a **Instagram Graph API oficial (Business Discovery)**. O endpoint interno `
 
 - [x] **Pages** com GitHub Actions (deploy de hoje publicado: manifest com as cores novas).
 - [x] Secret `VITE_GOOGLE_API_KEY` e variable `VITE_USE_MOCK` = `false` (eventos reais no ar).
-- [x] Action **Update venues** e **Update promoters** gravando no `main` (commits do bot de 21 e 22/11).
-- [ ] Conferir se o deploy diário (05:30 UTC) roda sozinho em **Actions → Deploy to GitHub Pages** (não deu para ver pela API pública: limite de requisições).
+- [x] Action **Update data** (`daily.yml`, 05:00 UTC): cache dos eventos → venues → promoters → um commit → deploy. Substitui as Actions Update venues e Update promoters e o cron do deploy.
+- [ ] Conferir a primeira execução da **Update data** em **Actions** (ou rodar à mão: *Run workflow*) e se `https://lisbondance.com/events-cache.json` foi publicado.
 - [x] *Custom domain* `lisbondance.com` e **Enforce HTTPS** (seção 1).
 
 ### 7. SEO e compartilhamento

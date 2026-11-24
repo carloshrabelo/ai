@@ -7,7 +7,7 @@ import { createServer } from 'vite'
 export const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..')
 
 /** Domínio publicado: a chave da API é restrita por HTTP referrer. */
-const PUBLISHED_URL = 'https://lisbondance.com/'
+export const PUBLISHED_URL = 'https://lisbondance.com/'
 
 type Options = {
   /** Nome do script (aparece em __APP_VERSION__). */
