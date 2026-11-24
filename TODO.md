@@ -28,9 +28,10 @@ evidência entre parênteses.
 > `docs/dominios.md` (arquivo local, fora do git).
 
 Hoje o projeto (`ai`) é publicado em `carloshrabelo.dev/ai/`, porque o site do usuário (`carloshrabelo.github.io`)
-tem o domínio `carloshrabelo.dev`. Com um *Custom domain* no repositório `ai`, o GitHub passa a servir o app no domínio
-novo e redireciona `carloshrabelo.dev/ai/` e `carloshrabelo.github.io/ai/` para ele. Os dois domínios não conflitam
-(cada domínio aponta para um repositório só); o risco está no service worker do PWA (fase 2).
+tem o domínio `carloshrabelo.dev`. Na troca, o repositório `ai` é **renomeado para `lisbon-social-dances`** (o
+protótipo de 2024 com esse nome é arquivado como `lisbon-social-dances-2024`) e publicado em `lisbondance.com`, na
+raiz. O nome `ai` fica livre e vira um repositório só de redirecionamento (`legacy/ai-redirect/`), que leva
+`carloshrabelo.dev/ai/…` para o mesmo caminho no domínio novo e substitui o service worker antigo (fase 2).
 
 #### Fase 1 — Compra e preparação (sem mexer no site)
 
@@ -52,43 +53,37 @@ Cada domínio tem o DNS e o redirecionamento configurados no painel do seu regis
   painel do registrador. Não depende da troca do site: dá para configurar logo depois da compra. Não apagar esses
   registros ao configurar o GitHub Pages (fase 3).
 
-#### Fase 2 — Versão de transição (no domínio atual, 1–2 semanas antes de trocar)
+#### Fase 2 — Redirecionamento do domínio antigo (pronto no código)
 
 O service worker registrado em `carloshrabelo.dev/ai/` responde do cache antes de a requisição chegar ao GitHub:
-quem tem o app instalado (ou já visitou) não veria o redirecionamento, e a atualização do service worker falha
-quando `sw.js` passa a responder com redirecionamento. Sem esta fase, essas pessoas ficam presas na versão antiga.
+sem tratamento, quem tem o app instalado (ou já visitou) ficaria preso na versão antiga.
 
-- [ ] Código: ao abrir, o app confere se `/ai/sw.js` responde com redirecionamento (`fetch(…, { redirect: 'manual' })`
-  → `opaqueredirect`). Se sim: desregistra o service worker, limpa os caches e vai para a mesma página em
-  `https://lisbondance.com` (mesmo caminho sem o `/ai`, mesma query). Antes da troca não faz nada.
-- [ ] Levar junto os dados salvos no aparelho, que são por domínio e se perderiam: eventos adicionados ao calendário
-  (`tracked-events`, os avisos de mudança), tema, idioma e o aviso de instalação dispensado. Ex.: no redirecionamento,
-  mandar os dados no fragmento da URL (`#migrate=…`, não vai para o servidor) e o domínio novo grava e limpa a URL.
-- [ ] Domínio de destino numa constante (`NEW_ORIGIN`), testado com um host local antes de publicar.
-- [ ] Publicar e esperar **1–2 semanas** para a maioria das instalações se atualizar sozinha (`autoUpdate`).
+- [x] `legacy/ai-redirect/`: conteúdo do novo repositório `ai` (sem build). `index.html`/`404.html` redirecionam
+  `/ai/<caminho>?<query>` para `https://lisbondance.com/<caminho>?<query>` levando os dados salvos no aparelho
+  (tema, idioma, `tracked-events`, aviso de instalação, palavras ignoradas da revisão) em `#migrate=…`; `sw.js`
+  substitui o service worker antigo (apaga os caches, se desregistra e recarrega as abas).
+- [x] App: `src/pwa/migrateFromOldDomain.ts` grava os dados de `#migrate=` (sem sobrescrever) e limpa a URL.
+- [ ] Depois da renomeação (fase 3): criar o repositório `ai` com o conteúdo de `legacy/ai-redirect/` e ligar o
+  Pages (*Deploy from a branch*, `main`, `/`). Manter por alguns meses.
 
-#### Fase 3 — DNS e troca (um deploy só)
+#### Fase 3 — DNS e troca (no mesmo dia)
 
 - [ ] DNS do domínio **principal** (`.com`, Dynadot), no painel do registrador dele: registros **A** `185.199.108.153`,
   `185.199.109.153`, `185.199.110.153`, `185.199.111.153` (e **AAAA** `2606:50c0:8000::153` … `8003::153` para
-  IPv6); `www` como **CNAME** → `carloshrabelo.github.io`. Apagar os registros A/CNAME de "página estacionada" que o
-  registrador cria por padrão.
+  IPv6); `www` como **CNAME** → `carloshrabelo.github.io`. A página estacionada da Dynadot já foi removida.
 - [ ] Domínio **secundário** (`.pt`, depois da validação) redirecionando 301 para `https://lisbondance.com`, no painel dele:
   - Dynadot: *Domain → Forwarding* (URL forwarding, permanente/301).
   - OVHcloud: *Domínios → Redirecionamento* (redirecionamento visível permanente, 301), não o "invisível" (frame).
   - Testar `http://` e `https://` do secundário: o redirecionamento do registrador pode não ter certificado HTTPS; se
     o `https://` falhar, alternativa é apontar o secundário também para o GitHub Pages num repositório só de redirect.
-- [ ] Repositório `ai` → **Settings → Pages → Custom domain** = `lisbondance.com`.
-- [ ] No mesmo deploy:
-  - [ ] `vite.config.ts`: `base: '/'` (hoje `'/ai/'` quando `GITHUB_PAGES` está definido; sem isso, os arquivos
-    apontam para `/ai/…` e a página abre em branco). Revisar tudo que depende do `base`: `start_url`/`scope` do
-    manifest, `navigateFallback` do Workbox, `PUBLIC_ROUTES`, os `href` do `index.html` (`/favicon.ico` etc.).
-  - [ ] `SITE_URL: https://lisbondance.com/` no `.github/workflows/deploy.yml` (canonical, Open Graph,
-    JSON-LD, `sitemap.xml`, `robots.txt`).
-  - [ ] `PUBLISHED_URL` de `scripts/lib/app.ts` (referer do prerender) e o link do README.
-  - [ ] As cópias do `index.html` por rota (`map/`, `community/`, `about/`) e o prerender continuam iguais, só sem o
-    prefixo `/ai`.
-- [ ] Quando o certificado sair (minutos a horas): **Enforce HTTPS** no repositório `ai`.
+- [ ] GitHub: arquivar e renomear o `lisbon-social-dances` antigo para `lisbon-social-dances-2024`; renomear `ai` →
+  `lisbon-social-dances`; **Settings → Pages → Custom domain** = `lisbondance.com`. Local:
+  `git remote set-url origin https://github.com/carloshrabelo/lisbon-social-dances.git`.
+- [x] Código (branch `lisbondance-domain`): `base: '/'`, `SITE_URL` padrão do build e `PUBLISHED_URL` (referer do
+  prerender) em `https://lisbondance.com/`, README. Merge e deploy **depois** do Custom domain e da chave do Google
+  com o referrer novo (o prerender do deploy já usa o domínio novo como referer).
+- [ ] Criar o repositório `ai` de redirecionamento (fase 2).
+- [ ] Quando o certificado sair (minutos a horas): **Enforce HTTPS** no repositório `lisbon-social-dances`.
 
 #### Fase 4 — Conferir depois da troca
 

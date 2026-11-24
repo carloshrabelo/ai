@@ -21,7 +21,7 @@ type PrerenderModule = {
 }
 
 const outDir = join(root, 'dist')
-const siteUrl = process.env.SITE_URL ?? (process.env.GITHUB_PAGES ? 'https://carloshrabelo.github.io/ai/' : 'http://localhost:4173/')
+const siteUrl = process.env.SITE_URL ?? (process.env.GITHUB_PAGES ? 'https://lisbondance.com/' : 'http://localhost:4173/')
 const PUBLIC_ROUTES = ['', 'map/', 'community/', 'about/']
 // Rotas antigas, em português → novas: páginas que só redirecionam (links já compartilhados).
 const LEGACY_ROUTES: Record<string, string> = { 'mapa/': 'map/', 'comunidade/': 'community/', 'info/': 'about/', 'escolas/': 'schools/' }

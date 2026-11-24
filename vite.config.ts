@@ -7,14 +7,14 @@ import { visualizer } from 'rollup-plugin-visualizer'
 import { defineConfig, type Plugin } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
-// GitHub Pages serve o projeto em https://<user>.github.io/ai/
-const base = process.env.GITHUB_PAGES ? '/ai/' : '/'
+// Na raiz do domínio próprio (lisbondance.com) e em dev.
+const base = '/'
 
 // Service worker no `pnpm dev` só quando pedido (PWA_DEV=true pnpm dev): em dev ele serve cache velho.
 const pwaInDev = process.env.PWA_DEV === 'true'
 
 // URL pública, para canonical, Open Graph e sitemap (precisam ser absolutas).
-const siteUrl = process.env.SITE_URL ?? (process.env.GITHUB_PAGES ? 'https://carloshrabelo.github.io/ai/' : 'http://localhost:4173/')
+const siteUrl = process.env.SITE_URL ?? (process.env.GITHUB_PAGES ? 'https://lisbondance.com/' : 'http://localhost:4173/')
 
 /** Rotas públicas fixas (agenda, mapa, comunidade e Sobre). Escolas está oculta e fica de fora. */
 const PUBLIC_ROUTES = ['', 'map/', 'community/', 'about/']
@@ -24,7 +24,7 @@ const PUBLIC_ROUTES = ['', 'map/', 'community/', 'about/']
  * - troca %SITE_URL% no index.html (canonical, og:url, og:image);
  * - gera sitemap.xml e robots.txt;
  * - copia o index.html para cada rota (about/index.html): no GitHub Pages, sem essa cópia,
- *   /ai/about cai no 404.html e responde HTTP 404, embora a página funcione.
+ *   /about cai no 404.html e responde HTTP 404, embora a página funcione.
  */
 function seoFiles(): Plugin {
   let outDir = 'dist'
@@ -46,8 +46,6 @@ function seoFiles(): Plugin {
         join(outDir, 'sitemap.xml'),
         `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`,
       )
-      // Num site de projeto (/ai/), o robots.txt que vale é o da raiz do domínio; este serve de
-      // referência e para quando o app tiver domínio próprio.
       writeFileSync(join(outDir, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}sitemap.xml\n`)
       for (const route of PUBLIC_ROUTES.filter(Boolean)) {
         mkdirSync(join(outDir, route), { recursive: true })

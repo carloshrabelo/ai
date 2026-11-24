@@ -11,7 +11,7 @@ export type DocumentHead = {
   jsonLd?: Record<string, unknown>
 }
 
-/** URL absoluta do app ("https://carloshrabelo.github.io/ai/"), em produção e em dev. */
+/** URL absoluta do app ("https://lisbondance.com/"), em produção e em dev. */
 export const siteUrl = () => new URL(import.meta.env.BASE_URL, window.location.origin).href
 
 /** URL compartilhável de um evento (página estática gerada no build). */

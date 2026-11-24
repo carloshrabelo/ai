@@ -43,7 +43,7 @@ export function eventsLoader({ request, params }: LoaderFunctionArgs): EventsLoa
   return { startDate, today }
 }
 
-/** Caminho sem o basename do deploy (ex.: /ai/ no GitHub Pages), como o router espera. */
+/** Caminho sem o basename do deploy (hoje "/", na raiz do domínio), como o router espera. */
 function appPath(pathname: string): string {
   const base = import.meta.env.BASE_URL.replace(/\/$/, '')
   return (base && pathname.startsWith(base) ? pathname.slice(base.length) : pathname) || '/'

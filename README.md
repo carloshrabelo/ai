@@ -7,11 +7,11 @@
 <p align="center">
   Agenda de práticas, festas e eventos de dança social em Lisboa — num PWA instalável, com filtros por estilo, mapa e funcionamento offline.
   <br />
-  <a href="https://carloshrabelo.github.io/ai/"><strong>carloshrabelo.github.io/ai</strong></a>
+  <a href="https://lisbondance.com/"><strong>lisbondance.com</strong></a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/carloshrabelo/ai/actions/workflows/deploy.yml"><img alt="Deploy" src="https://img.shields.io/github/actions/workflow/status/carloshrabelo/ai/deploy.yml?branch=main&label=deploy" /></a>
+  <a href="https://github.com/carloshrabelo/lisbon-social-dances/actions/workflows/deploy.yml"><img alt="Deploy" src="https://img.shields.io/github/actions/workflow/status/carloshrabelo/lisbon-social-dances/deploy.yml?branch=main&label=deploy" /></a>
   <img alt="Status: ativo" src="https://img.shields.io/badge/status-ativo-brightgreen" />
   <img alt="React 19" src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black" />
   <img alt="TypeScript 7" src="https://img.shields.io/badge/TypeScript-7-3178C6?logo=typescript&logoColor=white" />
@@ -188,10 +188,10 @@ Para corrigir um ponto, edite as coordenadas no `venues.json`: a busca automáti
 
 - Tags fixas no `index.html` (lidas por buscadores e redes sociais sem JavaScript): título, descrição, canonical, `hreflang`, Open Graph e Twitter Card com `public/og-image.jpg`.
 - `<head>` dinâmico por página (`src/seo/`): título e descrição próprios, canonical, `noindex` para 404 e eventos inexistentes, e Schema.org em JSON-LD (`ItemList` na agenda, `DanceEvent` no evento aberto).
-- No build: `sitemap.xml`, `robots.txt` e uma cópia do `index.html` por rota fixa (`map/`, `community/`, `about/`), para `/ai/about` responder 200 no GitHub Pages em vez de cair no 404.
+- No build: `sitemap.xml`, `robots.txt` e uma cópia do `index.html` por rota fixa (`map/`, `community/`, `about/`), para `/about` responder 200 no GitHub Pages em vez de cair no 404.
 - Páginas estáticas (SSG, `scripts/prerender.ts` depois do `vite build`): uma por evento em `event/<slug>/index.html` (de 1 semana atrás a 90 dias à frente), com título, descrição, canonical, Open Graph, JSON-LD e o conteúdo do evento no HTML; a agenda (`index.html`) traz a lista dos próximos eventos com links; o `sitemap.xml` inclui os eventos futuros. No navegador, o React substitui esse conteúdo pelo app. O deploy roda todo dia para as páginas acompanharem o calendário. Se a API falhar no build, saem só as páginas fixas.
 - Slug do evento: dia de Lisboa + título + hash curto do id do Google (`src/domain/slug.ts`), sempre o mesmo para o mesmo evento. Links antigos (`?event=<id>`) são redirecionados para o novo endereço.
-- Limitações do GitHub Pages: o `robots.txt` que vale é o da raiz do domínio; não há redirecionamento 301 (evento removido recebe `noindex` e aponta para a agenda).
+- Limitações do GitHub Pages: não há redirecionamento 301 (evento removido recebe `noindex` e aponta para a agenda).
 
 ## Deploy
 

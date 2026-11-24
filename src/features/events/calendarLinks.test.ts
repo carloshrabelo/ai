@@ -17,7 +17,7 @@ const event: DanceEvent = {
   calendarUrl: 'https://www.google.com/calendar/event?eid=x',
   source: 'pasdedeux',
 }
-const page = 'https://carloshrabelo.github.io/ai/event/2026-11-17-samba-no-mercado-abcde/'
+const page = 'https://lisbondance.com/event/2026-11-17-samba-no-mercado-abcde/'
 
 describe('googleCalendarUrl', () => {
   it('modelo do Google Agenda com título, datas UTC, local e descrição', () => {
