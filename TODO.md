@@ -149,7 +149,7 @@ A branch foi refeita sobre o `main` (1 commit): o GoatCounter conta as páginas 
 - [x] Em **Settings → Secrets and variables → Actions**, criar a variable `VITE_GOATCOUNTER_CODE` com esse código.
 - [ ] Fazer o merge da branch: https://github.com/carloshrabelo/lisbon-social-dances/compare/main...feat/seo-ssg-share-analytics
 - [ ] Depois do deploy, conferir no painel: páginas vistas e eventos como `filters.genre/Salsa`, `event.open/<slug>`, `dates.strip-day/<dia>` (a lista de nomes está em `src/analytics/track.ts`).
-- [ ] Decidir se `event.open/<slug>` (um caminho por evento) é o nível de detalhe desejado no painel, ou se basta `event.open`.
+- [x] `event.open`: os dois, o total (`event.open`) e qual evento (`event.open/<slug>`). Quem abre o evento direto pelo link (`/event/<slug>/`) conta como página vista, não como clique.
 
 ### 4. Fotos dos perfis (promotores, DJs, professores) — branch `feature/promoter-photos`
 

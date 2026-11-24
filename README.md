@@ -165,7 +165,7 @@ docs/          prints, logo e protótipos de referência
 
 Os elementos clicáveis relevantes têm `data-track="<área>.<ação>"` e, quando há um valor, `data-track-value` (dia, slug do evento, gênero, rota, id do calendário…). Os nomes ficam num catálogo tipado em `src/analytics/track.ts` (`TrackId`) e são aplicados com `{...track('event.open', event.slug)}`. A página do clique vem de `location.pathname` (o mesmo `event.open` serve na lista, no mapa e no popup do pino).
 
-- **GoatCounter** (`src/analytics/analytics.ts`): com `VITE_GOATCOUNTER_CODE`, conta as páginas vistas (a cada troca de rota) e manda cada clique rastreado como evento `<id>/<valor>` (ex.: `filters.genre/Salsa`, `event.open/<slug>`), com a página no título, via `onTrackedClick` — um listener só, delegado no `document`. Desligado em `pnpm dev`.
+- **GoatCounter** (`src/analytics/analytics.ts`): com `VITE_GOATCOUNTER_CODE`, conta as páginas vistas (a cada troca de rota) e manda cada clique rastreado como evento `<id>/<valor>` (ex.: `filters.genre/Salsa`, `event.open/<slug>`), com a página no título; o `event.open` vai também sem o slug, para o total de eventos abertos, via `onTrackedClick` — um listener só, delegado no `document`. Desligado em `pnpm dev`.
 - Outra ferramenta: troque o `send` de `connectTrackedClicks`. Ferramentas que leem atributos (GTM com gatilho por atributo, PostHog autocapture, Plausible) podem usar `data-track` direto.
 - Para conferir em dev: abra o app com `?track` na URL; cada clique rastreado aparece no console como `[track] { id, value, path }`.
 - Áreas: `nav`, `dates`, `filters`, `event`, `map`, `location`, `community`, `settings`, `pwa`, `about`.

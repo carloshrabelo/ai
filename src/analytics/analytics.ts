@@ -6,7 +6,7 @@
  * https://lisbonsocialdance.goatcounter.com). Em `pnpm dev` também fica desligado.
  */
 
-import { onTrackedClick } from './track'
+import { onTrackedClick, type TrackId } from './track'
 
 type GoatCounter = {
   count: (vars: { path: string; title?: string; event?: boolean }) => void
@@ -58,11 +58,25 @@ function trackAction(name: string, title?: string) {
   send({ path: name, title: title ?? name, event: true })
 }
 
+/** Cliques contados também sem o valor: o painel mostra o total pronto, além do detalhe por valor. */
+const WITH_TOTAL: ReadonlySet<TrackId> = new Set(['event.open'])
+
 /**
- * Manda para o GoatCounter cada clique em elemento com `data-track` (src/analytics/track.ts): o evento
- * é "<id>/<valor>" (ou só "<id>"), com a página do clique no título. Um listener só, no document.
+ * Nomes dos eventos de um clique: "<id>/<valor>" (ou só "<id>"); nos de WITH_TOTAL, também "<id>"
+ * (ex.: "event.open" para quantos eventos foram abertos e "event.open/<slug>" para quais).
+ */
+export function actionNames(id: TrackId, value?: string): string[] {
+  if (!value) return [id]
+  return WITH_TOTAL.has(id) ? [id, `${id}/${value}`] : [`${id}/${value}`]
+}
+
+/**
+ * Manda para o GoatCounter cada clique em elemento com `data-track` (src/analytics/track.ts), com a
+ * página do clique no título (nomes em actionNames). Um listener só, no document.
  */
 export function connectTrackedClicks() {
   if (!ENABLED) return
-  onTrackedClick(({ id, value, path }) => trackAction(value ? `${id}/${value}` : id, path))
+  onTrackedClick(({ id, value, path }) => {
+    for (const name of actionNames(id, value)) trackAction(name, path)
+  })
 }
