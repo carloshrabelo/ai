@@ -216,6 +216,8 @@ O workflow `.github/workflows/daily.yml` (**Update data**) roda todo dia às 05:
 
 O build publica o cache como `/events-cache.json` (~700 KB, fora do precache do service worker). O app continua buscando os eventos na Google Calendar API; se um calendário falhar (cota, erro, chave), os eventos dele vêm do cache, na mesma janela (`src/api/eventsCache.ts` e `mergeCalendarResults` em `src/api/googleCalendar.ts`). O cache cobre de 30 dias atrás a 90 à frente, a partir da manhã do último deploy.
 
+O prerender também embute no `index.html` os eventos da primeira janela (14 dias), num `<script type="application/json" id="initial-events">`: o app desenha os cards sem esperar a API e a consulta em seguida (`src/api/initialEvents.ts`).
+
 O que ainda precisa ser feito ou conferido à mão (chaves, configurações, verificações) está em [`TODO.md`](TODO.md).
 
 ## Planejamento

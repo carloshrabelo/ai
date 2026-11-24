@@ -4,6 +4,7 @@ import { canonicalGenresSearch, toSearchString } from '../domain/genreFilter'
 import { slugDate } from '../domain/slug'
 import { WINDOW_DAYS } from './config'
 import { addDays, agendaToday, type IsoDate, isIsoDate } from '../lib/dates'
+import { seedInitialEvents } from './initialEvents'
 import { eventsInfiniteQueryOptions } from './queries'
 import { queryClient } from './queryClient'
 
@@ -38,6 +39,8 @@ export function eventsLoader({ request, params }: LoaderFunctionArgs): EventsLoa
     return replace(`${appPath(url.pathname)}${toSearchString(url.searchParams)}`)
   }
 
+  // Primeira janela embutida no HTML (build): os cards aparecem sem esperar a API, que atualiza em seguida.
+  seedInitialEvents(queryClient, startDate)
   void queryClient.prefetchInfiniteQuery(eventsInfiniteQueryOptions(startDate))
 
   return { startDate, today }

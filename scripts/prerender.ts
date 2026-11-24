@@ -11,7 +11,7 @@
 import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { root, startApp } from './lib/app.ts'
-import { CACHE_PATH, loadCachedEvents } from './lib/eventsCache.ts'
+import { CACHE_PATH, loadCachedEvents, readCache } from './lib/eventsCache.ts'
 import type { DatesModule, IsoDate, ScriptEvent } from './lib/types.ts'
 
 type PrerenderModule = {
@@ -38,7 +38,12 @@ try {
   const { legacyEventPagePath, loadEvents, renderEventPage, renderHomePage, renderRedirectPage, renderSitemap } =
     await app.load<PrerenderModule>('/src/seo/prerender.ts')
   const { addDays, todayIso } = await app.load<DatesModule>('/src/lib/dates.ts')
-  const { USE_MOCK } = await app.load<{ USE_MOCK: boolean }>('/src/api/config.ts')
+  const { USE_MOCK, WINDOW_DAYS } = await app.load<{ USE_MOCK: boolean; WINDOW_DAYS: number }>('/src/api/config.ts')
+  const { agendaToday, lisbonMidnight } = await app.load<DatesModule & { agendaToday: () => IsoDate }>('/src/lib/dates.ts')
+  const { itemsInWindow } = await app.load<{ itemsInWindow: (items: unknown[], timeMin: Date, timeMax: Date) => unknown[] }>(
+    '/src/api/eventsCache.ts',
+  )
+  const { initialEventsScript } = await app.load<{ initialEventsScript: (data: unknown) => string }>('/src/api/initialEvents.ts')
 
   const template = readFileSync(join(outDir, 'index.html'), 'utf8')
   writeFileSync(join(outDir, '404.html'), template)
@@ -67,7 +72,17 @@ try {
   for (const [from, to] of Object.entries(LEGACY_ROUTES)) writePage(from, renderRedirectPage(`${siteUrl}${to}`))
 
   const upcoming = events.filter((event) => event.end.getTime() > Date.now())
-  writeFileSync(join(outDir, 'index.html'), renderHomePage(template, upcoming, siteUrl))
+  let home = renderHomePage(template, upcoming, siteUrl)
+  // Primeira janela da agenda no HTML (src/api/initialEvents.ts): os cards aparecem sem esperar a API.
+  const cache = USE_MOCK ? undefined : readCache()
+  if (cache) {
+    const start = agendaToday()
+    const end = addDays(start, WINDOW_DAYS)
+    const items = itemsInWindow(cache.items, lisbonMidnight(start), lisbonMidnight(end))
+    home = home.replace('</head>', `${initialEventsScript({ generatedAt: cache.generatedAt, page: { start, end, items } })}\n</head>`)
+    console.log(`prerender: ${items.length} eventos da primeira janela (${start} a ${end}) no index.html.`)
+  }
+  writeFileSync(join(outDir, 'index.html'), home)
   writeFileSync(join(outDir, 'sitemap.xml'), renderSitemap(siteUrl, PUBLIC_ROUTES, upcoming, today))
 
   console.log(`prerender: ${events.length} páginas de evento, ${upcoming.length} no sitemap.`)

@@ -31,7 +31,7 @@ type CalendarModule = {
 }
 type SourcesModule = { CALENDAR_SOURCES: readonly string[] }
 
-function readCache(): EventsCache | undefined {
+export function readCache(): EventsCache | undefined {
   if (!existsSync(CACHE_PATH)) return undefined
   try {
     const data: unknown = JSON.parse(readFileSync(CACHE_PATH, 'utf8'))
