@@ -37,13 +37,14 @@
       "Casa Amarela",
       "Parque Urbano da Costa de Caparica",
       "Smile & Move",
-      "Tropicavana Bar"
+      "Tropicavana Bar",
+      "Dance Factory Studios"
     ],
     "genres": [
       "Bachata",
       "Salsa"
     ],
-    "lastSeen": "2026-11-27"
+    "lastSeen": "2026-11-28"
   },
   "baiao.vintage": {
     "role": "promoter",
@@ -523,12 +524,13 @@
     },
     "venues": [
       "A Lanchonete - Benfica",
-      "Miradouro da Graça"
+      "Miradouro da Graça",
+      "Café Central"
     ],
     "genres": [
       "Forró"
     ],
-    "lastSeen": "2026-11-21"
+    "lastSeen": "2026-11-28"
   },
   "forrozinho_no_sul": {
     "role": "other",
@@ -766,7 +768,7 @@
       "Bachata",
       "Salsa"
     ],
-    "lastSeen": "2026-11-06"
+    "lastSeen": "2026-12-05"
   },
   "musadabica": {
     "role": "promoter",
@@ -1125,7 +1127,8 @@
       "instagram": "https://www.instagram.com/udancesocialset/"
     },
     "venues": [
-      "U Dance School"
+      "U Dance School",
+      "Udance Escola de Dança"
     ],
     "genres": [
       "Bachata",
@@ -1143,12 +1146,14 @@
     },
     "venues": [
       "Jardim São Bento",
-      "Oliva | Restaurante Português e Galego"
+      "Oliva | Restaurante Português e Galego",
+      "]Mude[ Cafeteria"
     ],
     "genres": [
-      "Salsa"
+      "Salsa",
+      "Bachata"
     ],
-    "lastSeen": "2026-10-23"
+    "lastSeen": "2026-12-05"
   },
   "wajirosdelisboa": {
     "role": "promoter",
