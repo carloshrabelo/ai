@@ -145,9 +145,9 @@ pasdedeux.pt, mantido por @ateterca: a sugestão não publica nada sozinha).
 A branch foi refeita sobre o `main` (1 commit): o GoatCounter conta as páginas vistas e recebe todos os cliques com `data-track` por um listener só (`connectTrackedClicks`), sem chamadas nos componentes. Desligado sem `VITE_GOATCOUNTER_CODE` e sempre em `pnpm dev`.
 
 - [ ] Publicar a branch refeita: `git push --force-with-lease origin feat/seo-ssg-share-analytics` (a cópia no GitHub é a antiga, de antes do rebase).
-- [ ] Criar a conta e o site em [goatcounter.com](https://www.goatcounter.com) (o código é o `<codigo>` de `https://<codigo>.goatcounter.com`).
-- [ ] Em **Settings → Secrets and variables → Actions**, criar a variable `VITE_GOATCOUNTER_CODE` com esse código.
-- [ ] Fazer o merge da branch: https://github.com/carloshrabelo/ai/compare/main...feat/seo-ssg-share-analytics
+- [x] Criar a conta e o site em [goatcounter.com](https://www.goatcounter.com): código `cid360` (`https://cid360.goatcounter.com`).
+- [x] Em **Settings → Secrets and variables → Actions**, criar a variable `VITE_GOATCOUNTER_CODE` com esse código.
+- [ ] Fazer o merge da branch: https://github.com/carloshrabelo/lisbon-social-dances/compare/main...feat/seo-ssg-share-analytics
 - [ ] Depois do deploy, conferir no painel: páginas vistas e eventos como `filters.genre/Salsa`, `event.open/<slug>`, `dates.strip-day/<dia>` (a lista de nomes está em `src/analytics/track.ts`).
 - [ ] Decidir se `event.open/<slug>` (um caminho por evento) é o nível de detalhe desejado no painel, ou se basta `event.open`.
 
