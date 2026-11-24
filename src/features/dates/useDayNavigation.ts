@@ -15,6 +15,20 @@ const SCROLL_SETTLE_MS = 200
 
 const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
+/**
+ * Posição do título do dia na página (relativa à janela), como se não fosse `sticky`. Os títulos do
+ * feed grudam no topo e ficam todos grudados (estão na mesma grade): um dia que já passou mede a
+ * posição grudada, não a dele, e "voltar para um dia anterior" não rolava. Desligar o sticky só
+ * durante a medição força um recálculo de layout, sem pintar nada.
+ */
+function naturalTop(element: HTMLElement): number {
+  const previous = element.style.position
+  element.style.position = 'static'
+  const top = element.getBoundingClientRect().top
+  element.style.position = previous
+  return top
+}
+
 /** Onde termina a área fixa quando está grudada no topo (independe da rolagem atual). */
 function stuckBottom(element: HTMLElement | null): number {
   if (!element) return 0
@@ -106,7 +120,7 @@ export function useDayNavigation(startDate: IsoDate, stickyRef: RefObject<HTMLEl
           setActiveDay(day)
           // Desconta a área fixa (header + atalhos/faixa), que muda de altura conforme o breakpoint.
           const offset = stuckBottom(stickyRef.current) + 8
-          const top = Math.max(0, window.scrollY + target.getBoundingClientRect().top - offset)
+          const top = Math.max(0, window.scrollY + naturalTop(target) - offset)
           const smooth = !instant && !prefersReducedMotion()
           // Também sem animação: o `scroll` chega depois e marcaria o dia seguinte (o escolhido pode não ter eventos).
           if (Math.abs(top - window.scrollY) > 1) {
