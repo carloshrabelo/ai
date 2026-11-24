@@ -8,10 +8,10 @@
  * as utilities (bg-surface, text-fg-muted, bg-genre-wine…) apontam para elas.
  * Contraste de texto verificado em AA (≥ 4.5) nos dois temas.
  */
-/* Teste de tema estilo Duolingo (branch feat/duolingo-theme): Nunito no texto, Fredoka nos títulos. */
+/* Nunito no texto, Fredoka nos títulos (arquivos em src/fonts.css). */
 @theme {
-  --font-sans: 'Nunito', ui-sans-serif, system-ui, sans-serif;
-  --font-display: 'Fredoka', 'Nunito', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Nunito Variable', 'Nunito', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Fredoka Variable', 'Fredoka', 'Nunito Variable', ui-sans-serif, system-ui, sans-serif;
   /* Troca de mês no calendário (botões, teclado ou deslize): o mês novo entra pelo lado certo. */
   --animate-month-next: month-next 200ms ease-out;
   --animate-month-previous: month-previous 200ms ease-out;
