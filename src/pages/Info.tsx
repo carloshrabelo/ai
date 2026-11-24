@@ -74,6 +74,8 @@ export default function Info() {
             </li>
           ))}
         </ul>
+        <h3 className="pt-1 text-sm font-bold text-fg-muted">{t.info.privacy}</h3>
+        <p className="text-sm">{t.info.privacyText}</p>
       </Card>
 
       {/* Rótulo em cima e botões sempre embaixo, ocupando a largura (não mudam de lugar). */}

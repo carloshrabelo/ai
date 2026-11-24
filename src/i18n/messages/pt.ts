@@ -132,6 +132,9 @@ export const pt = {
       'por manter, com tanto cuidado, a lista dos eventos de dança do pasdedeux.pt. Sem esse trabalho, esta agenda não existiria.',
     ],
     sources: 'De onde vêm os eventos',
+    privacy: 'Privacidade',
+    privacyText:
+      'Sem cookies e sem identificar ninguém. Contamos as páginas vistas, os cliques nos botões (como filtros e eventos abertos) e quantas visitas são de quem volta, pelo GoatCounter. Para isso, o aparelho guarda só a data da primeira e da última visita e em quantos dias o site foi aberto. Os eventos acompanhados, o tema e o idioma também ficam só no aparelho.',
     mainSource: 'Calendário principal',
     tangoSource: 'Tango',
     traditionalSource: 'Danças tradicionais europeias',

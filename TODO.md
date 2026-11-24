@@ -153,7 +153,7 @@ No `main` desde 24/11 (branch `feat/seo-ssg-share-analytics`): o GoatCounter con
 - [ ] Acompanhar no painel: páginas vistas e eventos como `filters.genre/Salsa`, `event.open/<slug>`, `dates.strip-day/<dia>` (a lista de nomes está em `src/analytics/track.ts`).
 - [x] `event.open`: os dois, o total (`event.open`) e qual evento (`event.open/<slug>`). Quem abre o evento direto pelo link (`/event/<slug>/`) conta como página vista, não como clique.
 - [x] **Recorrência** (`src/analytics/visits.ts`): uma vez por dia por aparelho, `visit.new` ou `visit.return`, com `visit.count/<dias com visita>` (1, 2, 3-5, 6-10, 11+) e `visit.gap/<intervalo>` (1d, 2-7d, 8-30d, 30d+). Sem identificador: o aparelho guarda só a primeira e a última data e o total de dias. Nos primeiros dias, quem já usava o site conta como `visit.new` (não havia registro).
-- [ ] Mencionar na página Sobre o que o analytics registra (páginas, cliques e recorrência, sem identificar ninguém).
+- [x] Página Sobre: seção "Privacidade" com o que o analytics registra (páginas, cliques e recorrência, sem identificar ninguém).
 
 ### 4. Fotos dos perfis (promotores, DJs, professores) — branch `feature/promoter-photos`
 
