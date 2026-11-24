@@ -11,12 +11,14 @@ evidência entre parênteses.
 
 ## Prioridade
 
-1. **Domínio próprio** (seção 1): no ar desde 24/11; falta o e-mail, o `.pt` (em validação) e a renovação automática.
+1. **Domínio próprio** (seção 1): no ar desde 24/11; falta o e-mail, o `.pt` (em validação) e publicar a chave nova do Google (seção 5).
 2. **Barra de status do iPhone** (seção 8): com o header branco, o relógio e a bateria podem sumir no app instalado.
    Conferir num aparelho; a correção é de uma linha.
 3. **Formulário "Sugerir evento"** (seção 2): só precisa do e-mail do domínio (seção 1) ou de um e-mail pessoal até lá.
-4. **Analytics** (seção 3): no `main` desde 24/11; conferir o painel do GoatCounter depois do deploy.
-5. **JSON-LD dos eventos** (seção 10): 9 eventos sem local, que o Google exige; `image` e `organizer` ausentes.
+4. **Analytics** (seção 3): no ar desde 24/11 (visita de teste chegou ao GoatCounter); acompanhar o painel.
+5. **Performance**: preconnect, logo WebP, rótulos e eventos no HTML aplicados em 24/11 (TBT caiu pela metade). Falta o
+   LCP (4,0 s), que pede renderizar a agenda no build e hidratar: [`LIGHTHOUSE.md`](LIGHTHOUSE.md).
+6. **JSON-LD dos eventos** (seção 10): 9 eventos sem local, que o Google exige; `image` e `organizer` ausentes.
 
 ## A. Projetos
 
@@ -45,7 +47,7 @@ antigo, `carloshrabelo.dev/ai/`, era de teste e não tinha usuários: ficou sem 
 
 - [x] **Enforce HTTPS** e certificado: `http://` redireciona para `https://` (conferido em 24/11).
 - [x] A chave do Google aceita `https://lisbondance.com/` (conferido em 24/11: eventos reais carregam no site).
-- [ ] Restringir a chave do Google ao domínio novo (seção 5).
+- [ ] Chave do Google: publicar a chave nova no GitHub e conferir a restrição de domínio (seção 5).
 - [ ] **AAAA** (IPv6, opcional): `2606:50c0:8000::153`, `8001::153`, `8002::153`, `8003::153` no domínio raiz.
 - [x] **Renovação automática** e privacidade do WHOIS na Dynadot (24/11).
 - [ ] Lembrete no calendário ~1 mês antes do vencimento de cada domínio.
@@ -196,14 +198,17 @@ Usa a **Instagram Graph API oficial (Business Discovery)**. O endpoint interno `
 ### 5. Chave da Google Calendar API
 
 - [x] Projeto, Google Calendar API ativada e API key criada (o site publicado mostra os eventos reais: só 8 dos 71 títulos do sitemap existem no mock).
-- [ ] **A chave não tem restrição de domínio** (testado em 24/11: funciona sem referer e com qualquer site). Ela fica
-  visível no JavaScript publicado, então qualquer um pode usá-la na Calendar API e gastar a cota (o site para de
-  carregar eventos). Outras APIs não estão ativadas no projeto dela (Maps, Drive, Sheets, YouTube negados). Não se
-  sabe em que conta do Google ela foi criada (17/11): procurar em console.cloud.google.com → *APIs & Services →
-  Credentials* em cada conta, ou criar um projeto e uma chave novos e trocar o secret `VITE_GOOGLE_API_KEY` no GitHub
-  e no `.env.local`. Restrições:
-  - *Application restrictions* → **HTTP referrers**: `https://lisbondance.com/*` e, para desenvolvimento, `http://localhost:*/*`. O build das páginas estáticas (`scripts/prerender.ts`) envia o referer do site.
+- [x] **Chave nova** num projeto nosso (24/11), já no `.env.local` (termina em `…qUiA`). A antiga (`…AXxs`, criada
+  em 17/11 numa conta não identificada) não tinha restrição de domínio.
+- [ ] Trocar o secret `VITE_GOOGLE_API_KEY` no GitHub pela chave nova e rodar o deploy: em 24/11 o site publicado ainda
+  usava a antiga.
+- [ ] Conferir as restrições da chave nova (o Google leva até 5 minutos para aplicar): logo depois de configurada, ela
+  ainda aceitava qualquer referer. Teste: `curl -H "Referer: https://example.org/" …` deve dar 403.
+  - *Application restrictions* → **HTTP referrers**: `https://lisbondance.com/*` e, para desenvolvimento,
+    `http://localhost:*/*`. O build (`scripts/events-cache.ts`, prerender) e a Action diária mandam o referer do site.
   - *API restrictions* → só **Google Calendar API**.
+- [ ] Com o site usando a chave nova: apagar a antiga, se for encontrada a conta dela (sem restrição, ela continua
+  utilizável por quem a copiou; sem custo, só cota).
 - [ ] Nunca commitar o `.env.local` (já está no `.gitignore`). Se a chave vazar, gerar outra e apagar a antiga.
 
 ### 6. GitHub (Settings do repositório)
