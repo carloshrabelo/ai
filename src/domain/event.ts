@@ -41,6 +41,8 @@ export type DanceEvent = {
   calendarUrl: string
   /** Calendário de onde veio (pasdedeux, tangolx, tradicionais). */
   source: CalendarSource
+  /** Última alteração no calendário (lastmod do sitemap). */
+  updated?: Date
 }
 
 type VenueCoords = { name: string; lat: number; lng: number }
@@ -77,6 +79,7 @@ export function toDanceEvent(event: GCalEvent): DanceEvent {
     links: extractLinks(description),
     calendarUrl: event.htmlLink,
     source: event.source ?? 'pasdedeux',
+    ...(event.updated ? { updated: new Date(event.updated) } : {}),
   }
 }
 

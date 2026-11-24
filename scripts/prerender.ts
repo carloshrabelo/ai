@@ -1,5 +1,5 @@
 // Gera as páginas estáticas depois do `vite build` (SEO sem servidor: GitHub Pages):
-//   dist/event/<slug>/index.html  — uma por evento (de 1 semana atrás a 90 dias à frente)
+//   dist/event/<slug>/index.html  — uma por evento (de 30 dias atrás a 90 à frente: o período do cache)
 //   dist/index.html                — agenda com a lista dos próximos eventos
 //   dist/404.html                  — fallback de SPA (cópia do index.html original)
 //   dist/sitemap.xml               — rotas fixas + eventos futuros
@@ -28,7 +28,8 @@ const siteUrl = process.env.SITE_URL ?? (process.env.GITHUB_PAGES ? 'https://lis
 const PUBLIC_ROUTES = ['', 'map/', 'community/', 'about/']
 // Rotas antigas, em português → novas: páginas que só redirecionam (links já compartilhados).
 const LEGACY_ROUTES: Record<string, string> = { 'mapa/': 'map/', 'comunidade/': 'community/', 'info/': 'about/', 'escolas/': 'schools/' }
-const DAYS_BEFORE = 7
+// Eventos passados continuam com página por 30 dias (links compartilhados); o sitemap só tem os futuros.
+const DAYS_BEFORE = 30
 const DAYS_AFTER = 90
 
 // A chave da API é restrita por referer (o site): a mesma origem do app.

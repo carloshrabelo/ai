@@ -102,11 +102,17 @@ ${items}
   return html.replace('<div id="root"></div>', `<div id="root">${body}</div>`)
 }
 
-/** sitemap.xml com as rotas fixas e as páginas dos eventos. */
+/**
+ * sitemap.xml com as rotas fixas e as páginas dos eventos. `lastmod` do evento é a última alteração
+ * no calendário (o buscador só volta às páginas que mudaram); das rotas fixas, o dia do build.
+ */
 export function renderSitemap(siteUrl: string, routes: readonly string[], events: readonly DanceEvent[], today: IsoDate): string {
-  const entry = (path: string, changefreq: string) =>
-    `  <url><loc>${siteUrl}${path}</loc><lastmod>${today}</lastmod><changefreq>${changefreq}</changefreq></url>`
-  const urls = [...routes.map((route) => entry(route, 'daily')), ...events.map((event) => entry(eventPagePath(event), 'weekly'))]
+  const entry = (path: string, lastmod: IsoDate, changefreq: string) =>
+    `  <url><loc>${siteUrl}${path}</loc><lastmod>${lastmod}</lastmod><changefreq>${changefreq}</changefreq></url>`
+  const urls = [
+    ...routes.map((route) => entry(route, today, 'daily')),
+    ...events.map((event) => entry(eventPagePath(event), event.updated ? lisbonDate(event.updated) : today, 'weekly')),
+  ]
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`
 }
 

@@ -74,4 +74,12 @@ describe('renderHomePage / renderSitemap', () => {
     expect(xml).toContain(`<loc>${site}about/</loc>`)
     expect(xml).toContain(`<loc>${site}event/${event.slug}/</loc>`)
   })
+
+  it('lastmod do evento: a última alteração no calendário (sem ela, o dia do build)', () => {
+    const changed = { ...event, updated: new Date('2026-11-10T23:30:00Z') } // 10/11 23:30 UTC = 10/11 em Lisboa
+    const xml = renderSitemap(site, [''], [changed, { ...event, slug: 'outro' }], '2026-11-17')
+    expect(xml).toContain(`<loc>${site}event/${event.slug}/</loc><lastmod>2026-11-10</lastmod>`)
+    expect(xml).toContain(`<loc>${site}event/outro/</loc><lastmod>2026-11-17</lastmod>`)
+    expect(xml).toContain(`<loc>${site}</loc><lastmod>2026-11-17</lastmod>`)
+  })
 })
