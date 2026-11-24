@@ -1,4 +1,9 @@
 {
+  "]Mude[ Cafeteria, R. Garcia de Orta 71c loja 12, Piso Inferior, 1200-678 Lisboa, Portugal": {
+    "name": "]Mude[ Cafeteria",
+    "lat": 38.707031,
+    "lng": -9.161006
+  },
   "A Beneficência Familiar - ASM do Porto": {
     "name": "A Beneficência Familiar - ASM do Porto",
     "lat": 41.147724,
@@ -99,6 +104,11 @@
     "lat": 38.724835,
     "lng": -9.133197
   },
+  "Café Central, R. Josefa Maria 4B, 1170-195 Lisboa, Portugal": {
+    "name": "Café Central",
+    "lat": 38.719935,
+    "lng": -9.130526
+  },
   "Casa Amarela, Estrada dos Álamos, 2810-144 Almada, Portugal": {
     "name": "Casa Amarela",
     "lat": 38.652558,
@@ -139,10 +149,20 @@
     "lat": 38.659425,
     "lng": -9.159353
   },
+  "Coobital": {
+    "name": "Coobital",
+    "lat": 41.203151,
+    "lng": -8.532218
+  },
   "Dança Mais com Camila Delphim, R. Luís Derouet 20A, 1250-248 Lisboa, Portugal": {
     "name": "Dança Mais com Camila Delphim",
     "lat": 38.717959,
     "lng": -9.16296
+  },
+  "Dance Factory Studios, Rua Soares dos Reis 11A, 1070-270 Lisboa": {
+    "name": "Dance Factory Studios",
+    "lat": 38.72954,
+    "lng": -9.163831
   },
   "Évora": {
     "name": "Évora",
@@ -151,6 +171,11 @@
   },
   "Fábrica de Braço de Prata, R. Fábrica de Material de Guerra 1, 1950-128 Lisboa, Portugal": {
     "name": "Fábrica de Braço de Prata",
+    "lat": 38.743796,
+    "lng": -9.101225
+  },
+  "Fábrica do Braço de Prata, R. Fábrica de Material de Guerra 1, 1950-128 Lisboa, Portugal": {
+    "name": "Fábrica do Braço de Prata",
     "lat": 38.743796,
     "lng": -9.101225
   },
@@ -188,6 +213,11 @@
     "name": "Jardim Roque Gameiro",
     "lat": 38.705663,
     "lng": -9.143559
+  },
+  "Jardim Roque Gameiro, Jardim de Roque Gameiro, Cais do Sodré 2427, 1200-450 Lisboa, Portugal": {
+    "name": "Jardim Roque Gameiro",
+    "lat": 38.705591,
+    "lng": -9.143692
   },
   "Jardim Roque Gameiro, Jardim de Roque Gameiro, Cais do Sodré 2427, Cais do Sodre, 1200-450 Lisboa, Portugal": {
     "name": "Jardim Roque Gameiro",
@@ -439,12 +469,12 @@
     "lat": 38.747459,
     "lng": -9.138844
   },
-  "Udance Escola de Dança": {
+  "U Dance School": {
     "name": "Udance Escola de Dança",
     "lat": 38.7053411,
     "lng": -9.1571091
   },
-  "U Dance School": {
+  "Udance Escola de Dança": {
     "name": "Udance Escola de Dança",
     "lat": 38.7053411,
     "lng": -9.1571091
