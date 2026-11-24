@@ -66,23 +66,14 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
         {event.venue && (
           <Row icon={<MapPinIcon className="size-5" aria-hidden="true" />} label={t.event.where}>
             <span className="flex items-baseline justify-between gap-2">
-              {event.venue.name}
+              <span className="min-w-0 break-words">{event.venue.name}</span>
               <EventDistance venue={event.venue} />
             </span>
-            {event.venue.address && <span className="block text-fg-muted">{event.venue.address}</span>}
-            {directions && (
-              <a
-                href={directions.href}
-                {...(directions.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                className={buttonClassName('secondary', 'mt-2 h-9 px-3 text-xs')}
-              >
-                <NavigationArrowIcon className="size-4" aria-hidden="true" />
-                {t.event.openInMaps}
-              </a>
-            )}
+            {event.venue.address && <span className="block break-words text-fg-muted">{event.venue.address}</span>}
           </Row>
         )}
-        <Row icon={<TicketIcon className="size-5" aria-hidden="true" />} label={t.event.price}>
+        {/* Chips do preço têm 28px: o ícone centraliza nessa primeira linha (e não na de texto, 20px). */}
+        <Row icon={<TicketIcon className="size-5" aria-hidden="true" />} label={t.event.price} line="h-7">
           {event.price ? (
             <PriceChips price={event.price} variant="auto" locale={locale} />
           ) : (
@@ -90,6 +81,23 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
           )}
         </Row>
       </dl>
+
+      {/* Divisor entre as informações e a descrição, com "Abrir no mapa" à direita, centralizado na linha. */}
+      {(directions || html) && (
+        <div className="flex items-center gap-3">
+          <hr aria-hidden="true" className="h-0 flex-1 border-0 border-t-2 border-border" />
+          {directions && (
+            <a
+              href={directions.href}
+              {...(directions.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+              className={buttonClassName('secondary', 'h-9 shrink-0 px-3 text-xs')}
+            >
+              <NavigationArrowIcon className="size-4" aria-hidden="true" />
+              {t.event.openInMaps}
+            </a>
+          )}
+        </div>
+      )}
 
       {/* Acompanhar mudanças: aparece depois de adicionar à agenda. */}
       {tracked && (
@@ -191,44 +199,29 @@ function ActionsBar({ event }: { event: DanceEvent }) {
   )
 }
 
-/** Descrição: recolhida em ~8 linhas quando é longa, com "Ver mais". */
+/** Descrição completa, sem recolher. Links e palavras longas quebram em vez de alargar o painel. */
 function Description({ html }: { html: string }) {
   const { t } = useI18n()
-  const ref = useRef<HTMLDivElement>(null)
-  const [expanded, setExpanded] = useState(false)
-  const [long, setLong] = useState(false)
-
-  useEffect(() => {
-    const element = ref.current
-    if (element) setLong(element.scrollHeight > element.clientHeight + 4)
-  }, [html])
-
   return (
-    <section aria-label={t.event.description} className="border-t-2 border-border pt-4">
+    <section aria-label={t.event.description}>
       <div
-        ref={ref}
-        className={`text-[15px] break-words text-fg [&_a]:text-brand [&_a]:underline ${expanded ? '' : 'line-clamp-8'}`}
+        className="text-[15px] [overflow-wrap:anywhere] text-fg [&_a]:text-brand [&_a]:underline"
         // Sanitizado em renderDescription (DOMPurify).
         dangerouslySetInnerHTML={{ __html: html }}
       />
-      {(long || expanded) && (
-        <button
-          type="button"
-          aria-expanded={expanded}
-          onClick={() => setExpanded((value) => !value)}
-          className="mt-1 min-h-11 cursor-pointer font-bold text-brand underline-offset-2 hover:underline"
-        >
-          {expanded ? t.event.showLess : t.event.showMore}
-        </button>
-      )}
     </section>
   )
 }
 
-function Row({ icon, label, children }: { icon: ReactNode; label: string; children: ReactNode }) {
+/**
+ * Linha de informação: ícone (20px) à esquerda, centralizado na primeira linha do conteúdo. `line` é a
+ * altura dessa primeira linha: h-5 para texto `text-sm` (20px), h-7 para chips (28px). Com o conteúdo
+ * em várias linhas, o ícone continua na primeira.
+ */
+function Row({ icon, label, line = 'h-5', children }: { icon: ReactNode; label: string; line?: 'h-5' | 'h-7'; children: ReactNode }) {
   return (
     <div className="flex gap-2">
-      <dt className="shrink-0 pt-0.5 text-fg-muted">
+      <dt className={`flex shrink-0 items-center text-fg-muted ${line}`}>
         {icon}
         <span className="sr-only">{label}</span>
       </dt>

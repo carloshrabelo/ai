@@ -44,8 +44,6 @@ export const pt = {
   },
   event: {
     addToCalendar: 'Adicionar à agenda',
-    showMore: 'Ver mais',
-    showLess: 'Ver menos',
     live: 'Agora',
     ended: 'Encerrado',
     addToCalendarFor: (title: string) => `Adicionar "${title}" ao calendário`,

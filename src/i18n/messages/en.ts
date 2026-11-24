@@ -40,8 +40,6 @@ export const en: Messages = {
   },
   event: {
     addToCalendar: 'Add to calendar',
-    showMore: 'Show more',
-    showLess: 'Show less',
     live: 'Now',
     ended: 'Ended',
     addToCalendarFor: (title) => `Add "${title}" to calendar`,
