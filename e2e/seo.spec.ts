@@ -3,20 +3,26 @@ import { openAgenda } from './helpers'
 
 /** Primeiro evento carregado na agenda, lido do cache salvo no aparelho (o persister do TanStack Query). */
 async function firstCachedEvent(page: import('@playwright/test').Page) {
-  await expect.poll(() => page.evaluate(() => localStorage.getItem('lisbon-social-dance:queries')), { timeout: 10_000 }).not.toBeNull()
-  return page.evaluate(() => {
-    const cache = JSON.parse(localStorage.getItem('lisbon-social-dance:queries')!)
-    const query = cache.clientState.queries.find((q: { queryKey: unknown[] }) => q.queryKey[0] === 'events')
-    const item = query.state.data.pages[0].items[0]
-    return { id: item.id as string, summary: item.summary as string }
-  })
+  // O persister grava aos poucos: espera até a query dos eventos estar no que foi salvo.
+  const read = () =>
+    page.evaluate(() => {
+      const raw = localStorage.getItem('lisbon-social-dance:queries')
+      if (!raw) return null
+      const cache = JSON.parse(raw)
+      const query = cache.clientState.queries.find((q: { queryKey: unknown[] }) => q.queryKey[0] === 'events')
+      const item = query?.state.data.pages[0]?.items[0]
+      return item ? { id: item.id as string, summary: item.summary as string } : null
+    })
+  await expect.poll(read, { timeout: 10_000 }).not.toBeNull()
+  return (await read())!
 }
 
 test('link antigo ?event=<id> vai para a página do evento', async ({ page }) => {
   await openAgenda(page)
   const { id } = await firstCachedEvent(page)
   await page.goto(`/?event=${encodeURIComponent(id)}&genres=salsa`)
-  await expect(page).toHaveURL(/\/event\/[^/]+\/\?genres=salsa$/)
+  // Evento que começou antes do início da lista (ex.: noite anterior) também leva ?date= do dia dele.
+  await expect(page).toHaveURL(/\/event\/[^/]+\/\?genres=salsa(&date=\d{4}-\d{2}-\d{2})?$/)
   await expect(page.getByRole('heading', { level: 2 }).first()).toBeVisible()
 })
 
