@@ -29,6 +29,7 @@ import { slugify } from '../../domain/slug'
 import { eventUrl } from '../../seo/useDocumentHead'
 import { untrackEvent, useIsTracked, trackEvent } from '../tracking/trackedEvents'
 import { downloadIcs, googleCalendarUrl } from './calendarLinks'
+import { track } from '../../analytics/track'
 
 /** Conteúdo dos detalhes: usado no painel da coluna do mapa (`xl+`) e no drawer (abaixo de `xl`). */
 export function EventDetails({ event, headingId }: { event: DanceEvent; headingId: string }) {
@@ -88,6 +89,7 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
           <hr aria-hidden="true" className="h-0 flex-1 border-0 border-t-2 border-border" />
           {directions && (
             <a
+              {...track('event.open-in-maps', event.slug)}
               href={directions.href}
               {...(directions.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
               className={buttonClassName('secondary', 'h-9 shrink-0 px-3 text-xs')}
@@ -106,6 +108,7 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
           {t.tracking.tracked}
           <button
             type="button"
+            {...track('event.untrack', event.slug)}
             onClick={() => untrackEvent(event.id)}
             className="min-h-11 cursor-pointer font-bold text-brand underline-offset-2 hover:underline"
           >
@@ -161,6 +164,7 @@ function ActionsBar({ event }: { event: DanceEvent }) {
           className="absolute inset-x-4 bottom-full mb-2 grid gap-2 rounded-2xl border-2 border-b-4 border-border bg-surface p-2 shadow-md"
         >
           <a
+            {...track('event.add-google', event.slug)}
             href={googleCalendarUrl(event, eventUrl(event.slug))}
             target="_blank"
             rel="noopener noreferrer"
@@ -174,6 +178,7 @@ function ActionsBar({ event }: { event: DanceEvent }) {
             {t.tracking.googleCalendar}
           </a>
           <Button
+            {...track('event.add-ics', event.slug)}
             variant="secondary"
             className="w-full"
             onClick={() => {
@@ -188,7 +193,13 @@ function ActionsBar({ event }: { event: DanceEvent }) {
         </div>
       )}
       <div className="flex gap-2">
-        <Button className="flex-1" aria-expanded={open} aria-controls={menuId} onClick={() => setOpen((value) => !value)}>
+        <Button
+          {...track('event.add-to-calendar', event.slug)}
+          className="flex-1"
+          aria-expanded={open}
+          aria-controls={menuId}
+          onClick={() => setOpen((value) => !value)}
+        >
           <CalendarPlusIcon className="size-5" aria-hidden="true" />
           {t.event.addToCalendar}
           <CaretUpIcon className={`size-4 transition-transform ${open ? '' : 'rotate-180'}`} aria-hidden="true" />

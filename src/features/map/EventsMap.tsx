@@ -13,6 +13,7 @@ import { formatTimeRange } from '../events/format'
 import { useI18n } from '../../i18n/useI18n'
 import type { Coords } from '../location/distance'
 import { useUserLocation } from '../location/userLocation'
+import { track, type TrackId } from '../../analytics/track'
 
 /** Centro de Lisboa, quando não há pinos. */
 const LISBON: L.LatLngTuple = [38.7223, -9.1393]
@@ -187,7 +188,10 @@ function ClusterMarker({ cluster, selected }: { cluster: Cluster; selected: bool
       alt={label}
       eventHandlers={{
         add: (event) => {
-          event.target.getElement()?.setAttribute('aria-label', label)
+          const element = event.target.getElement()
+          element?.setAttribute('aria-label', label)
+          element?.setAttribute('data-track', 'map.cluster' satisfies TrackId)
+          element?.setAttribute('data-track-value', String(total))
         },
         mouseover: () => eventFocus.hover(ids, 'map'),
         mouseout: () => eventFocus.unhover('map'),
@@ -220,7 +224,10 @@ function PlaceMarker({ place, selected, onOpenEvent }: { place: Place; selected:
       eventHandlers={{
         // O pino é um botão (role="button"): dá a ele o nome dos eventos para leitores de tela.
         add: (event) => {
-          event.target.getElement()?.setAttribute('aria-label', t.map.pin(place.events.map((e) => e.title).join(', ')))
+          const element = event.target.getElement()
+          element?.setAttribute('aria-label', t.map.pin(place.events.map((e) => e.title).join(', ')))
+          element?.setAttribute('data-track', 'map.pin' satisfies TrackId)
+          element?.setAttribute('data-track-value', place.name)
         },
         mouseover: () => eventFocus.hover(ids, 'map'),
         mouseout: () => eventFocus.unhover('map'),
@@ -255,7 +262,12 @@ function PlaceMarker({ place, selected, onOpenEvent }: { place: Place; selected:
           <ul className="space-y-1">
             {place.events.map((event) => (
               <li key={event.id}>
-                <button type="button" className="cursor-pointer text-left underline" onClick={() => onOpenEvent(event.slug)}>
+                <button
+                  {...track('event.open', event.slug)}
+                  type="button"
+                  className="cursor-pointer text-left underline"
+                  onClick={() => onOpenEvent(event.slug)}
+                >
                   {event.title}
                 </button>{' '}
                 <span className="tabular-nums">· {formatTimeRange(event, locale)}</span>
@@ -319,6 +331,7 @@ function FitControl({ position, label, ...fit }: FitProps & { position: L.Contro
   }, [map, position, container])
   return createPortal(
     <button
+      {...track('map.fit')}
       type="button"
       aria-label={label}
       title={label}
@@ -358,6 +371,7 @@ function OutsideControl({ position, ...fit }: FitProps & { position: L.ControlPo
   if (!visible) return null
   return createPortal(
     <button
+      {...track('map.outside')}
       type="button"
       onClick={() => {
         map.stop()

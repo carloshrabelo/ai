@@ -6,6 +6,7 @@ import type { DanceEvent } from '../../domain/event'
 import { useI18n } from '../../i18n/useI18n'
 import { eventUrl } from '../../seo/useDocumentHead'
 import { formatDayHeading, formatTimeRange } from './format'
+import { track } from '../../analytics/track'
 
 /**
  * Partilhar o evento: no celular abre o menu de compartilhamento do sistema (Web Share API);
@@ -50,6 +51,7 @@ export function ShareButton({
 
   return (
     <Button
+      {...track('event.share', event.slug)}
       variant="secondary"
       onClick={share}
       aria-live="polite"

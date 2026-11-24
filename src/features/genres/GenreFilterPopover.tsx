@@ -8,6 +8,7 @@ import { GroupToggle } from './GroupToggle'
 import { MemberChip } from './MemberChip'
 import { genreLabel } from './genreLabel'
 import { useGenreFilter } from './useGenreFilter'
+import { track } from '../../analytics/track'
 
 const GROUPED = new Set<GenreFilterValue>(GENRE_GROUPS.flatMap(({ umbrella, genres }) => [umbrella, ...genres]))
 /** Estilos fora dos conjuntos, e "Outros" por último. */
@@ -76,6 +77,7 @@ export function GenreFilterPopover({ id, onClose }: Props) {
         {selected.length > 0 && (
           <button
             type="button"
+            {...track('filters.clear')}
             onClick={clear}
             className="-my-2 inline-flex h-11 cursor-pointer items-center gap-1 rounded-lg px-3 text-sm font-medium text-brand hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-brand"
           >
@@ -85,6 +87,7 @@ export function GenreFilterPopover({ id, onClose }: Props) {
         )}
         <button
           type="button"
+          {...track('filters.close')}
           onClick={onClose}
           aria-label={t.filters.close}
           title={t.filters.close}
@@ -131,6 +134,7 @@ export function GenreFilterPopover({ id, onClose }: Props) {
                   key={value}
                   // "Outros" usa o chip neutro, como os eventos sem gênero da lista.
                   {...(value === OTHER_GENRES ? { label: genreLabel(value, t) } : { genre: value })}
+                  {...track('filters.genre', value)}
                   pressed={selected.includes(value)}
                   onClick={() => toggle(value)}
                 />

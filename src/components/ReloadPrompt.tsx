@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useRegisterSW } from 'virtual:pwa-register/react'
 import { useI18n } from '../i18n/useI18n'
+import { track } from '../analytics/track'
 
 /** Intervalo entre verificações de versão nova enquanto o app está aberto. */
 const UPDATE_CHECK_MS = 60 * 60_000
@@ -43,6 +44,7 @@ export default function ReloadPrompt() {
     >
       <span className="flex-1">{t.pwa.offlineReady}</span>
       <button
+        {...track('pwa.offline-close')}
         className="min-h-11 cursor-pointer rounded-xl px-3 font-bold text-accent hover:bg-surface-muted"
         onClick={() => setOfflineReady(false)}
       >

@@ -13,6 +13,13 @@ import './theme/useTheme'
 // Captura o convite de instalação do PWA assim que o app abre (ver o arquivo).
 import './pwa/installPrompt'
 import { router } from './router'
+import { onTrackedClick } from './analytics/track'
+
+// Em dev, ?track na URL mostra no console os cliques rastreados (data-track), para conferir os nomes
+// antes de ligar uma ferramenta de analytics (ver src/analytics/track.ts).
+if (import.meta.env.DEV && new URLSearchParams(window.location.search).has('track')) {
+  onTrackedClick((click) => console.info('[track]', click))
+}
 
 const SHOW_DEVTOOLS = import.meta.env.DEV && new URLSearchParams(window.location.search).has('devtools')
 

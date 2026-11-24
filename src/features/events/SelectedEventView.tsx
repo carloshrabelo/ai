@@ -7,6 +7,7 @@ import { useModalTransition } from '../../components/ui/useModalTransition'
 import { EventDetails, EventDetailsSkeleton } from './EventDetails'
 import { useEventBySlug } from './useEventBySlug'
 import { useI18n } from '../../i18n/useI18n'
+import { track } from '../../analytics/track'
 
 type ViewProps = { startDate: IsoDate; slug: string; onClose: () => void }
 
@@ -49,7 +50,12 @@ export function EventDetailsPanel({ startDate, slug, onClose, className = 'flex-
     >
       <div className="-mt-2 mb-2 flex items-center justify-between gap-2">
         <p className="text-sm font-semibold text-fg-muted">{t.event.details}</p>
-        <IconButton label={t.event.closeDetails} icon={<XIcon className="size-5" aria-hidden="true" />} onClick={onClose} />
+        <IconButton
+          {...track('event.close')}
+          label={t.event.closeDetails}
+          icon={<XIcon className="size-5" aria-hidden="true" />}
+          onClick={onClose}
+        />
       </div>
       <DetailsBody startDate={startDate} slug={slug} headingId={headingId} />
     </Card>
@@ -111,6 +117,7 @@ function DrawerHeader({ onClose, title }: { onClose: () => void; title?: string 
     <header className="sticky top-0 z-10 border-b-2 border-border bg-header pt-[env(safe-area-inset-top)] text-header-fg">
       <div className="flex h-14 items-center gap-2 px-2 md:px-4">
         <IconButton
+          {...track('event.close')}
           label={t.event.back}
           icon={<CaretLeftIcon className="size-6" aria-hidden="true" weight="bold" />}
           onClick={onClose}

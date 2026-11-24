@@ -3,6 +3,7 @@ import { APP_NAME } from '../app'
 import logo from '../assets/logo.png'
 import { NAV_ITEMS } from './navItems'
 import { useI18n } from '../i18n/useI18n'
+import { track } from '../analytics/track'
 
 const FOCUS = 'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand'
 
@@ -19,6 +20,7 @@ export default function Sidebar({ slotRef, bottomSlotRef }: { slotRef: SlotRef; 
       {/* Só a logo: o nome do app já está no título do header, ao lado. Leva para a agenda. */}
       <div className="flex h-14 shrink-0 items-center px-2">
         <Link
+          {...track('nav.link', '/')}
           to="/"
           aria-label={APP_NAME}
           title={APP_NAME}
@@ -36,6 +38,7 @@ export default function Sidebar({ slotRef, bottomSlotRef }: { slotRef: SlotRef; 
           {NAV_ITEMS.filter((item) => !item.mobileOnly).map(({ to, label, icon: Icon }) => (
             <li key={to}>
               <NavLink
+                {...track('nav.link', to)}
                 to={to}
                 end={to === '/'}
                 className={({ isActive }) =>

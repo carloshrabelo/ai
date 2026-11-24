@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router'
 import { NAV_ITEMS } from './navItems'
 import { useI18n } from '../i18n/useI18n'
+import { track } from '../analytics/track'
 
 /** Barra inferior até 1279px. A partir de `xl`, a navegação fica na Sidebar. */
 export default function BottomNav() {
@@ -14,6 +15,7 @@ export default function BottomNav() {
         {NAV_ITEMS.map(({ to, label, icon: Icon, mobileOnly }) => (
           <li key={to} className={`flex-1 ${mobileOnly ? 'md:hidden' : ''}`}>
             <NavLink
+              {...track('nav.link', to)}
               to={to}
               end={to === '/'}
               className={({ isActive }) =>

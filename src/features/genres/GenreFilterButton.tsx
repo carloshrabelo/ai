@@ -1,6 +1,7 @@
 import { FunnelIcon } from '@phosphor-icons/react'
 import { TOOL, TOOL_ACTIVE, TOOL_IDLE } from '../../components/ui/buttonStyles'
 import { useI18n } from '../../i18n/useI18n'
+import { track } from '../../analytics/track'
 
 type Props = {
   open: boolean
@@ -18,6 +19,7 @@ export function GenreFilterButton({ open, onToggle, controls, activeCount }: Pro
 
   return (
     <button
+      {...track('filters.open')}
       type="button"
       aria-expanded={open}
       aria-controls={controls}

@@ -5,6 +5,7 @@ import { formatShortDay } from '../events/format'
 import { useI18n } from '../../i18n/useI18n'
 import { TOOL, TOOL_ACTIVE, TOOL_IDLE } from '../../components/ui/buttonStyles'
 import { DatePickerPopup } from './DatePickerPopup'
+import { track } from '../../analytics/track'
 
 type Props = {
   today: IsoDate
@@ -26,13 +27,13 @@ const FADE = 16
 export function DayShortcuts({ today, activeDay, onSelect }: Props) {
   const { t, locale } = useI18n()
   const shortcuts = [
-    { day: addDays(today, -1), label: t.dates.yesterday },
-    { day: today, label: t.dates.today },
-    { day: addDays(today, 1), label: t.dates.tomorrow },
+    { day: addDays(today, -1), label: t.dates.yesterday, id: 'yesterday' },
+    { day: today, label: t.dates.today, id: 'today' },
+    { day: addDays(today, 1), label: t.dates.tomorrow, id: 'tomorrow' },
   ]
   const isCustom = !shortcuts.some(({ day }) => day === activeDay)
   const [pickerOpen, setPickerOpen] = useState(false)
-  const closePicker = useCallback(() => setPickerOpen(false), [])
+  const closePicker = useCallback(() => setPickerOpen(false), [setPickerOpen])
   const containerRef = useRef<HTMLDivElement>(null)
   const rowRef = useRef<HTMLDivElement>(null)
   const [edges, setEdges] = useState({ start: false, end: false })
@@ -76,9 +77,10 @@ export function DayShortcuts({ today, activeDay, onSelect }: Props) {
         style={{ maskImage: mask, WebkitMaskImage: mask }}
         className="flex gap-1.5 overflow-x-auto overscroll-x-contain [scrollbar-width:none] xl:grid xl:grid-cols-3 xl:gap-2 xl:overflow-visible"
       >
-        {shortcuts.map(({ day, label }) => (
+        {shortcuts.map(({ day, label, id }) => (
           <button
             key={label}
+            {...track('dates.shortcut', id)}
             type="button"
             aria-pressed={day === activeDay}
             onClick={() => onSelect(day)}
@@ -89,6 +91,7 @@ export function DayShortcuts({ today, activeDay, onSelect }: Props) {
         ))}
         <button
           type="button"
+          {...track('dates.other-date')}
           aria-pressed={isCustom}
           aria-expanded={pickerOpen}
           aria-haspopup="dialog"

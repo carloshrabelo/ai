@@ -4,6 +4,7 @@ import { useLocation } from 'react-router'
 import { useI18n } from '../i18n/useI18n'
 import { dismissInstallBanner, promptInstall, useInstallBanner } from '../pwa/installPrompt'
 import { Button } from './ui/Button'
+import { track } from '../analytics/track'
 
 /** Espera antes de mostrar: não cobre a tela logo ao abrir (nem o aviso "pronto para offline"). */
 const SHOW_AFTER_MS = 8000
@@ -50,16 +51,20 @@ export default function InstallBanner() {
         </div>
       </div>
       <div className="flex justify-end gap-2">
-        <Button variant="ghost" onClick={dismissInstallBanner}>
+        <Button {...track('pwa.install-dismiss')} variant="ghost" onClick={dismissInstallBanner}>
           {t.pwa.notNow}
         </Button>
         {mode === 'prompt' && (
-          <Button onClick={() => void promptInstall()}>
+          <Button {...track('pwa.install')} onClick={() => void promptInstall()}>
             <DownloadSimpleIcon className="size-5" aria-hidden="true" />
             {t.info.installButton}
           </Button>
         )}
-        {mode === 'ios' && <Button onClick={dismissInstallBanner}>{t.pwa.gotIt}</Button>}
+        {mode === 'ios' && (
+          <Button {...track('pwa.install-dismiss')} onClick={dismissInstallBanner}>
+            {t.pwa.gotIt}
+          </Button>
+        )}
       </div>
     </div>
   )

@@ -10,6 +10,7 @@ export default function ThemeToggle({ className = '' }: { className?: string }) 
   return (
     <Segmented
       label={t.info.theme}
+      trackId="settings.theme"
       value={mode}
       onChange={setMode}
       className={className}

@@ -7,6 +7,7 @@ import { Card } from '../components/ui/Card'
 import { formatDateTime } from '../features/events/format'
 import { useI18n } from '../i18n/useI18n'
 import { siteUrl, useDocumentHead } from '../seo/useDocumentHead'
+import { track } from '../analytics/track'
 
 /** Rota "/about": o que é, de onde vêm os eventos, preferências e instalar. */
 export default function Info() {
@@ -100,6 +101,7 @@ export default function Info() {
 function ExternalLink({ href, children }: { href: string; children: ReactNode }) {
   return (
     <a
+      {...track('about.link', href)}
       href={href}
       target="_blank"
       rel="noopener noreferrer"

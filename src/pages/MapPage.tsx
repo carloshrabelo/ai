@@ -19,6 +19,7 @@ import { useGeocodedEvents } from '../features/location/useGeocodedEvents'
 import { MD_QUERY, useMediaQuery } from '../hooks/useMediaQuery'
 import { useI18n } from '../i18n/useI18n'
 import { siteUrl, useDocumentHead } from '../seo/useDocumentHead'
+import { track } from '../analytics/track'
 
 // Leaflet só é baixado quando o mapa aparece.
 const EventsMap = lazy(() => import('../features/map/EventsMap'))
@@ -170,7 +171,7 @@ function DayMap({ startDate }: { startDate: IsoDate }) {
             label={t.filters.title}
             onClose={() => setFiltersOpen(false)}
             footer={(close) => (
-              <Button className="w-full" onClick={close}>
+              <Button {...track('filters.done')} className="w-full" onClick={close}>
                 {t.filters.done(events.length)}
               </Button>
             )}

@@ -23,6 +23,7 @@ import { useI18n } from '../i18n/useI18n'
 import { BottomSheet } from '../components/ui/BottomSheet'
 import { Button } from '../components/ui/Button'
 import { ChangesBanner } from '../features/tracking/ChangesBanner'
+import { track } from '../analytics/track'
 
 /** Rota "/" — eventos de dança. Um feed novo (e estado novo) para cada data inicial. */
 export default function Dance() {
@@ -118,7 +119,7 @@ function DanceFeed({ startDate, today }: EventsLoaderData) {
               label={t.filters.title}
               onClose={() => setFiltersOpen(false)}
               footer={(close) => (
-                <Button className="w-full" onClick={close}>
+                <Button {...track('filters.done')} className="w-full" onClick={close}>
                   {t.filters.done(feedCount)}
                 </Button>
               )}

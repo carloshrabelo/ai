@@ -2,6 +2,7 @@ import { ArrowsClockwiseIcon, GpsFixIcon } from '@phosphor-icons/react'
 import { Button } from '../../components/ui/Button'
 import { requestLocation, useUserLocation } from './userLocation'
 import { useI18n } from '../../i18n/useI18n'
+import { track } from '../../analytics/track'
 
 /**
  * Liga as distâncias nos cards (e a posição no mapa). Só pede a localização quando clicado.
@@ -19,6 +20,7 @@ export function LocationControl({ compact = false }: { compact?: boolean }) {
           <span className="flex-1">{t.location.active}</span>
           <button
             type="button"
+            {...track('location.request')}
             onClick={requestLocation}
             aria-label={t.location.refresh}
             title={t.location.refresh}
@@ -38,6 +40,7 @@ export function LocationControl({ compact = false }: { compact?: boolean }) {
       return (
         <div className="space-y-1">
           <Button
+            {...track('location.request')}
             variant="secondary"
             className={compact ? 'h-9 px-3 text-xs' : 'w-full'}
             onClick={() => {

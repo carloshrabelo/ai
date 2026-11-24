@@ -9,6 +9,7 @@ export default function LanguageToggle({ className = '' }: { className?: string 
   return (
     <Segmented
       label={t.info.language}
+      trackId="settings.language"
       value={mode}
       onChange={setLocaleMode}
       className={className}

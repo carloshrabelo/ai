@@ -11,6 +11,7 @@ import { formatDayHeading } from '../events/format'
 import { eventSlug } from '../../domain/slug'
 import { type EventChange, detectChanges, type EventSnapshot } from './changes'
 import { acknowledgeChange, useTrackedSnapshots } from './trackedEvents'
+import { track } from '../../analytics/track'
 
 /**
  * Aviso no topo da lista quando um evento que a pessoa adicionou ao calendário mudou
@@ -48,11 +49,16 @@ export function ChangesBanner({ startDate, onOpenEvent }: { startDate: IsoDate; 
             </p>
             <div className="flex gap-2">
               {change.kind === 'changed' && change.after && (
-                <Button variant="secondary" className="h-9" onClick={() => onOpenEvent(slugOf(change.id, change.after!))}>
+                <Button
+                  {...track('event.change-view', slugOf(change.id, change.after!))}
+                  variant="secondary"
+                  className="h-9"
+                  onClick={() => onOpenEvent(slugOf(change.id, change.after!))}
+                >
                   {t.tracking.view}
                 </Button>
               )}
-              <Button variant="ghost" className="h-9" onClick={() => acknowledgeChange(change)}>
+              <Button {...track('event.change-ok', change.id)} variant="ghost" className="h-9" onClick={() => acknowledgeChange(change)}>
                 {t.tracking.ok}
               </Button>
             </div>

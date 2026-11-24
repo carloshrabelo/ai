@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { track, type TrackId } from '../../analytics/track'
 
 type Option<T extends string> = { value: T; label: string; lang?: string; /** Ícone decorativo antes do texto. */ icon?: ReactNode }
 
@@ -7,11 +8,13 @@ type Props<T extends string> = {
   options: readonly Option<T>[]
   value: T
   onChange: (value: T) => void
+  /** Nome para analytics (data-track); o valor de cada opção vai em data-track-value. */
+  trackId?: TrackId
   className?: string
 }
 
 /** Grupo de opções exclusivas (radiogroup) em forma de botões lado a lado, na moldura do tema; a opção marcada fica roxa. */
-export function Segmented<T extends string>({ label, options, value, onChange, className = '' }: Props<T>) {
+export function Segmented<T extends string>({ label, options, value, onChange, className = '', trackId }: Props<T>) {
   return (
     <div
       role="radiogroup"
@@ -23,6 +26,7 @@ export function Segmented<T extends string>({ label, options, value, onChange, c
           key={option.value}
           type="button"
           role="radio"
+          {...(trackId && track(trackId, option.value))}
           lang={option.lang}
           aria-checked={value === option.value}
           onClick={() => onChange(option.value)}

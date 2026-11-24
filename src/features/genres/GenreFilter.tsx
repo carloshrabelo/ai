@@ -9,6 +9,7 @@ import { GroupToggle } from './GroupToggle'
 import { MemberChip } from './MemberChip'
 import { genreLabel } from './genreLabel'
 import type { ReactNode } from 'react'
+import { track } from '../../analytics/track'
 
 // Todos os gêneros aparecem sempre, com ou sem eventos no período carregado.
 const GROUPED = new Set<GenreFilterValue>(GENRE_GROUPS.flatMap(({ umbrella, genres }) => [umbrella, ...genres]))
@@ -35,6 +36,7 @@ export function GenreFilter({ plain = false }: { plain?: boolean } = {}) {
         {selected.length > 0 && (
           <button
             type="button"
+            {...track('filters.clear')}
             onClick={clear}
             className="-my-2 -mr-2 inline-flex h-11 cursor-pointer items-center gap-1 rounded-lg px-3 text-sm font-medium text-brand hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-brand"
           >
@@ -85,6 +87,7 @@ export function GenreFilter({ plain = false }: { plain?: boolean } = {}) {
                   key={value}
                   // "Outros" usa o chip neutro, como os eventos sem gênero da lista.
                   {...(value === OTHER_GENRES ? { label: genreLabel(value, t) } : { genre: value })}
+                  {...track('filters.genre', value)}
                   pressed={selected.includes(value)}
                   onClick={() => toggle(value)}
                 />

@@ -26,6 +26,7 @@ import {
 import { useI18n } from '../i18n/useI18n'
 import { buttonClassName } from '../components/ui/buttonStyles'
 import { siteUrl, useDocumentHead } from '../seo/useDocumentHead'
+import { track } from '../analytics/track'
 
 const LINK_ROW =
   'flex min-h-11 items-center gap-3 rounded-xl px-3 py-2 hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand'
@@ -43,6 +44,7 @@ export default function Community() {
       <p className="text-sm text-fg-muted">
         {t.community.intro}{' '}
         <a
+          {...track('community.link', 'https://pasdedeux.pt/outros.html')}
           href="https://pasdedeux.pt/outros.html"
           target="_blank"
           rel="noopener noreferrer"
@@ -70,6 +72,7 @@ export default function Community() {
               <p className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
                 <span className="text-sm font-bold">{name}</span>
                 <a
+                  {...track('community.view-calendar', id)}
                   href={googleCalendarUrl(id)}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -82,6 +85,7 @@ export default function Community() {
               </p>
               <div className="flex flex-wrap items-center gap-1">
                 <a
+                  {...track('community.subscribe-google', id)}
                   href={googleSubscribeUrl(id)}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -92,6 +96,7 @@ export default function Community() {
                   {t.community.subscribeGoogle}
                 </a>
                 <a
+                  {...track('community.subscribe-apple', id)}
                   href={webcalUrl(id)}
                   aria-label={`${t.community.subscribeApple}: ${name}`}
                   className={buttonClassName('secondary', 'h-9 px-2 text-xs')}
@@ -99,7 +104,7 @@ export default function Community() {
                   <AppleLogoIcon className="size-4" aria-hidden="true" />
                   {t.community.subscribeApple}
                 </a>
-                <CopyButton text={icsUrl(id)} label={`${t.community.copyLink}: ${name}`} />
+                <CopyButton text={icsUrl(id)} label={`${t.community.copyLink}: ${name}`} trackValue={id} />
               </div>
             </li>
           ))}
@@ -126,7 +131,7 @@ function LinkSection({ title, icon, links, columns = false }: { title: string; i
       <ul className={`-mx-3 ${columns ? 'grid sm:grid-cols-2' : ''}`}>
         {links.map(({ name, url, detail }) => (
           <li key={url}>
-            <a href={url} target="_blank" rel="noopener noreferrer" className={LINK_ROW}>
+            <a {...track('community.link', url)} href={url} target="_blank" rel="noopener noreferrer" className={LINK_ROW}>
               <span className="min-w-0 flex-1">
                 <span className="block text-sm font-bold">{name}</span>
                 {detail && <span className="block truncate text-xs text-fg-muted">{detail}</span>}
@@ -141,11 +146,12 @@ function LinkSection({ title, icon, links, columns = false }: { title: string; i
 }
 
 /** Copia o link .ics (para colar no Google Agenda, Outlook…). */
-function CopyButton({ text, label }: { text: string; label: string }) {
+function CopyButton({ text, label, trackValue }: { text: string; label: string; trackValue: string }) {
   const { t } = useI18n()
   const [copied, setCopied] = useState(false)
   return (
     <button
+      {...track('community.copy-ics', trackValue)}
       type="button"
       aria-label={label}
       title={copied ? t.community.copied : t.community.copyLink}

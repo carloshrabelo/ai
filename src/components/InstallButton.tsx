@@ -4,6 +4,7 @@ import { Button } from './ui/Button'
 import { Card } from './ui/Card'
 import type { ReactNode } from 'react'
 import { useI18n } from '../i18n/useI18n'
+import { track } from '../analytics/track'
 
 /**
  * Card "Instalar o app": botão (Android/desktop) ou instruções (iOS). Onde não dá para instalar,
@@ -24,7 +25,7 @@ export default function InstallButton() {
   if (deferred) {
     return (
       <InstallCard hint>
-        <Button className="w-full sm:w-auto" onClick={() => void promptInstall()}>
+        <Button {...track('pwa.install')} className="w-full sm:w-auto" onClick={() => void promptInstall()}>
           <DownloadSimpleIcon className="size-5" aria-hidden="true" />
           {t.info.installButton}
         </Button>

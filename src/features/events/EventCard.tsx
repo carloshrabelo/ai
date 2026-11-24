@@ -19,6 +19,7 @@ import { eventUrl } from '../../seo/useDocumentHead'
 import { detectPlatform } from '../location/navigationLink'
 import { trackEvent } from '../tracking/trackedEvents'
 import { downloadIcs, googleCalendarUrl } from './calendarLinks'
+import { track } from '../../analytics/track'
 
 const ICON_LINK =
   'relative z-10 inline-flex size-11 shrink-0 items-center justify-center rounded-lg text-fg-muted hover:bg-surface-muted hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand'
@@ -63,6 +64,7 @@ export const EventCard = memo(function EventCard({ event, onOpen, clampTitle = f
         <h3 className="text-lg font-semibold">
           <button
             type="button"
+            {...track('event.open', event.slug)}
             aria-current={selected || undefined}
             onClick={() => onOpen(event.slug)}
             className={`block w-full cursor-pointer text-left outline-none after:absolute after:inset-0 after:rounded-xl focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-brand ${
@@ -95,6 +97,7 @@ export const EventCard = memo(function EventCard({ event, onOpen, clampTitle = f
               href={googleCalendarUrl(event, eventUrl(event.slug))}
               target="_blank"
               rel="noopener noreferrer"
+              {...track('event.card-add-to-calendar', event.slug)}
               aria-label={t.event.addToCalendarFor(event.title)}
               className={ICON_LINK}
               onClick={(click) => {

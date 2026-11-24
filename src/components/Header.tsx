@@ -2,6 +2,7 @@ import { Link, useMatches } from 'react-router'
 import { APP_NAME, type RouteHandle } from '../app'
 import logo from '../assets/logo.png'
 import { useI18n } from '../i18n/useI18n'
+import { track } from '../analytics/track'
 
 /** Nome do app, sempre, seguido do nome da página atual (handle.title), quando a rota tem um. */
 export default function Header() {
@@ -18,6 +19,7 @@ export default function Header() {
             fica com reticências. */}
         <h1 className="flex min-w-0 flex-1 items-center gap-2 font-bold">
           <Link
+            {...track('nav.link', '/')}
             to="/"
             className="flex shrink-0 items-center gap-2 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
           >

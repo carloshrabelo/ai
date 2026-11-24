@@ -4,6 +4,7 @@ import { IconButton } from '../../components/ui/Button'
 import { addDays, type IsoDate } from '../../lib/dates'
 import { formatDayHeading, formatDayOfMonth, formatMonthYear, formatWeekdayShort } from '../events/format'
 import { useI18n } from '../../i18n/useI18n'
+import { track } from '../../analytics/track'
 
 type Props = {
   value: IsoDate
@@ -103,6 +104,7 @@ export function CalendarPicker({ value, today, onSelect }: Props) {
     <div className="w-full max-w-sm space-y-2">
       <div className="flex items-center justify-between">
         <IconButton
+          {...track('dates.calendar-previous-month')}
           label={t.dates.previousMonth}
           icon={<CaretLeftIcon className="size-5" aria-hidden="true" />}
           onClick={() => goToMonth(-1)}
@@ -111,6 +113,7 @@ export function CalendarPicker({ value, today, onSelect }: Props) {
           {formatMonthYear(month, locale)}
         </p>
         <IconButton
+          {...track('dates.calendar-next-month')}
           label={t.dates.nextMonth}
           icon={<CaretRightIcon className="size-5" aria-hidden="true" />}
           onClick={() => goToMonth(1)}
@@ -148,6 +151,7 @@ export function CalendarPicker({ value, today, onSelect }: Props) {
               key={day}
               type="button"
               data-day={day}
+              {...track('dates.calendar-day', day)}
               tabIndex={day === focused ? 0 : -1}
               aria-pressed={selected}
               aria-current={day === today ? 'date' : undefined}

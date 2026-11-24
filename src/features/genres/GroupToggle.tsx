@@ -1,5 +1,6 @@
 import { CheckIcon, MinusIcon } from '@phosphor-icons/react'
 import { GENRE_EMOJI, type Genre } from '../../domain/genres'
+import { track } from '../../analytics/track'
 
 type Props = {
   /** Conjunto (Latinas, Afro, BR): nome e bandeira vêm do gênero. */
@@ -24,6 +25,7 @@ export function GroupToggle({ genre, label, pressed, onClick, title, id }: Props
     <button
       id={id}
       type="button"
+      {...track('filters.group', genre ?? 'other-styles')}
       aria-pressed={pressed}
       onClick={onClick}
       title={title}

@@ -8,6 +8,7 @@ import { eventsInfiniteQueryOptions } from '../../api/queries'
 import { formatDayHeading, formatDayOfMonth, formatWeekdayShort } from '../events/format'
 import { useI18n } from '../../i18n/useI18n'
 import { DatePickerPopup } from './DatePickerPopup'
+import { track } from '../../analytics/track'
 
 type Props = {
   startDate: IsoDate
@@ -111,6 +112,7 @@ export function WeekStrip({ startDate, activeDay, onSelect, actions }: Props) {
   return (
     <div ref={containerRef} className="relative flex items-center gap-2">
       <IconButton
+        {...track('dates.calendar-open')}
         label={t.dates.pickDate}
         variant="tool"
         aria-expanded={pickerOpen}
@@ -138,6 +140,7 @@ export function WeekStrip({ startDate, activeDay, onSelect, actions }: Props) {
             return (
               <li key={day} data-strip-day={day} className="flex-1 shrink-0">
                 <button
+                  {...track('dates.strip-day', day)}
                   type="button"
                   aria-pressed={active}
                   aria-label={formatDayHeading(day, locale)}

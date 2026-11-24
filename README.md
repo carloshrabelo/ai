@@ -156,6 +156,14 @@ scripts/       prerender.ts, venues-check.ts, promoters-update.ts, a11y-check.mj
 docs/          prints, logo e protótipos de referência
 ```
 
+## Analytics (rastreamento de cliques)
+
+Os elementos clicáveis relevantes têm `data-track="<área>.<ação>"` e, quando há um valor, `data-track-value` (dia, slug do evento, gênero, rota, id do calendário…). Os nomes ficam num catálogo tipado em `src/analytics/track.ts` (`TrackId`) e são aplicados com `{...track('event.open', event.slug)}`. A página do clique vem de `location.pathname` (o mesmo `event.open` serve na lista, no mapa e no popup do pino).
+
+- Para ligar uma ferramenta: `onTrackedClick(({ id, value, path }) => analytics.track(id, { value, path }))`, um listener só, delegado no `document` (fase de captura). Ferramentas que leem atributos (GTM com gatilho por atributo, PostHog autocapture, Plausible) podem usar `data-track` direto.
+- Para conferir em dev: abra o app com `?track` na URL; cada clique rastreado aparece no console como `[track] { id, value, path }`.
+- Áreas: `nav`, `dates`, `filters`, `event`, `map`, `location`, `community`, `settings`, `pwa`, `about`.
+
 ## Como os estilos são reconhecidos
 
 O título dos eventos segue o padrão `Tag • Nome • Preço` (ex.: `SBK • Festa na Aerlis • 7€`).
