@@ -56,7 +56,6 @@ export const en: Messages = {
     share: 'Share',
     linkCopied: 'Link copied',
     copyLink: 'Copy the event link:',
-    details: 'Event details',
     closeDetails: 'Close details',
     back: 'Back',
     loading: 'Loading event…',

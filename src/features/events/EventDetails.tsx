@@ -31,8 +31,11 @@ import { untrackEvent, useIsTracked, trackEvent } from '../tracking/trackedEvent
 import { downloadIcs, googleCalendarUrl } from './calendarLinks'
 import { track } from '../../analytics/track'
 
-/** Conteúdo dos detalhes: usado no painel da coluna do mapa (`xl+`) e no drawer (abaixo de `xl`). */
-export function EventDetails({ event, headingId }: { event: DanceEvent; headingId: string }) {
+/**
+ * Conteúdo dos detalhes: usado no painel da coluna do mapa (`xl+`) e no drawer (abaixo de `xl`), que
+ * mostram o título no header fixo deles (`showTitle={false}`); com o título, em /test/no-price.
+ */
+export function EventDetails({ event, headingId, showTitle = true }: { event: DanceEvent; headingId?: string; showTitle?: boolean }) {
   const { t, locale } = useI18n()
   const tracked = useIsTracked(event.id)
   const instagramPost = t.event.instagramPost
@@ -48,9 +51,11 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
   return (
     <div className="flex flex-1 flex-col gap-4">
       <div className="space-y-2">
-        <h2 id={headingId} tabIndex={-1} className="text-2xl font-semibold outline-none">
-          {event.title}
-        </h2>
+        {showTitle && (
+          <h2 id={headingId} tabIndex={-1} className="text-2xl font-semibold outline-none">
+            {event.title}
+          </h2>
+        )}
         <div className="flex flex-wrap gap-2">
           {event.status && <EventStatusBadge status={event.status} />}
           {event.genres.length > 0
@@ -83,9 +88,15 @@ export function EventDetails({ event, headingId }: { event: DanceEvent; headingI
         </Row>
       </dl>
 
-      {/* Divisor entre as informações e a descrição, com "Abrir no mapa" à direita, centralizado na linha. */}
+      {/* Divisor entre as informações e a descrição, com "Abrir no mapa" à direita, centralizado na linha.
+          Fixo logo abaixo do header com o título (drawer ou painel) enquanto a descrição rola: a altura
+          do header vem em --details-sticky-top (SelectedEventView), pois o título pode ter várias
+          linhas. Fundo igual ao de cada um (drawer bg-bg, painel bg-surface) e largura total
+          (-mx-4 px-4) para a descrição passar por baixo; embaixo, um degradê da mesma cor (24px) faz o
+          texto sumir aos poucos em vez de cortar seco. -mt-3: o gap-4 + o py-2 davam 24px acima do botão;
+          ficam 12px (a margem não muda a posição quando gruda, então o respiro sob o header continua). */}
       {(directions || html) && (
-        <div className="flex items-center gap-3">
+        <div className="sticky top-[var(--details-sticky-top,0px)] z-[5] -mx-4 -mt-3 flex items-center gap-3 bg-bg px-4 py-2 after:pointer-events-none after:absolute after:inset-x-0 after:top-full after:h-6 after:bg-linear-to-b after:from-bg after:to-transparent xl:bg-surface xl:after:from-surface">
           <hr aria-hidden="true" className="h-0 flex-1 border-0 border-t-2 border-border" />
           {directions && (
             <a

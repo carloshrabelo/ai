@@ -60,7 +60,6 @@ export const pt = {
     share: 'Compartilhar',
     linkCopied: 'Link copiado',
     copyLink: 'Copie o link do evento:',
-    details: 'Detalhes do evento',
     closeDetails: 'Fechar detalhes',
     back: 'Voltar',
     loading: 'Carregando evento…',
