@@ -66,6 +66,16 @@ export function formatDayOfMonth(day: IsoDate, locale: Locale): string {
   return dayOfMonth(locale).format(lisbonMidnight(day))
 }
 
+/** pt-BR: "20:30"; en-US: "8:30 PM". */
+export function formatTime(date: Date, locale: Locale): string {
+  return time(locale).format(date)
+}
+
+/** "22/09" nos dois idiomas. */
+export function formatShortDate(day: IsoDate, locale: Locale): string {
+  return shortDate(locale).format(lisbonMidnight(day))
+}
+
 /** pt-BR: "Qua, 22/09"; en: "Wed, 22/09". */
 export function formatShortDay(day: IsoDate, locale: Locale): string {
   return `${formatWeekdayShort(day, locale)}, ${shortDate(locale).format(lisbonMidnight(day))}`

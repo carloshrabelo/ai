@@ -27,6 +27,7 @@ import { useI18n } from '../i18n/useI18n'
 import { buttonClassName } from '../components/ui/buttonStyles'
 import { siteUrl, useDocumentHead } from '../seo/useDocumentHead'
 import { track } from '../analytics/track'
+import { copyText } from '../lib/clipboard'
 
 const LINK_ROW =
   'flex min-h-11 items-center gap-3 rounded-xl px-3 py-2 hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand'
@@ -155,11 +156,13 @@ function CopyButton({ text, label, trackValue }: { text: string; label: string; 
       type="button"
       aria-label={label}
       title={copied ? t.community.copied : t.community.copyLink}
-      onClick={async () => {
-        await navigator.clipboard.writeText(text)
-        setCopied(true)
-        setTimeout(() => setCopied(false), 2000)
-      }}
+      onClick={() =>
+        void copyText(text, t.community.copyLink).then((copied) => {
+          if (!copied) return
+          setCopied(true)
+          setTimeout(() => setCopied(false), 2000)
+        })
+      }
       className={buttonClassName('ghost', 'h-9 px-2 text-xs')}
     >
       {copied ? <CheckIcon className="size-4 text-brand" aria-hidden="true" /> : <CopyIcon className="size-4" aria-hidden="true" />}
