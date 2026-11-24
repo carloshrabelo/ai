@@ -1,4 +1,6 @@
 import {
+  AndroidLogoIcon,
+  AppleLogoIcon,
   ArrowSquareOutIcon,
   CalendarDotsIcon,
   CalendarPlusIcon,
@@ -13,6 +15,7 @@ import { Card } from '../components/ui/Card'
 import {
   type CommunityLink,
   googleCalendarUrl,
+  googleSubscribeUrl,
   icsUrl,
   INSTAGRAM,
   OTHER_CALENDARS,
@@ -59,23 +62,42 @@ export default function Community() {
         <p className="text-sm text-fg-muted">{t.community.subscribeHint}</p>
         <ul className="divide-y divide-border">
           {PASDEDEUX_CALENDARS.map(({ name, id }) => (
-            // Nome em cima e ações embaixo: no celular, os nomes longos não quebram ao lado dos botões.
-            // "Assinar" (webcal) no app de agenda; copiar o link .ics; abrir no Google Agenda.
+            // Nome (com link para ver o calendário no Google Agenda) em cima e as assinaturas embaixo: no
+            // celular, os nomes longos não quebram ao lado dos botões. Ordem: Google Agenda (conta Google,
+            // que é o que chega ao Android), depois Apple (webcal: Calendário do iPhone e do Mac) e o link
+            // .ics para qualquer outro app (Outlook…).
             <li key={id} className="space-y-2 py-3">
-              <p className="text-sm font-bold">{name}</p>
-              <div className="flex flex-wrap items-center gap-1">
-                <a href={webcalUrl(id)} className={buttonClassName('secondary', 'h-9 px-2 text-xs')}>
-                  <CalendarPlusIcon className="size-4" aria-hidden="true" />
-                  {t.community.subscribeAction}
-                </a>
+              <p className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+                <span className="text-sm font-bold">{name}</span>
                 <a
                   href={googleCalendarUrl(id)}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={`${t.community.openGoogle}: ${name}`}
-                  className={buttonClassName('ghost', 'h-9 px-2 text-xs')}
+                  className="inline-flex min-h-11 items-center gap-1 text-xs font-bold text-brand underline-offset-2 hover:underline sm:min-h-0"
                 >
-                  Google
+                  {t.community.viewCalendar}
+                  <ArrowSquareOutIcon className="size-3.5" aria-hidden="true" />
+                </a>
+              </p>
+              <div className="flex flex-wrap items-center gap-1">
+                <a
+                  href={googleSubscribeUrl(id)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${t.community.subscribeGoogle} (Android): ${name}`}
+                  className={buttonClassName('secondary', 'h-9 px-2 text-xs')}
+                >
+                  <AndroidLogoIcon className="size-4" aria-hidden="true" />
+                  {t.community.subscribeGoogle}
+                </a>
+                <a
+                  href={webcalUrl(id)}
+                  aria-label={`${t.community.subscribeApple}: ${name}`}
+                  className={buttonClassName('secondary', 'h-9 px-2 text-xs')}
+                >
+                  <AppleLogoIcon className="size-4" aria-hidden="true" />
+                  {t.community.subscribeApple}
                 </a>
                 <CopyButton text={icsUrl(id)} label={`${t.community.copyLink}: ${name}`} />
               </div>

@@ -58,6 +58,13 @@ export const icsUrl = (id: string) => `https://calendar.google.com/calendar/ical
 /** webcal:// abre direto o app de agenda do iPhone e do Mac para assinar. */
 export const webcalUrl = (id: string) => icsUrl(id).replace(/^https:/, 'webcal:')
 
+/**
+ * Adiciona o calendário à conta Google (Google Agenda: "Adicionar calendário?"). É a assinatura que
+ * chega ao Android: o app Google Agenda sincroniza os calendários da conta, e o Android não abre
+ * links webcal://.
+ */
+export const googleSubscribeUrl = (id: string) => `https://calendar.google.com/calendar/render?cid=${encodeURIComponent(id)}`
+
 /** O calendário no Google Agenda (modo lista). */
 export const googleCalendarUrl = (id: string) =>
   `https://calendar.google.com/calendar/embed?src=${encodeURIComponent(id)}&ctz=Europe%2FLisbon&mode=agenda`
