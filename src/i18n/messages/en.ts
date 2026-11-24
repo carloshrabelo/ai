@@ -179,7 +179,7 @@ export const en: Messages = {
     view: 'View',
     ok: 'Ok',
   },
-  pwa: { offlineReady: 'App ready to work offline.', close: 'Close' },
+  pwa: { offlineReady: 'App ready to work offline.', close: 'Close', notNow: 'Not now', gotIt: 'Got it' },
   schools: { soon: 'Coming soon', text: 'The list of dance schools is still being prepared.' },
   errors: {
     title: 'Something went wrong',

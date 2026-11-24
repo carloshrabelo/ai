@@ -49,9 +49,9 @@
     <link rel="icon" href="/pwa-64x64.png" type="image/png" sizes="64x64" />
     <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png" />
 
-    <meta name="theme-color" content="#0e7f8f" />
+    <meta name="theme-color" content="#ffffff" />
     <script>
-      // Aplica o tema antes do primeiro paint (mesma lógica de src/theme/useTheme.ts).
+      // Aplica o tema antes do primeiro paint (mesma lógica e cores — THEME_COLOR — de src/theme/useTheme.ts).
       ;(function () {
         var mode = 'system'
         try {
@@ -59,7 +59,7 @@
         } catch (e) {}
         var dark = mode === 'dark' || (mode !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches)
         document.documentElement.dataset.theme = dark ? 'dark' : 'light'
-        document.querySelector('meta[name="theme-color"]').setAttribute('content', dark ? '#14162b' : '#0e7f8f')
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', dark ? '#131f24' : '#ffffff')
       })()
     </script>
     <meta name="mobile-web-app-capable" content="yes" />

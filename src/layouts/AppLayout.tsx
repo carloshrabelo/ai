@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { Outlet, useNavigation } from 'react-router'
 import BottomNav from '../components/BottomNav'
 import Header from '../components/Header'
+import InstallBanner from '../components/InstallBanner'
 import ReloadPrompt from '../components/ReloadPrompt'
 import Sidebar from '../components/Sidebar'
 import { SidebarSlotContext } from './sidebarSlotContext'
@@ -34,6 +35,7 @@ export default function AppLayout() {
 
         <BottomNav />
         <ReloadPrompt />
+        <InstallBanner />
       </div>
     </SidebarSlotContext>
   )

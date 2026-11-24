@@ -84,8 +84,9 @@ export default defineConfig({
         short_name: 'Lisbon Dance',
         description: 'Agenda de práticas, festas e eventos de dança social em Lisboa',
         lang: 'pt-BR',
-        theme_color: '#0e7f8f',
-        background_color: '#e8f0f2',
+        // Mesmas cores do header e do fundo no tema claro (index.css; THEME_COLOR em src/theme/useTheme.ts).
+        theme_color: '#ffffff',
+        background_color: '#f7f7f7',
         display: 'standalone',
         orientation: 'portrait',
         start_url: base,

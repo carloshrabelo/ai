@@ -1,11 +1,9 @@
 import { DeviceMobileIcon, DownloadSimpleIcon } from '@phosphor-icons/react'
-import { promptInstall, useInstallPrompt } from '../pwa/installPrompt'
+import { isIOS, promptInstall, useInstallPrompt } from '../pwa/installPrompt'
 import { Button } from './ui/Button'
 import { Card } from './ui/Card'
 import type { ReactNode } from 'react'
 import { useI18n } from '../i18n/useI18n'
-
-const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent)
 
 /**
  * Card "Instalar o app": botão (Android/desktop) ou instruções (iOS). Onde não dá para instalar,

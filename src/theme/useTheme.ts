@@ -12,7 +12,7 @@ const DARK_QUERY = '(prefers-color-scheme: dark)'
  * Cor da barra do navegador/PWA em cada tema: a do header (`--header` em index.css). Mesmos valores
  * no script inline do index.html e no manifest (vite.config.ts).
  */
-const THEME_COLOR = { light: '#0e7f8f', dark: '#14162b' } as const
+const THEME_COLOR = { light: '#ffffff', dark: '#131f24' } as const
 
 type ThemeState = {
   mode: ThemeMode

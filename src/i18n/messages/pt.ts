@@ -184,7 +184,7 @@ export const pt = {
     view: 'Ver',
     ok: 'Ok',
   },
-  pwa: { offlineReady: 'App pronto para funcionar offline.', close: 'Fechar' },
+  pwa: { offlineReady: 'App pronto para funcionar offline.', close: 'Fechar', notNow: 'Agora não', gotIt: 'Entendi' },
   schools: { soon: 'Em breve', text: 'A lista de escolas de dança ainda está sendo preparada.' },
   errors: {
     title: 'Algo deu errado',
