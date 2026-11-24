@@ -37,3 +37,6 @@ coverage
 # Cache
 *.tsbuildinfo
 .cache
+
+# Análise do bundle (pnpm analyze)
+bundle-stats.html

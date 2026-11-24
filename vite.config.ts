@@ -2,6 +2,7 @@ import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { copyFileSync, mkdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
+import { visualizer } from 'rollup-plugin-visualizer'
 import { defineConfig, type Plugin } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
@@ -55,6 +56,10 @@ function seoFiles(): Plugin {
   }
 }
 
+// Análise do bundle (`pnpm analyze`): gera bundle-stats.html na raiz (fora do dist/, para não ir para o
+// deploy nem para o precache do service worker). Ver "Analisar o bundle" no README.
+const analyze = process.env.ANALYZE === 'true'
+
 // Versão exibida na página Info, para saber qual build está carregado.
 const appVersion = (process.env.GITHUB_SHA ?? '').slice(0, 7) || 'local'
 
@@ -105,5 +110,14 @@ export default defineConfig({
         navigateFallback: 'index.html',
       },
     }),
+    analyze &&
+      visualizer({
+        filename: 'bundle-stats.html',
+        title: 'Lisbon Social Dance — bundle',
+        template: (process.env.ANALYZE_TEMPLATE as 'treemap' | 'sunburst' | 'network' | 'flamegraph' | undefined) ?? 'treemap',
+        gzipSize: true,
+        brotliSize: true,
+        open: !process.env.CI,
+      }),
   ],
 })
