@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, CalendarXIcon, XIcon } from '@phosphor-icons/react'
+import { CaretLeftIcon, CalendarXIcon, XIcon } from '@phosphor-icons/react'
 import { type ReactNode, useEffect, useId, useRef, useState } from 'react'
 import { IconButton } from '../../components/ui/Button'
 import { Card } from '../../components/ui/Card'
@@ -112,7 +112,7 @@ function DrawerHeader({ onClose, title }: { onClose: () => void; title?: string 
       <div className="flex h-14 items-center gap-2 px-2 md:px-4">
         <IconButton
           label={t.event.back}
-          icon={<ArrowLeftIcon className="size-6" aria-hidden="true" />}
+          icon={<CaretLeftIcon className="size-6" aria-hidden="true" weight="bold" />}
           onClick={onClose}
           className="text-header-fg hover:bg-white/10 hover:text-header-fg"
         />
