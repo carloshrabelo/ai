@@ -1,34 +1,198 @@
 # TODO
 
-Tarefas manuais (chaves, configurações, verificações em aparelhos) e ajustes de código pendentes.
-Revisado em 24/11/2026: o que foi conferido no site publicado e no repositório está marcado como feito,
-com a evidência entre parênteses.
+Tarefas manuais (chaves, configurações, verificações em aparelhos), projetos em andamento e ajustes de código.
+Revisado em 24/11/2026: o que foi conferido no site publicado e no repositório está marcado como feito, com a
+evidência entre parênteses.
 
-## 0. Prioridade
+- **Prioridade**: a ordem sugerida para os próximos passos.
+- **A. Projetos**: trabalhos maiores, com fases (domínio, formulário, analytics, fotos).
+- **B. Configuração e verificações**: contas, chaves e testes que só dá para fazer à mão.
+- **C. Manutenção**: dados, código e limpeza.
 
-Itens que afetam o site publicado hoje:
+## Prioridade
 
-- [ ] **Domínio próprio no SEO** (seção 4): o site responde em `carloshrabelo.dev/ai/`, mas canonical, Open Graph e sitemap apontam para `carloshrabelo.github.io/ai/`, que redireciona (301).
-- [ ] **HTTPS obrigatório** (seção 2): `http://carloshrabelo.dev/ai/` responde 200, sem redirecionar para HTTPS.
-- [ ] **Barra de status do iPhone** (seção 5): com o header branco, o relógio e a bateria podem sumir no app instalado.
+1. **Domínio próprio** (seção 1): comprar, verificar no GitHub e configurar o e-mail (fase 1); publicar a versão de
+   transição (fase 2); trocar o domínio (fase 3).
+2. **Barra de status do iPhone** (seção 8): com o header branco, o relógio e a bateria podem sumir no app instalado.
+   Conferir num aparelho; a correção é de uma linha.
+3. **Formulário "Sugerir evento"** (seção 2): só precisa do e-mail da fase 1 do domínio (ou um e-mail pessoal até lá).
+4. **Analytics** (seção 3): publicar a branch e ligar o GoatCounter; os cliques do formulário entram junto.
+5. **JSON-LD dos eventos** (seção 10): 9 eventos sem local, que o Google exige; `image` e `organizer` ausentes.
 
-## 1. Chave da Google Calendar API
+## A. Projetos
 
-- [x] Projeto, Google Calendar API ativada e API key criada (o site publicado mostra os eventos reais: só 8 dos 71 títulos do sitemap existem no mock).
-- [ ] Conferir as restrições da chave (ela fica visível no JavaScript publicado):
-  - *Application restrictions* → **HTTP referrers**: `https://carloshrabelo.dev/ai/*` (domínio atual), `https://carloshrabelo.github.io/ai/*` e, para desenvolvimento, `http://localhost:*/*`. O build das páginas estáticas (`scripts/prerender.ts`) envia o referer do site.
-  - *API restrictions* → só **Google Calendar API**.
-- [ ] Nunca commitar o `.env.local` (já está no `.gitignore`). Se a chave vazar, gerar outra e apagar a antiga.
+### 1. Domínio próprio — `minhasdancasemlisboa.pt`
 
-## 2. GitHub (Settings do repositório)
+> **`minhasdancasemlisboa.pt` é um nome fictício**, usado aqui e no código até a compra: o repositório é público, e
+> anunciar o domínio escolhido antes de registrá-lo deixa alguém registrar primeiro. Depois da compra, trocar por
+> todo o repositório (`grep -rn minhasdancasemlisboa`). Comparação de registradores e preços: `docs/dominios.md`
+> (arquivo local, fora do git pelo mesmo motivo).
 
-- [x] **Pages** com GitHub Actions (deploy de hoje publicado: manifest com as cores novas).
-- [x] Secret `VITE_GOOGLE_API_KEY` e variable `VITE_USE_MOCK` = `false` (eventos reais no ar).
-- [x] Action **Update venues** e **Update promoters** gravando no `main` (commits do bot de 21 e 22/11).
-- [ ] **Pages → Enforce HTTPS** no domínio próprio. Hoje o domínio vem do site do usuário (`carloshrabelo.github.io` → `carloshrabelo.dev`); a opção fica no repositório que tem o *Custom domain*.
-- [ ] Conferir se o deploy diário (05:30 UTC) roda sozinho em **Actions → Deploy to GitHub Pages** (não deu para ver pela API pública: limite de requisições).
+Hoje o projeto (`ai`) é publicado em `carloshrabelo.dev/ai/`, porque o site do usuário (`carloshrabelo.github.io`)
+tem o domínio `carloshrabelo.dev`. Com um *Custom domain* no repositório `ai`, o GitHub passa a servir o app no domínio
+novo e redireciona `carloshrabelo.dev/ai/` e `carloshrabelo.github.io/ai/` para ele. Os dois domínios não conflitam
+(cada domínio aponta para um repositório só); o risco está no service worker do PWA (fase 2).
 
-## 3. Analytics (GoatCounter) — branch `feat/seo-ssg-share-analytics`
+#### Fase 1 — Compra e preparação (sem mexer no site)
+
+Registradores: **Dynadot** e **OVHcloud** (os dois domínios, `minhasdancasemlisboa.pt` e `.com`, divididos entre eles).
+Cada domínio tem o DNS e o redirecionamento configurados no painel do seu registrador.
+
+- [ ] Registrar os dois domínios, com **renovação automática** ligada nos dois painéis e o cartão válido nos dois.
+  Anotar onde ficou cada um e a data de vencimento.
+- [ ] **Dynadot:** conferir que a privacidade do WHOIS ficou ligada (é automática) e que o domínio usa os
+  *nameservers* da Dynadot (o encaminhamento de e-mail grátis só funciona com eles).
+- [ ] **OVHcloud:** conferir o titular e o e-mail de contato (o `.pt` exige dados corretos; e-mail não verificado
+  pode levar à suspensão), e que a zona DNS está na OVHcloud.
+- [ ] **Verificar o domínio na conta do GitHub** (perfil → Settings → Pages → *Verified domains*, registro TXT no DNS):
+  impede que outra conta use o domínio no GitHub Pages enquanto o DNS aponta para lá.
+- [ ] Acrescentar `https://minhasdancasemlisboa.pt/*` nos referrers da chave do Google (seção 5). Sem isso, os eventos
+  param de carregar no domínio novo.
+- [ ] Não criar uma pasta `ai/` no repositório `carloshrabelo.github.io` (concorreria com o projeto nesse caminho).
+- [ ] **E-mail `contato@minhasdancasemlisboa.pt`** (usado pelo formulário, seção 2): encaminhamento grátis na
+  **Dynadot** ou a caixa inclusa na **OVHcloud**, conforme onde ficar o `.pt`. Registros **MX** e **SPF** (TXT) do
+  painel do registrador. Não depende da troca do site: dá para configurar logo depois da compra. Não apagar esses
+  registros ao configurar o GitHub Pages (fase 3).
+
+#### Fase 2 — Versão de transição (no domínio atual, 1–2 semanas antes de trocar)
+
+O service worker registrado em `carloshrabelo.dev/ai/` responde do cache antes de a requisição chegar ao GitHub:
+quem tem o app instalado (ou já visitou) não veria o redirecionamento, e a atualização do service worker falha
+quando `sw.js` passa a responder com redirecionamento. Sem esta fase, essas pessoas ficam presas na versão antiga.
+
+- [ ] Código: ao abrir, o app confere se `/ai/sw.js` responde com redirecionamento (`fetch(…, { redirect: 'manual' })`
+  → `opaqueredirect`). Se sim: desregistra o service worker, limpa os caches e vai para a mesma página em
+  `https://minhasdancasemlisboa.pt` (mesmo caminho sem o `/ai`, mesma query). Antes da troca não faz nada.
+- [ ] Levar junto os dados salvos no aparelho, que são por domínio e se perderiam: eventos adicionados ao calendário
+  (`tracked-events`, os avisos de mudança), tema, idioma e o aviso de instalação dispensado. Ex.: no redirecionamento,
+  mandar os dados no fragmento da URL (`#migrate=…`, não vai para o servidor) e o domínio novo grava e limpa a URL.
+- [ ] Domínio de destino numa constante (`NEW_ORIGIN`), testado com um host local antes de publicar.
+- [ ] Publicar e esperar **1–2 semanas** para a maioria das instalações se atualizar sozinha (`autoUpdate`).
+
+#### Fase 3 — DNS e troca (um deploy só)
+
+- [ ] DNS do domínio **principal** (`.pt`), no painel do registrador dele: registros **A** `185.199.108.153`,
+  `185.199.109.153`, `185.199.110.153`, `185.199.111.153` (e **AAAA** `2606:50c0:8000::153` … `8003::153` para
+  IPv6); `www` como **CNAME** → `carloshrabelo.github.io`. Apagar os registros A/CNAME de "página estacionada" que o
+  registrador cria por padrão.
+- [ ] Domínio **secundário** (`.com`) redirecionando 301 para `https://minhasdancasemlisboa.pt`, no painel dele:
+  - Dynadot: *Domain → Forwarding* (URL forwarding, permanente/301).
+  - OVHcloud: *Domínios → Redirecionamento* (redirecionamento visível permanente, 301), não o "invisível" (frame).
+  - Testar `http://` e `https://` do secundário: o redirecionamento do registrador pode não ter certificado HTTPS; se
+    o `https://` falhar, alternativa é apontar o secundário também para o GitHub Pages num repositório só de redirect.
+- [ ] Repositório `ai` → **Settings → Pages → Custom domain** = `minhasdancasemlisboa.pt`.
+- [ ] No mesmo deploy:
+  - [ ] `vite.config.ts`: `base: '/'` (hoje `'/ai/'` quando `GITHUB_PAGES` está definido; sem isso, os arquivos
+    apontam para `/ai/…` e a página abre em branco). Revisar tudo que depende do `base`: `start_url`/`scope` do
+    manifest, `navigateFallback` do Workbox, `PUBLIC_ROUTES`, os `href` do `index.html` (`/favicon.ico` etc.).
+  - [ ] `SITE_URL: https://minhasdancasemlisboa.pt/` no `.github/workflows/deploy.yml` (canonical, Open Graph,
+    JSON-LD, `sitemap.xml`, `robots.txt`).
+  - [ ] `PUBLISHED_URL` de `scripts/lib/app.ts` (referer do prerender) e o link do README.
+  - [ ] As cópias do `index.html` por rota (`map/`, `community/`, `about/`) e o prerender continuam iguais, só sem o
+    prefixo `/ai`.
+- [ ] Quando o certificado sair (minutos a horas): **Enforce HTTPS** no repositório `ai`.
+
+#### Fase 4 — Conferir depois da troca
+
+- [ ] `https://minhasdancasemlisboa.pt/` abre com eventos; `http://` redireciona para `https://`.
+- [ ] `carloshrabelo.dev/ai/` e `carloshrabelo.dev/ai/event/<slug>/` redirecionam para o mesmo caminho no domínio novo
+  (links compartilhados continuam valendo).
+- [ ] Num aparelho com o app instalado no domínio antigo: abrir → vai para o novo, com os eventos acompanhados
+  preservados. Instalar de novo pelo domínio novo (o app instalado é por domínio).
+- [ ] `robots.txt` na raiz do domínio novo responde 200 com o `Sitemap:` (no domínio atual ele fica na raiz de
+  `carloshrabelo.dev`, outro projeto, e responde 404).
+- [ ] Google Search Console: propriedade do domínio novo, enviar o `sitemap.xml`; na propriedade antiga, usar a
+  *Change of address*, se disponível para o caso.
+- [ ] Previews de link (WhatsApp, Facebook Sharing Debugger) com o domínio novo.
+- [ ] Depois de alguns meses: tirar a versão de transição do código e os referrers antigos da chave do Google.
+- [ ] Renovação: lembrete no calendário ~1 mês antes do vencimento de cada domínio (são dois painéis e dois
+  vencimentos), mesmo com a renovação automática ligada.
+
+#### Enquanto o domínio novo não entra
+
+Só vale a pena se a migração for demorar mais de algumas semanas:
+
+- [ ] `SITE_URL: https://carloshrabelo.dev/ai/` no `.github/workflows/deploy.yml`: hoje canonical, `og:url`,
+  `og:image`, JSON-LD e `sitemap.xml` apontam para `carloshrabelo.github.io/ai/`, que redireciona (301) para
+  `carloshrabelo.dev/ai/`.
+- [ ] **Enforce HTTPS** em `carloshrabelo.dev`: `http://carloshrabelo.dev/ai/` responde 200 sem redirecionar. A opção
+  fica no repositório `carloshrabelo.github.io`, que tem esse *Custom domain*.
+
+### 2. Formulário "Sugerir evento"
+
+Página para quem organiza (ou conhece) um evento sugerir que ele entre na agenda. O envio chega por e-mail para nós,
+com tudo pronto para revisar e, se fizer sentido, repassar ao calendário (os eventos vêm do calendário do
+pasdedeux.pt, mantido por @ateterca: a sugestão não publica nada sozinha).
+
+#### Envio
+
+- [ ] Serviço: **[Web3Forms](https://web3forms.com)** (grátis até 250 envios/mês; o site é estático e o JS do
+  navegador não envia e-mail sozinho). O app faz `POST` para `https://api.web3forms.com/submit` com a chave pública.
+- [ ] Destino: `contato@minhasdancasemlisboa.pt` (seção 1, fase 1), encaminhado para o nosso e-mail pela Dynadot
+  (encaminhamento grátis) ou caixa da OVHcloud. Até o domínio existir, um e-mail pessoal.
+- [ ] Chave em `VITE_WEB3FORMS_KEY` (variable do repositório no deploy; `.env.example` e README). Sem a chave, o
+  link "Sugerir evento" não aparece (como o GoatCounter sem o código).
+- [ ] Assunto do e-mail: `Sugestão de evento: <nome> — <dia>`; `replyTo` = e-mail de quem sugeriu (responder sai
+  direto para a pessoa).
+
+#### Campos (no formato que o calendário usa: título `Tag • Nome • Preço`, local, descrição)
+
+- [ ] **Nome do evento** (obrigatório).
+- [ ] **Estilos** (obrigatório, um ou mais): os chips do filtro (`GENRES`, mesmos conjuntos Latinas/Afro/BR) + "Outro"
+  com texto livre. Viram a tag (ex.: Salsa + Bachata → `Salsa & Bachata`).
+- [ ] **Data** e **hora de início/fim** (obrigatórios; fim pode passar da meia-noite), fuso de Lisboa. Opção
+  **"Repete toda semana"** (dia da semana + até quando), comum em práticas.
+- [ ] **Local**: nome e endereço (ou link do Google Maps). Sugerir os locais conhecidos de `src/content/venues.json`
+  ao digitar (o mapa já tem as coordenadas).
+- [ ] **Preço**: valor(es) ou "Grátis" / "Não sei"; texto livre curto como no calendário ("10€ | 8€ alunos").
+- [ ] **Descrição** (texto livre) e **links**: Instagram/Facebook/site do evento ou do organizador.
+- [ ] **Quem sugere**: nome, e-mail (obrigatório, para respondermos) e "Sou o organizador" (sim/não).
+- [ ] **Consentimento** (RGPD): caixa obrigatória "Concordo que estes dados sejam usados para avaliar e publicar o
+  evento", com link para um aviso de privacidade curto (o que é guardado, por quanto tempo, como pedir para apagar).
+
+#### Conteúdo do e-mail
+
+- [ ] Título já no formato do calendário: `Salsa & Bachata • Nome do evento • 10€`.
+- [ ] Bloco com todos os campos e um **link "Adicionar ao Google Agenda"** já preenchido (`action=TEMPLATE`, mesmo
+  formato de `googleCalendarUrl` em `src/features/events/calendarLinks.ts`): um clique abre o evento pronto para
+  salvar no calendário escolhido.
+- [ ] Prévia de como o evento vai aparecer: rodar os campos por `toDanceEvent` (mesmo parser do app) e listar os
+  estilos e o preço reconhecidos. Se o parser não reconhecer algo (estilo cai em "Outros", preço sem formato), avisar
+  no e-mail.
+
+#### Na interface
+
+- [ ] Rota `/suggest` (indexável e no `sitemap.xml`: atrai organizadores pela busca), link em **Comunidade** e em **Sobre**, e no estado vazio da
+  agenda ("Não achou o seu evento? Sugira"). Item no menu só se fizer sentido depois.
+- [ ] **Prévia ao vivo** com o próprio `EventCard` enquanto a pessoa preenche (mesmo visual da lista).
+- [ ] Validação no próprio form (campos obrigatórios, fim depois do início, e-mail válido), mensagens em pt-BR e
+  en-US (`src/i18n/messages`).
+- [ ] **Rascunho salvo no aparelho** (store Zustand com `persist`, como os outros): se a pessoa sair ou ficar sem
+  internet, não perde o que digitou. Limpar depois do envio.
+- [ ] Sem internet (PWA offline): botão desabilitado com o aviso, rascunho guardado.
+- [ ] Estados: enviando, sucesso ("Recebemos! Vamos avaliar e responder por e-mail"), erro com "Tentar de novo".
+- [ ] **Antispam**: campo escondido (*honeypot*, o Web3Forms ignora o envio se vier preenchido); se aparecer spam,
+  hCaptcha (suportado pelo Web3Forms) ou Cloudflare Turnstile.
+- [ ] Analytics: `data-track` `suggest.open`, `suggest.submit`, `suggest.success`, `suggest.error` no catálogo de
+  `src/analytics/track.ts` (chegam no GoatCounter, seção 3).
+- [ ] Acessibilidade: rótulos em todos os campos, erros ligados ao campo (`aria-describedby`), foco no primeiro erro;
+  conferir com `pnpm a11y`.
+
+#### Testes
+
+- [ ] Unidade: montar o título `Tag • Nome • Preço` a partir dos campos e passar pelo `parseSummary`/`toDanceEvent`
+  (o que sai do form precisa ser lido igual pelo app); link do Google Agenda com datas e fuso certos (inclusive
+  evento que passa da meia-noite e horário de verão).
+- [ ] Playwright (seção 10): preencher, ver a prévia, enviar com o Web3Forms mockado, erro e repetir, rascunho mantido
+  ao recarregar.
+
+#### Depois (opcional)
+
+- [ ] Se o volume crescer: em vez de e-mail, gravar numa planilha (Web3Forms → webhook pago, ou Google Forms) e ter
+  uma página interna de revisão, como a `/review`.
+- [ ] Combinar com @ateterca o fluxo de repasse (encaminhar o e-mail, ou ela receber cópia direto).
+
+### 3. Analytics (GoatCounter) — branch `feat/seo-ssg-share-analytics`
 
 A branch foi refeita sobre o `main` (1 commit): o GoatCounter conta as páginas vistas e recebe todos os cliques com `data-track` por um listener só (`connectTrackedClicks`), sem chamadas nos componentes. Desligado sem `VITE_GOATCOUNTER_CODE` e sempre em `pnpm dev`.
 
@@ -39,16 +203,74 @@ A branch foi refeita sobre o `main` (1 commit): o GoatCounter conta as páginas 
 - [ ] Depois do deploy, conferir no painel: páginas vistas e eventos como `filters.genre/Salsa`, `event.open/<slug>`, `dates.strip-day/<dia>` (a lista de nomes está em `src/analytics/track.ts`).
 - [ ] Decidir se `event.open/<slug>` (um caminho por evento) é o nível de detalhe desejado no painel, ou se basta `event.open`.
 
-## 4. SEO e compartilhamento
+### 4. Fotos dos perfis (promotores, DJs, professores) — branch `feature/promoter-photos`
 
-- [ ] **`SITE_URL` do domínio próprio**: no `.github/workflows/deploy.yml`, passar `SITE_URL: https://carloshrabelo.dev/ai/` no build. Sem isso, canonical, `og:url`, `og:image`, JSON-LD e `sitemap.xml` usam `carloshrabelo.github.io/ai/` (padrão em `vite.config.ts` quando `GITHUB_PAGES` está definido). Atualizar também o link do README e o `PUBLISHED_URL` de `scripts/lib/app.ts`, se for o caso.
-- [ ] **`robots.txt` na raiz do domínio**: `https://carloshrabelo.dev/robots.txt` responde 404 (o site raiz é outro projeto). Criar lá um `robots.txt` com `Sitemap: https://carloshrabelo.dev/ai/sitemap.xml`.
-- [ ] [Google Search Console](https://search.google.com/search-console): propriedade `https://carloshrabelo.dev/` (domínio ou *URL prefix* `…/ai/`), verificar e enviar o `sitemap.xml` (depois do item do `SITE_URL`).
+Preencher `photo` em `src/content/promoters.json` com a foto de perfil do Instagram, automaticamente (hoje aparece só em `/test/people`; sem foto, iniciais). A branch foi refeita sobre o `main` (1 commit, só local): scripts em TypeScript como os outros, com `scripts/lib/env.ts` para ler o `.env.local`.
+
+- `pnpm ig:token <token curto> [perfil de teste]` (`scripts/ig-token.ts`): troca o token curto por um de ~60 dias e grava `IG_ACCESS_TOKEN` e `IG_USER_ID` no `.env.local`.
+- `pnpm promoters:photos [máximo] [--force]` (`scripts/promoters-photos.ts`): baixa as fotos para `public/promoters/<perfil>.jpg` e preenche `photo` (e `name`, se vazio).
+
+Usa a **Instagram Graph API oficial (Business Discovery)**. O endpoint interno `web_profile_info` foi descartado: exige login, é contra os termos do Instagram e respondeu 429 já no primeiro perfil. Limitação: o Business Discovery só enxerga **contas profissionais** (comerciais ou de criador); contas pessoais (alguns DJs e professores) ficam com as iniciais ou com foto à mão.
+
+#### Conta do Instagram (uma vez)
+
+- [ ] Ter uma conta do Instagram **profissional** (comercial ou criador): Instagram → Configurações → Tipo de conta e ferramentas. Pode ser uma conta só para isso.
+- [ ] Ligar essa conta a uma **Página do Facebook**: na Página → Configurações → Contas vinculadas → Instagram.
+
+#### App no Meta (uma vez)
+
+- [ ] Em [developers.facebook.com](https://developers.facebook.com) → Meus apps → **Criar app** → tipo **Empresa** (Business).
+- [ ] Em Configurações → Básico, copiar o **ID do app** e a **Chave secreta** para o `.env.local` (`META_APP_ID=…`, `META_APP_SECRET=…`).
+- [ ] Adicionar o produto **Instagram Graph API** (Instagram com login pelo Facebook) ao app.
+- [ ] Em modo de desenvolvimento, o app só funciona para quem tem papel nele: a conta do Facebook que gera o token precisa ser administradora do app. Para uso só nosso, basta; a revisão do Meta só é necessária para outras pessoas usarem.
+
+#### Token (a cada ~60 dias)
+
+- [ ] No [Explorador da Graph API](https://developers.facebook.com/tools/explorer): escolher o app, token de **Usuário**, adicionar as permissões `instagram_basic`, `pages_show_list`, `pages_read_engagement` e `business_management`, clicar em **Generate Access Token** e autorizar a Página ligada ao Instagram.
+- [ ] Copiar o token curto (vale ~1 hora) e rodar `pnpm ig:token <token curto> espacobaiao`. Deve terminar com "3. Teste com @espacobaiao: ok".
+- [ ] Anotar quando vence (o script mostra a data) e repetir antes disso.
+
+#### Buscar as fotos
+
+- [ ] Testar com poucos perfis: `pnpm promoters:photos 3`; depois todos: `pnpm promoters:photos`. No fim ele lista quem não foi encontrado (conta pessoal ou @ errado) e quem não tem foto.
+- [ ] Conferir em `/test/people`.
+- [ ] Perfis que pedirem para não aparecer: `"photo": false` no `promoters.json` (o script pula).
+- [ ] Commitar `public/promoters/*.jpg` e o `promoters.json`, e fazer o merge da branch.
+
+#### Depois (opcional)
+
+- [ ] Automatizar: secrets `IG_ACCESS_TOKEN` e `IG_USER_ID` no GitHub e `pnpm promoters:photos` na Action diária `.github/workflows/promoters.yml`, commitando também `public/promoters/`.
+- [ ] Token que não vence: **usuário do sistema** (Meta Business Suite → Configurações do negócio → Usuários do sistema), em vez de renovar o de 60 dias.
+- [ ] Atualizar fotos de tempos em tempos com `--force` (ex.: uma vez por mês).
+- [ ] Usar no app: decidir onde a foto aparece (card do evento, bloco "Organização" nos detalhes, página de promotores), reduzir as imagens (ex.: 96×96 WebP) e manter o `"photo": false` para quem pedir para sair.
+
+## B. Configuração e verificações
+
+### 5. Chave da Google Calendar API
+
+- [x] Projeto, Google Calendar API ativada e API key criada (o site publicado mostra os eventos reais: só 8 dos 71 títulos do sitemap existem no mock).
+- [ ] Conferir as restrições da chave (ela fica visível no JavaScript publicado):
+  - *Application restrictions* → **HTTP referrers**: `https://carloshrabelo.dev/ai/*` (domínio atual), `https://carloshrabelo.github.io/ai/*` e, para desenvolvimento, `http://localhost:*/*`. O build das páginas estáticas (`scripts/prerender.ts`) envia o referer do site. Na migração de domínio, acrescentar `https://minhasdancasemlisboa.pt/*` **antes** de trocar (seção 1, fase 1).
+  - *API restrictions* → só **Google Calendar API**.
+- [ ] Nunca commitar o `.env.local` (já está no `.gitignore`). Se a chave vazar, gerar outra e apagar a antiga.
+
+### 6. GitHub (Settings do repositório)
+
+- [x] **Pages** com GitHub Actions (deploy de hoje publicado: manifest com as cores novas).
+- [x] Secret `VITE_GOOGLE_API_KEY` e variable `VITE_USE_MOCK` = `false` (eventos reais no ar).
+- [x] Action **Update venues** e **Update promoters** gravando no `main` (commits do bot de 21 e 22/11).
+- [ ] Conferir se o deploy diário (05:30 UTC) roda sozinho em **Actions → Deploy to GitHub Pages** (não deu para ver pela API pública: limite de requisições).
+- [ ] *Custom domain* e **Enforce HTTPS** do domínio novo: seção 1 (fase 3).
+
+### 7. SEO e compartilhamento
+
+Os itens que dependem do domínio (`SITE_URL`, `robots.txt`, Google Search Console) estão na seção 1.
+
 - [ ] Testar uma página de evento no [Rich Results Test](https://search.google.com/test/rich-results) (Schema.org `Event`).
 - [ ] Testar o preview de links (agenda e evento) no WhatsApp, Instagram/Facebook ([Sharing Debugger](https://developers.facebook.com/tools/debug/)) e LinkedIn.
-- [ ] Abrir um link antigo `…/ai/?event=<id>` e conferir que ele vai para `/event/<slug>/`.
+- [x] Link antigo `…/?event=<id>` vai para `/event/<slug>/` (mantendo a query); id inexistente só limpa o parâmetro (teste em `e2e/seo.spec.ts`).
 
-## 5. Testes em aparelhos reais
+### 8. Testes em aparelhos reais
 
 - [ ] **Barra de status do iPhone (PWA instalado)**: `apple-mobile-web-app-status-bar-style` é `black-translucent` (texto branco) e o header do tema claro agora é branco. Se o relógio e a bateria sumirem, trocar para `default` em `index.html` ou escurecer o header no tema claro.
 - [ ] **Aviso de instalação** (novo): no Android/Chrome, o botão abre a instalação nativa; no iPhone, aparecem as instruções; "Agora não" esconde por 30 dias; depois de instalar, não aparece mais.
@@ -63,88 +285,53 @@ A branch foi refeita sobre o `main` (1 commit): o GoatCounter conta as páginas 
 - [ ] **Distância**: permitir a localização e conferir os valores.
 - [ ] **Acessibilidade**: além do `pnpm a11y` (automático), passar a tela com leitor de tela (VoiceOver, TalkBack) e só com teclado. Conferir o estado intermediário dos conjuntos no filtro ("misto") com leitor de tela.
 
-## 6. Conteúdo e dados
+## C. Manutenção
+
+### 9. Conteúdo e dados
 
 - [ ] Confirmar com o pasdedeux.pt / [@ateterca](https://www.instagram.com/ateterca/) que está tudo bem usar e exibir os eventos do calendário.
 - [ ] Revisar os locais com pino errado no mapa e corrigir as coordenadas em `src/content/venues.json` (ex.: a busca automática pôs "U Dance School" no Porto; corrigido à mão em 24/11).
 - [ ] Revisar tags novas que caem em **Outros** e, se fizer sentido, criar estilo ou alias em `src/domain/genres.ts`.
+  Em 24/11, dos 220 eventos publicados só 1 caiu em Outros: tag **`Balboa`** ("Beer & Balboa"). Proposta: alias
+  `BALBOA → Swing` (é uma dança da família do swing).
 - [ ] **Escolas** (aba oculta): definir de onde viriam os dados antes de reativá-la.
 
-## 7. Fotos dos perfis (promotores, DJs, professores) — branch `feature/promoter-photos`
+### 10. Código
 
-Preencher `photo` em `src/content/promoters.json` com a foto de perfil do Instagram, automaticamente (hoje aparece só em `/test/people`; sem foto, iniciais). A branch foi refeita sobre o `main` (1 commit, só local): scripts em TypeScript como os outros, com `scripts/lib/env.ts` para ler o `.env.local`.
+#### Feito (24/11)
 
-- `pnpm ig:token <token curto> [perfil de teste]` (`scripts/ig-token.ts`): troca o token curto por um de ~60 dias e grava `IG_ACCESS_TOKEN` e `IG_USER_ID` no `.env.local`.
-- `pnpm promoters:photos [máximo] [--force]` (`scripts/promoters-photos.ts`): baixa as fotos para `public/promoters/<perfil>.jpg` e preenche `photo` (e `name`, se vazio).
+- [x] **Copiar sem permissão**: `copyText` (`src/lib/clipboard.ts`) em todas as cópias; sem permissão, mostra o texto
+  num `prompt` em vez de lançar erro.
+- [x] **Foco cortado nos atalhos de dia**: 4px de folga dentro da área que rola (`-m-1 p-1`).
+- [x] **Testes de componente** (React Testing Library em jsdom, apoio em `src/test/`): `CalendarPicker`, `DayShortcuts`,
+  `WeekStrip`, `useDayNavigation` e o cabeçalho fixo dos detalhes.
+- [x] **Lint**: `react/exhaustive-effect-dependencies` (os 6 efeitos com gatilho de propósito estão anotados) e, com
+  tipos (`oxlint --type-aware`, `oxlint-tsgolint`), `no-floating-promises` e `no-misused-promises`, também no
+  lint-staged. O `react/exhaustive-deps` está ligado, mas não dispara nesta versão do oxlint (testado).
+- [x] **Playwright** (`pnpm e2e`, em `e2e/`; no CI antes do build): agenda, faixa de dias, "Outra data", filtro com
+  conjunto intermediário, detalhes, barra inferior, `/map` com data nova, `/review`, link antigo `?event=` e JSON-LD;
+  acessibilidade com axe nos dois temas (`pnpm a11y`). `scripts/a11y-check.mjs` e o `axe-core` direto removidos.
+- [x] **Fontes self-hosted** (`src/fonts.css`, Nunito e Fredoka variáveis, só latin e latin-ext, ~109 KB no cache do
+  PWA); sem Google Fonts.
+- [x] **`lucide-react` removido**: Phosphor em `/review` e nas páginas `/test`.
+- [x] Contraste da atribuição do mapa no tema escuro (o fundo branco do Leaflet vencia o do tema), achado pelo axe.
 
-Usa a **Instagram Graph API oficial (Business Discovery)**. O endpoint interno `web_profile_info` foi descartado: exige login, é contra os termos do Instagram e respondeu 429 já no primeiro perfil. Limitação: o Business Discovery só enxerga **contas profissionais** (comerciais ou de criador); contas pessoais (alguns DJs e professores) ficam com as iniciais ou com foto à mão.
+#### Pendente
 
-**Conta do Instagram (uma vez)**
-
-- [ ] Ter uma conta do Instagram **profissional** (comercial ou criador): Instagram → Configurações → Tipo de conta e ferramentas. Pode ser uma conta só para isso.
-- [ ] Ligar essa conta a uma **Página do Facebook**: na Página → Configurações → Contas vinculadas → Instagram.
-
-**App no Meta (uma vez)**
-
-- [ ] Em [developers.facebook.com](https://developers.facebook.com) → Meus apps → **Criar app** → tipo **Empresa** (Business).
-- [ ] Em Configurações → Básico, copiar o **ID do app** e a **Chave secreta** para o `.env.local` (`META_APP_ID=…`, `META_APP_SECRET=…`).
-- [ ] Adicionar o produto **Instagram Graph API** (Instagram com login pelo Facebook) ao app.
-- [ ] Em modo de desenvolvimento, o app só funciona para quem tem papel nele: a conta do Facebook que gera o token precisa ser administradora do app. Para uso só nosso, basta; a revisão do Meta só é necessária para outras pessoas usarem.
-
-**Token (a cada ~60 dias)**
-
-- [ ] No [Explorador da Graph API](https://developers.facebook.com/tools/explorer): escolher o app, token de **Usuário**, adicionar as permissões `instagram_basic`, `pages_show_list`, `pages_read_engagement` e `business_management`, clicar em **Generate Access Token** e autorizar a Página ligada ao Instagram.
-- [ ] Copiar o token curto (vale ~1 hora) e rodar `pnpm ig:token <token curto> espacobaiao`. Deve terminar com "3. Teste com @espacobaiao: ok".
-- [ ] Anotar quando vence (o script mostra a data) e repetir antes disso.
-
-**Buscar as fotos**
-
-- [ ] Testar com poucos perfis: `pnpm promoters:photos 3`; depois todos: `pnpm promoters:photos`. No fim ele lista quem não foi encontrado (conta pessoal ou @ errado) e quem não tem foto.
-- [ ] Conferir em `/test/people`.
-- [ ] Perfis que pedirem para não aparecer: `"photo": false` no `promoters.json` (o script pula).
-- [ ] Commitar `public/promoters/*.jpg` e o `promoters.json`, e fazer o merge da branch.
-
-**Depois (opcional)**
-
-- [ ] Automatizar: secrets `IG_ACCESS_TOKEN` e `IG_USER_ID` no GitHub e `pnpm promoters:photos` na Action diária `.github/workflows/promoters.yml`, commitando também `public/promoters/`.
-- [ ] Token que não vence: **usuário do sistema** (Meta Business Suite → Configurações do negócio → Usuários do sistema), em vez de renovar o de 60 dias.
-- [ ] Atualizar fotos de tempos em tempos com `--force` (ex.: uma vez por mês).
-- [ ] Usar no app: decidir onde a foto aparece (card do evento, bloco "Organização" nos detalhes, página de promotores), reduzir as imagens (ex.: 96×96 WebP) e manter o `"photo": false` para quem pedir para sair.
-
-## 8. Ajustes de código
-
-**Correções pequenas**
-
-- [ ] **Copiar sem permissão**: `navigator.clipboard.writeText` sem `try/catch` em `src/pages/Community.tsx` (link `.ics`), `src/features/review/ReviewCard.tsx` e `src/pages/Review.tsx` lança erro quando o navegador nega (aba sem foco, permissão). O `ShareButton` já trata (cai no `window.prompt`); fazer igual.
-- [ ] **Foco cortado nos atalhos de dia**: a linha Ontem/Hoje/Amanhã/Outra data rola na horizontal (`overflow-x-auto`), o que corta o contorno de foco (`outline-offset-2`) dos botões no celular.
-- [ ] **Testes dos componentes novos**: `DayShortcuts`, `WeekStrip` (centralização, carregar mais ao rolar), `CalendarPicker` (deslizar), `useDayNavigation` (rolar para dia anterior com títulos `sticky`) e o cabeçalho fixo dos detalhes. Hoje só há testes de domínio; ver "Testes de ponta a ponta" abaixo.
-
-**Lint mais rigoroso** (`.oxlintrc.json`, hoje só `rules-of-hooks` e `only-export-components`)
-
-- [ ] Ligar `react/exhaustive-deps` e corrigir os avisos.
-- [ ] Modo com tipos: `pnpm add -D oxlint-tsgolint`, rodar `oxlint --type-aware` e ligar `typescript/no-floating-promises` e `typescript/no-misused-promises` (fila do LanguageTool, `fetchNextPage`, cópias para a área de transferência). Corrigir com `await` ou `void` explícito, e trocar o `lint` no `package.json` (o CI usa esse script).
-
-**Testes de ponta a ponta (Playwright)**
-
-- [ ] `pnpm add -D @playwright/test @axe-core/playwright`; `playwright.config.ts` com `webServer` em modo mock (`VITE_USE_MOCK=true VITE_TEST_PAGES=false pnpm dev --port <porta>`): dados fixos, sem chave.
-- [ ] Fluxos: lista carrega; faixa de dias (dia centralizado, clicar dia anterior/posterior rola até ele, dias antes do início recomeçam o feed); atalhos e "Outra data" abrindo o calendário; filtro (popover no desktop, folha no celular; desmarcar um estilo deixa o conjunto intermediário; marcar o último volta a marcar o conjunto; "Limpar"); abrir e fechar detalhes (URL `/event/<slug>/`, título e "Abrir no mapa" fixos); `/map` com data fora do carregado; barra inferior no celular; `/review` carrega.
-- [ ] Acessibilidade com `@axe-core/playwright` nas telas principais, nos dois temas, e remover `scripts/a11y-check.mjs` (último script em `.mjs`) e o `axe-core` do `ignoreDependencies` do `knip.json`.
-- [ ] Usar os atributos `data-track` como seletores estáveis nos testes.
-- [ ] No CI (`.github/workflows/deploy.yml`): `pnpm exec playwright install --with-deps chromium` e `pnpm e2e` antes do build.
-
-**Desempenho e dependências** (detalhes e justificativas em [`Stack.MD`](Stack.MD))
-
-- [ ] Fontes self-hosted (`@fontsource-variable/nunito`, `@fontsource/fredoka`), só os pesos usados: tira o bloqueio de renderização pelo Google Fonts e coloca as fontes no cache do PWA (offline de verdade).
-- [ ] Trocar `lucide-react` por Phosphor em `/review` e nas páginas `/test`, e remover a dependência.
+- [ ] **JSON-LD dos eventos** (validado nas 267 páginas do build): **9 eventos sem `location`**, que o Google exige
+  (ex.: "Milonga Tango na Rua", sem local no calendário). Opções: não gerar o JSON-LD `Event` desses eventos, ou
+  usar a cidade como `Place`. Recomendados ausentes em todos: `image` (dá para usar o `og-image.jpg`) e `organizer`
+  (do diretório de promotores, `src/content/promoters.json`).
+- [ ] Formulário "Sugerir evento" no Playwright quando existir (seção 2).
 - [ ] Rodar `pnpm analyze` antes de adicionar dependências ao chunk inicial (`index` ≈ 132 KB gz).
 - [ ] Persister do TanStack Query em IndexedDB quando o cache de eventos passar de ~1 MB (o mapa agora busca datas avulsas).
 
-## 9. Repositório local
+### 11. Repositório local
 
 - [ ] `stash@{0}` ("WIP", de um `stash pop` com conflito no `venues.json`): o conteúdo já está nos commits. Conferir com `git stash show -p stash@{0}` e apagar com `git stash drop`.
 - [ ] `Ajusts.md` (fora do git): o plano já foi implementado; apagar ou mover para `docs/` se quiser manter o histórico.
 
-## 10. Opcional
+### 12. Opcional
 
 - [ ] Virtualização da lista de eventos, se a lista ficar longa demais.
 - [ ] Avaliar o modo framework do React Router com `prerender` no lugar de `scripts/prerender.ts` (ver `Stack.MD`), se o prerender próprio começar a exigir manutenção.

@@ -16,12 +16,12 @@ Retrato da stack atual, avaliação da arquitetura e recomendações. Os tamanho
 | Persistência | `localStorage` via `src/lib/storage.ts` (nunca lança) + adaptador `src/lib/persistStorage.ts` | O adaptador grava cada chave no formato que já existia antes do Zustand (texto puro ou JSON sem envelope). Cache do LanguageTool continua no `storage.ts` direto. |
 | Estilo | **Tailwind CSS 4** (`@tailwindcss/vite`) + tokens em `src/index.css` | Tema claro/escuro por `data-theme`, cores semânticas, CSS final ~62 KB. |
 | UI | Componentes próprios (`src/components/ui`): Button, Card, Chip, BottomSheet (`<dialog>`), Segmented, Tooltip | Sem biblioteca de componentes. |
-| Ícones | **@phosphor-icons/react** (app) e **lucide-react** (só `/review` e `/test`) | Phosphor no peso duotone via `IconContext`. |
+| Ícones | **@phosphor-icons/react** | Phosphor no peso duotone via `IconContext` (o `lucide-react` das páginas internas foi removido). |
 | Mapa | **Leaflet 1.9** + **react-leaflet 5** | Carregado só quando o mapa aparece (chunk `EventsMap`, 163 KB / 48 KB gz). |
 | Sanitização | **DOMPurify** | HTML da descrição dos eventos (chunk `EventDetails`). |
 | PWA | **vite-plugin-pwa 2** (Workbox, `generateSW`, `autoUpdate`) + `workbox-window` | Precache de todo o build, atualização automática, convite de instalação próprio (`src/pwa/installPrompt.ts`, `InstallBanner`). |
-| Fontes | Google Fonts (Nunito 500–900, Fredoka 500–700) | Folha de estilo externa no `index.html`. |
-| Testes | **Vitest 5** (ambiente Node) | 31 arquivos / 425 testes, quase todos de domínio (parser, preços, slugs, datas, stores). |
+| Fontes | **@fontsource-variable** (Nunito e Fredoka, variáveis) | Self-hosted em `src/fonts.css`, só latin e latin-ext (~109 KB), no cache do PWA. |
+| Testes | **Vitest 5** + **React Testing Library** (jsdom); **Playwright** + **axe** | Domínio e componentes (`pnpm test`); fluxos e acessibilidade no celular e no desktop (`pnpm e2e`, no CI). |
 | Qualidade | **oxlint**, **oxfmt**, **Knip**, husky + lint-staged, `pnpm a11y` (axe-core via Chrome headless) | Lint, formatação, código morto e acessibilidade (WCAG 2.1 AA). |
 | Análise de bundle | **rollup-plugin-visualizer 7** (`pnpm analyze`) | Treemap do bundle sob demanda. |
 | Deploy | GitHub Pages + GitHub Actions (deploy diário, venues, promoters) | Sem servidor próprio; a chave da Google Calendar API fica no JavaScript publicado (restrita por referrer). |
@@ -115,14 +115,14 @@ código do app ≈ 31 KB gz, query-core ≈ 16 KB gz, Phosphor ≈ 8 KB gz (só 
 
 1. Conferir a barra de status do PWA no iPhone com o header branco; se o texto sumir, usar
    `apple-mobile-web-app-status-bar-style="default"` (ou voltar o header do tema claro para uma cor escura).
-2. Fontes self-hosted com só os pesos usados (melhora LCP e o offline).
-3. Testes de componente para a navegação por dias e para os stores persistidos.
-4. Trocar `lucide-react` por Phosphor nas páginas internas e remover a dependência.
+2. ~~Fontes self-hosted com só os pesos usados (melhora LCP e o offline).~~ Feito em 24/11.
+3. ~~Testes de componente para a navegação por dias e para os stores persistidos.~~ Feito em 24/11.
+4. ~~Trocar `lucide-react` por Phosphor nas páginas internas e remover a dependência.~~ Feito em 24/11.
 5. Rodar `pnpm analyze` antes de adicionar dependências ao chunk inicial (o `index` hoje tem 132 KB gz).
 
 **Médio prazo**
 
-6. Playwright para os fluxos críticos (agenda ↔ mapa, calendário, detalhes, instalação), rodando no CI.
+6. ~~Playwright para os fluxos críticos (agenda ↔ mapa, calendário, detalhes, instalação), rodando no CI.~~ Feito em 24/11.
 7. Persister em IndexedDB quando o cache de eventos passar de ~1 MB (o mapa agora busca datas avulsas).
 
 **Longo prazo**
