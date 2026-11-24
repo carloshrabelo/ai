@@ -51,10 +51,13 @@ export function DayShortcuts({ today, activeDay, onSelect }: Props) {
     const row = rowRef.current
     const item = row?.querySelector<HTMLElement>('[aria-pressed="true"]')
     if (!row || !item) return
-    if (item.offsetLeft < row.scrollLeft) row.scrollLeft = item.offsetLeft
-    else if (item.offsetLeft + item.offsetWidth > row.scrollLeft + row.clientWidth)
-      row.scrollLeft = item.offsetLeft + item.offsetWidth - row.clientWidth
+    // Medido pela própria linha (offsetLeft conta a partir do contêiner `relative` e erraria pelo padding).
+    const rowRect = row.getBoundingClientRect()
+    const itemRect = item.getBoundingClientRect()
+    if (itemRect.left < rowRect.left) row.scrollLeft -= rowRect.left - itemRect.left
+    else if (itemRect.right > rowRect.right) row.scrollLeft += itemRect.right - rowRect.right
     updateEdges()
+    // oxlint-disable-next-line react/exhaustive-effect-dependencies -- gatilho: o dia ativo e o "Outra data" são o gatilho para trazer o botão ativo à vista
   }, [activeDay, isCustom, updateEdges])
 
   useLayoutEffect(() => {
@@ -75,7 +78,9 @@ export function DayShortcuts({ today, activeDay, onSelect }: Props) {
         aria-label={t.dates.shortcuts}
         onScroll={updateEdges}
         style={{ maskImage: mask, WebkitMaskImage: mask }}
-        className="flex gap-1.5 overflow-x-auto overscroll-x-contain [scrollbar-width:none] xl:grid xl:grid-cols-3 xl:gap-2 xl:overflow-visible"
+        // -m-1 p-1: 4px de folga dentro da área que rola para o contorno de foco (2px + 2px de distância), que o
+        // overflow cortaria; a margem negativa desfaz o padding, e o layout não muda.
+        className="-m-1 flex gap-1.5 overflow-x-auto overscroll-x-contain p-1 [scrollbar-width:none] xl:m-0 xl:grid xl:grid-cols-3 xl:gap-2 xl:overflow-visible xl:p-0"
       >
         {shortcuts.map(({ day, label, id }) => (
           <button
