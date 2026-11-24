@@ -18,6 +18,8 @@ export default defineConfig({
     baseURL: `http://localhost:${PORT}`,
     locale: 'pt-BR',
     timezoneId: 'Europe/Lisbon',
+    // Sem as animações decorativas (fade-in dos cards): o axe mede as cores no estado final.
+    reducedMotion: 'reduce',
     trace: 'retain-on-failure',
     ...(CI ? {} : { channel: 'chrome' }),
   },

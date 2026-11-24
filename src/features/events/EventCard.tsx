@@ -54,7 +54,7 @@ export const EventCard = memo(function EventCard({ event, onOpen, clampTitle = f
       onBlur={unhover}
       className={`relative isolate flex flex-col gap-3 transition-colors hover:border-fg-muted/40 ${
         selected || highlighted ? 'ring-2 ring-brand' : ''
-      } ${event.status === 'cancelled' ? 'opacity-75' : timing === 'ended' ? 'opacity-60' : ''}`}
+      } ${event.status === 'cancelled' ? 'opacity-75' : timing === 'ended' ? 'grayscale' : ''}`}
     >
       {/* Cabeçalho: o título usa a largura toda e só a 1ª linha desvia do botão do calendário (um
           espaço flutuante dentro do título reserva o lugar; o botão fica por cima, absoluto no canto).
