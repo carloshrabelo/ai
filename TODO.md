@@ -11,11 +11,10 @@ evidência entre parênteses.
 
 ## Prioridade
 
-1. **Domínio próprio** (seção 1): comprar, verificar no GitHub e configurar o e-mail (fase 1); publicar a versão de
-   transição (fase 2); trocar o domínio (fase 3).
+1. **Domínio próprio** (seção 1): concluir a troca (HTTPS, conferir) e configurar o e-mail e o `.pt`.
 2. **Barra de status do iPhone** (seção 8): com o header branco, o relógio e a bateria podem sumir no app instalado.
    Conferir num aparelho; a correção é de uma linha.
-3. **Formulário "Sugerir evento"** (seção 2): só precisa do e-mail da fase 1 do domínio (ou um e-mail pessoal até lá).
+3. **Formulário "Sugerir evento"** (seção 2): só precisa do e-mail do domínio (seção 1) ou de um e-mail pessoal até lá.
 4. **Analytics** (seção 3): publicar a branch e ligar o GoatCounter; os cliques do formulário entram junto.
 5. **JSON-LD dos eventos** (seção 10): 9 eventos sem local, que o Google exige; `image` e `organizer` ausentes.
 
@@ -27,89 +26,45 @@ evidência entre parênteses.
 > validação no DNS.PT; quando sair, redireciona para o `.com`. Comparação de registradores e preços:
 > `docs/dominios.md` (arquivo local, fora do git).
 
-Hoje o projeto (`ai`) é publicado em `carloshrabelo.dev/ai/`, porque o site do usuário (`carloshrabelo.github.io`)
-tem o domínio `carloshrabelo.dev`. Na troca, o repositório `ai` é **renomeado para `lisbon-social-dances`** (o
-protótipo de 2024 com esse nome é arquivado como `lisbon-social-dances-2024`) e publicado em `lisbondance.com`, na
-raiz. O nome `ai` fica livre e vira um repositório só de redirecionamento (`legacy/ai-redirect/`), que leva
-`carloshrabelo.dev/ai/…` para o mesmo caminho no domínio novo e substitui o service worker antigo (fase 2).
+O app (repositório `lisbon-social-dances`, antes `ai`) é publicado em `lisbondance.com` desde 24/11/2026. O endereço
+antigo, `carloshrabelo.dev/ai/`, era de teste e não tinha usuários: ficou sem redirecionamento.
 
-#### Fase 1 — Compra e preparação (sem mexer no site)
+#### Feito em 24/11/2026
 
-Cada domínio tem o DNS e o redirecionamento configurados no painel do seu registrador.
+- [x] Registrar os dois domínios. O `.pt` ainda está em validação.
+- [x] Verificar o domínio na conta do GitHub (TXT `_github-pages-challenge-carloshrabelo` na Dynadot; o GitHub pode
+  levar até 24 horas para confirmar).
+- [x] DNS do `.com` na Dynadot: registros **A** `185.199.108.153`, `185.199.109.153`, `185.199.110.153`,
+  `185.199.111.153`; `www` como **CNAME** → `carloshrabelo.github.io`.
+- [x] GitHub: `ai` renomeado para `lisbon-social-dances` (o protótipo de 2024 com esse nome saiu); **Custom domain** =
+  `lisbondance.com`.
+- [x] Código: `base: '/'`, `SITE_URL` padrão do build e `PUBLISHED_URL` (referer do prerender) em
+  `https://lisbondance.com/`, README.
 
-- [x] Registrar os dois domínios (24/11/2026). O `.pt` ainda está em validação.
-- [ ] **Renovação automática** ligada nos dois painéis e o cartão válido nos dois. Anotar a data de vencimento.
-- [ ] **Dynadot:** conferir que a privacidade do WHOIS ficou ligada (é automática) e que o domínio usa os
-  *nameservers* da Dynadot (o encaminhamento de e-mail grátis só funciona com eles).
+#### Falta
+
+- [ ] **Enforce HTTPS** no repositório `lisbon-social-dances` quando o certificado sair (minutos a horas).
+- [ ] Conferir que `https://lisbondance.com/*` está nos referrers da chave do Google (seção 5): em 24/11 a chave já
+  aceitava o domínio novo. Tirar os referrers antigos (`carloshrabelo.dev/ai/*`, `carloshrabelo.github.io/ai/*`).
+- [ ] **AAAA** (IPv6, opcional): `2606:50c0:8000::153`, `8001::153`, `8002::153`, `8003::153` no domínio raiz.
+- [ ] **Renovação automática** ligada nos dois painéis e o cartão válido. Lembrete no calendário ~1 mês antes do
+  vencimento de cada domínio.
+- [ ] **Dynadot:** conferir que a privacidade do WHOIS ficou ligada (é automática).
 - [ ] **`.pt`** (depois da validação): conferir o titular e o e-mail de contato no registrador (o `.pt` exige dados
-  corretos; e-mail não verificado pode levar à suspensão).
-- [ ] **Verificar o domínio na conta do GitHub** (perfil → Settings → Pages → *Verified domains*, registro TXT no DNS):
-  impede que outra conta use o domínio no GitHub Pages enquanto o DNS aponta para lá.
-- [ ] Acrescentar `https://lisbondance.com/*` nos referrers da chave do Google (seção 5). Sem isso, os eventos
-  param de carregar no domínio novo.
-- [ ] Não criar uma pasta `ai/` no repositório `carloshrabelo.github.io` (concorreria com o projeto nesse caminho).
-- [ ] **E-mail `contato@lisbondance.com`** (usado pelo formulário, seção 2): encaminhamento grátis na
-  **Dynadot** (*Email Forwarding*). Registros **MX** e **SPF** (TXT) do
-  painel do registrador. Não depende da troca do site: dá para configurar logo depois da compra. Não apagar esses
-  registros ao configurar o GitHub Pages (fase 3).
-
-#### Fase 2 — Redirecionamento do domínio antigo (pronto no código)
-
-O service worker registrado em `carloshrabelo.dev/ai/` responde do cache antes de a requisição chegar ao GitHub:
-sem tratamento, quem tem o app instalado (ou já visitou) ficaria preso na versão antiga.
-
-- [x] `legacy/ai-redirect/`: conteúdo do novo repositório `ai` (sem build). `index.html`/`404.html` redirecionam
-  `/ai/<caminho>?<query>` para `https://lisbondance.com/<caminho>?<query>` levando os dados salvos no aparelho
-  (tema, idioma, `tracked-events`, aviso de instalação, palavras ignoradas da revisão) em `#migrate=…`; `sw.js`
-  substitui o service worker antigo (apaga os caches, se desregistra e recarrega as abas).
-- [x] App: `src/pwa/migrateFromOldDomain.ts` grava os dados de `#migrate=` (sem sobrescrever) e limpa a URL.
-- [ ] Depois da renomeação (fase 3): criar o repositório `ai` com o conteúdo de `legacy/ai-redirect/` e ligar o
-  Pages (*Deploy from a branch*, `main`, `/`). Manter por alguns meses.
-
-#### Fase 3 — DNS e troca (no mesmo dia)
-
-- [ ] DNS do domínio **principal** (`.com`, Dynadot), no painel do registrador dele: registros **A** `185.199.108.153`,
-  `185.199.109.153`, `185.199.110.153`, `185.199.111.153` (e **AAAA** `2606:50c0:8000::153` … `8003::153` para
-  IPv6); `www` como **CNAME** → `carloshrabelo.github.io`. A página estacionada da Dynadot já foi removida.
-- [ ] Domínio **secundário** (`.pt`, depois da validação) redirecionando 301 para `https://lisbondance.com`, no painel dele:
+  corretos; e-mail não verificado pode levar à suspensão) e redirecionar 301 para `https://lisbondance.com`:
   - Dynadot: *Domain → Forwarding* (URL forwarding, permanente/301).
   - OVHcloud: *Domínios → Redirecionamento* (redirecionamento visível permanente, 301), não o "invisível" (frame).
-  - Testar `http://` e `https://` do secundário: o redirecionamento do registrador pode não ter certificado HTTPS; se
-    o `https://` falhar, alternativa é apontar o secundário também para o GitHub Pages num repositório só de redirect.
-- [ ] GitHub: arquivar e renomear o `lisbon-social-dances` antigo para `lisbon-social-dances-2024`; renomear `ai` →
-  `lisbon-social-dances`; **Settings → Pages → Custom domain** = `lisbondance.com`. Local:
-  `git remote set-url origin https://github.com/carloshrabelo/lisbon-social-dances.git`.
-- [x] Código (branch `lisbondance-domain`): `base: '/'`, `SITE_URL` padrão do build e `PUBLISHED_URL` (referer do
-  prerender) em `https://lisbondance.com/`, README. Merge e deploy **depois** do Custom domain e da chave do Google
-  com o referrer novo (o prerender do deploy já usa o domínio novo como referer).
-- [ ] Criar o repositório `ai` de redirecionamento (fase 2).
-- [ ] Quando o certificado sair (minutos a horas): **Enforce HTTPS** no repositório `lisbon-social-dances`.
+  - Testar `http://` e `https://`: o redirecionamento do registrador pode não ter certificado HTTPS; se o `https://`
+    falhar, alternativa é apontar o `.pt` também para o GitHub Pages num repositório só de redirect.
+- [ ] **E-mail `contato@lisbondance.com`** (usado pelo formulário, seção 2): encaminhamento grátis na **Dynadot**
+  (*Email Forwarding*), com os registros **MX** e **SPF** (TXT) do painel. Não apagar os registros do GitHub Pages.
 
-#### Fase 4 — Conferir depois da troca
+#### Conferir
 
-- [ ] `https://lisbondance.com/` abre com eventos; `http://` redireciona para `https://`.
-- [ ] `carloshrabelo.dev/ai/` e `carloshrabelo.dev/ai/event/<slug>/` redirecionam para o mesmo caminho no domínio novo
-  (links compartilhados continuam valendo).
-- [ ] Num aparelho com o app instalado no domínio antigo: abrir → vai para o novo, com os eventos acompanhados
-  preservados. Instalar de novo pelo domínio novo (o app instalado é por domínio).
-- [ ] `robots.txt` na raiz do domínio novo responde 200 com o `Sitemap:` (no domínio atual ele fica na raiz de
-  `carloshrabelo.dev`, outro projeto, e responde 404).
-- [ ] Google Search Console: propriedade do domínio novo, enviar o `sitemap.xml`; na propriedade antiga, usar a
-  *Change of address*, se disponível para o caso.
+- [ ] `https://lisbondance.com/` abre com eventos; `http://` e `www` redirecionam para `https://lisbondance.com/`.
+- [ ] `robots.txt` e `sitemap.xml` na raiz respondem 200.
+- [ ] Google Search Console: propriedade do domínio novo e enviar o `sitemap.xml`.
 - [ ] Previews de link (WhatsApp, Facebook Sharing Debugger) com o domínio novo.
-- [ ] Depois de alguns meses: tirar a versão de transição do código e os referrers antigos da chave do Google.
-- [ ] Renovação: lembrete no calendário ~1 mês antes do vencimento de cada domínio (são dois painéis e dois
-  vencimentos), mesmo com a renovação automática ligada.
-
-#### Enquanto o domínio novo não entra
-
-Só vale a pena se a migração for demorar mais de algumas semanas:
-
-- [ ] `SITE_URL: https://carloshrabelo.dev/ai/` no `.github/workflows/deploy.yml`: hoje canonical, `og:url`,
-  `og:image`, JSON-LD e `sitemap.xml` apontam para `carloshrabelo.github.io/ai/`, que redireciona (301) para
-  `carloshrabelo.dev/ai/`.
-- [ ] **Enforce HTTPS** em `carloshrabelo.dev`: `http://carloshrabelo.dev/ai/` responde 200 sem redirecionar. A opção
-  fica no repositório `carloshrabelo.github.io`, que tem esse *Custom domain*.
 
 ### 2. Formulário "Sugerir evento"
 
@@ -121,7 +76,7 @@ pasdedeux.pt, mantido por @ateterca: a sugestão não publica nada sozinha).
 
 - [ ] Serviço: **[Web3Forms](https://web3forms.com)** (grátis até 250 envios/mês; o site é estático e o JS do
   navegador não envia e-mail sozinho). O app faz `POST` para `https://api.web3forms.com/submit` com a chave pública.
-- [ ] Destino: `contato@lisbondance.com` (seção 1, fase 1), encaminhado para o nosso e-mail pela Dynadot
+- [ ] Destino: `contato@lisbondance.com` (seção 1), encaminhado para o nosso e-mail pela Dynadot
   (encaminhamento grátis). Até o domínio existir, um e-mail pessoal.
 - [ ] Chave em `VITE_WEB3FORMS_KEY` (variable do repositório no deploy; `.env.example` e README). Sem a chave, o
   link "Sugerir evento" não aparece (como o GoatCounter sem o código).
@@ -243,7 +198,7 @@ Usa a **Instagram Graph API oficial (Business Discovery)**. O endpoint interno `
 
 - [x] Projeto, Google Calendar API ativada e API key criada (o site publicado mostra os eventos reais: só 8 dos 71 títulos do sitemap existem no mock).
 - [ ] Conferir as restrições da chave (ela fica visível no JavaScript publicado):
-  - *Application restrictions* → **HTTP referrers**: `https://carloshrabelo.dev/ai/*` (domínio atual), `https://carloshrabelo.github.io/ai/*` e, para desenvolvimento, `http://localhost:*/*`. O build das páginas estáticas (`scripts/prerender.ts`) envia o referer do site. Na migração de domínio, acrescentar `https://lisbondance.com/*` **antes** de trocar (seção 1, fase 1).
+  - *Application restrictions* → **HTTP referrers**: `https://lisbondance.com/*` e, para desenvolvimento, `http://localhost:*/*`. O build das páginas estáticas (`scripts/prerender.ts`) envia o referer do site.
   - *API restrictions* → só **Google Calendar API**.
 - [ ] Nunca commitar o `.env.local` (já está no `.gitignore`). Se a chave vazar, gerar outra e apagar a antiga.
 
@@ -253,7 +208,7 @@ Usa a **Instagram Graph API oficial (Business Discovery)**. O endpoint interno `
 - [x] Secret `VITE_GOOGLE_API_KEY` e variable `VITE_USE_MOCK` = `false` (eventos reais no ar).
 - [x] Action **Update venues** e **Update promoters** gravando no `main` (commits do bot de 21 e 22/11).
 - [ ] Conferir se o deploy diário (05:30 UTC) roda sozinho em **Actions → Deploy to GitHub Pages** (não deu para ver pela API pública: limite de requisições).
-- [ ] *Custom domain* e **Enforce HTTPS** do domínio novo: seção 1 (fase 3).
+- [ ] *Custom domain* e **Enforce HTTPS** do domínio novo: seção 1.
 
 ### 7. SEO e compartilhamento
 

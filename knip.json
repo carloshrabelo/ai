@@ -7,6 +7,5 @@
     "src/api/loadEvents.ts",
     "src/domain/promoterDirectory.ts",
     "src/seo/prerender.ts"
-  ],
-  "ignore": ["legacy/**"]
+  ]
 }

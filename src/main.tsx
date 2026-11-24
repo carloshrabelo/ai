@@ -7,8 +7,6 @@ import { RouterProvider } from 'react-router'
 import { persistOptions, queryClient } from './api/queryClient'
 import './fonts.css'
 import './index.css'
-// Dados salvos no domínio antigo (#migrate=…): antes dos stores abaixo, que leem o localStorage ao carregar.
-import './pwa/migrateFromOldDomain'
 // Idioma (navegador ou escolha salva) aplicado no <html lang> antes do primeiro render.
 import './i18n/locale'
 // Tema salvo (Zustand) aplicado e acompanhando o sistema em qualquer página.
