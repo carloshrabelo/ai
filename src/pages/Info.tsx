@@ -1,4 +1,4 @@
-import { CalendarDotsIcon, CloudSlashIcon, HeartIcon } from '@phosphor-icons/react'
+import { CalendarDotsIcon, CloudSlashIcon, HeartIcon, ShieldCheckIcon } from '@phosphor-icons/react'
 import { type ReactNode, useEffect, useState } from 'react'
 import InstallButton from '../components/InstallButton'
 import LanguageToggle from '../components/LanguageToggle'
@@ -74,8 +74,6 @@ export default function Info() {
             </li>
           ))}
         </ul>
-        <h3 className="pt-1 text-sm font-bold text-fg-muted">{t.info.privacy}</h3>
-        <p className="text-sm">{t.info.privacyText}</p>
       </Card>
 
       {/* Rótulo em cima e botões sempre embaixo, ocupando a largura (não mudam de lugar). */}
@@ -91,6 +89,14 @@ export default function Info() {
       </Card>
 
       <InstallButton />
+
+      <Card className="space-y-3">
+        <h2 className="flex items-center gap-2 text-lg font-bold">
+          <ShieldCheckIcon className="size-6 shrink-0 text-brand" aria-hidden="true" />
+          {t.info.privacy}
+        </h2>
+        <p className="text-sm">{t.info.privacyText}</p>
+      </Card>
 
       <p className="text-center text-xs text-fg-muted tabular-nums">
         {t.info.developedBy} <ExternalLink href="https://carloshrabelo.dev/">carloshrabelo.dev</ExternalLink> · {t.info.version}{' '}

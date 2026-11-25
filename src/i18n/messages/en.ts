@@ -129,7 +129,7 @@ export const en: Messages = {
     sources: 'Where the events come from',
     privacy: 'Privacy',
     privacyText:
-      'No cookies and no one is identified. We count page views, button clicks (such as filters and opened events) and how many visits come from returning people, with GoatCounter. For that, the device keeps only the dates of the first and last visit and on how many days the site was opened. Tracked events, theme and language also stay on the device.',
+      'No cookies and no one is identified. We count, anonymously and in aggregate, page views, clicks and how many visits come from returning people. Everything else (tracked events, theme and language) stays on your device.',
     mainSource: 'Main calendar',
     tangoSource: 'Tango',
     traditionalSource: 'European traditional dances',
