@@ -89,6 +89,11 @@ export const router = createBrowserRouter(
               lazy: { Component: async () => (await import('./pages/test/visual/Icons')).default },
             },
             {
+              path: 'genre-colors',
+              handle: { title: () => 'Cores dos estilos (teste)' } satisfies RouteHandle,
+              lazy: { Component: async () => (await import('./pages/test/visual/GenreColors')).default },
+            },
+            {
               path: 'people',
               handle: { title: () => 'Envolvidos (teste)' } satisfies RouteHandle,
               lazy: { Component: async () => (await import('./pages/test/promoters/People')).default },
