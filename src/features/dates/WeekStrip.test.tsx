@@ -36,6 +36,13 @@ describe('WeekStrip', () => {
     expect(within(strip()).getByRole('button', { pressed: true }).closest('li')?.dataset.stripDay).toBe(START)
   })
 
+  it('nome do dia = texto visível + data completa (sem aria-label: WCAG 2.5.3)', () => {
+    renderWithProviders(<WeekStrip startDate={START} activeDay={START} onSelect={() => {}} />, { queryClient: seededClient() })
+    const today = within(strip()).getByRole('button', { pressed: true })
+    expect(today.hasAttribute('aria-label')).toBe(false)
+    expect(today.textContent?.replace(/\s+/g, ' ')).toMatch(/^24 ?\S+ ?, .*24\/11/)
+  })
+
   it('clicar num dia anterior ao início chama onSelect com ele', () => {
     const onSelect = vi.fn()
     renderWithProviders(<WeekStrip startDate={START} activeDay={START} onSelect={onSelect} />, { queryClient: seededClient() })

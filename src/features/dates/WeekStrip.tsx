@@ -145,15 +145,17 @@ export function WeekStrip({ startDate, activeDay, onSelect, actions }: Props) {
                   {...track('dates.strip-day', day)}
                   type="button"
                   aria-pressed={active}
-                  // Começa pelo texto visível ("20 Sex"), com a data completa depois (WCAG 2.5.3).
-                  aria-label={`${formatDayOfMonth(day, locale)} ${formatWeekdayShort(day, locale)}, ${formatDayHeading(day, locale)}`}
                   onClick={() => onSelect(day)}
                   className={`relative flex h-10.5 w-full min-w-11 cursor-pointer flex-col items-center justify-center rounded-xl tabular-nums transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand ${
                     active ? 'bg-brand text-brand-fg' : 'text-fg hover:bg-surface-muted'
                   }`}
                 >
                   <span className="text-sm leading-tight font-bold">{formatDayOfMonth(day, locale)}</span>
+                  {/* O espaço separa "20" de "Sex" no nome lido (não aparece: é texto solto num flex). */}{' '}
                   <span className={`text-[13px] leading-tight ${active ? '' : 'text-fg-muted'}`}>{formatWeekdayShort(day, locale)}</span>
+                  {/* Nome acessível = o texto visível ("20 Sex") + a data completa, só para leitor de tela
+                      (WCAG 2.5.3: sem aria-label, o nome não diverge do que aparece). */}
+                  <span className="sr-only">, {formatDayHeading(day, locale)}</span>
                 </button>
               </li>
             )
