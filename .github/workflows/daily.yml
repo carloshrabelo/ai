@@ -20,6 +20,11 @@ jobs:
       contents: write
     outputs:
       sha: ${{ steps.commit.outputs.sha }}
+    # Para todos os passos: venues e promoters também carregam o código do app, que exige uma chave com
+    # dados reais (mesmo lendo só o cache). Chave dos scripts; sem ela, a do site (scripts/lib/app.ts).
+    env:
+      VITE_GOOGLE_API_KEY_SCRIPTS: ${{ secrets.VITE_GOOGLE_API_KEY_SCRIPTS }}
+      VITE_GOOGLE_API_KEY: ${{ secrets.VITE_GOOGLE_API_KEY }}
     steps:
       - uses: actions/checkout@v4
 
@@ -37,11 +42,6 @@ jobs:
       # Se a API falhar, usa o cache publicado no site como base (o passo não falha).
       - name: Cache dos eventos
         run: pnpm events:cache
-        env:
-          # Chave só dos scripts (sem restrição de domínio: o Node não manda Referer). Não vai para o site.
-          # Chave dos scripts; sem ela, a do site (os scripts usam a primeira que existir: scripts/lib/app.ts).
-          VITE_GOOGLE_API_KEY_SCRIPTS: ${{ secrets.VITE_GOOGLE_API_KEY_SCRIPTS }}
-          VITE_GOOGLE_API_KEY: ${{ secrets.VITE_GOOGLE_API_KEY }}
 
       - name: Geocodificar locais novos
         run: pnpm venues:check 90 --fix
