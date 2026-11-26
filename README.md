@@ -103,6 +103,7 @@ pnpm dev
 | `VITE_GOOGLE_API_KEY` | Chave da Google Calendar API (obrigatória com `VITE_USE_MOCK=false`). Restrinja por *HTTP referrer* no Google Cloud: ela fica visível no JavaScript publicado. |
 | `VITE_MOCK_DELAY_MS` | Atraso artificial do mock, para ver os skeletons. |
 | `VITE_TEST_PAGES` | `true` mostra o link "Teste" no menu (só local, não configure no deploy). A área `/test`, com as ferramentas internas (como `/test/prices`, que lista os preços distintos dos eventos e a tradução de cada um), existe também no site publicado para quem tem o link, sem link no app e com noindex. |
+| `VITE_SWR_URL` | Pasta dos arquivos do SWR (padrão: o branch `data` em `raw.githubusercontent.com`; `off` desliga). Ignorada no mock. |
 | `VITE_GOATCOUNTER_CODE` | Código do site no [GoatCounter](https://www.goatcounter.com) (analytics sem cookies). Vazio = desligado; em `pnpm dev` fica sempre desligado. |
 
 ### Scripts
@@ -117,7 +118,8 @@ pnpm dev
 | `pnpm lint` | Lint (oxlint). |
 | `pnpm format` / `pnpm format:check` | Formata o código (oxfmt: aspas simples, sem ponto e vírgula, 140 colunas; Markdown fica de fora) / só confere, como no CI. |
 | `pnpm knip` | Arquivos, exportações e dependências sem uso (Knip). Roda no CI. |
-| `pnpm events:cache` | Gera o cache dos eventos (`.cache/events.json`): os três calendários, de 30 dias atrás a 90 à frente. Se a API falhar, usa o publicado no site. Base de `venues:check`, `promoters:update` e do prerender. |
+| `pnpm events:swr [pasta]` | Gera os arquivos do SWR (ontem a 14 dias à frente, 3 arquivos de 5 dias) em `.cache/swr` ou na pasta indicada. Roda na Action **Update SWR**. |
+| `pnpm events:cache` | Gera o cache dos eventos (`.cache/events.json`): os três calendários, de ontem a 90 dias à frente. Se a API falhar, usa o publicado no site. Base de `venues:check`, `promoters:update` e do prerender. |
 | `pnpm venues:check [dias] [--fix]` | Lista os locais dos próximos eventos (do cache) sem coordenadas; com `--fix`, busca e grava em `src/content/venues.json`. |
 | `pnpm e2e` | Testes de ponta a ponta (Playwright, em `e2e/`): fluxos principais no celular e no desktop, com o mock. Sobe o `pnpm dev` sozinho; localmente usa o Chrome instalado. Roda no CI antes do build. |
 | `pnpm a11y` | Só a parte de acessibilidade do `e2e` (axe-core, WCAG 2.1 AA + boas práticas) nas telas principais, nos dois temas. |
@@ -194,7 +196,7 @@ Para corrigir um ponto, edite as coordenadas no `venues.json`: a busca automáti
 - Tags fixas no `index.html` (lidas por buscadores e redes sociais sem JavaScript): título, descrição, canonical, `hreflang`, Open Graph e Twitter Card com `public/og-image.jpg`.
 - `<head>` dinâmico por página (`src/seo/`): título e descrição próprios, canonical, `noindex` para 404 e eventos inexistentes, e Schema.org em JSON-LD (`ItemList` na agenda, `DanceEvent` no evento aberto).
 - No build: `sitemap.xml`, `robots.txt` e uma cópia do `index.html` por rota fixa (`map/`, `community/`, `about/`), para `/about` responder 200 no GitHub Pages em vez de cair no 404.
-- Páginas estáticas (SSG, `scripts/prerender.ts` depois do `vite build`): uma por evento em `event/<slug>/index.html` (de 30 dias atrás a 90 à frente, o período do cache), com título, descrição, canonical, Open Graph, JSON-LD e o conteúdo do evento no HTML; a agenda (`index.html`) traz a lista dos próximos eventos com links; o `sitemap.xml` inclui os eventos futuros, com `lastmod` = última alteração do evento no calendário. No navegador, o React substitui esse conteúdo pelo app. O deploy roda todo dia para as páginas acompanharem o calendário. Os eventos vêm do cache (`pnpm events:cache`); se a API falhar, do cache publicado no deploy anterior; sem nenhum, saem só as páginas fixas.
+- Páginas estáticas (SSG, `scripts/prerender.ts` depois do `vite build`): uma por evento em `event/<slug>/index.html` (de ontem a 90 dias à frente, o período do cache), com título, descrição, canonical, Open Graph, JSON-LD e o conteúdo do evento no HTML; a agenda (`index.html`) traz a lista dos próximos eventos com links; o `sitemap.xml` inclui os eventos futuros, com `lastmod` = última alteração do evento no calendário. No navegador, o React substitui esse conteúdo pelo app. O deploy roda todo dia para as páginas acompanharem o calendário. Os eventos vêm do cache (`pnpm events:cache`); se a API falhar, do cache publicado no deploy anterior; sem nenhum, saem só as páginas fixas.
 - Slug do evento: dia de Lisboa + título + hash curto do id do Google (`src/domain/slug.ts`), sempre o mesmo para o mesmo evento. Links antigos (`?event=<id>`) são redirecionados para o novo endereço.
 - Limitações do GitHub Pages: não há redirecionamento 301 (evento removido recebe `noindex` e aponta para a agenda).
 
@@ -215,7 +217,11 @@ O workflow `.github/workflows/daily.yml` (**Update data**) roda todo dia às 05:
 
 ### Cache dos eventos (fallback)
 
-O build publica o cache como `/events-cache.json` (~700 KB, fora do precache do service worker). O app continua buscando os eventos na Google Calendar API; se um calendário falhar (cota, erro, chave), os eventos dele vêm do cache, na mesma janela (`src/api/eventsCache.ts` e `mergeCalendarResults` em `src/api/googleCalendar.ts`). O cache cobre de 30 dias atrás a 90 à frente, a partir da manhã do último deploy.
+O build publica o cache como `/events-cache.json` (~700 KB, fora do precache do service worker). O app continua buscando os eventos na Google Calendar API; se um calendário falhar (cota, erro, chave), os eventos dele vêm do cache, na mesma janela (`src/api/eventsCache.ts` e `mergeCalendarResults` em `src/api/googleCalendar.ts`). O cache cobre de ontem a 90 dias à frente, a partir da manhã do último deploy.
+
+### SWR da primeira janela (a cada 2 horas)
+
+O workflow `.github/workflows/swr.yml` (**Update SWR**) roda a cada 2 horas: `pnpm events:swr` busca os três calendários de ontem a 14 dias à frente e grava 3 arquivos de 5 dias (`0.json`, `1.json`, `2.json`), publicados no branch `data` (um commit só, substituído a cada vez; sem deploy). O app lê esses arquivos por `raw.githubusercontent.com` (`VITE_SWR_URL`; desligado no mock) e põe a primeira janela da agenda na query assim que chegam, se forem mais novos que o que ela já tem (HTML do deploy ou o salvo no aparelho). A Google Calendar API é consultada ao mesmo tempo e substitui quando responder (`src/api/swrEvents.ts`). Se a API falhar, o workflow não publica e fica o arquivo anterior. Plano completo em [`SWR.md`](SWR.md).
 
 O prerender também embute no `index.html` os eventos da primeira janela (14 dias), num `<script type="application/json" id="initial-events">`: o app desenha os cards sem esperar a API e a consulta em seguida (`src/api/initialEvents.ts`).
 

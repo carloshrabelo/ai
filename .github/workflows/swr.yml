@@ -1,0 +1,50 @@
+name: Update SWR
+
+# A cada 2 horas: os eventos de ontem a 14 dias à frente (scripts/events-swr.ts), em 3 arquivos de 5
+# dias, publicados no branch `data` (um commit só, substituído a cada vez). O app os lê por
+# raw.githubusercontent.com e mostra antes da Google Calendar API responder (src/api/swrEvents.ts).
+# Sem deploy: o site não muda. Se a API falhar, não publica e fica o arquivo anterior.
+on:
+  schedule:
+    - cron: '17 */2 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: swr
+  cancel-in-progress: true
+
+jobs:
+  swr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.9.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Eventos de ontem a 14 dias à frente
+        run: pnpm events:swr .swr/swr
+        env:
+          VITE_GOOGLE_API_KEY: ${{ secrets.VITE_GOOGLE_API_KEY_SCRIPTS || secrets.VITE_GOOGLE_API_KEY }}
+
+      - name: Publicar no branch data
+        working-directory: .swr
+        env:
+          TOKEN: ${{ github.token }}
+        run: |
+          git init -q -b data
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add swr
+          git commit -q -m "SWR: eventos de $(date -u +%FT%TZ)"
+          git push -q -f "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git" data

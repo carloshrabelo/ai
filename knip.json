@@ -8,6 +8,7 @@
     "src/domain/promoterDirectory.ts",
     "src/seo/prerender.ts",
     "src/api/eventsCache.ts",
-    "src/api/googleCalendar.ts"
+    "src/api/googleCalendar.ts",
+    "src/api/swrEvents.ts"
   ]
 }

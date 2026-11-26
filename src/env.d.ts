@@ -9,6 +9,7 @@ interface ImportMetaEnv {
   readonly VITE_MOCK_DELAY_MS?: string
   /** "true" liga as páginas de teste (/test/prices). Só para uso local: não configure no deploy. */
   readonly VITE_TEST_PAGES?: 'true' | 'false'
+  readonly VITE_SWR_URL?: string
 }
 
 interface ImportMeta {

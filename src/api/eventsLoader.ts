@@ -5,6 +5,7 @@ import { slugDate } from '../domain/slug'
 import { WINDOW_DAYS } from './config'
 import { addDays, agendaToday, type IsoDate, isIsoDate } from '../lib/dates'
 import { seedInitialEvents } from './initialEvents'
+import { seedSwrEvents } from './swrEvents'
 import { eventsInfiniteQueryOptions } from './queries'
 import { queryClient } from './queryClient'
 
@@ -42,6 +43,8 @@ export function eventsLoader({ request, params }: LoaderFunctionArgs): EventsLoa
   // Primeira janela embutida no HTML (build): os cards aparecem sem esperar a API, que atualiza em seguida.
   seedInitialEvents(queryClient, startDate)
   void queryClient.prefetchInfiniteQuery(eventsInfiniteQueryOptions(startDate))
+  // Eventos de até 2 horas atrás (cron): aparecem antes da API, que os substitui quando responder.
+  void seedSwrEvents(queryClient, startDate)
 
   return { startDate, today }
 }

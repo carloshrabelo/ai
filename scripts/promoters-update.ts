@@ -23,7 +23,7 @@ type PromoterDirectoryModule = {
 }
 
 const FILE = join(root, 'src/content/promoters.json')
-const [daysAfter = 90, daysBefore = 30] = process.argv
+const [daysAfter = 90, daysBefore = 1] = process.argv
   .slice(2)
   .filter((arg) => /^\d+$/.test(arg))
   .map(Number)

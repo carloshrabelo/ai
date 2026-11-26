@@ -9,8 +9,8 @@ import type { DatesModule, IsoDate, ScriptEvent } from './types.ts'
 
 export const CACHE_PATH = join(root, '.cache', 'events.json')
 
-/** Período do cache: o que os scripts precisam (promoters olha 30 dias para trás; todos, 90 à frente). */
-const DAYS_BEFORE = 30
+/** Período do cache: de ontem (até as 05:00 a agenda ainda mostra a noite anterior) a 90 dias à frente. */
+const DAYS_BEFORE = 1
 const DAYS_AFTER = 90
 
 /** Cache mais velho que isso é gerado de novo antes de ser usado. */

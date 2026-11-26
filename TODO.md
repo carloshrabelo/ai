@@ -220,6 +220,7 @@ Usa a **Instagram Graph API oficial (Business Discovery)**. O endpoint interno `
 - [x] **Pages** com GitHub Actions (deploy de hoje publicado: manifest com as cores novas).
 - [x] Secret `VITE_GOOGLE_API_KEY` e variable `VITE_USE_MOCK` = `false` (eventos reais no ar).
 - [x] Action **Update data** (`daily.yml`, 05:00 UTC): cache dos eventos → venues → promoters → um commit → deploy. Substitui as Actions Update venues e Update promoters e o cron do deploy.
+- [ ] Rodar à mão a Action **Update SWR** (`swr.yml`, *Run workflow*) e conferir o branch `data` e `https://raw.githubusercontent.com/carloshrabelo/lisbon-social-dances/data/swr/0.json`.
 - [ ] Conferir a primeira execução da **Update data** em **Actions** (ou rodar à mão: *Run workflow*) e se `https://lisbondance.com/events-cache.json` foi publicado.
 - [x] *Custom domain* `lisbondance.com` e **Enforce HTTPS** (seção 1).
 

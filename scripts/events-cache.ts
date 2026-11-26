@@ -1,4 +1,4 @@
-// Gera o cache dos eventos (.cache/events.json): os três calendários de 30 dias atrás a 90 à frente,
+// Gera o cache dos eventos (.cache/events.json): os três calendários de ontem a 90 dias à frente,
 // direto da Google Calendar API. Se a API falhar, usa como base o cache publicado no site (do último
 // deploy) ou o que já estava no disco. Os scripts venues:check, promoters:update e o prerender partem
 // dele, e o build o publica como /events-cache.json (o app o usa quando a API falha).

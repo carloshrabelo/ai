@@ -2,7 +2,7 @@ import { type DanceEvent, toDanceEvent } from '../domain/event'
 import type { GCalDateTime, GCalEvent } from '../domain/gcal'
 import { type IsoDate, lisbonMidnight } from '../lib/dates'
 
-// Cache dos eventos (scripts/events-cache.ts): os três calendários de 30 dias atrás a 90 à frente,
+// Cache dos eventos (scripts/events-cache.ts): os três calendários de ontem a 90 dias à frente,
 // já adaptados (com `source`), gerado uma vez por dia. Os scripts (venues, promoters, prerender)
 // partem dele em vez de chamar a API, e o build o publica como /events-cache.json: o app o usa
 // quando a Google Calendar API falha.
