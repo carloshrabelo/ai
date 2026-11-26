@@ -208,6 +208,9 @@ Usa a **Instagram Graph API oficial (Business Discovery)**. O endpoint interno `
   - **Desenvolvimento** (`.env.local`, termina em `…qUiA`): para `pnpm dev` e os scripts locais. Restringir a
     `http://localhost:*/*` (em 24/11 ainda aceitava qualquer referer); os scripts locais mandam o referer do site,
     então incluir também `https://lisbondance.com/*` se forem rodados com ela.
+- [ ] **Scripts** (secret `VITE_GOOGLE_API_KEY_SCRIPTS`): chave própria para o cache dos eventos no Actions
+  (`daily.yml` e deploy). *Application restrictions*: None; *API restrictions*: só Google Calendar API; cota diária
+  baixa. Sem o secret, os workflows usam a de produção.
 - [ ] A antiga (`…AXxs`, criada em 17/11 numa conta não identificada, sem restrição) saiu do site; apagar se a conta
   for encontrada (utilizável por quem a copiou; sem custo, só cota).
 - [ ] Nunca commitar o `.env.local` (já está no `.gitignore`). Se a chave vazar, gerar outra e apagar a antiga.

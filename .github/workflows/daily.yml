@@ -38,7 +38,8 @@ jobs:
       - name: Cache dos eventos
         run: pnpm events:cache
         env:
-          VITE_GOOGLE_API_KEY: ${{ secrets.VITE_GOOGLE_API_KEY }}
+          # Chave só dos scripts (sem restrição de domínio: o Node não manda Referer). Não vai para o site.
+          VITE_GOOGLE_API_KEY: ${{ secrets.VITE_GOOGLE_API_KEY_SCRIPTS || secrets.VITE_GOOGLE_API_KEY }}
 
       - name: Geocodificar locais novos
         run: pnpm venues:check 90 --fix

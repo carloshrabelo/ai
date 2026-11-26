@@ -207,6 +207,7 @@ Em **Settings → Secrets and variables → Actions**:
 | Nome | Tipo | Valor |
 |---|---|---|
 | `VITE_GOOGLE_API_KEY` | Secret | Chave da Google Calendar API |
+| `VITE_GOOGLE_API_KEY_SCRIPTS` | Secret | Chave só dos scripts no Actions (cache dos eventos no `daily.yml` e no deploy): sem restrição de domínio, só a Calendar API. Não vai para o site. Sem ela, usa a `VITE_GOOGLE_API_KEY` |
 | `VITE_USE_MOCK` | Variable | `false` para usar a API (sem ela, o site publica com o mock) |
 | `VITE_GOATCOUNTER_CODE` | Variable | Código do site no GoatCounter (opcional) |
 

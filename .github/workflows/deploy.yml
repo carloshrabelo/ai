@@ -57,6 +57,15 @@ jobs:
           path: test-results/
           retention-days: 7
 
+      # Cache dos eventos com a chave dos scripts: o prerender parte dele e não chama a API (a chave do
+      # site só aceita o domínio, e o Node não manda Referer). Se a API falhar, usa o cache publicado.
+      - name: Cache dos eventos
+        if: ${{ vars.VITE_USE_MOCK == 'false' }}
+        run: pnpm events:cache
+        env:
+          VITE_USE_MOCK: 'false'
+          VITE_GOOGLE_API_KEY: ${{ secrets.VITE_GOOGLE_API_KEY_SCRIPTS || secrets.VITE_GOOGLE_API_KEY }}
+
       - run: pnpm build
         env:
           GITHUB_PAGES: 'true'
