@@ -33,16 +33,43 @@ SWR no ar, preconnect com `raw.githubusercontent.com` e o rótulo da faixa de di
 
 | | 24/11 | 26/11 (antes do SWR) | **26/11 (com SWR)** |
 |---|---|---|---|
-| Performance | 78–82 | 79 | **93–99** |
-| LCP | 4,0 s | 4,7 s | **1,5–1,6 s** |
+| Performance | 78–82 | 79 | 93–99 (ver correção abaixo) |
+| LCP | 4,0 s | 4,7 s | 1,5–1,6 s (ver correção abaixo) |
 | TBT | 230–370 ms | 130 ms | 80–250 ms |
 | Boas práticas | 96–100 | 96 (404 do SWR no console) | **100** |
 
-A causa exata da queda do LCP ainda não foi isolada (mudaram várias coisas ao mesmo tempo); medir de novo em outros
-dias antes de dar o LCP por resolvido. As camadas de dados estão em `docs/tecnico/03-cache-e-swr.md`.
+## Medição de 26/11, 10:30 (nome novo, 3 rodadas no celular + 1 no desktop)
 
-O aviso **"Use efficient cache lifetimes"** continua e não é sobre o SWR: é o `max-age=600` que o GitHub Pages põe nos
-arquivos do site (ver "O que não dá para corrigir no GitHub Pages").
+Depois do deploy com "Lisbon Dance with Pas de Deux" (`de92574`). Mesmo build, mesmas condições:
+
+| Rodada | Performance | FCP | **LCP** | TBT | CLS | Speed Index | Elemento do LCP | Render delay |
+|---|---|---|---|---|---|---|---|---|
+| Celular 1 | 78 | 2,1 s | **4,5 s** | 150 ms | 0 | 4,0 s | local do 1º card | 3.695 ms |
+| Celular 2 | 98 | 1,4 s | **1,4 s** | 130 ms | 0 | 2,5 s | (não informado) | — |
+| Celular 3 | 88 | 1,9 s | **3,6 s** | 120 ms | 0 | 1,9 s | local do 1º card | 3.024 ms |
+| Desktop | 93 | 0,6 s | 1,7 s | 0 ms | 0,004 | 0,8 s | quadrado do mapa (OSM) | 216 ms |
+
+Acessibilidade, boas práticas e SEO: **100** em todas.
+
+**Correção da medição anterior:** os 93–99 e o LCP de 1,5 s eram a rodada boa de uma variação grande, e não o LCP
+resolvido.
+- No celular, o LCP varia de **1,4 s a 4,5 s** entre rodadas seguidas.
+- Quando fica alto, o elemento é o **texto do 1º card** e quase todo o tempo é *render delay* (3,0–3,7 s): o React
+  desenhando a agenda depois do JavaScript. É o mesmo diagnóstico de 24/11.
+- **Hipótese para a rodada boa** (não confirmada): o LCP ficou no conteúdo do HTML estático, antes de o React
+  substituí-lo. Por isso o Lighthouse não informa o elemento: ele já não existe no fim.
+- O caminho continua sendo **renderizar no build e hidratar** (ver "O que falta: LCP").
+
+**Desktop:** o LCP é um quadrado do mapa da coluna lateral (OpenStreetMap, PNG de ~40 KB). O Lighthouse sugere WebP
+(economia de ~166–239 KiB) e priorizar essa imagem (~240 ms).
+- Os quadrados vêm do servidor do OpenStreetMap, que só serve PNG, então um `<picture>` não resolve.
+- A alternativa é trocar o provedor de mapas por um que sirva WebP ou mapas vetoriais. Os principais pedem chave ou
+  cadastro.
+
+**Continua sem solução no GitHub Pages:** "Use efficient cache lifetimes", o `max-age=600` (ver "O que não dá para
+corrigir no GitHub Pages"). Não tem relação com o SWR.
+
+As camadas de dados estão em `docs/tecnico/03-cache-e-swr.md`.
 
 ## Diagnóstico (24/11)
 
