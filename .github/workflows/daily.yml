@@ -39,7 +39,9 @@ jobs:
         run: pnpm events:cache
         env:
           # Chave só dos scripts (sem restrição de domínio: o Node não manda Referer). Não vai para o site.
-          VITE_GOOGLE_API_KEY: ${{ secrets.VITE_GOOGLE_API_KEY_SCRIPTS || secrets.VITE_GOOGLE_API_KEY }}
+          # Chave dos scripts; sem ela, a do site (os scripts usam a primeira que existir: scripts/lib/app.ts).
+          VITE_GOOGLE_API_KEY_SCRIPTS: ${{ secrets.VITE_GOOGLE_API_KEY_SCRIPTS }}
+          VITE_GOOGLE_API_KEY: ${{ secrets.VITE_GOOGLE_API_KEY }}
 
       - name: Geocodificar locais novos
         run: pnpm venues:check 90 --fix

@@ -35,7 +35,9 @@ jobs:
       - name: Eventos de ontem a 14 dias à frente
         run: pnpm events:swr .swr/swr
         env:
-          VITE_GOOGLE_API_KEY: ${{ secrets.VITE_GOOGLE_API_KEY_SCRIPTS || secrets.VITE_GOOGLE_API_KEY }}
+          # Chave dos scripts; sem ela, a do site (os scripts usam a primeira que existir: scripts/lib/app.ts).
+          VITE_GOOGLE_API_KEY_SCRIPTS: ${{ secrets.VITE_GOOGLE_API_KEY_SCRIPTS }}
+          VITE_GOOGLE_API_KEY: ${{ secrets.VITE_GOOGLE_API_KEY }}
 
       - name: Publicar no branch data
         working-directory: .swr

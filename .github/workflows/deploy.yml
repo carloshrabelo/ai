@@ -64,7 +64,9 @@ jobs:
         run: pnpm events:cache
         env:
           VITE_USE_MOCK: 'false'
-          VITE_GOOGLE_API_KEY: ${{ secrets.VITE_GOOGLE_API_KEY_SCRIPTS || secrets.VITE_GOOGLE_API_KEY }}
+          # Chave dos scripts; sem ela, a do site (os scripts usam a primeira que existir: scripts/lib/app.ts).
+          VITE_GOOGLE_API_KEY_SCRIPTS: ${{ secrets.VITE_GOOGLE_API_KEY_SCRIPTS }}
+          VITE_GOOGLE_API_KEY: ${{ secrets.VITE_GOOGLE_API_KEY }}
 
       - run: pnpm build
         env:

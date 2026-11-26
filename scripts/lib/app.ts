@@ -26,6 +26,13 @@ export type App = {
 
 export async function startApp({ name, referer = PUBLISHED_URL, realData = false }: Options): Promise<App> {
   if (realData) process.env.VITE_USE_MOCK = 'false'
+  // Chave própria dos scripts (no Actions, sem restrição de domínio), se houver: o código do app lê
+  // VITE_GOOGLE_API_KEY, e o ambiente vence o .env.local no Vite.
+  const scriptsKey = process.env.VITE_GOOGLE_API_KEY_SCRIPTS?.trim()
+  if (scriptsKey) process.env.VITE_GOOGLE_API_KEY = scriptsKey
+  console.log(
+    `${name}: chave da API ${scriptsKey ? 'dos scripts' : process.env.VITE_GOOGLE_API_KEY ? 'do site' : 'do .env.local (ou nenhuma)'}`,
+  )
 
   const originalFetch = globalThis.fetch
   globalThis.fetch = (input, init = {}) => {
