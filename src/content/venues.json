@@ -159,10 +159,20 @@
     "lat": 38.717959,
     "lng": -9.16296
   },
+  "Dance Factory Studios, Dance Factory Studios, R. Soares dos Reis 11A, 1070-270 Lisboa, Portugal": {
+    "name": "Dance Factory Studios",
+    "lat": 38.72954,
+    "lng": -9.163831
+  },
   "Dance Factory Studios, Rua Soares dos Reis 11A, 1070-270 Lisboa": {
     "name": "Dance Factory Studios",
     "lat": 38.72954,
     "lng": -9.163831
+  },
+  "DS Dance ShowRoom by Daniela Santos, R. do Vale Formoso de Cima 109 B, 1950-420 Lisboa, Portugal": {
+    "name": "DS Dance ShowRoom by Daniela Santos",
+    "lat": 38.753127,
+    "lng": -9.104224
   },
   "Évora": {
     "name": "Évora",
@@ -193,6 +203,11 @@
     "name": "Galeria Antecâmara",
     "lat": 41.147153,
     "lng": -8.614376
+  },
+  "Goethe-Institut, Campo dos Mártires da Pátria 37, 1169-016 Lisboa": {
+    "name": "Goethe-Institut",
+    "lat": 38.721182,
+    "lng": -9.141012
   },
   "Grupo Dramático e Escolar \"Os Combatentes\", Rua do Possolo 5-9 1350, 1350-046 Lisboa, Portugal": {
     "name": "Grupo Dramático e Escolar \"Os Combatentes\"",

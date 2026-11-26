@@ -392,6 +392,34 @@
     ],
     "lastSeen": "2026-12-04"
   },
+  "dsdance.pt": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/dsdance.pt/"
+    },
+    "venues": [
+      "DS Dance ShowRoom by Daniela Santos"
+    ],
+    "genres": [
+      "Kizomba",
+      "Latinas"
+    ],
+    "lastSeen": "2026-11-30"
+  },
+  "dsdanceshowroom": {
+    "role": "promoter",
+    "socials": {
+      "instagram": "https://www.instagram.com/dsdanceshowroom/"
+    },
+    "venues": [
+      "DS Dance ShowRoom by Daniela Santos"
+    ],
+    "genres": [
+      "Kizomba",
+      "Latinas"
+    ],
+    "lastSeen": "2026-11-30"
+  },
   "e.g.setubal": {
     "role": "other",
     "socials": {
@@ -1066,12 +1094,13 @@
       "instagram": "https://www.instagram.com/swingnsmile/"
     },
     "venues": [
-      "Fábrica de Braço de Prata"
+      "Fábrica de Braço de Prata",
+      "Grupo Dramático e Escolar \"Os Combatentes\""
     ],
     "genres": [
       "Swing"
     ],
-    "lastSeen": "2026-11-18"
+    "lastSeen": "2026-12-12"
   },
   "timeoutmarketlisboa": {
     "role": "other",
@@ -1135,9 +1164,10 @@
       "Kizomba",
       "Salsa",
       "Zouk",
-      "Semba"
+      "Semba",
+      "Salsa Cubana"
     ],
-    "lastSeen": "2026-11-22"
+    "lastSeen": "2026-11-29"
   },
   "vacubalisboa": {
     "role": "promoter",
