@@ -210,7 +210,8 @@ Usa a **Instagram Graph API oficial (Business Discovery)**. O endpoint interno `
     então incluir também `https://lisbondance.com/*` se forem rodados com ela.
 - [ ] **Scripts** (secret `VITE_GOOGLE_API_KEY_SCRIPTS`): chave própria para o cache dos eventos no Actions
   (`daily.yml` e deploy). *Application restrictions*: None; *API restrictions*: só Google Calendar API; cota diária
-  baixa. Sem o secret, os workflows usam a de produção.
+  baixa. Sem o secret, os workflows usam a de produção. Para conferir: o log dos scripts diz qual chave usou
+  (`venues: chave da API dos scripts`).
 - [ ] A antiga (`…AXxs`, criada em 17/11 numa conta não identificada, sem restrição) saiu do site; apagar se a conta
   for encontrada (utilizável por quem a copiou; sem custo, só cota).
 - [ ] Nunca commitar o `.env.local` (já está no `.gitignore`). Se a chave vazar, gerar outra e apagar a antiga.
@@ -220,8 +221,8 @@ Usa a **Instagram Graph API oficial (Business Discovery)**. O endpoint interno `
 - [x] **Pages** com GitHub Actions (deploy de hoje publicado: manifest com as cores novas).
 - [x] Secret `VITE_GOOGLE_API_KEY` e variable `VITE_USE_MOCK` = `false` (eventos reais no ar).
 - [x] Action **Update data** (`daily.yml`, 05:00 UTC): cache dos eventos → venues → promoters → um commit → deploy. Substitui as Actions Update venues e Update promoters e o cron do deploy.
-- [ ] Rodar à mão a Action **Update SWR** (`swr.yml`, *Run workflow*) e conferir o branch `data` e `https://raw.githubusercontent.com/carloshrabelo/lisbon-social-dances/data/swr/0.json`.
-- [ ] Conferir a primeira execução da **Update data** em **Actions** (ou rodar à mão: *Run workflow*) e se `https://lisbondance.com/events-cache.json` foi publicado.
+- [x] Action **Update SWR** (`swr.yml`, a cada 2 h): primeira execução em 26/11 (10:00 UTC), branch `data` com `swr/0–2.json` (37, 18 e 14 eventos).
+- [ ] Rodar de novo a **Update data** (*Run workflow*): em 26/11 ela falhava no `venues:check` por falta de chave nos passos de venues e promoters (corrigido: as chaves agora valem para o job inteiro). Conferir também `https://lisbondance.com/events-cache.json`.
 - [x] *Custom domain* `lisbondance.com` e **Enforce HTTPS** (seção 1).
 
 ### 7. SEO e compartilhamento

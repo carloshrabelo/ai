@@ -1,5 +1,8 @@
 # Eventos em SWR
 
+> Versão com diagramas, junto das outras camadas de cache: [`docs/tecnico/03-cache-e-swr.md`](docs/tecnico/03-cache-e-swr.md).
+> Status: no ar desde 26/11 (branch `data` gerado pela Action **Update SWR**).
+
 *Stale-while-revalidate*: o app mostra **na hora** eventos já prontos (um pouco velhos) e, em paralelo, consulta a
 Google Calendar API. Se algo mudou, troca. A pessoa não espera a API para ver a agenda.
 

@@ -1,4 +1,4 @@
-# Stack — Lisbon Social Dance
+# Stack — Lisbon Dance with Pas de Deux
 
 Retrato da stack atual, avaliação da arquitetura e recomendações. Os tamanhos vêm de `pnpm analyze`
 (build de produção de 24/11/2026, com o mock); "gz" é o tamanho com gzip.
@@ -24,7 +24,7 @@ Retrato da stack atual, avaliação da arquitetura e recomendações. Os tamanho
 | Testes | **Vitest 5** + **React Testing Library** (jsdom); **Playwright** + **axe** | Domínio e componentes (`pnpm test`); fluxos e acessibilidade no celular e no desktop (`pnpm e2e`, no CI). |
 | Qualidade | **oxlint**, **oxfmt**, **Knip**, husky + lint-staged, `pnpm a11y` (axe-core via Chrome headless) | Lint, formatação, código morto e acessibilidade (WCAG 2.1 AA). |
 | Análise de bundle | **rollup-plugin-visualizer 7** (`pnpm analyze`) | Treemap do bundle sob demanda. |
-| Deploy | GitHub Pages + GitHub Actions (Update data diário: cache dos eventos, venues, promoters e deploy) | Sem servidor próprio; a chave da Google Calendar API fica no JavaScript publicado. O cache publicado (`/events-cache.json`) é o fallback quando a API falha. |
+| Deploy | GitHub Pages + GitHub Actions (Update data diário: cache dos eventos, venues, promoters e deploy; Update SWR a cada 2 h no branch `data`) | Sem servidor próprio; a chave da Google Calendar API do site fica no JavaScript publicado (restrita ao domínio) e os scripts usam outra. Camadas de dados: 1ª janela no HTML, query no aparelho, arquivos do SWR (até 2 h), API e o `/events-cache.json` como fallback (ver `docs/tecnico/03-cache-e-swr.md`). |
 
 ### Bundle (build de produção)
 

@@ -26,7 +26,25 @@ rodadas: uma sem extensões (Chrome headless) e o `lighthouse.json` gerado no na
 > todo o "JavaScript não usado" (304 KiB) são de `chrome-extension://…` (React DevTools e outras). Para medir só o
 > site: janela anônima sem extensões, ou `npx lighthouse https://lisbondance.com/`.
 
-## Diagnóstico
+## Medição de 26/11 (depois do SWR)
+
+Celular, site publicado, 2 rodadas, depois de: deploy destravado (o e2e de contraste bloqueava desde 25/11), arquivos do
+SWR no ar, preconnect com `raw.githubusercontent.com` e o rótulo da faixa de dias corrigido.
+
+| | 24/11 | 26/11 (antes do SWR) | **26/11 (com SWR)** |
+|---|---|---|---|
+| Performance | 78–82 | 79 | **93–99** |
+| LCP | 4,0 s | 4,7 s | **1,5–1,6 s** |
+| TBT | 230–370 ms | 130 ms | 80–250 ms |
+| Boas práticas | 96–100 | 96 (404 do SWR no console) | **100** |
+
+A causa exata da queda do LCP ainda não foi isolada (mudaram várias coisas ao mesmo tempo); medir de novo em outros
+dias antes de dar o LCP por resolvido. As camadas de dados estão em `docs/tecnico/03-cache-e-swr.md`.
+
+O aviso **"Use efficient cache lifetimes"** continua e não é sobre o SWR: é o `max-age=600` que o GitHub Pages põe nos
+arquivos do site (ver "O que não dá para corrigir no GitHub Pages").
+
+## Diagnóstico (24/11)
 
 ### LCP de 4,0 s (o principal)
 

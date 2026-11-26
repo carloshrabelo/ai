@@ -1,11 +1,11 @@
 <p align="center">
-  <img src="docs/assets/logo_square.png" alt="Lisbon Social Dance" width="140" />
+  <img src="docs/assets/logo_square.png" alt="Lisbon Dance with Pas de Deux" width="140" />
 </p>
 
-<h1 align="center">Lisbon Social Dance</h1>
+<h1 align="center">Lisbon Dance with Pas de Deux</h1>
 
 <p align="center">
-  Agenda de práticas, festas e eventos de dança social em Lisboa — num PWA instalável, com filtros por estilo, mapa e funcionamento offline.
+  Agenda de práticas, festas e eventos de dança social em Lisboa, em parceria com o <a href="https://pasdedeux.pt/">Pas de Deux</a> — num PWA instalável, com filtros por estilo, mapa e funcionamento offline.
   <br />
   <a href="https://lisbondance.com/"><strong>lisbondance.com</strong></a>
 </p>
@@ -159,9 +159,10 @@ src/
   analytics/   rastreamento de cliques (data-track) e GoatCounter
   components/  layout (header, sidebar, bottom nav) e componentes base (Chip, Card, Button…)
   pages/       Dança (/ e /event/<slug>/), Mapa (/map, celular), Comunidade (/community), Sobre (/about), Escolas (/schools, oculta)
-scripts/       prerender.ts, venues-check.ts, promoters-update.ts
+scripts/       events-cache.ts, events-swr.ts, prerender.ts, venues-check.ts, promoters-update.ts (lib/: início comum e cache)
 e2e/           testes de ponta a ponta e acessibilidade (Playwright)
-docs/          prints, logo e protótipos de referência
+docs/          prints, logo, protótipos e a documentação técnica (docs/tecnico/)
+.github/       workflows: deploy, Update data (diário) e Update SWR (a cada 2 h)
 ```
 
 ## Analytics (rastreamento de cliques)
@@ -213,11 +214,11 @@ Em **Settings → Secrets and variables → Actions**:
 | `VITE_USE_MOCK` | Variable | `false` para usar a API (sem ela, o site publica com o mock) |
 | `VITE_GOATCOUNTER_CODE` | Variable | Código do site no GoatCounter (opcional) |
 
-O workflow `.github/workflows/daily.yml` (**Update data**) roda todo dia às 05:00 UTC (ou à mão): gera o cache dos eventos, geocodifica os locais novos e atualiza os promotores a partir dele, faz um commit só com o que mudou e chama o deploy.
+O workflow `.github/workflows/daily.yml` (**Update data**) roda todo dia às 05:00 UTC (ou à mão): gera o cache dos eventos, geocodifica os locais novos e atualiza os promotores a partir dele, faz um commit só com o que mudou e chama o deploy. Todos os passos recebem as duas chaves; os scripts usam a dos scripts quando ela existe e mostram no log qual usaram (`scripts/lib/app.ts`).
 
 ### Cache dos eventos (fallback)
 
-O build publica o cache como `/events-cache.json` (~700 KB, fora do precache do service worker). O app continua buscando os eventos na Google Calendar API; se um calendário falhar (cota, erro, chave), os eventos dele vêm do cache, na mesma janela (`src/api/eventsCache.ts` e `mergeCalendarResults` em `src/api/googleCalendar.ts`). O cache cobre de ontem a 90 dias à frente, a partir da manhã do último deploy.
+O build publica o cache como `/events-cache.json` (~570 KB, 121 KB com gzip; fora do precache do service worker). O app continua buscando os eventos na Google Calendar API; se um calendário falhar (cota, erro, chave), os eventos dele vêm do cache, na mesma janela (`src/api/eventsCache.ts` e `mergeCalendarResults` em `src/api/googleCalendar.ts`). O cache cobre de ontem a 90 dias à frente, a partir da manhã do último deploy.
 
 ### SWR da primeira janela (a cada 2 horas)
 
@@ -225,7 +226,13 @@ O workflow `.github/workflows/swr.yml` (**Update SWR**) roda a cada 2 horas: `pn
 
 O prerender também embute no `index.html` os eventos da primeira janela (14 dias), num `<script type="application/json" id="initial-events">`: o app desenha os cards sem esperar a API e a consulta em seguida (`src/api/initialEvents.ts`).
 
+Diagramas das camadas de cache, dos workflows e das chaves: [`docs/tecnico/`](docs/tecnico/README.md).
+
 O que ainda precisa ser feito ou conferido à mão (chaves, configurações, verificações) está em [`TODO.md`](TODO.md).
+
+## Documentação técnica
+
+Em [`docs/tecnico/`](docs/tecnico/README.md), com diagramas: arquitetura, dados dos eventos, cache e SWR, build e SEO, CI/CD e chaves, PWA e offline, analytics e privacidade. Desempenho em [`LIGHTHOUSE.md`](LIGHTHOUSE.md) e o plano do SWR em [`SWR.md`](SWR.md).
 
 ## Planejamento
 
