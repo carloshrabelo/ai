@@ -78,7 +78,7 @@ export function icsContent(event: DanceEvent, pageUrl: string, now = new Date())
   const lines = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//Lisbon Social Dance//PT',
+    'PRODID:-//Lisbon Dance//PT',
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
     'BEGIN:VEVENT',

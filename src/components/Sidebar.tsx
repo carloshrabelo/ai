@@ -1,5 +1,5 @@
 import { Link, NavLink } from 'react-router'
-import { APP_NAME } from '../app'
+import { APP_FULL_NAME } from '../app'
 import { Logo } from './Logo'
 import { NAV_ITEMS } from './navItems'
 import { useI18n } from '../i18n/useI18n'
@@ -22,8 +22,8 @@ export default function Sidebar({ slotRef, bottomSlotRef }: { slotRef: SlotRef; 
         <Link
           {...track('nav.link', '/')}
           to="/"
-          aria-label={APP_NAME}
-          title={APP_NAME}
+          aria-label={APP_FULL_NAME}
+          title={APP_FULL_NAME}
           className={`rounded-lg ${FOCUS.replace('-outline-offset-2', 'outline-offset-2')}`}
         >
           <Logo className="h-11 w-auto" />

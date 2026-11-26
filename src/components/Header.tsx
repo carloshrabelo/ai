@@ -1,5 +1,5 @@
 import { Link, useMatches } from 'react-router'
-import { APP_NAME, type RouteHandle } from '../app'
+import { APP_NAME, APP_PARTNER, type RouteHandle } from '../app'
 import { Logo } from './Logo'
 import { useI18n } from '../i18n/useI18n'
 import { track } from '../analytics/track'
@@ -24,7 +24,12 @@ export default function Header() {
             className="flex shrink-0 items-center gap-2 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
           >
             <Logo className="h-10 w-auto shrink-0 xl:hidden" />
-            <span className="text-xl md:text-2xl">{APP_NAME}</span>
+            {/* Nome em cima e "with Pas de Deux" embaixo, menor e mais leve (mesma cor: o contraste
+                continua AA). O espaço entre os dois entra no nome lido ("Lisbon Dance with Pas de Deux"). */}
+            <span className="flex flex-col items-end text-right">
+              <span className="text-xl leading-5 md:text-2xl md:leading-6">{APP_NAME}</span>{' '}
+              <span className="text-xs leading-3.5 font-medium md:text-[13px]">{APP_PARTNER}</span>
+            </span>
           </Link>
           {page && (
             <>

@@ -126,7 +126,8 @@ export const pt = {
   },
   info: {
     about: 'Sobre',
-    aboutText: 'Agenda de práticas, festas e outros eventos de dança social em Lisboa.',
+    aboutText:
+      'Agenda de práticas, festas e outros eventos de dança social em Lisboa, feita em parceria com o Pas de Deux: a lista dos eventos é deles; aqui ela ganha filtros, mapa e um novo visual.',
     thanks: [
       'Um agradecimento especial a',
       'por manter, com tanto cuidado, a lista dos eventos de dança do pasdedeux.pt. Sem esse trabalho, esta agenda não existiria.',
@@ -155,19 +156,19 @@ export const pt = {
     version: 'Versão',
   },
   seo: {
-    homeTitle: 'Lisbon Social Dance — Agenda de dança social em Lisboa',
+    homeTitle: 'Lisbon Dance with Pas de Deux — Agenda de dança social em Lisboa',
     homeDescription:
       'Práticas, festas e festivais de salsa, bachata, kizomba, forró, swing e outros estilos em Lisboa, com mapa e filtros por estilo.',
-    eventTitle: (title: string, day: string) => `${title} · ${day} — Lisbon Social Dance`,
-    eventNotFoundTitle: 'Evento não encontrado — Lisbon Social Dance',
-    infoTitle: 'Info — Lisbon Social Dance',
-    communityTitle: 'Comunidade — Lisbon Social Dance',
+    eventTitle: (title: string, day: string) => `${title} · ${day} — Lisbon Dance`,
+    eventNotFoundTitle: 'Evento não encontrado — Lisbon Dance',
+    infoTitle: 'Info — Lisbon Dance',
+    communityTitle: 'Comunidade — Lisbon Dance',
     communityDescription: 'Outros calendários de dança, grupos do WhatsApp e perfis da comunidade de dança em Lisboa.',
-    infoDescription: 'Sobre o Lisbon Social Dance: de onde vêm os eventos, tema, idioma e instalação do app.',
-    schoolsTitle: 'Escolas — Lisbon Social Dance',
-    mapTitle: 'Mapa — Lisbon Social Dance',
+    infoDescription: 'Sobre o Lisbon Dance with Pas de Deux: de onde vêm os eventos, tema, idioma e instalação do app.',
+    schoolsTitle: 'Escolas — Lisbon Dance',
+    mapTitle: 'Mapa — Lisbon Dance',
     mapDescription: 'Mapa dos eventos de dança social em Lisboa, dia a dia.',
-    notFoundTitle: 'Página não encontrada — Lisbon Social Dance',
+    notFoundTitle: 'Página não encontrada — Lisbon Dance',
   },
   tracking: {
     googleCalendar: 'Google Agenda',

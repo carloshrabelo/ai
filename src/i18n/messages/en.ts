@@ -121,7 +121,8 @@ export const en: Messages = {
   },
   info: {
     about: 'About',
-    aboutText: 'Listings of social dance practices, parties and other events in Lisbon.',
+    aboutText:
+      'Listings of social dance practices, parties and other events in Lisbon, made in partnership with Pas de Deux: the event list is theirs; here it gets filters, a map and a new look.',
     thanks: [
       'Special thanks to',
       'for carefully keeping the list of dance events on pasdedeux.pt. Without that work, this agenda would not exist.',
@@ -150,19 +151,19 @@ export const en: Messages = {
     version: 'Version',
   },
   seo: {
-    homeTitle: 'Lisbon Social Dance — Social dance events in Lisbon',
+    homeTitle: 'Lisbon Dance with Pas de Deux — Social dance events in Lisbon',
     homeDescription:
       'Salsa, bachata, kizomba, forró, swing and other social dance practices, parties and festivals in Lisbon, with a map and style filters.',
-    eventTitle: (title, day) => `${title} · ${day} — Lisbon Social Dance`,
-    eventNotFoundTitle: 'Event not found — Lisbon Social Dance',
-    infoTitle: 'Info — Lisbon Social Dance',
-    communityTitle: 'Community — Lisbon Social Dance',
+    eventTitle: (title, day) => `${title} · ${day} — Lisbon Dance`,
+    eventNotFoundTitle: 'Event not found — Lisbon Dance',
+    infoTitle: 'Info — Lisbon Dance',
+    communityTitle: 'Community — Lisbon Dance',
     communityDescription: 'Other dance calendars, WhatsApp groups and profiles of the dance community in Lisbon.',
-    infoDescription: 'About Lisbon Social Dance: where the events come from, theme, language and installing the app.',
-    schoolsTitle: 'Schools — Lisbon Social Dance',
-    mapTitle: 'Map — Lisbon Social Dance',
+    infoDescription: 'About Lisbon Dance with Pas de Deux: where the events come from, theme, language and installing the app.',
+    schoolsTitle: 'Schools — Lisbon Dance',
+    mapTitle: 'Map — Lisbon Dance',
     mapDescription: 'Map of social dance events in Lisbon, day by day.',
-    notFoundTitle: 'Page not found — Lisbon Social Dance',
+    notFoundTitle: 'Page not found — Lisbon Dance',
   },
   tracking: {
     googleCalendar: 'Google Calendar',

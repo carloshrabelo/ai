@@ -50,7 +50,7 @@ describe('renderEventPage', () => {
   const url = `${site}event/${event.slug}/`
 
   it('head próprio: título, canonical, og:url e JSON-LD', () => {
-    expect(html).toContain('<title>Samba &lt;no&gt; Mercado · Terça-feira, 17/11 — Lisbon Social Dance</title>')
+    expect(html).toContain('<title>Samba &lt;no&gt; Mercado · Terça-feira, 17/11 — Lisbon Dance</title>')
     expect(html).toContain(`<link rel="canonical" href="${url}" />`)
     expect(html).toContain(`<meta property="og:url" content="${url}" />`)
     expect(html).toContain('"@type":"DanceEvent"')

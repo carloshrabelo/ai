@@ -81,7 +81,7 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon-180x180.png'],
       manifest: {
-        name: 'Lisbon Social Dance',
+        name: 'Lisbon Dance with Pas de Deux',
         short_name: 'Lisbon Dance',
         description: 'Agenda de práticas, festas e eventos de dança social em Lisboa',
         lang: 'pt-BR',
@@ -115,7 +115,7 @@ export default defineConfig({
     analyze &&
       visualizer({
         filename: 'bundle-stats.html',
-        title: 'Lisbon Social Dance — bundle',
+        title: 'Lisbon Dance — bundle',
         template: (process.env.ANALYZE_TEMPLATE as 'treemap' | 'sunburst' | 'network' | 'flamegraph' | undefined) ?? 'treemap',
         gzipSize: true,
         brotliSize: true,

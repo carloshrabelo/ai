@@ -35,7 +35,7 @@ export function renderRedirectPage(url: string): string {
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<title>Lisbon Social Dance</title>
+<title>Lisbon Dance with Pas de Deux</title>
 <link rel="canonical" href="${href}">
 <meta name="robots" content="noindex">
 <meta http-equiv="refresh" content="0; url=${href}">
@@ -55,7 +55,7 @@ export function renderEventPage(template: string, event: DanceEvent, siteUrl: st
   const description = [genres, when, event.venue?.name].filter(Boolean).join(' · ')
 
   const body = `<main class="mx-auto max-w-3xl space-y-4 p-6">
-  <p><a href="${siteUrl}">Lisbon Social Dance</a></p>
+  <p><a href="${siteUrl}">Lisbon Dance with Pas de Deux</a></p>
   <article class="space-y-3">
     <h1 class="text-2xl font-semibold">${escapeHtml(event.title)}</h1>
     <p><time datetime="${event.start.toISOString()}">${escapeHtml(when)}</time></p>
@@ -85,7 +85,7 @@ export function renderHomePage(template: string, events: readonly DanceEvent[], 
     })
     .join('\n')
   const body = `<main class="mx-auto max-w-3xl space-y-4 p-6">
-  <h1 class="text-2xl font-semibold">Lisbon Social Dance</h1>
+  <h1 class="text-2xl font-semibold">Lisbon Dance with Pas de Deux</h1>
   <p>${escapeHtml(t.seo.homeDescription)}</p>
   <ul class="space-y-1">
 ${items}
