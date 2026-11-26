@@ -227,7 +227,7 @@ function Description({ html }: { html: string }) {
   return (
     <section aria-label={t.event.description}>
       <div
-        className="text-[15px] [overflow-wrap:anywhere] text-fg [&_a]:text-brand [&_a]:underline"
+        className="text-[15px] [overflow-wrap:anywhere] text-fg [&_a]:text-(--brand-ink) [&_a]:underline"
         // Sanitizado em renderDescription (DOMPurify).
         dangerouslySetInnerHTML={{ __html: html }}
       />
