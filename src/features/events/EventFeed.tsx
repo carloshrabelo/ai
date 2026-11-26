@@ -100,7 +100,7 @@ function EventFeedContent({ startDate, genres, onOpenEvent }: FeedProps) {
               <h2
                 id={`day-${day}`}
                 data-day={day}
-                className={`sticky top-[calc(3.5rem+env(safe-area-inset-top)+var(--feed-sticky-height,0px))] z-[4] col-span-full -mx-1 bg-bg px-1 py-1 text-base font-bold text-fg after:pointer-events-none after:absolute after:inset-x-0 after:top-full after:h-6 after:bg-linear-to-b after:from-bg after:to-transparent ${index > 0 ? 'mt-3' : ''}`}
+                className={`sticky top-[calc(3.5rem+env(safe-area-inset-top)+var(--feed-sticky-height,0px))] z-[4] col-span-full -mx-1 bg-bg px-1 py-1 text-base font-bold text-fg ${index > 0 ? 'mt-3' : ''}`}
               >
                 {dayLabel(day, today, t, locale)}
               </h2>
