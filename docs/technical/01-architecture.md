@@ -61,7 +61,7 @@ flowchart LR
   ROOT --> ABOUT["/about"]
   ROOT --> SCHOOLS["/schools"]
   ROOT --> REVIEW["/review (sem link)"]
-  ROOT --> TEST["/test/* (sem link, noindex)"]
+  ROOT --> TEST["/lab/* (sem link, noindex)"]
   ROOT -.-> LEGACY["/evento, /mapa, /info… → redirecionam"]
 ```
 
@@ -119,6 +119,6 @@ flowchart LR
 ```
 
 - **GitHub Pages:** não permite cabeçalhos próprios, então todo arquivo tem cache HTTP de 10 min. O service worker
-  compensa a partir da segunda visita (ver [06](06-pwa-e-offline.md)).
-- **Rotas sem página estática** (ex.: `/test/...`): o GitHub Pages responde com o `404.html`, que é o próprio app, e o
+  compensa a partir da segunda visita (ver [06](06-pwa-and-offline.md)).
+- **Rotas sem página estática** (ex.: `/lab/...`): o GitHub Pages responde com o `404.html`, que é o próprio app, e o
   roteador assume.

@@ -43,5 +43,5 @@ sequenceDiagram
 ## Relação com os caches de dados
 
 O service worker cuida do **app** (código e telas). Os **eventos** ficam com o TanStack Query (aparelho) e com as
-camadas de [03. Cache e SWR](03-cache-e-swr.md). O próximo passo previsto no `SWR.md` é um `StaleWhileRevalidate` no
+camadas de [03. Cache e SWR](03-cache-and-swr.md). O próximo passo previsto no `SWR.md` é um `StaleWhileRevalidate` no
 Workbox para os arquivos do SWR, para abrir offline com dados de até 2 h.

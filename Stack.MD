@@ -16,7 +16,7 @@ Retrato da stack atual, avaliação da arquitetura e recomendações. Os tamanho
 | Persistência | `localStorage` via `src/lib/storage.ts` (nunca lança) + adaptador `src/lib/persistStorage.ts` | O adaptador grava cada chave no formato que já existia antes do Zustand (texto puro ou JSON sem envelope). Cache do LanguageTool continua no `storage.ts` direto. |
 | Estilo | **Tailwind CSS 4** (`@tailwindcss/vite`) + tokens em `src/index.css` | Tema claro/escuro por `data-theme`, cores semânticas, CSS final ~62 KB. |
 | UI | Componentes próprios (`src/components/ui`): Button, Card, Chip, BottomSheet (`<dialog>`), Segmented, Tooltip | Sem biblioteca de componentes. |
-| Ícones | **@phosphor-icons/react** | Phosphor no peso duotone via `IconContext` (o `lucide-react` das páginas internas foi removido). |
+| Ícones | **@phosphor-icons/react** | Phosphor no peso duotone via `IconContext`. |
 | Mapa | **Leaflet 1.9** + **react-leaflet 5** | Carregado só quando o mapa aparece (chunk `EventsMap`, 163 KB / 48 KB gz). |
 | Sanitização | **DOMPurify** | HTML da descrição dos eventos (chunk `EventDetails`). |
 | PWA | **vite-plugin-pwa 2** (Workbox, `generateSW`, `autoUpdate`) + `workbox-window` | Precache de todo o build, atualização automática, convite de instalação próprio (`src/pwa/installPrompt.ts`, `InstallBanner`). |
@@ -24,7 +24,7 @@ Retrato da stack atual, avaliação da arquitetura e recomendações. Os tamanho
 | Testes | **Vitest 5** + **React Testing Library** (jsdom); **Playwright** + **axe** | Domínio e componentes (`pnpm test`); fluxos e acessibilidade no celular e no desktop (`pnpm e2e`, no CI). |
 | Qualidade | **oxlint**, **oxfmt**, **Knip**, husky + lint-staged, `pnpm a11y` (axe-core via Chrome headless) | Lint, formatação, código morto e acessibilidade (WCAG 2.1 AA). |
 | Análise de bundle | **rollup-plugin-visualizer 7** (`pnpm analyze`) | Treemap do bundle sob demanda. |
-| Deploy | GitHub Pages + GitHub Actions (Update data diário: cache dos eventos, venues, promoters e deploy; Update SWR a cada 2 h no branch `data`) | Sem servidor próprio; a chave da Google Calendar API do site fica no JavaScript publicado (restrita ao domínio) e os scripts usam outra. Camadas de dados: 1ª janela no HTML, query no aparelho, arquivos do SWR (até 2 h), API e o `/events-cache.json` como fallback (ver `docs/tecnico/03-cache-e-swr.md`). |
+| Deploy | GitHub Pages + GitHub Actions (Update data diário: cache dos eventos, venues, promoters e deploy; Update SWR a cada 2 h no branch `data`) | Sem servidor próprio; a chave da Google Calendar API do site fica no JavaScript publicado (restrita ao domínio) e os scripts usam outra. Camadas de dados: 1ª janela no HTML, query no aparelho, arquivos do SWR (até 2 h), API e o `/events-cache.json` como fallback (ver `docs/technical/03-cache-and-swr.md`). |
 
 ### Bundle (build de produção)
 
@@ -35,7 +35,7 @@ Retrato da stack atual, avaliação da arquitetura e recomendações. Os tamanho
 | `events` (mock) | 52 KB | 13 KB | Só com `VITE_USE_MOCK` |
 | `EventDetails` (DOMPurify + detalhes) | 39 KB | 15 KB | Ao abrir um evento |
 | `Dance` (agenda) | 32 KB | 10 KB | Rota `/` |
-| `Icons` (`/test/icons`) | 334 KB | 78 KB | Só nessa página interna |
+| `Icons` (`/lab/icons`) | 334 KB | 78 KB | Só nessa página interna |
 
 Dentro do `index`, por pacote (soma dos módulos, aproximada): react-dom ≈ 99 KB gz, react-router ≈ 54 KB gz,
 código do app ≈ 31 KB gz, query-core ≈ 16 KB gz, Phosphor ≈ 8 KB gz (só os ícones usados), Zustand ≈ 1–3 KB gz.
@@ -70,8 +70,6 @@ código do app ≈ 31 KB gz, query-core ≈ 16 KB gz, Phosphor ≈ 8 KB gz (só 
 
 **Dependências redundantes ou sobrepostas**
 
-- **Duas bibliotecas de ícones**: `lucide-react` só aparece em `/review` e nas páginas `/test`. Não pesa no
-  bundle público, mas é uma dependência a mais para o mesmo papel.
 - **`@tanstack/react-query-devtools`** já é só de desenvolvimento e só com `?devtools`: ok.
 - `workbox-window` parece sem uso (nenhum import), mas é usado pelo `virtual:pwa-register` do vite-plugin-pwa:
   manter.
@@ -92,7 +90,6 @@ código do app ≈ 31 KB gz, query-core ≈ 16 KB gz, Phosphor ≈ 8 KB gz (só 
 | Trocar ou acrescentar | Benefício | Custo / risco | Complexidade |
 |---|---|---|---|
 | **Fontes self-hosted** (`@fontsource-variable/nunito`, `@fontsource/fredoka`, só os pesos usados, `font-display: swap`) | Sem bloqueio por domínios externos, fontes no precache (offline de verdade), menos pedidos | Fontes entram no build (+~60–90 KB woff2, em cache) | Baixa |
-| **Phosphor no lugar do lucide-react** em `/review` e `/test` | Uma dependência a menos | Trocar ~10 ícones em páginas internas | Baixa |
 | **Testes de componente**: `@testing-library/react` (o `jsdom` já está nas devDependencies) | Cobrir `DayShortcuts`, `WeekStrip`, `CalendarPicker` e os stores com DOM | Configurar ambiente `jsdom` por arquivo | Baixa |
 | **Playwright** para fluxos e2e (substituindo os scripts CDP de verificação; o `a11y` poderia usar `@axe-core/playwright`) | Regressões de rolagem, deslize, centralização e PWA pegas no CI | Navegadores no CI (+1–2 min) | Média |
 | **Persister assíncrono em IndexedDB** (`@tanstack/query-async-storage-persister` + `idb-keyval`) | Sem limite de 5 MB nem serialização síncrona na thread principal | Hidratação assíncrona (o app já espera o `PersistQueryClientProvider`) | Média — só quando o cache crescer |
@@ -117,15 +114,14 @@ código do app ≈ 31 KB gz, query-core ≈ 16 KB gz, Phosphor ≈ 8 KB gz (só 
    `apple-mobile-web-app-status-bar-style="default"` (ou voltar o header do tema claro para uma cor escura).
 2. ~~Fontes self-hosted com só os pesos usados (melhora LCP e o offline).~~ Feito em 24/11.
 3. ~~Testes de componente para a navegação por dias e para os stores persistidos.~~ Feito em 24/11.
-4. ~~Trocar `lucide-react` por Phosphor nas páginas internas e remover a dependência.~~ Feito em 24/11.
-5. Rodar `pnpm analyze` antes de adicionar dependências ao chunk inicial (o `index` hoje tem 132 KB gz).
+4. Rodar `pnpm analyze` antes de adicionar dependências ao chunk inicial (o `index` hoje tem 132 KB gz).
 
 **Médio prazo**
 
-6. ~~Playwright para os fluxos críticos (agenda ↔ mapa, calendário, detalhes, instalação), rodando no CI.~~ Feito em 24/11.
-7. Persister em IndexedDB quando o cache de eventos passar de ~1 MB (o mapa agora busca datas avulsas).
+5. ~~Playwright para os fluxos críticos (agenda ↔ mapa, calendário, detalhes, instalação), rodando no CI.~~ Feito em 24/11.
+6. Persister em IndexedDB quando o cache de eventos passar de ~1 MB (o mapa agora busca datas avulsas).
 
 **Longo prazo**
 
-8. Avaliar o modo framework do React Router com `prerender` para aposentar o prerender próprio, se ele
+7. Avaliar o modo framework do React Router com `prerender` para aposentar o prerender próprio, se ele
    começar a exigir manutenção (novos tipos de página, i18n por URL).

@@ -69,7 +69,7 @@ resolvido.
 **Continua sem solução no GitHub Pages:** "Use efficient cache lifetimes", o `max-age=600` (ver "O que não dá para
 corrigir no GitHub Pages"). Não tem relação com o SWR.
 
-As camadas de dados estão em `docs/tecnico/03-cache-e-swr.md`.
+As camadas de dados estão em `docs/technical/03-cache-and-swr.md`.
 
 ## Diagnóstico (24/11)
 

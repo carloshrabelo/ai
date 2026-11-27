@@ -26,7 +26,7 @@ evidência entre parênteses.
 
 > **Principal: `lisbondance.com`** (Dynadot, comprado em 24/11/2026). **Secundário: `lisbondance.pt`**, comprado e em
 > validação no DNS.PT; quando sair, redireciona para o `.com`. Comparação de registradores e preços:
-> `docs/dominios.md` (arquivo local, fora do git).
+> `docs/domains.md` (arquivo local, fora do git).
 
 O app (repositório `lisbon-social-dances`, antes `ai`) é publicado em `lisbondance.com` desde 24/11/2026. O endereço
 antigo, `carloshrabelo.dev/ai/`, era de teste e não tinha usuários: ficou sem redirecionamento.
@@ -157,7 +157,7 @@ No `main` desde 24/11 (branch `feat/seo-ssg-share-analytics`): o GoatCounter con
 
 ### 4. Fotos dos perfis (promotores, DJs, professores) — branch `feature/promoter-photos`
 
-Preencher `photo` em `src/content/promoters.json` com a foto de perfil do Instagram, automaticamente (hoje aparece só em `/test/people`; sem foto, iniciais). A branch foi refeita sobre o `main` (1 commit, só local): scripts em TypeScript como os outros, com `scripts/lib/env.ts` para ler o `.env.local`.
+Preencher `photo` em `src/content/promoters.json` com a foto de perfil do Instagram, automaticamente (hoje aparece só em `/lab/people`; sem foto, iniciais). A branch foi refeita sobre o `main` (1 commit, só local): scripts em TypeScript como os outros, com `scripts/lib/env.ts` para ler o `.env.local`.
 
 - `pnpm ig:token <token curto> [perfil de teste]` (`scripts/ig-token.ts`): troca o token curto por um de ~60 dias e grava `IG_ACCESS_TOKEN` e `IG_USER_ID` no `.env.local`.
 - `pnpm promoters:photos [máximo] [--force]` (`scripts/promoters-photos.ts`): baixa as fotos para `public/promoters/<perfil>.jpg` e preenche `photo` (e `name`, se vazio).
@@ -185,7 +185,7 @@ Usa a **Instagram Graph API oficial (Business Discovery)**. O endpoint interno `
 #### Buscar as fotos
 
 - [ ] Testar com poucos perfis: `pnpm promoters:photos 3`; depois todos: `pnpm promoters:photos`. No fim ele lista quem não foi encontrado (conta pessoal ou @ errado) e quem não tem foto.
-- [ ] Conferir em `/test/people`.
+- [ ] Conferir em `/lab/people`.
 - [ ] Perfis que pedirem para não aparecer: `"photo": false` no `promoters.json` (o script pula).
 - [ ] Commitar `public/promoters/*.jpg` e o `promoters.json`, e fazer o merge da branch.
 
@@ -276,7 +276,6 @@ Os itens que dependem do domínio (`SITE_URL`, `robots.txt`, Google Search Conso
   acessibilidade com axe nos dois temas (`pnpm a11y`). `scripts/a11y-check.mjs` e o `axe-core` direto removidos.
 - [x] **Fontes self-hosted** (`src/fonts.css`, Nunito e Fredoka variáveis, só latin e latin-ext, ~109 KB no cache do
   PWA); sem Google Fonts.
-- [x] **`lucide-react` removido**: Phosphor em `/review` e nas páginas `/test`.
 - [x] Contraste da atribuição do mapa no tema escuro (o fundo branco do Leaflet vencia o do tema), achado pelo axe.
 
 #### Pendente

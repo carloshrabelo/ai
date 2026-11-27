@@ -62,7 +62,7 @@ sequenceDiagram
   A->>A: setQueryData(updatedAt = generatedAt)
 ```
 
-Os cards aparecem assim que o JavaScript carrega, sem esperar nenhuma rede. Ver [03](03-cache-e-swr.md).
+Os cards aparecem assim que o JavaScript carrega, sem esperar nenhuma rede. Ver [03](03-cache-and-swr.md).
 
 ## O que ainda limita o LCP
 

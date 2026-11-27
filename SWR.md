@@ -1,6 +1,6 @@
 # Eventos em SWR
 
-> Versão com diagramas, junto das outras camadas de cache: [`docs/tecnico/03-cache-e-swr.md`](docs/tecnico/03-cache-e-swr.md).
+> Versão com diagramas, junto das outras camadas de cache: [`docs/technical/03-cache-and-swr.md`](docs/technical/03-cache-and-swr.md).
 > Status: no ar desde 26/11 (branch `data` gerado pela Action **Update SWR**).
 
 *Stale-while-revalidate*: o app mostra **na hora** eventos já prontos (um pouco velhos) e, em paralelo, consulta a
@@ -79,7 +79,7 @@ Na prática:
   dias, ou com um `staleTime` maior quando os arquivos forem recentes. Isso corta a maior parte do uso da chave no
   site. Decidir com o Pas de Deux quão rápido uma mudança precisa aparecer.
 - [ ] **Aviso "Atualizado às…"** quando a API falhar e os dados vierem de um cache.
-- [ ] **Página `/test`** com a idade dos arquivos do SWR, para acompanhar o cron.
+- [ ] **Página `/lab`** com a idade dos arquivos do SWR, para acompanhar o cron.
 
 ## Arquivos
 

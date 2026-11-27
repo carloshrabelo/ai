@@ -1,13 +1,12 @@
 # UI — análise e sugestões de melhoria
 
 > **Status (19/11/2026):** aplicadas na `main`, exceto:
-> - **1.1:** o `/review` e as páginas de teste ainda usam Lucide. Por isso, `lucide-react` continua no `package.json`.
 > - **2.1:** abaixo de `sm`, o nome da página saiu do header (fica só para leitor de tela). O nome do app continua inteiro.
 > - **3.5:** o modo compacto não foi feito. Depende de decidir como ligar/desligar.
 > - **6.3:** os perfis citados não viraram chips com avatar. A descrição foi recolhida e as linhas repetidas saíram.
 > - **11.2:** o número do dia na faixa ficou em Nunito bold, não em Fredoka.
 
-Análise de todo o front (exceto `/test`), feita em 19/11/2026 sobre a `main`. Base:
+Análise de todo o front (exceto `/lab`), feita em 19/11/2026 sobre a `main`. Base:
 
 - prints em 390px (celular), 768px (tablet), 1280px, 1440px e 1920px, nos temas claro e escuro, em pt-BR e em inglês;
 - leitura dos componentes.
@@ -33,25 +32,6 @@ Cada item diz **onde** está o problema, **o que** muda e **por quê**. As prior
 ---
 
 ## 1. Consistência com o tema
-
-### 🔴 1.1 Ícones do Lucide que sobraram
-Ainda há 11 arquivos do app com `lucide-react`. Ao lado dos Phosphor Duotone, eles destoam: traço fino e sem preenchimento.
-
-| Onde | Ícones |
-|---|---|
-| `features/events/SelectedEventView.tsx` | `ArrowLeft` (voltar do drawer), `X` (fechar painel), `CalendarX` |
-| `features/genres/GenreFilterPopover.tsx` | `X` (fechar) |
-| `features/events/EventFeed.tsx` | `CalendarX`, `SearchX` (estados vazios) |
-| `features/events/EventStatusBadge.tsx` | `CalendarClock`, `CircleX` (adiado/cancelado) |
-| `features/events/ShareButton.tsx` | `Check` |
-| `features/price/PriceChips.tsx` | Ícones dos rótulos de preço (`Gift`, `GraduationCap`, `Moon`, `DoorOpen`…) |
-| `features/location/LocationControl.tsx` | `RefreshCw` |
-| `pages/Community.tsx` | `CalendarDays`, `MessageCircle`, `AtSign`, `CalendarPlus`, `Copy`, `ExternalLink`, `Check` |
-| `pages/Schools.tsx` | `School` |
-
-Trocar todos pelos equivalentes do Phosphor. Para escolher, dá para usar `/test/icons`, acrescentando os grupos que faltam. Depois, tirar `lucide-react` do `package.json`.
-
-O `/review` e as páginas de teste também usam Lucide. Ficam por último ou continuam como estão, porque são ferramentas internas.
 
 ### 🔴 1.2 Controles com o visual antigo
 O tema ainda não alcançou alguns componentes. Eles têm `rounded-lg`/`rounded-md`, `shadow-*` e `font-medium`:
@@ -301,7 +281,7 @@ O 404 é um "404" grande com um link solto. Sugestões:
 A página de erro usa um botão feito à mão (1.2).
 
 ### 🟡 10.2 Estados vazios
-"Nenhum evento" usa o ícone do Lucide, cinza e pequeno.
+"Nenhum evento" usa um ícone cinza e pequeno.
 
 - **Sugestão:** ícone Phosphor maior em roxo claro, título curto e o botão "Procurar mais adiante" como principal.
 
@@ -335,7 +315,7 @@ Os números da faixa de dias e os horários usam Nunito com `tabular-nums`, o qu
 
 ## Ordem sugerida
 
-1. **Rápido e visível:** 1.1 (ícones), 1.2 (controles antigos), 1.3 (sombras), 2.1 (título no celular) e 6.1 (ações dos detalhes).
+1. **Rápido e visível:** 1.2 (controles antigos), 1.3 (sombras), 2.1 (título no celular) e 6.1 (ações dos detalhes).
 2. **Layout:** 3.1 (cards no `xl`), 3.2 (ícone ↗), 3.3 (títulos dos dias), 4.5 (atalhos na sidebar) e 5.1 (distâncias).
 3. **Refinamento:** 1.4, 1.5, 2.3, 4.1, 6.2, 6.3, 8.x, 9.1 e 10.x.
 4. **Ideias:** 3.4, 4.3/4.4, 5.3/5.4, 7.x e 9.2.

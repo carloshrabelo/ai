@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/logo_square.png" alt="Lisbon Dance with Pas de Deux" width="140" />
+  <img src="docs/assets/logo_new.png" alt="Lisbon Dance with Pas de Deux" width="140" />
 </p>
 
 <h1 align="center">Lisbon Dance with Pas de Deux</h1>
@@ -32,13 +32,13 @@
 
 | Lista e mapa | Detalhes do evento | Tema escuro com filtro |
 |---|---|---|
-| ![Lista de eventos com filtros na barra lateral e mapa à direita](docs/screenshots/desktop.png) | ![Detalhes do evento aberto pela lista, em cima do mapa com o pino destacado](docs/screenshots/desktop-detalhes.png) | ![Tema escuro com o filtro Latinas ativo](docs/screenshots/desktop-escuro.png) |
+| ![Lista de eventos com filtros na barra lateral e mapa à direita](docs/screenshots/desktop.png) | ![Detalhes do evento aberto pela lista, em cima do mapa com o pino destacado](docs/screenshots/desktop-details.png) | ![Tema escuro com o filtro Latinas ativo](docs/screenshots/desktop-dark.png) |
 
 ### Celular
 
 | Lista | Filtros | Detalhes | Mapa | Tema escuro |
 |---|---|---|---|---|
-| ![Lista de eventos no celular](docs/screenshots/mobile.png) | ![Filtros numa folha que sobe de baixo, com os conjuntos Latinas, Afro e BR](docs/screenshots/mobile-filtros.png) | ![Detalhes do evento em tela cheia](docs/screenshots/mobile-detalhes.png) | ![Página Mapa: faixa de dias em cima, mapa e carrossel de eventos embaixo](docs/screenshots/mobile-mapa.png) | ![Lista no tema escuro](docs/screenshots/mobile-escuro.png) |
+| ![Lista de eventos no celular](docs/screenshots/mobile.png) | ![Filtros numa folha que sobe de baixo, com os conjuntos Latinas, Afro e BR](docs/screenshots/mobile-filters.png) | ![Detalhes do evento em tela cheia](docs/screenshots/mobile-details.png) | ![Página Mapa: faixa de dias em cima, mapa e carrossel de eventos embaixo](docs/screenshots/mobile-map.png) | ![Lista no tema escuro](docs/screenshots/mobile-dark.png) |
 
 ## Funcionalidades
 
@@ -102,7 +102,7 @@ pnpm dev
 | `VITE_USE_MOCK` | `true` (padrão) usa `src/mocks/events.json`, com as datas deslocadas para perto de hoje; `false` usa a Google Calendar API. |
 | `VITE_GOOGLE_API_KEY` | Chave da Google Calendar API (obrigatória com `VITE_USE_MOCK=false`). Restrinja por *HTTP referrer* no Google Cloud: ela fica visível no JavaScript publicado. |
 | `VITE_MOCK_DELAY_MS` | Atraso artificial do mock, para ver os skeletons. |
-| `VITE_TEST_PAGES` | `true` mostra o link "Teste" no menu (só local, não configure no deploy). A área `/test`, com as ferramentas internas (como `/test/prices`, que lista os preços distintos dos eventos e a tradução de cada um), existe também no site publicado para quem tem o link, sem link no app e com noindex. |
+| `VITE_TEST_PAGES` | `true` mostra o link "Lab" no menu (só local, não configure no deploy). A área `/lab`, com as ferramentas internas (como `/lab/prices`, que lista os preços distintos dos eventos e a tradução de cada um), existe também no site publicado para quem tem o link, sem link no app e com noindex. |
 | `VITE_SWR_URL` | Pasta dos arquivos do SWR (padrão: o branch `data` em `raw.githubusercontent.com`; `off` desliga). Ignorada no mock. |
 | `VITE_GOATCOUNTER_CODE` | Código do site no [GoatCounter](https://www.goatcounter.com) (analytics sem cookies). Vazio = desligado; em `pnpm dev` fica sempre desligado. |
 
@@ -123,7 +123,7 @@ pnpm dev
 | `pnpm venues:check [dias] [--fix]` | Lista os locais dos próximos eventos (do cache) sem coordenadas; com `--fix`, busca e grava em `src/content/venues.json`. |
 | `pnpm e2e` | Testes de ponta a ponta (Playwright, em `e2e/`): fluxos principais no celular e no desktop, com o mock. Sobe o `pnpm dev` sozinho; localmente usa o Chrome instalado. Roda no CI antes do build. |
 | `pnpm a11y` | Só a parte de acessibilidade do `e2e` (axe-core, WCAG 2.1 AA + boas práticas) nas telas principais, nos dois temas. |
-| `pnpm generate-pwa-assets` | Gera os ícones do PWA a partir de `docs/assets/logo_square.png`. |
+| `pnpm generate-pwa-assets` | Gera os ícones do PWA a partir de `docs/assets/logo_new.png` (as logos antigas ficam como `*_legacy`). |
 | `pnpm promoters:update` | Atualiza `src/content/promoters.json` a partir do cache dos eventos (roda também na Action diária). |
 
 ### Analisar o bundle
@@ -132,7 +132,7 @@ pnpm dev
 
 - O padrão é o **treemap**: cada retângulo é um módulo, com o tamanho proporcional ao código no bundle; passe o mouse para ver os tamanhos renderizado, gzip e brotli. Os blocos de fora são os chunks (`index` é o que carrega na abertura; `EventsMap`, `EventDetails`, páginas etc. são carregados sob demanda).
 - Outras visões: `ANALYZE_TEMPLATE=sunburst pnpm analyze` (hierarquia), `network` (quem importa quem — útil para descobrir por que uma dependência entrou num chunk) ou `flamegraph`.
-- O que olhar: dependências grandes no chunk `index` (custam na primeira carga), a mesma dependência em vários chunks e páginas de teste (`/test`) puxando bibliotecas para o bundle principal.
+- O que olhar: dependências grandes no chunk `index` (custam na primeira carga), a mesma dependência em vários chunks e páginas de teste (`/lab`) puxando bibliotecas para o bundle principal.
 
 > Por que não o CLI `vite-bundle-visualizer`: ele traz o `rollup-plugin-visualizer` 5, que não suporta o Rolldown do Vite 8. O plugin na versão 7 suporta.
 
@@ -161,7 +161,7 @@ src/
   pages/       Dança (/ e /event/<slug>/), Mapa (/map, celular), Comunidade (/community), Sobre (/about), Escolas (/schools, oculta)
 scripts/       events-cache.ts, events-swr.ts, prerender.ts, venues-check.ts, promoters-update.ts (lib/: início comum e cache)
 e2e/           testes de ponta a ponta e acessibilidade (Playwright)
-docs/          prints, logo, protótipos e a documentação técnica (docs/tecnico/)
+docs/          prints, logo, protótipos e a documentação técnica (docs/technical/)
 .github/       workflows: deploy, Update data (diário) e Update SWR (a cada 2 h)
 ```
 
@@ -226,14 +226,14 @@ O workflow `.github/workflows/swr.yml` (**Update SWR**) roda a cada 2 horas: `pn
 
 O prerender também embute no `index.html` os eventos da primeira janela (14 dias), num `<script type="application/json" id="initial-events">`: o app desenha os cards sem esperar a API e a consulta em seguida (`src/api/initialEvents.ts`).
 
-Diagramas das camadas de cache, dos workflows e das chaves: [`docs/tecnico/`](docs/tecnico/README.md).
+Diagramas das camadas de cache, dos workflows e das chaves: [`docs/technical/`](docs/technical/README.md).
 
 O que ainda precisa ser feito ou conferido à mão (chaves, configurações, verificações) está em [`TODO.md`](TODO.md).
 
 ## Documentação técnica
 
-Em [`docs/tecnico/`](docs/tecnico/README.md), com diagramas: arquitetura, dados dos eventos, cache e SWR, build e SEO, CI/CD e chaves, PWA e offline, analytics e privacidade. Desempenho em [`LIGHTHOUSE.md`](LIGHTHOUSE.md) e o plano do SWR em [`SWR.md`](SWR.md).
+Em [`docs/technical/`](docs/technical/README.md), com diagramas: arquitetura, dados dos eventos, cache e SWR, build e SEO, CI/CD e chaves, PWA e offline, analytics e privacidade. Desempenho em [`LIGHTHOUSE.md`](LIGHTHOUSE.md) e o plano do SWR em [`SWR.md`](SWR.md).
 
 ## Planejamento
 
-O plano de implementação, as decisões e o histórico de cada etapa estão em [`PLANO.md`](PLANO.md).
+O plano de implementação, as decisões e o histórico de cada etapa estão em [`PLAN.md`](PLAN.md).
