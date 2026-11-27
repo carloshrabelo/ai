@@ -41,6 +41,11 @@ export const pt = {
     emptyForGenres: (genres: string) => `Nenhum evento de ${genres} a partir desta data.`,
     pausedNone: (genres: string, day: string) => `Nenhum evento de ${genres} até ${day}.`,
     pausedNoOther: (genres: string, day: string) => `Nenhum outro evento de ${genres} até ${day}.`,
+    // Só "Outros" marcado: vazio quer dizer que todos os eventos já têm um estilo reconhecido.
+    emptyOnlyOther: 'Nenhum evento sem estilo a partir desta data: todos os eventos já foram identificados com um estilo.',
+    pausedNoneOnlyOther: (day: string) =>
+      `Nenhum evento sem estilo até ${day}: todos os eventos até essa data já foram identificados com um estilo.`,
+    pausedNoOtherOnlyOther: (day: string) => `Nenhum outro evento sem estilo até ${day}: os demais já foram identificados com um estilo.`,
   },
   event: {
     addToCalendar: 'Adicionar à agenda',
