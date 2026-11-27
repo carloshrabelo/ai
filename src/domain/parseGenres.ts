@@ -49,6 +49,8 @@ export function genresInText(text: string): Genre[] {
   // Outras grafias: "UrbanKiz" → "URBAN KIZ", "Cuban Salsa" → "SALSA CUBANA".
   let upper = text
     .normalize('NFC')
+    // Links não contam: o slug de um link ("…/baile-folk-com-folky-balboa/") não é o estilo do evento.
+    .replace(/(?:https?:\/\/|www\.)\S+/giu, ' ')
     .toUpperCase()
     .replace(/(?<![\p{L}\p{N}])URBANKIZ(?![\p{L}\p{N}])/gu, 'URBAN KIZ')
     .replace(/(?<![\p{L}\p{N}])CUBAN\s+SALSA(?![\p{L}\p{N}])/gu, 'SALSA CUBANA')

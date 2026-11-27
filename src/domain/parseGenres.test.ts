@@ -117,6 +117,13 @@ describe('genresInTitleWords', () => {
   })
 })
 
+describe('genresInText ignora links', () => {
+  it('o slug de um link não vira estilo', () => {
+    expect(genresInText('Evento: https://facebook.com/events/s/baile-folk-com-folky-balboa/1174 Baile Folk')).toEqual([])
+    expect(genresInText('Mais em www.example.com/salsa-night e Bachata na pista')).toEqual(['Bachata'])
+  })
+})
+
 describe('famílias American e Salão', () => {
   it('não são procuradas em texto corrido ("Salão Lua", "American bar"); os estilos delas, sim', () => {
     expect(genresInText('Baile no Salão Lua, com Tango e Blues no American bar')).toEqual(['Blues', 'Tango'])
