@@ -163,7 +163,7 @@ function analyze(palette: Palette): string[] {
 function PaletteSection({ palette }: { palette: Palette }) {
   const issues = analyze(palette)
   return (
-    <section id={palette.id} className="scroll-mt-20 space-y-3">
+    <section id={palette.id} className="scroll-mt-28 space-y-3 md:scroll-mt-40">
       <h2 className="text-xl font-bold">{palette.name}</h2>
       <p className="font-semibold">{palette.summary}</p>
       <ul className="list-disc space-y-1 pl-5 text-sm">
@@ -267,18 +267,23 @@ export default function GenreColors() {
           escolhidas, mais a versão final (a que o app usa agora) e a tradução dela para o Google Agenda. Cada uma mostra os filtros e
           alguns cards nos temas claro e escuro, o motivo de cada cor e o que não funciona no app.
         </p>
-        <nav aria-label="Paletas" className="flex flex-wrap gap-2 text-sm">
-          {PALETTES.map((palette) => (
-            <a
-              key={palette.id}
-              href={`#${palette.id}`}
-              className="rounded-xl border-2 border-border px-3 py-1 font-bold text-brand hover:bg-surface-muted"
-            >
-              {palette.name.replace(/ \(.*\)$/, '')}
-            </a>
-          ))}
-        </nav>
       </header>
+      {/* Fixa abaixo do header ao rolar: os atalhos para as paletas ficam sempre à mão. No celular, uma linha só
+          com rolagem para o lado (quebrando em linhas, cobria um terço da tela). */}
+      <nav
+        aria-label="Paletas"
+        className="sticky top-[calc(3.5rem+env(safe-area-inset-top))] z-[5] -mx-1 flex gap-2 overflow-x-auto bg-bg px-1 py-2 text-sm whitespace-nowrap md:flex-wrap md:overflow-visible"
+      >
+        {PALETTES.map((palette) => (
+          <a
+            key={palette.id}
+            href={`#${palette.id}`}
+            className="shrink-0 rounded-xl border-2 border-border bg-surface px-3 py-1 font-bold text-brand hover:bg-surface-muted"
+          >
+            {palette.name.replace(/ \(.*\)$/, '')}
+          </a>
+        ))}
+      </nav>
 
       <section className="space-y-3">
         <h2 className="text-xl font-bold">Famílias</h2>
