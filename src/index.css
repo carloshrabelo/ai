@@ -38,8 +38,8 @@
   --color-genre-neutral-fg: var(--genre-neutral-fg);
   /* Cores dos estilos (paleta "Versão final", /test/genre-colors). Um token por estilo; os que mudam no
      tema escuro apontam para --genre-<estilo> (definido nos dois temas, abaixo). */
-  /* Latinas: noite, azul dominicano */
-  --color-genre-latinas: var(--genre-latinas);
+  /* Latinas: vermelho fechado, o tom das filhas (Salsa, Salsa Cubana, Merengue) */
+  --color-genre-latinas: #8f1d1d;
   --color-genre-latinas-fg: #ffffff;
   /* Salsa: vermelho de noite (o tom principal das Latinas) */
   --color-genre-salsa: #b3261e;
@@ -139,7 +139,6 @@
 
     --genre-neutral: #e2e8f0;
     --genre-neutral-fg: #334155;
-    --genre-latinas: #002d62;
     --genre-salsa-cubana: #7a1630;
     --genre-afro: #2a2118;
     --genre-kizomba: #0d0d0d;
@@ -170,7 +169,6 @@
        chumbo, mantendo o texto amarelo). */
     --genre-neutral: #3a3e66;
     --genre-neutral-fg: #e2e4ff;
-    --genre-latinas: #2f5597;
     --genre-salsa-cubana: #a3324f;
     --genre-afro: #5c4a35;
     --genre-kizomba: #000000;

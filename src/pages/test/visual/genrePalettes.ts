@@ -350,13 +350,13 @@ export const PALETTES: Palette[] = [
     idea: [
       'Mesma ideia do Pas de Deux, para quem vê os dois reconhecer: American azul (por causa do Blues; no calendário o Swing é laranja), BR amarelo, Salão petróleo, Tradicionais verde, e as noturnas escuras.',
       'Família = matiz; estilo = tom. Dentro de cada família os tons variam de claro a escuro, para dois estilos da mesma família não ficarem iguais no mesmo card.',
-      'As noturnas sem cinza: Latinas nos azuis e vinhos da noite (mantém a origem dominicana), Afro no preto com texto dourado (Kizomba o mais escuro, como ele pediu). Escuro saturado ou com texto colorido não parece "desativado".',
+      'As noturnas sem cinza: Latinas em vermelhos e vinho (o conjunto num vermelho fechado, o tom das filhas), Afro no preto com texto dourado (Kizomba o mais escuro, como ele pediu). Escuro saturado ou com texto colorido não parece "desativado".',
       'Bachata e Zouk, as mais sensuais, em rosas vizinhos (framboesa e ameixa), mesmo estando em famílias diferentes (Latinas e BR): parecidos de propósito, mas distinguíveis lado a lado.',
       'Salão em petróleo e esmeralda (elegante, noturno), um espaço livre na paleta: longe do roxo do app e dos rosas da Bachata e do Zouk.',
       'Mesmo quando a família é igual à do calendário, os tons são mais ricos que os 11 do Google: o app pode ser mais fino que o calendário sem desalinhar.',
     ],
     colors: {
-      Latinas: { bg: '#002d62', dark: '#2f5597', why: 'Noite, azul dominicano' },
+      Latinas: { bg: '#8f1d1d', why: 'Vermelho fechado: o tom das filhas (Salsa, Salsa Cubana, Merengue)' },
       Salsa: { bg: '#b3261e', why: 'O tom principal: vermelho de noite' },
       'Salsa Cubana': { bg: '#7a1630', dark: '#a3324f', why: 'Vinho: variação da Salsa' },
       Bachata: { bg: '#b8336a', why: 'Rosa-framboesa: sensual (par com o Zouk)' },
@@ -379,7 +379,7 @@ export const PALETTES: Palette[] = [
       Tradicionais: { bg: '#2e6b3a', dark: '#3f8a4d', why: 'Verde-floresta' },
     },
     notes: [
-      'American em azul (por causa do Blues): Swing azul vivo, Blues azul profundo, West Coast Swing índigo. Cuidado: o conjunto Latinas ainda é azul (o resto das Latinas agora é vermelho e rosa) e fica perto do conjunto American.',
+      'American em azul (por causa do Blues): Swing azul vivo, Blues azul profundo, West Coast Swing índigo.',
       'Ainda falta ajustar a versão de cada cor no tema escuro e testar numa noite cheia de eventos.',
       'Se o Terça quiser algo mais perto do calendário dele, dá para usar as cores do Google como base e só variar o tom dentro de cada família.',
     ],
