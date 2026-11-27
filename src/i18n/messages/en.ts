@@ -37,9 +37,10 @@ export const en: Messages = {
     emptyForGenres: (genres) => `No ${genres} events from this date on.`,
     pausedNone: (genres, day) => `No ${genres} events until ${day}.`,
     pausedNoOther: (genres, day) => `No other ${genres} events until ${day}.`,
-    emptyOnlyOther: 'Every event from this date on already has a style: none is left in "Other".',
-    pausedNoneOnlyOther: (day) => `Every event until ${day} already has a style: none is left in "Other".`,
-    pausedNoOtherOnlyOther: (day) => `All other events until ${day} already have a style.`,
+    emptyOnlyOther: 'No events without a style from this date on: every event has already been identified with a style.',
+    pausedNoneOnlyOther: (day) =>
+      `No events without a style until ${day}: every event up to that date has already been identified with a style.`,
+    pausedNoOtherOnlyOther: (day) => `No other events without a style until ${day}: the rest have already been identified with a style.`,
   },
   event: {
     addToCalendar: 'Add to calendar',
