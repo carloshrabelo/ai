@@ -43,7 +43,7 @@
 ## Funcionalidades
 
 - **Feed por dia** a partir de hoje, carregado em janelas de 2 semanas com scroll infinito; atalhos Hoje / Amanhã / Outra data (abre o calendário), e Ontem de madrugada ou quando o dia em foco é ontem; até as 05:00 o "hoje" da agenda ainda é a noite anterior, faixa de dias (com a semana anterior; o dia ativo fica sempre no centro) e calendário do mês, que troca de mês deslizando para os lados no celular e no tablet. O dia ativo acompanha a rolagem e é mantido ao trocar entre a agenda e o mapa.
-- **Filtros por estilo** (na barra lateral no desktop; numa folha que sobe de baixo no celular e tablet), acumulativos e guardados na URL (`?genres=salsa,forro`). Conjuntos 🇩🇴 **Latinas** (Salsa, Salsa Cubana, Bachata, Merengue), 🇦🇴 **Afro** (Kizomba, Semba, Urban Kiz) e 🇧🇷 **BR** (Forró, Zouk, Samba), mais Swing, West Coast Swing, Tango, Bolero e Outros.
+- **Filtros por estilo** (na barra lateral no desktop; numa folha que sobe de baixo no celular e tablet), acumulativos e guardados na URL (`?genres=salsa,forro`). Conjuntos 🇩🇴 **Latinas** (Salsa, Salsa Cubana, Bachata, Merengue), 🇦🇴 **Afro** (Kizomba, Semba, Urban Kiz) 🇧🇷 **BR** (Forró, Zouk, Samba), 🇺🇸 **American** (Swing, Blues, West Coast Swing) e 🌹 **Salão** (Tango, Bolero), mais Tradicionais e Outros. Balboa, Shag e Lindy Hop entram como Swing.
 - **Mapa** com os eventos do dia: a partir de 1280px, numa coluna ao lado da lista (hover no card destaca o pino e vice-versa); no celular e tablet, na página **Mapa** (`/map`), com a faixa de dias em cima e os eventos num carrossel embaixo (títulos em até 2 linhas). O mapa busca as próprias datas: a faixa carrega mais dias ao chegar no fim e o calendário vai para qualquer data, sem depender do que a agenda já carregou. O card visível fica em foco no mapa, tocar num pino traz o card dele e tocar no card abre os detalhes.
 - **Detalhes do evento**: na coluna do mapa no desktop, numa página em drawer no celular, com a descrição completa. Link compartilhável (`/event/<data>-<nome>-<hash>/`, com página estática), rota no app de navegação do aparelho e "Adicionar ao calendário".
 - **Distância** até cada evento, quando o usuário libera a localização.
@@ -180,7 +180,7 @@ O título dos eventos segue o padrão `Tag • Nome • Preço` (ex.: `SBK • F
 
 - A **tag** passa por aliases (`SBK` → Salsa + Bachata + Kizomba, `WCS` → West Coast Swing, `Afro-Latinas` → Latinas + Afro…) e é comparada com a lista de gêneros (`src/domain/genres.ts`).
 - Gêneros citados no **título ou na descrição** também entram (ex.: "70% Bachata / 30% Salsa").
-- **Conjuntos** (Latinas, Afro, BR) são tags de reserva: só aparecem quando nenhum gênero deles foi citado, mas o evento conta nos filtros de todos os gêneros do conjunto. Numa tag composta como "Afro-Latinas", cada parte só fica se o conteúdo a confirmar.
+- **Conjuntos** (Latinas, Afro, BR, American, Salão) são tags de reserva: só aparecem quando nenhum gênero deles foi citado, mas o evento conta nos filtros de todos os gêneros do conjunto. Numa tag composta como "Afro-Latinas", cada parte só fica se o conteúdo a confirmar.
 - Prefixos como `(Cancelado)` ou `[Postponed]` viram aviso no card e tiram o evento do mapa.
 
 ## Locais e coordenadas

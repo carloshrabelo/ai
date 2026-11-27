@@ -243,9 +243,10 @@ export default function GenreColors() {
       <header className="space-y-3">
         <h1 className="text-2xl font-bold">Cores dos estilos</h1>
         <p>
-          Seis paletas para os estilos de dança, para comparar antes de mudar o app: a de hoje, a sugerida pelo Terça (Pas de Deux), uma
-          pelos motivos dele, uma por como os estilos são vistos, uma pelas cores mais associadas e a minha sugestão. Cada uma mostra os
-          filtros e alguns cards nos temas claro e escuro, o motivo de cada cor e o que não funciona no app.
+          Nove paletas para os estilos de dança, para comparar: a que o app usava até 27/11, a sugerida pelo Terça (Pas de Deux), uma pelos
+          motivos dele, uma por como os estilos são vistos, uma pelas cores mais associadas e a minha sugestão e uma nova proposta com cores
+          escolhidas, mais a versão final (a que o app usa agora) e a tradução dela para o Google Agenda. Cada uma mostra os filtros e
+          alguns cards nos temas claro e escuro, o motivo de cada cor e o que não funciona no app.
         </p>
         <nav aria-label="Paletas" className="flex flex-wrap gap-2 text-sm">
           {PALETTES.map((palette) => (
@@ -263,8 +264,8 @@ export default function GenreColors() {
       <section className="space-y-3">
         <h2 className="text-xl font-bold">Famílias</h2>
         <p className="text-sm">
-          Latinas, Afro e BR continuam iguais. <strong>Swing</strong> e <strong>Salão</strong> são novas; Tradicionais fica sozinha. A
-          família é o conjunto do filtro (o chip de cantos retos, que marca todos os estilos dela).
+          Latinas, Afro e BR continuam iguais. <strong>American</strong> e <strong>Salão</strong> são novas (já no app); Tradicionais fica
+          sozinha. A família é o conjunto do filtro (o chip de cantos retos, que marca todos os estilos dela).
         </p>
         <ul className="grid gap-2 text-sm sm:grid-cols-2 lg:grid-cols-3">
           {FAMILIES.map((family) => (

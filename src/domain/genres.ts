@@ -11,9 +11,12 @@ export const GENRES = [
   'Urban Kiz',
   'Afro',
   'Swing',
-  'Tango',
+  'Blues',
   'West Coast Swing',
+  'American',
+  'Tango',
   'Bolero',
+  'Salão',
   'Tradicionais',
   'Samba',
   'BR',
@@ -48,6 +51,8 @@ export const ALIAS: Record<string, string> = {
   FORRO: 'FORRÓ',
   SWINGADO: '',
   SHAG: 'SWING',
+  BALBOA: 'SWING',
+  'LINDY HOP': 'SWING',
   // Danças tradicionais europeias (calendário europeias.agenda@gmail.com).
   'DANÇAS TRADICIONAIS EUROPEIAS': 'TRADICIONAIS',
   'DANÇAS TRADICIONAIS': 'TRADICIONAIS',
@@ -57,60 +62,17 @@ export const ALIAS: Record<string, string> = {
   BALFOLK: 'TRADICIONAIS',
 }
 
-export type GenreColor =
-  | 'dr-navy'
-  | 'red'
-  | 'wine'
-  | 'royal-blue'
-  | 'light-blue'
-  | 'black-gold'
-  | 'gold'
-  | 'rust'
-  | 'chocolate'
-  | 'br-yellow'
-  | 'green'
-  | 'lime'
-  | 'teal'
-  | 'slate'
-  | 'magenta'
-  | 'orange'
-  | 'lavender'
-  | 'olive'
-
-/**
- * Cor de cada gênero, por família: Latinas no vermelho e azul da República Dominicana; Afro no
- * preto, amarelo e terracota de Angola; BR no verde e amarelo do Brasil; os outros nas cores que
- * sobram (roxo, magenta, laranja, lavanda, oliva). Valores em src/index.css (--color-genre-*).
- */
-export const genreToPalette: Record<Genre, GenreColor> = {
-  Latinas: 'dr-navy',
-  Salsa: 'red',
-  'Salsa Cubana': 'wine',
-  Bachata: 'royal-blue',
-  Merengue: 'light-blue',
-  Afro: 'black-gold',
-  Kizomba: 'gold',
-  Semba: 'rust',
-  'Urban Kiz': 'chocolate',
-  BR: 'br-yellow',
-  Samba: 'green',
-  Forró: 'lime',
-  Zouk: 'teal',
-  Swing: 'slate', // cinza-ardósia: o roxo é a cor do app (logo)
-  Tango: 'magenta',
-  'West Coast Swing': 'orange',
-  Bolero: 'lavender',
-  Tradicionais: 'olive',
-}
-
 /**
  * Gêneros "guarda-chuva": o evento aparece também no filtro dos gêneros incluídos
- * (Latinas → Salsa, Bachata e Merengue; Afro → Kizomba, Semba e Urban Kiz; BR → Forró, Zouk e Samba).
+ * (Latinas → Salsa, Bachata e Merengue; Afro → Kizomba, Semba e Urban Kiz; BR → Forró, Zouk e Samba;
+ * American → Swing, Blues e West Coast Swing; Salão → Tango e Bolero).
  */
 export const GENRE_INCLUDES: Partial<Record<Genre, readonly Genre[]>> = {
   Latinas: ['Salsa', 'Bachata', 'Merengue'],
   Afro: ['Kizomba', 'Semba', 'Urban Kiz'],
   BR: ['Forró', 'Zouk', 'Samba'],
+  American: ['Swing', 'Blues', 'West Coast Swing'],
+  Salão: ['Tango', 'Bolero'],
 }
 
 /** Bandeira de cada conjunto, exibida antes do nome no chip. */
@@ -118,6 +80,8 @@ export const GENRE_EMOJI: Partial<Record<Genre, string>> = {
   Latinas: '🇩🇴', // República Dominicana
   Afro: '🇦🇴', // Angola
   BR: '🇧🇷', // Brasil
+  American: '🇺🇸', // Estados Unidos
+  Salão: '🌹', // a rosa do tango (Tango e Bolero vêm de países diferentes)
 }
 
 /**

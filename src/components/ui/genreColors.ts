@@ -1,29 +1,37 @@
-import { type Genre, type GenreColor, genreToPalette } from '../../domain/genres'
+import type { Genre } from '../../domain/genres'
 
-/** Classes literais para o Tailwind encontrar no build (fundo + texto de cada gênero). */
-const COLOR_CLASSES: Record<GenreColor | 'neutral', string> = {
+/**
+ * Cor de cada estilo: classes literais para o Tailwind encontrar no build (fundo + texto). Os valores
+ * estão em src/index.css (--color-genre-<estilo>), da paleta "Versão final" (/test/genre-colors):
+ * Latinas em vermelhos (Bachata em rosa), Afro na noite com dourado, BR em amarelos (Zouk em rosa,
+ * par com a Bachata), American em azuis, Salão em petróleo e Tradicionais em verde-floresta.
+ */
+const COLOR_CLASSES: Record<Genre | 'neutral', string> = {
   neutral: 'bg-genre-neutral text-genre-neutral-fg',
-  'dr-navy': 'bg-genre-dr-navy text-genre-dr-navy-fg',
-  red: 'bg-genre-red text-genre-red-fg',
-  wine: 'bg-genre-wine text-genre-wine-fg',
-  'royal-blue': 'bg-genre-royal-blue text-genre-royal-blue-fg',
-  'light-blue': 'bg-genre-light-blue text-genre-light-blue-fg',
-  'black-gold': 'bg-genre-black-gold text-genre-black-gold-fg',
-  gold: 'bg-genre-gold text-genre-gold-fg',
-  rust: 'bg-genre-rust text-genre-rust-fg',
-  chocolate: 'bg-genre-chocolate text-genre-chocolate-fg',
-  'br-yellow': 'bg-genre-br-yellow text-genre-br-yellow-fg',
-  green: 'bg-genre-green text-genre-green-fg',
-  lime: 'bg-genre-lime text-genre-lime-fg',
-  teal: 'bg-genre-teal text-genre-teal-fg',
-  slate: 'bg-genre-slate text-genre-slate-fg',
-  magenta: 'bg-genre-magenta text-genre-magenta-fg',
-  orange: 'bg-genre-orange text-genre-orange-fg',
-  lavender: 'bg-genre-lavender text-genre-lavender-fg',
-  olive: 'bg-genre-olive text-genre-olive-fg',
+  Latinas: 'bg-genre-latinas text-genre-latinas-fg',
+  Salsa: 'bg-genre-salsa text-genre-salsa-fg',
+  'Salsa Cubana': 'bg-genre-salsa-cubana text-genre-salsa-cubana-fg',
+  Bachata: 'bg-genre-bachata text-genre-bachata-fg',
+  Merengue: 'bg-genre-merengue text-genre-merengue-fg',
+  Afro: 'bg-genre-afro text-genre-afro-fg',
+  Kizomba: 'bg-genre-kizomba text-genre-kizomba-fg',
+  Semba: 'bg-genre-semba text-genre-semba-fg',
+  'Urban Kiz': 'bg-genre-urban-kiz text-genre-urban-kiz-fg',
+  BR: 'bg-genre-br text-genre-br-fg',
+  Forró: 'bg-genre-forro text-genre-forro-fg',
+  Zouk: 'bg-genre-zouk text-genre-zouk-fg',
+  Samba: 'bg-genre-samba text-genre-samba-fg',
+  American: 'bg-genre-american text-genre-american-fg',
+  Swing: 'bg-genre-swing text-genre-swing-fg',
+  Blues: 'bg-genre-blues text-genre-blues-fg',
+  'West Coast Swing': 'bg-genre-wcs text-genre-wcs-fg',
+  Salão: 'bg-genre-salao text-genre-salao-fg',
+  Tango: 'bg-genre-tango text-genre-tango-fg',
+  Bolero: 'bg-genre-bolero text-genre-bolero-fg',
+  Tradicionais: 'bg-genre-tradicionais text-genre-tradicionais-fg',
 }
 
 /** Classes de cor do gênero (ou neutras quando não há gênero). */
 export function genreColorClasses(genre?: Genre): string {
-  return COLOR_CLASSES[genre ? genreToPalette[genre] : 'neutral']
+  return COLOR_CLASSES[genre ?? 'neutral']
 }

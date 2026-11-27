@@ -34,7 +34,7 @@ const SECTIONS: Section[] = [
       {
         to: '/test/genre-colors',
         title: 'Cores dos estilos',
-        description: 'Seis paletas para os estilos (a atual, a do Pas de Deux e outras), com prévia nos dois temas e o porquê de cada cor.',
+        description: 'Nove paletas para os estilos (a atual, a do Pas de Deux e outras), com prévia nos dois temas e o porquê de cada cor.',
         icon: PaletteIcon,
       },
     ],

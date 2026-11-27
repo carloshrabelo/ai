@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { ALIAS } from './genres'
-import { genresInTitleWords, parseGenres } from './parseGenres'
+import { genresInText, genresInTitleWords, parseGenres } from './parseGenres'
 
 describe('parseGenres', () => {
   it.each([
@@ -16,6 +16,10 @@ describe('parseGenres', () => {
     ['Cuban Salsa', ['Salsa Cubana']],
     ['Merengue', ['Merengue']],
     ['Bachata & Merengue', ['Bachata', 'Merengue']],
+    ['Blues', ['Blues']],
+    ['Swing & Blues', ['Swing', 'Blues']],
+    ['Balboa', ['Swing']],
+    ['Lindy Hop', ['Swing']],
   ])('%s → gêneros diretos', (tag, expected) => {
     expect(parseGenres(tag)).toEqual(expected)
   })
@@ -109,5 +113,11 @@ describe('genresInTitleWords', () => {
     'Noite Africana',
   ])('%j → nenhum', (title) => {
     expect(genresInTitleWords(title)).toEqual([])
+  })
+})
+
+describe('famílias American e Salão', () => {
+  it('não são procuradas em texto corrido ("Salão Lua", "American bar"); os estilos delas, sim', () => {
+    expect(genresInText('Baile no Salão Lua, com Tango e Blues no American bar')).toEqual(['Blues', 'Tango'])
   })
 })

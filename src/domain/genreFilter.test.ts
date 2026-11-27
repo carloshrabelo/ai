@@ -123,6 +123,16 @@ describe('matchesGenres', () => {
     expect(matchesGenres(['Latinas'], ['Salsa'])).toBe(true)
   })
 
+  it('American (Swing, Blues, West Coast Swing) e Salão (Tango, Bolero)', () => {
+    expect(matchesGenres(['Blues'], ['American'])).toBe(true)
+    expect(matchesGenres(['West Coast Swing'], ['American'])).toBe(true)
+    expect(matchesGenres(['American'], ['Swing'])).toBe(true)
+    expect(matchesGenres(['Tango'], ['Salão'])).toBe(true)
+    expect(matchesGenres(['Bolero'], ['Salão'])).toBe(true)
+    expect(matchesGenres(['Tango'], ['American'])).toBe(false)
+    expect(parseGenresParam('american,salao')).toEqual(['American', 'Salão'])
+  })
+
   it('Urban Kiz faz parte de Afro', () => {
     expect(matchesGenres(['Urban Kiz'], ['Afro'])).toBe(true)
     expect(matchesGenres(['Afro'], ['Urban Kiz'])).toBe(true)

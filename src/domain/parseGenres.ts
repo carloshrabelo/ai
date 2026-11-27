@@ -38,7 +38,7 @@ export function parseGenres(tag: string): Genre[] {
 }
 
 /** Gêneros que não são procurados em texto corrido (genéricos demais). */
-const NOT_IN_TEXT = new Set<Genre>(['Latinas', 'Afro', 'BR', 'Tradicionais']) // "músicas latinas", "afro house", "BR-116", "doces tradicionais"
+const NOT_IN_TEXT = new Set<Genre>(['Latinas', 'Afro', 'BR', 'American', 'Salão', 'Tradicionais']) // "músicas latinas", "afro house", "BR-116", "American bar", "Salão Lua", "doces tradicionais"
 
 /**
  * Gêneros citados pelo nome num texto livre (título, descrição). Sem aliases: siglas como "SBK"

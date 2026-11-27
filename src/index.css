@@ -5,7 +5,7 @@
 
 /*
  * Tokens semânticos. As cores reais ficam nas variáveis abaixo e trocam com o tema;
- * as utilities (bg-surface, text-fg-muted, bg-genre-wine…) apontam para elas.
+ * as utilities (bg-surface, text-fg-muted, bg-genre-salsa…) apontam para elas.
  * Contraste de texto verificado em AA (≥ 4.5) nos dois temas.
  */
 /* Nunito no texto, Fredoka nos títulos (arquivos em src/fonts.css). */
@@ -36,60 +36,79 @@
 
   --color-genre-neutral: var(--genre-neutral);
   --color-genre-neutral-fg: var(--genre-neutral-fg);
-  /* Latinas: azul da bandeira dominicana */
-  --color-genre-dr-navy: var(--genre-dr-navy);
-  --color-genre-dr-navy-fg: #ffffff;
-  /* Salsa: vermelho dominicano (também contadores e "cancelado") */
+  /* Cores dos estilos (paleta "Versão final", /test/genre-colors). Um token por estilo; os que mudam no
+     tema escuro apontam para --genre-<estilo> (definido nos dois temas, abaixo). */
+  /* Latinas: noite, azul dominicano */
+  --color-genre-latinas: var(--genre-latinas);
+  --color-genre-latinas-fg: #ffffff;
+  /* Salsa: vermelho de noite (o tom principal das Latinas) */
+  --color-genre-salsa: #b3261e;
+  --color-genre-salsa-fg: #ffffff;
+  /* Salsa Cubana: vinho */
+  --color-genre-salsa-cubana: var(--genre-salsa-cubana);
+  --color-genre-salsa-cubana-fg: #ffffff;
+  /* Bachata: rosa-framboesa (par sensual com o Zouk) */
+  --color-genre-bachata: #b8336a;
+  --color-genre-bachata-fg: #ffffff;
+  /* Merengue: vermelho-alaranjado, parente da Salsa */
+  --color-genre-merengue: #c2461d;
+  --color-genre-merengue-fg: #ffffff;
+  /* Afro: noite, dourado de Angola */
+  --color-genre-afro: var(--genre-afro);
+  --color-genre-afro-fg: #ffcb00;
+  /* Kizomba: a mais escura ("a mais caliente") */
+  --color-genre-kizomba: var(--genre-kizomba);
+  --color-genre-kizomba-fg: #ffd54f;
+  /* Semba: terra, raiz */
+  --color-genre-semba: #6b3e12;
+  --color-genre-semba-fg: #ffffff;
+  /* Urban Kiz: noite urbana, ameixa */
+  --color-genre-urban-kiz: var(--genre-urban-kiz);
+  --color-genre-urban-kiz-fg: #ffffff;
+  /* BR: sol, com o verde do Brasil */
+  --color-genre-br: #ffdf00;
+  --color-genre-br-fg: #00502a;
+  /* Forró: amarelo (a primeira) */
+  --color-genre-forro: #ffd000;
+  --color-genre-forro-fg: #1c1c1c;
+  /* Zouk: rosa-ameixa (par sensual com a Bachata) */
+  --color-genre-zouk: #8f2d63;
+  --color-genre-zouk-fg: #ffffff;
+  /* Samba: âmbar */
+  --color-genre-samba: #f0a500;
+  --color-genre-samba-fg: #1c1c1c;
+  /* American: azul (a família do Blues) */
+  --color-genre-american: #0e5a8a;
+  --color-genre-american-fg: #ffffff;
+  /* Swing: azul vivo */
+  --color-genre-swing: #1565c0;
+  --color-genre-swing-fg: #ffffff;
+  /* Blues: azul profundo */
+  --color-genre-blues: #174a7c;
+  --color-genre-blues-fg: #ffffff;
+  /* West Coast Swing: azul-índigo */
+  --color-genre-wcs: #3949ab;
+  --color-genre-wcs-fg: #ffffff;
+  /* Salão: petróleo */
+  --color-genre-salao: #0f5257;
+  --color-genre-salao-fg: #ffffff;
+  /* Tango: esmeralda escuro, de gala */
+  --color-genre-tango: #0b6e6e;
+  --color-genre-tango-fg: #ffffff;
+  /* Bolero: verde-água claro */
+  --color-genre-bolero: #7cc4b8;
+  --color-genre-bolero-fg: #1c1c1c;
+  /* Tradicionais: verde-floresta */
+  --color-genre-tradicionais: var(--genre-tradicionais);
+  --color-genre-tradicionais-fg: #ffffff;
+
+  /* Cores de estado (não são de estilo): "cancelado" e contadores, "agora", e o magenta da página de ícones. */
   --color-genre-red: #c62828;
   --color-genre-red-fg: #ffffff;
-  /* Salsa Cubana */
-  --color-genre-wine: var(--genre-wine);
-  --color-genre-wine-fg: #ffffff;
-  /* Bachata */
-  --color-genre-royal-blue: var(--genre-royal-blue);
-  --color-genre-royal-blue-fg: #ffffff;
-  /* Merengue */
-  --color-genre-light-blue: #9cc3eb;
-  --color-genre-light-blue-fg: #0b2a4a;
-  /* Afro: preto e amarelo de Angola */
-  --color-genre-black-gold: var(--genre-black-gold);
-  --color-genre-black-gold-fg: #ffcb00;
-  /* Kizomba */
-  --color-genre-gold: #ffcb00;
-  --color-genre-gold-fg: #1c1c1c;
-  /* Semba: terracota */
-  --color-genre-rust: #b4441c;
-  --color-genre-rust-fg: #ffffff;
-  /* Urban Kiz */
-  --color-genre-chocolate: var(--genre-chocolate);
-  --color-genre-chocolate-fg: #ffffff;
-  /* BR: amarelo e verde do Brasil */
-  --color-genre-br-yellow: #ffdf00;
-  --color-genre-br-yellow-fg: #00502a;
-  /* Samba */
   --color-genre-green: #007a2f;
   --color-genre-green-fg: #ffffff;
-  /* Forró */
-  --color-genre-lime: #84cc16;
-  --color-genre-lime-fg: #1a2e05;
-  /* Zouk */
-  --color-genre-teal: #0f766e;
-  --color-genre-teal-fg: #ffffff;
-  /* Swing */
-  --color-genre-slate: #52606d;
-  --color-genre-slate-fg: #ffffff;
-  /* Tango */
   --color-genre-magenta: #c2306f;
   --color-genre-magenta-fg: #ffffff;
-  /* West Coast Swing */
-  --color-genre-orange: #e8742a;
-  --color-genre-orange-fg: #2a1300;
-  /* Bolero */
-  --color-genre-lavender: #c4b5fd;
-  --color-genre-lavender-fg: #2e1065;
-  /* Tradicionais (danças europeias) */
-  --color-genre-olive: #556b2f;
-  --color-genre-olive-fg: #ffffff;
   /* Amarelo de aviso (mudanças no evento, "adiado"); não é cor de gênero. */
   --color-genre-yellow: #f2c230;
   --color-genre-yellow-fg: #2b2100;
@@ -120,11 +139,12 @@
 
     --genre-neutral: #e2e8f0;
     --genre-neutral-fg: #334155;
-    --genre-dr-navy: #002d62;
-    --genre-wine: #8e1b3a;
-    --genre-royal-blue: #1d4ed8;
-    --genre-black-gold: #1c1c1c;
-    --genre-chocolate: #5d3a1a;
+    --genre-latinas: #002d62;
+    --genre-salsa-cubana: #7a1630;
+    --genre-afro: #2a2118;
+    --genre-kizomba: #0d0d0d;
+    --genre-urban-kiz: #3a2c4a;
+    --genre-tradicionais: #2e6b3a;
   }
 
   [data-theme='dark'] {
@@ -150,11 +170,12 @@
        chumbo, mantendo o texto amarelo). */
     --genre-neutral: #3a3e66;
     --genre-neutral-fg: #e2e4ff;
-    --genre-dr-navy: #2f5597;
-    --genre-wine: #b0345c;
-    --genre-royal-blue: #3b6fe0;
-    --genre-black-gold: #454545;
-    --genre-chocolate: #8a5a2b;
+    --genre-latinas: #2f5597;
+    --genre-salsa-cubana: #a3324f;
+    --genre-afro: #5c4a35;
+    --genre-kizomba: #000000;
+    --genre-urban-kiz: #57456e;
+    --genre-tradicionais: #387d46;
   }
 
   /* Títulos na fonte "gordinha" (no Duolingo, Feather Bold). */
