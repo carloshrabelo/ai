@@ -27,8 +27,11 @@ export default function Header() {
             {/* Nome em cima e "with Pas de Deux" embaixo, menor e mais leve (mesma cor: o contraste
                 continua AA). O espaço entre os dois entra no nome lido ("Lisbon Dance with Pas de Deux"). */}
             <span className="flex flex-col items-end text-right">
-              <span className="text-xl leading-5 md:text-2xl md:leading-6">{APP_NAME}</span>{' '}
-              <span className="text-xs leading-3.5 font-medium md:text-[13px]">{APP_PARTNER}</span>
+              {/* O "with Pas de Deux" passa 1ch (do texto de baixo, 16px ≈ 0,58rem) do fim do nome: o
+                  recuo fica no nome (pr), sem margem negativa. A linha de 6px + pb-1 sobe o texto de baixo
+                  colado ao nome, com a mesma altura total do bloco. */}
+              <span className="pr-[0.58rem] text-xl leading-5 md:text-2xl md:leading-6">{APP_NAME}</span>{' '}
+              <span className="pb-1 text-base leading-1.5 font-medium">{APP_PARTNER}</span>
             </span>
           </Link>
           {page && (
