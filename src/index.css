@@ -92,15 +92,15 @@
   /* West Coast Swing: azul-índigo */
   --color-genre-wcs: #3949ab;
   --color-genre-wcs-fg: #ffffff;
-  /* Salão: petróleo */
-  --color-genre-salao: #0f5257;
+  /* Salão: roxo fechado (o roxo da v1, sem o magenta, que hoje é da Bachata) */
+  --color-genre-salao: var(--genre-salao);
   --color-genre-salao-fg: #ffffff;
-  /* Tango: esmeralda escuro, de gala */
-  --color-genre-tango: #0b6e6e;
+  /* Tango: roxo de gala */
+  --color-genre-tango: #8e3fb0;
   --color-genre-tango-fg: #ffffff;
-  /* Bolero: verde-água claro */
-  --color-genre-bolero: #7cc4b8;
-  --color-genre-bolero-fg: #1c1c1c;
+  /* Bolero: lavanda (como na v1) */
+  --color-genre-bolero: #c4b5fd;
+  --color-genre-bolero-fg: #2e1065;
   /* Outros (filtro dos eventos sem estilo da lista): areia, neutro quente que não parece desativado */
   --color-genre-other: #d9c9a3;
   --color-genre-other-fg: #3d3220;
@@ -150,6 +150,7 @@
     --genre-kizomba: #0d0d0d;
     --genre-urban-kiz: #3a2c4a;
     --genre-tradicionais: #2e6b3a;
+    --genre-salao: #5b2a86;
   }
 
   [data-theme='dark'] {
@@ -180,6 +181,7 @@
     --genre-kizomba: #000000;
     --genre-urban-kiz: #57456e;
     --genre-tradicionais: #387d46;
+    --genre-salao: #7a46a8;
   }
 
   /* Títulos na fonte "gordinha" (no Duolingo, Feather Bold). */

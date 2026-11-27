@@ -19,15 +19,15 @@ export default function Sidebar({ slotRef, bottomSlotRef }: { slotRef: SlotRef; 
       className="sticky top-0 hidden h-dvh w-72 shrink-0 flex-col gap-6 overflow-y-auto border-r border-border bg-surface-muted px-4 pb-6 xl:flex"
     >
       {/* Só a logo: o nome do app já está no título do header, ao lado. Leva para a agenda. */}
-      <div className="flex h-14 shrink-0 items-center px-2">
+      <div className="flex h-36 shrink-0 items-center px-2">
         <Link
           {...track('nav.link', '/')}
           to="/"
           aria-label={APP_FULL_NAME}
           title={APP_FULL_NAME}
-          className={`rounded-lg ${FOCUS.replace('-outline-offset-2', 'outline-offset-2')}`}
+          className={`mx-auto rounded-lg ${FOCUS.replace('-outline-offset-2', 'outline-offset-2')}`}
         >
-          <Logo className="h-11 w-auto" />
+          <Logo size={128} className="size-32" />
         </Link>
       </div>
 

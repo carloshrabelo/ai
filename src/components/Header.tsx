@@ -23,7 +23,7 @@ export default function Header() {
             to="/"
             className="flex shrink-0 items-center gap-2 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
           >
-            <Logo className="h-10 w-auto shrink-0 xl:hidden" />
+            <Logo size={52} className="size-13 shrink-0 xl:hidden" />
             {/* Nome em cima e "with Pas de Deux" embaixo, menor e mais leve (mesma cor: o contraste
                 continua AA). O espaço entre os dois entra no nome lido ("Lisbon Dance with Pas de Deux"). */}
             <span className="flex flex-col items-end text-right">
