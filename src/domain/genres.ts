@@ -11,7 +11,6 @@ export const GENRES = [
   'Urban Kiz',
   'Afro',
   'Swing',
-  'Shag',
   'Balboa',
   'Blues',
   'West Coast Swing',
@@ -52,6 +51,7 @@ export const ALIAS: Record<string, string> = {
   'SAMBA DE GAFIEIRA': 'SAMBA',
   FORRO: 'FORRÓ',
   SWINGADO: '',
+  SHAG: 'SWING', // nenhum evento só de Shag nos dados: conta como Swing (separar se aparecer)
   'LINDY HOP': 'SWING',
   // Danças tradicionais europeias (calendário europeias.agenda@gmail.com).
   'DANÇAS TRADICIONAIS EUROPEIAS': 'TRADICIONAIS',
@@ -65,7 +65,7 @@ export const ALIAS: Record<string, string> = {
 /**
  * Gêneros "guarda-chuva": o evento aparece também no filtro dos gêneros incluídos
  * (Latinas → Salsa, Bachata e Merengue; Afro → Kizomba, Semba e Urban Kiz; BR → Forró, Zouk e Samba;
- * American → Swing (com Shag e Balboa), Blues e West Coast Swing; Salão → Tango e Bolero).
+ * American → Swing (com Balboa), Blues e West Coast Swing; Salão → Tango e Bolero).
  */
 export const GENRE_INCLUDES: Partial<Record<Genre, readonly Genre[]>> = {
   Latinas: ['Salsa', 'Bachata', 'Merengue'],
@@ -90,8 +90,7 @@ export const GENRE_EMOJI: Partial<Record<Genre, string>> = {
  */
 const GENRE_PARENT: Partial<Record<Genre, Genre>> = {
   'Salsa Cubana': 'Salsa',
-  // Danças da era do swing: aparecem no filtro "Swing" (e no American), mas Swing não vira Shag/Balboa.
-  Shag: 'Swing',
+  // Dança da era do swing: aparece no filtro "Swing" (e no American), mas Swing não vira Balboa.
   Balboa: 'Swing',
 }
 

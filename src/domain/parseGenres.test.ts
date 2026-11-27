@@ -19,7 +19,7 @@ describe('parseGenres', () => {
     ['Blues', ['Blues']],
     ['Swing & Blues', ['Swing', 'Blues']],
     ['Balboa', ['Balboa']],
-    ['Shag', ['Shag']],
+    ['Shag', ['Swing']],
     ['Lindy Hop', ['Swing']],
   ])('%s → gêneros diretos', (tag, expected) => {
     expect(parseGenres(tag)).toEqual(expected)

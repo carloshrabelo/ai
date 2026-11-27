@@ -131,9 +131,9 @@ describe('matchesGenres', () => {
     expect(matchesGenres(['Bolero'], ['Salão'])).toBe(true)
     expect(matchesGenres(['Tango'], ['American'])).toBe(false)
     expect(parseGenresParam('american,salao')).toEqual(['American', 'Salão'])
-    // Shag e Balboa: variações do Swing (filtro Swing e American), sem o caminho inverso
+    // Balboa: variação do Swing (filtro Swing e American), sem o caminho inverso
     expect(matchesGenres(['Balboa'], ['Swing'])).toBe(true)
-    expect(matchesGenres(['Shag'], ['American'])).toBe(true)
+    expect(matchesGenres(['Balboa'], ['American'])).toBe(true)
     expect(matchesGenres(['Swing'], ['Balboa'])).toBe(false)
   })
 
