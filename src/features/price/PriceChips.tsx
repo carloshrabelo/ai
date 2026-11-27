@@ -77,9 +77,10 @@ function Joined({ items }: { items: Item[] }) {
   return (
     <span className="inline-flex h-7 items-stretch divide-x-2 divide-border overflow-hidden rounded-xl border-2 border-border text-[13px] font-bold tabular-nums">
       {items.map(({ value, label, uncertain }) => (
-        <span key={value + label} className="flex items-center px-2 whitespace-nowrap">
+        // gap-1: num flex, o espaço no começo do rótulo some ("8€bebida incluída").
+        <span key={value + label} className="flex items-center gap-1 px-2 whitespace-nowrap">
           <Amount value={value} uncertain={uncertain} />
-          {label && <span className="text-fg-muted"> {label}</span>}
+          {label && <span className="text-fg-muted">{label}</span>}
         </span>
       ))}
     </span>
