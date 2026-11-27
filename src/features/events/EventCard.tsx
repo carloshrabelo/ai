@@ -2,6 +2,7 @@ import { memo } from 'react'
 import { CalendarPlusIcon, ClockIcon, MapPinIcon, TicketIcon } from '@phosphor-icons/react'
 import { Card } from '../../components/ui/Card'
 import { Chip } from '../../components/ui/Chip'
+import { OTHER_COLOR_CLASSES } from '../../components/ui/genreColors'
 import { Skeleton } from '../../components/ui/Skeleton'
 import { Tooltip } from '../../components/ui/Tooltip'
 import type { DanceEvent } from '../../domain/event'
@@ -149,7 +150,7 @@ export const EventCard = memo(function EventCard({ event, onOpen, clampTitle = f
           {event.status ? <EventStatusBadge status={event.status} /> : timing !== 'upcoming' && <EventStatusBadge status={timing} />}
           {event.genres.length > 0
             ? visibleGenres(event.genres).map((genre) => <Chip key={genre} genre={genre} />)
-            : event.rawTag && <Chip label={event.rawTag} />}
+            : event.rawTag && <Chip label={event.rawTag} colors={OTHER_COLOR_CLASSES} />}
         </div>
         <EventDistance venue={event.venue} />
       </div>

@@ -15,7 +15,8 @@ type ThemeId = keyof typeof THEMES
 
 const BRAND = '#6d3fd9'
 
-type SampleEvent = { title: string; venue: string; genres: string[]; ended?: boolean }
+/** `tags`: estilos fora da lista (ex.: Fusão), que o app mostra com a cor de "Outros". */
+type SampleEvent = { title: string; venue: string; genres: string[]; tags?: string[]; ended?: boolean }
 
 const SAMPLE_EVENTS: SampleEvent[] = [
   { title: 'Social de Salsa & Bachata', venue: 'Armazém 16', genres: ['Salsa', 'Bachata'] },
@@ -25,6 +26,8 @@ const SAMPLE_EVENTS: SampleEvent[] = [
   { title: 'Swing Jam', venue: 'Bar Irreal', genres: ['Swing', 'Blues', 'West Coast Swing'] },
   { title: 'Milonga de Quinta', venue: 'Casa do Alentejo', genres: ['Tango', 'Bolero'] },
   { title: 'Baile Folk', venue: 'Voz do Operário', genres: ['Tradicionais'] },
+  { title: 'Fusão na Praça', venue: 'Largo do Intendente', genres: [], tags: ['Fusão'] },
+  { title: 'Baile Sertanejo', venue: 'Casa do Brasil', genres: [], tags: ['Sertanejo'] },
   { title: 'Social de Salsa (já acabou)', venue: 'Armazém 16', genres: ['Salsa', 'Merengue'], ended: true },
 ]
 
@@ -33,7 +36,20 @@ function colorsOf(swatch: Swatch, theme: ThemeId) {
   return { bg, fg: swatch.fg ?? autoFg(bg) }
 }
 
-function GenreChip({ palette, genre, theme, umbrella = false }: { palette: Palette; genre: string; theme: ThemeId; umbrella?: boolean }) {
+function GenreChip({
+  palette,
+  genre,
+  theme,
+  umbrella = false,
+  label,
+}: {
+  palette: Palette
+  genre: string
+  theme: ThemeId
+  umbrella?: boolean
+  /** Texto no lugar do nome (ex.: "Fusão" com a cor de "Outros"). */
+  label?: string
+}) {
   const swatch = palette.colors[genre]
   if (!swatch) return null
   const { bg, fg } = colorsOf(swatch, theme)
@@ -44,7 +60,7 @@ function GenreChip({ palette, genre, theme, umbrella = false }: { palette: Palet
         umbrella ? 'rounded-lg font-extrabold tracking-wide' : 'rounded-xl'
       }`}
     >
-      {genre}
+      {label ?? genre}
     </span>
   )
 }
@@ -84,6 +100,9 @@ function Preview({ palette, theme }: { palette: Palette; theme: ThemeId }) {
             <div className="flex flex-wrap gap-1.5">
               {event.genres.map((genre) => (
                 <GenreChip key={genre} palette={palette} genre={genre} theme={theme} />
+              ))}
+              {event.tags?.map((tag) => (
+                <GenreChip key={tag} palette={palette} genre="Outros" label={tag} theme={theme} />
               ))}
             </div>
           </article>

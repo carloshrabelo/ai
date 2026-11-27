@@ -27,7 +27,12 @@ export const FAMILIES: Family[] = [
     genres: ['Tango', 'Bolero'],
     note: 'Nova (já no app). Danças de abraço fechado, de "gala": ficam juntas para dividir o mesmo tom (o lilás do Tango).',
   },
-  { id: 'tradicionais', name: 'Tradicionais', genres: ['Tradicionais'] },
+  {
+    id: 'tradicionais',
+    name: 'Outros estilos',
+    genres: ['Tradicionais', 'Outros'],
+    note: '"Outros" é o filtro dos eventos sem um estilo da lista: não é uma família, mas tem chip e cor.',
+  },
 ]
 
 export const ALL_GENRES = FAMILIES.flatMap((family) => [...(family.umbrella ? [family.umbrella] : []), ...family.genres])
@@ -102,6 +107,7 @@ export const PALETTES: Palette[] = [
       Tango: { bg: '#c2306f', fg: '#ffffff', why: 'Magenta (sobra)' },
       Bolero: { bg: '#c4b5fd', fg: '#2e1065', why: 'Lavanda (sobra)' },
       Tradicionais: { bg: '#556b2f', fg: '#ffffff', why: 'Oliva (sobra)' },
+      Outros: { bg: '#e2e8f0', fg: '#334155', why: 'Neutro (cinza claro): o chip sem cor que o app usava' },
     },
     notes: [
       'Não conversa com o calendário do Pas de Deux: quem usa os dois vê Kizomba amarela aqui e cinza lá.',
@@ -140,6 +146,7 @@ export const PALETTES: Palette[] = [
       Tango: g('Lavanda', 'lilás, sóbrio e de gala'),
       Bolero: g('Uva', 'não citado'),
       Tradicionais: g('Manjericão', 'as florestas, o antigo'),
+      Outros: { bg: '#e2e8f0', fg: '#334155', why: 'Sem cor de evento: fica a cor padrão do calendário' },
     },
     notes: [
       'Com 9 estilos em Grafite, o cinza vira a cor da maior parte da agenda: numa sexta à noite, quase todos os cards ficam cinza.',
@@ -179,6 +186,7 @@ export const PALETTES: Palette[] = [
       Tango: { bg: '#6a4c9c', why: 'Lilás de gala' },
       Bolero: { bg: '#cbb8ea', why: 'Lilás claro, romântico' },
       Tradicionais: { bg: '#2e6b3a', why: 'Verde-floresta' },
+      Outros: { bg: '#d9c9a3', fg: '#3d3220', why: 'Areia: neutro quente, fora das famílias, sem parecer desativado' },
     },
     notes: [
       'As cores escuras das afro-latinas somem no tema escuro (fundo azul-marinho): precisariam de uma versão mais clara lá.',
@@ -218,6 +226,7 @@ export const PALETTES: Palette[] = [
       Tango: { bg: '#212121', fg: '#ff5252', why: 'Preto e vermelho' },
       Bolero: { bg: '#f8bbd0', fg: '#880e4f', why: 'Romântico' },
       Tradicionais: { bg: '#4a7c28', why: 'Folk, campo' },
+      Outros: { bg: '#d9c9a3', fg: '#3d3220', why: 'Areia: neutro quente, fora das famílias, sem parecer desativado' },
     },
     notes: [
       'Cada estilo fica fácil de reconhecer sozinho, mas as famílias se perdem: Latinas vão do vermelho ao turquesa e BR do laranja ao azul.',
@@ -257,6 +266,7 @@ export const PALETTES: Palette[] = [
       Tango: { bg: '#74acdf', why: 'Argentina (celeste)' },
       Bolero: { bg: '#006847', why: 'México' },
       Tradicionais: { bg: '#046a38', why: 'Portugal' },
+      Outros: { bg: '#d9c9a3', fg: '#3d3220', why: 'Areia: neutro quente, fora das famílias, sem parecer desativado' },
     },
     notes: [
       'Muitos estilos vêm dos mesmos países, então as cores se repetem: vários vermelhos (Salsa, Merengue, Semba, Swing) e vários azuis (Salsa Cubana, Bachata, Urban Kiz, Zouk, Blues).',
@@ -297,6 +307,7 @@ export const PALETTES: Palette[] = [
       Tango: { bg: '#a05195', why: 'Lilás-malva, de gala' },
       Bolero: { bg: '#d7b8e8', fg: '#3b1d4a', why: 'Lilás claro, romântico' },
       Tradicionais: { bg: '#2e6b3a', dark: '#3f8a4d', why: 'Verde-floresta' },
+      Outros: { bg: '#d9c9a3', fg: '#3d3220', why: 'Areia: neutro quente, fora das famílias, sem parecer desativado' },
     },
     notes: [
       'Ainda falta ajustar a versão de cada cor no tema escuro e testar numa noite cheia de eventos.',
@@ -336,6 +347,7 @@ export const PALETTES: Palette[] = [
       Tango: { bg: '#8e24aa', why: 'Escolhida' },
       Bolero: { bg: '#b46ac6', why: 'Derivada: roxo do Tango, mais claro' },
       Tradicionais: { bg: '#009688', why: 'Escolhida' },
+      Outros: { bg: '#d9c9a3', fg: '#3d3220', why: 'Areia: neutro quente, fora das famílias, sem parecer desativado' },
     },
     notes: [
       'Kizomba e Zouk têm exatamente a mesma cor, e estão em famílias diferentes (Afro e BR).',
@@ -378,6 +390,7 @@ export const PALETTES: Palette[] = [
       Tango: { bg: '#0b6e6e', why: 'Esmeralda escuro: gala' },
       Bolero: { bg: '#7cc4b8', why: 'Verde-água claro: romântico, mais leve' },
       Tradicionais: { bg: '#2e6b3a', dark: '#3f8a4d', why: 'Verde-floresta' },
+      Outros: { bg: '#d9c9a3', fg: '#3d3220', why: 'Areia: neutro quente, fora das famílias, sem parecer desativado' },
     },
     notes: [
       'American em azul (por causa do Blues): Swing azul vivo, Blues azul profundo, West Coast Swing índigo.',
@@ -425,6 +438,7 @@ PALETTES.push({
     Tango: g('Sálvia', 'verde-água: o mais perto do petróleo'),
     Bolero: g('Sálvia'),
     Tradicionais: g('Manjericão', 'verde-floresta'),
+    Outros: { bg: '#e2e8f0', fg: '#334155', why: 'Sem cor de evento: fica a cor padrão do calendário' },
   },
   notes: [
     'No calendário, a cor só separa famílias numa grade de horários, então cinza (Grafite) e cores repetidas não são problema lá como são no app.',

@@ -16,6 +16,8 @@ type ChipProps = {
   /** Gênero conhecido (usa a cor da paleta) ou texto livre (chip neutro). */
   genre?: Genre
   label?: string
+  /** Cor no lugar da do gênero (ex.: a de "Outros" na tag de um estilo fora da lista). */
+  colors?: string
 }
 
 const colorOf = genreColorClasses
@@ -36,9 +38,9 @@ function ChipLabel({ genre, label }: ChipProps) {
 }
 
 /** Chip só de leitura, 28px de altura. */
-export function Chip({ genre, label }: ChipProps) {
+export function Chip({ genre, label, colors }: ChipProps) {
   return (
-    <span className={`${BASE} ${genre ? DEPTH : DEPTH_NEUTRAL} h-7 rounded-xl font-bold ${colorOf(genre)}`}>
+    <span className={`${BASE} ${genre || colors ? DEPTH : DEPTH_NEUTRAL} h-7 rounded-xl font-bold ${colors ?? colorOf(genre)}`}>
       <ChipLabel genre={genre} label={label} />
     </span>
   )
@@ -49,14 +51,16 @@ type ToggleChipProps = ChipProps &
     pressed: boolean
     /** "group": chip de conjunto (Latinas, Afro, BR): cantos retos e negrito. */
     variant?: 'genre' | 'group'
+    /** Cor quando marcado, no lugar da do gênero (ex.: "Outros", que não é um gênero). */
+    colors?: string
   }
 
 /** Chip selecionável do filtro, 32px de altura. Não selecionado fica neutro com borda. */
-export function ToggleChip({ genre, label, pressed, variant = 'genre', className = '', ...props }: ToggleChipProps) {
+export function ToggleChip({ genre, label, pressed, variant = 'genre', colors, className = '', ...props }: ToggleChipProps) {
   const shape = variant === 'group' ? 'rounded-lg font-extrabold tracking-wide' : 'rounded-xl font-bold'
   // Selecionada, a borda fica transparente (e não some): as duas têm o mesmo tamanho.
   const state = pressed
-    ? `border border-transparent ${colorOf(genre)} ${genre ? DEPTH : DEPTH_NEUTRAL}`
+    ? `border border-transparent ${colors ?? colorOf(genre)} ${genre || colors ? DEPTH : DEPTH_NEUTRAL}`
     : `border border-border bg-surface text-fg-muted hover:text-fg ${DEPTH_NEUTRAL}`
   return (
     <button

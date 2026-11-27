@@ -36,3 +36,6 @@ const COLOR_CLASSES: Record<Genre | 'neutral', string> = {
 export function genreColorClasses(genre?: Genre): string {
   return COLOR_CLASSES[genre ?? 'neutral']
 }
+
+/** Cor do chip "Outros" no filtro (eventos sem estilo da lista): areia, fora das famílias. */
+export const OTHER_COLOR_CLASSES = 'bg-genre-other text-genre-other-fg'

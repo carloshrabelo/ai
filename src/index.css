@@ -101,6 +101,9 @@
   /* Bolero: verde-água claro */
   --color-genre-bolero: #7cc4b8;
   --color-genre-bolero-fg: #1c1c1c;
+  /* Outros (filtro dos eventos sem estilo da lista): areia, neutro quente que não parece desativado */
+  --color-genre-other: #d9c9a3;
+  --color-genre-other-fg: #3d3220;
   /* Tradicionais: verde-floresta */
   --color-genre-tradicionais: var(--genre-tradicionais);
   --color-genre-tradicionais-fg: #ffffff;

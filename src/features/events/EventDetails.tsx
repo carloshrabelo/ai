@@ -9,6 +9,7 @@ import {
 } from '@phosphor-icons/react'
 import { type ReactNode, useEffect, useId, useMemo, useRef, useState } from 'react'
 import { Chip } from '../../components/ui/Chip'
+import { OTHER_COLOR_CLASSES } from '../../components/ui/genreColors'
 import { Skeleton } from '../../components/ui/Skeleton'
 import { lisbonDate } from '../../lib/dates'
 import type { DanceEvent } from '../../domain/event'
@@ -60,7 +61,7 @@ export function EventDetails({ event, headingId, showTitle = true }: { event: Da
           {event.status && <EventStatusBadge status={event.status} />}
           {event.genres.length > 0
             ? visibleGenres(event.genres).map((genre) => <Chip key={genre} genre={genre} />)
-            : event.rawTag && <Chip label={event.rawTag} />}
+            : event.rawTag && <Chip label={event.rawTag} colors={OTHER_COLOR_CLASSES} />}
         </div>
       </div>
 

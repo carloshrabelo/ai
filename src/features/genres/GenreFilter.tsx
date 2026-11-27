@@ -1,6 +1,7 @@
 import { FunnelIcon, FunnelXIcon } from '@phosphor-icons/react'
 import { Card } from '../../components/ui/Card'
 import { ToggleChip } from '../../components/ui/Chip'
+import { OTHER_COLOR_CLASSES } from '../../components/ui/genreColors'
 import { FILTER_VALUES, type GenreFilterValue, groupState, OTHER_GENRES, umbrellaState } from '../../domain/genreFilter'
 import { GENRE_GROUPS } from '../../domain/genres'
 import { useGenreFilter } from './useGenreFilter'
@@ -85,8 +86,8 @@ export function GenreFilter({ plain = false }: { plain?: boolean } = {}) {
               {STANDALONE.map((value) => (
                 <ToggleChip
                   key={value}
-                  // "Outros" usa o chip neutro, como os eventos sem gênero da lista.
-                  {...(value === OTHER_GENRES ? { label: genreLabel(value, t) } : { genre: value })}
+                  // "Outros" não é um gênero: cor própria (areia), fora das famílias.
+                  {...(value === OTHER_GENRES ? { label: genreLabel(value, t), colors: OTHER_COLOR_CLASSES } : { genre: value })}
                   {...track('filters.genre', value)}
                   pressed={selected.includes(value)}
                   onClick={() => toggle(value)}
