@@ -53,14 +53,14 @@ export const router = createBrowserRouter(
           handle: { title: () => 'Revisão' } satisfies RouteHandle,
           lazy: { Component: async () => (await import('./pages/Review')).default },
         },
-        // Área de teste (/test e ferramentas): pública para quem tem o link, mas sem link no app (o
-        // item "Teste" do menu só aparece com VITE_TEST_PAGES=true) e com noindex.
+        // Laboratório (/lab e ferramentas): público para quem tem o link e com noindex. O item "Lab" do
+        // menu só aparece com VITE_TEST_PAGES=true ou para quem já está numa página /lab/* (useNavItems).
         {
-          path: 'test',
+          path: 'lab',
           children: [
             {
               index: true,
-              handle: { title: () => 'Teste' } satisfies RouteHandle,
+              handle: { title: () => 'Lab' } satisfies RouteHandle,
               lazy: { Component: async () => (await import('./pages/test/TestIndex')).default },
             },
             {
@@ -111,7 +111,9 @@ export const router = createBrowserRouter(
         { path: 'comunidade', element: <LegacyRedirect to="/community" /> },
         { path: 'info', element: <LegacyRedirect to="/about" /> },
         { path: 'escolas', element: <LegacyRedirect to="/schools" /> },
-        { path: 'teste/*', element: <LegacyRedirect to="/test" /> },
+        // /test e /teste (nomes antigos do laboratório) → /lab, mantendo a página: test/genre-colors → lab/genre-colors.
+        { path: 'test/*', element: <LegacyRedirect to="/lab/*" /> },
+        { path: 'teste/*', element: <LegacyRedirect to="/lab/*" /> },
         {
           path: '*',
           handle: { title: (t) => t.routes.notFound } satisfies RouteHandle,

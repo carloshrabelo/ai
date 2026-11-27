@@ -4,11 +4,11 @@ import type { Locale } from '../../i18n/locale'
 // (`Tag • Nome • Preço`) ou da descrição (descriptionPrice.ts), escrito à mão em português (às vezes
 // em inglês, no calendário de tango), com variações e erros de digitação. A tradução é por partes
 // (não por frase inteira): os mesmos pedaços se repetem em combinações diferentes ("7€ ou 10€
-// (bebida incluída)"). Texto desconhecido fica como veio. Lista completa para revisar: /test/prices.
+// (bebida incluída)"). Texto desconhecido fica como veio. Lista completa para revisar: /lab/prices.
 //
 // Os módulos de preço (src/domain/price/): descriptionPrice (acha o preço na descrição),
 // translatePrice (texto padronizado/traduzido: SEO, calendário), labeledPrice (valores com rótulo:
-// os chips do app) e priceParts (partes, só para comparar formatos em /test/price-formats).
+// os chips do app) e priceParts (partes, só para comparar formatos em /lab/price-formats).
 
 type Rule = [pattern: RegExp, replacement: string]
 

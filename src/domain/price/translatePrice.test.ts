@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { normalizePrice, translatePrice } from './translatePrice'
 
-// Preços reais do calendário (ver /test/prices).
+// Preços reais do calendário (ver /lab/prices).
 const CASES: [raw: string, pt: string, en: string][] = [
   ['Pago', 'Pago', 'Paid'],
   ['pago', 'Pago', 'Paid'],

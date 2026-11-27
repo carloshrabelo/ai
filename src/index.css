@@ -36,7 +36,7 @@
 
   --color-genre-neutral: var(--genre-neutral);
   --color-genre-neutral-fg: var(--genre-neutral-fg);
-  /* Cores dos estilos (paleta "Versão final", /test/genre-colors). Um token por estilo; os que mudam no
+  /* Cores dos estilos (paleta "Versão final", /lab/genre-colors). Um token por estilo; os que mudam no
      tema escuro apontam para --genre-<estilo> (definido nos dois temas, abaixo). */
   /* Latinas: vermelho fechado, o tom das filhas (Salsa, Salsa Cubana, Merengue) */
   --color-genre-latinas: #8f1d1d;

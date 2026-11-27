@@ -34,7 +34,7 @@ import { track } from '../../analytics/track'
 
 /**
  * Conteúdo dos detalhes: usado no painel da coluna do mapa (`xl+`) e no drawer (abaixo de `xl`), que
- * mostram o título no header fixo deles (`showTitle={false}`); com o título, em /test/no-price.
+ * mostram o título no header fixo deles (`showTitle={false}`); com o título, em /lab/no-price.
  */
 export function EventDetails({ event, headingId, showTitle = true }: { event: DanceEvent; headingId?: string; showTitle?: boolean }) {
   const { t, locale } = useI18n()

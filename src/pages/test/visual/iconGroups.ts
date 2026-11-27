@@ -1,4 +1,4 @@
-// Opções de ícone de /test/icons: um grupo por ícone do app, todas do Phosphor (o estilo escolhido
+// Opções de ícone de /lab/icons: um grupo por ícone do app, todas do Phosphor (o estilo escolhido
 // foi o Duotone). A escolha atual (aplicada no app) vem marcada.
 import {
   AddressBookIcon,

@@ -31,7 +31,7 @@ const TD = 'px-4 py-2 align-top'
 const isGenre = (value: string): value is Genre => (GENRES as readonly string[]).includes(value)
 
 /**
- * Página de teste (/test/promoter-directory, pública mas sem link no app): o conteúdo de
+ * Página de teste (/lab/promoter-directory, pública mas sem link no app): o conteúdo de
  * src/content/promoters.json, atualizado todo dia pela Action "Update promoters"
  * (scripts/promoters-update.mjs): papel (promotor, DJ, professor, local, outro), redes sociais, locais
  * e estilos de cada perfil, e os perfis que parecem o mesmo escrito de outro jeito.
@@ -40,7 +40,7 @@ export default function PromoterDirectory() {
   useDocumentHead({
     title: 'Diretório de promotores (teste)',
     description: 'Promotores com redes, locais e estilos',
-    canonical: `${siteUrl()}teste/diretorio-promotores`,
+    canonical: `${siteUrl()}lab/diretorio-promotores`,
     noindex: true,
   })
   const [search, setSearch] = useState('')

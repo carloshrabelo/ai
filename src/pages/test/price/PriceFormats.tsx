@@ -11,7 +11,7 @@ import type { Locale } from '../../../i18n/locale'
 import { siteUrl, useDocumentHead } from '../../../seo/useDocumentHead'
 import { BackToTest } from '../shared'
 
-/** Preços como vêm do calendário (os reais, de /test/prices, e casos de borda). */
+/** Preços como vêm do calendário (os reais, de /lab/prices, e casos de borda). */
 const SAMPLES = [
   '5€ ou 10€',
   '€5 for members / €10 for non-members',
@@ -62,14 +62,14 @@ const CARDS = [
 ]
 
 /**
- * Página de teste (/test/price-formats, pública mas sem link no app): jeitos de exibir preços com
+ * Página de teste (/lab/price-formats, pública mas sem link no app): jeitos de exibir preços com
  * mais de um valor ("5€ ou 10€", "5€ a 15€"), lado a lado e num card de evento.
  */
 export default function PriceFormats() {
   useDocumentHead({
     title: 'Formato de preços (teste)',
     description: 'Como exibir preços com mais de um valor',
-    canonical: `${siteUrl()}teste/formato-precos`,
+    canonical: `${siteUrl()}lab/formato-precos`,
     noindex: true,
   })
   const [locale, setLocale] = useState<Locale>('pt-BR')

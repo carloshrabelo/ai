@@ -1,7 +1,7 @@
 import { Link, NavLink } from 'react-router'
 import { APP_FULL_NAME } from '../app'
 import { Logo } from './Logo'
-import { NAV_ITEMS } from './navItems'
+import { useNavItems } from './navItems'
 import { useI18n } from '../i18n/useI18n'
 import { track } from '../analytics/track'
 
@@ -12,6 +12,7 @@ type SlotRef = (element: HTMLElement | null) => void
 
 export default function Sidebar({ slotRef, bottomSlotRef }: { slotRef: SlotRef; bottomSlotRef: SlotRef }) {
   const { t } = useI18n()
+  const navItems = useNavItems()
   return (
     <aside
       aria-label={t.nav.sidebar}
@@ -35,23 +36,27 @@ export default function Sidebar({ slotRef, bottomSlotRef }: { slotRef: SlotRef; 
 
       <nav aria-label={t.nav.main}>
         <ul className="space-y-1">
-          {NAV_ITEMS.filter((item) => !item.mobileOnly).map(({ to, label, icon: Icon }) => (
-            <li key={to}>
-              <NavLink
-                {...track('nav.link', to)}
-                to={to}
-                end={to === '/'}
-                className={({ isActive }) =>
-                  `flex h-12 items-center gap-3 rounded-2xl border-2 px-3 text-sm font-bold tracking-wide uppercase ${FOCUS} ${
-                    isActive ? 'border-brand/50 bg-brand/10 text-brand' : 'border-transparent text-fg-muted hover:bg-surface hover:text-fg'
-                  }`
-                }
-              >
-                <Icon className="size-6" aria-hidden="true" />
-                {label(t)}
-              </NavLink>
-            </li>
-          ))}
+          {navItems
+            .filter((item) => !item.mobileOnly)
+            .map(({ to, label, icon: Icon }) => (
+              <li key={to}>
+                <NavLink
+                  {...track('nav.link', to)}
+                  to={to}
+                  end={to === '/'}
+                  className={({ isActive }) =>
+                    `flex h-12 items-center gap-3 rounded-2xl border-2 px-3 text-sm font-bold tracking-wide uppercase ${FOCUS} ${
+                      isActive
+                        ? 'border-brand/50 bg-brand/10 text-brand'
+                        : 'border-transparent text-fg-muted hover:bg-surface hover:text-fg'
+                    }`
+                  }
+                >
+                  <Icon className="size-6" aria-hidden="true" />
+                  {label(t)}
+                </NavLink>
+              </li>
+            ))}
         </ul>
       </nav>
 

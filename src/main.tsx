@@ -44,7 +44,7 @@ if (import.meta.env.DEV && !__PWA_IN_DEV__ && 'serviceWorker' in navigator) {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    {/* Ícones do Phosphor no peso Duotone em todo o app (escolhido em /test/icons). */}
+    {/* Ícones do Phosphor no peso Duotone em todo o app (escolhido em /lab/icons). */}
     <IconContext.Provider value={{ weight: 'duotone' }}>
       <PersistQueryClientProvider client={queryClient} persistOptions={persistOptions}>
         <RouterProvider router={router} />

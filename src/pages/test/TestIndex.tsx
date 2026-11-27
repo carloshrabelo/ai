@@ -26,13 +26,13 @@ const SECTIONS: Section[] = [
     description: 'Opções de interface para escolher antes de mudar o app.',
     tools: [
       {
-        to: '/test/icons',
+        to: '/lab/icons',
         title: 'Ícones e nomes',
         description: 'Sugestões de ícone para Dança e para o filtro, e de nome e ícone para Mapa e Sobre, com prévia.',
         icon: ShapesIcon,
       },
       {
-        to: '/test/genre-colors',
+        to: '/lab/genre-colors',
         title: 'Cores dos estilos',
         description: 'Nove paletas para os estilos (a atual, a do Pas de Deux e outras), com prévia nos dois temas e o porquê de cada cor.',
         icon: PaletteIcon,
@@ -44,19 +44,19 @@ const SECTIONS: Section[] = [
     description: 'Textos que vêm do calendário e são traduzidos no app (src/i18n/).',
     tools: [
       {
-        to: '/test/prices',
+        to: '/lab/prices',
         title: 'Preços',
         description: 'Preços distintos dos eventos, com a versão em pt-BR e en-US e o que ficou sem tradução.',
         icon: TagIcon,
       },
       {
-        to: '/test/price-formats',
+        to: '/lab/price-formats',
         title: 'Formato de preços',
         description: 'Jeitos de exibir preços com mais de um valor ("5€ ou 10€"), lado a lado e num card de evento.',
         icon: TicketIcon,
       },
       {
-        to: '/test/no-price',
+        to: '/lab/no-price',
         title: 'Eventos sem preço',
         description: 'Eventos sem preço no título, com o trecho da descrição que cita valor, quando houver.',
         icon: ProhibitInsetIcon,
@@ -68,7 +68,7 @@ const SECTIONS: Section[] = [
     description: 'Quem organiza cada evento, lido da descrição (src/domain/promoters.ts).',
     tools: [
       {
-        to: '/test/promoters',
+        to: '/lab/promoters',
         title: 'Responsáveis pelos eventos',
         description: 'Perfis do Instagram e "Organização: …" citados nos eventos, por promotor ou por evento.',
         icon: MegaphoneIcon,
@@ -80,13 +80,13 @@ const SECTIONS: Section[] = [
     description: 'src/content/promoters.json, atualizado todo dia pela Action "Update promoters" (pnpm promoters:update).',
     tools: [
       {
-        to: '/test/promoter-directory',
+        to: '/lab/promoter-directory',
         title: 'Promotores: redes, locais e estilos',
         description: 'Um registro por perfil, com as redes sociais, os locais e os estilos dos eventos e o último evento.',
         icon: AddressBookIcon,
       },
       {
-        to: '/test/people',
+        to: '/lab/people',
         title: 'Envolvidos por grupo',
         description: 'Promotores, professores, DJs, locais e outros, com foto (ou iniciais) e o @ de cada um.',
         icon: UsersIcon,
@@ -102,11 +102,11 @@ const SECTIONS: Section[] = [
 ]
 
 /**
- * Área de teste (/test, pública mas sem link no app): índice das ferramentas internas, usadas para
+ * Área de teste (/lab, pública mas sem link no app): índice das ferramentas internas, usadas para
  * revisar dados e configurações. Sem i18n: não é para o público.
  */
 export default function TestIndex() {
-  useDocumentHead({ title: 'Teste', description: 'Ferramentas internas', canonical: `${siteUrl()}teste/`, noindex: true })
+  useDocumentHead({ title: 'Teste', description: 'Ferramentas internas', canonical: `${siteUrl()}lab/`, noindex: true })
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <p className="text-sm text-fg-muted">

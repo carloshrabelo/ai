@@ -245,7 +245,7 @@ const REASONS: { title: string; text: string }[] = [
 ]
 
 /**
- * Página de teste (/test/genre-colors, pública mas sem link no app): seis paletas de cor para os
+ * Página de teste (/lab/genre-colors, pública mas sem link no app): seis paletas de cor para os
  * estilos, com prévia dos filtros e dos cards nos dois temas, o motivo de cada cor e o que não
  * funciona no app. Só para escolher: o app continua com src/domain/genres.ts.
  */

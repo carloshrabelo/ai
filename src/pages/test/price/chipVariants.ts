@@ -1,4 +1,4 @@
-// Variações de chips comparadas em /test/price-formats (ver PriceChips.tsx).
+// Variações de chips comparadas em /lab/price-formats (ver PriceChips.tsx).
 import type { PriceChipVariant } from '../../../features/price/PriceChips'
 
 export const PRICE_CHIP_VARIANTS: readonly { id: PriceChipVariant; label: string; hint: string }[] = [

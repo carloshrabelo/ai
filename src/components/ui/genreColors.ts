@@ -2,7 +2,7 @@ import type { Genre } from '../../domain/genres'
 
 /**
  * Cor de cada estilo: classes literais para o Tailwind encontrar no build (fundo + texto). Os valores
- * estão em src/index.css (--color-genre-<estilo>), da paleta "Versão final" (/test/genre-colors):
+ * estão em src/index.css (--color-genre-<estilo>), da paleta "Versão final" (/lab/genre-colors):
  * Latinas em vermelhos, inclusive o conjunto (Bachata em rosa), Afro na noite com dourado, BR em amarelos (Zouk em rosa,
  * par com a Bachata), American em azuis, Salão em petróleo e Tradicionais em verde-floresta.
  */

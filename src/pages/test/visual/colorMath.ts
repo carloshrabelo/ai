@@ -1,4 +1,4 @@
-// Contas de cor da página /test/genre-colors: contraste (WCAG), saturação e distância entre cores (CIE76).
+// Contas de cor da página /lab/genre-colors: contraste (WCAG), saturação e distância entre cores (CIE76).
 
 type Rgb = [number, number, number]
 

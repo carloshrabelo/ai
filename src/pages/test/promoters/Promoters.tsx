@@ -37,7 +37,7 @@ function top(values: string[], n: number): string[] {
 }
 
 /**
- * Página de teste (/test/promoters, pública mas sem link no app): responsáveis por cada evento,
+ * Página de teste (/lab/promoters, pública mas sem link no app): responsáveis por cada evento,
  * lidos da descrição (perfis do Instagram e "Organização: …", ver src/domain/promoters.ts).
  * Duas visões: por promotor (quantos eventos, estilos, locais) e por evento.
  */
@@ -45,7 +45,7 @@ export default function Promoters() {
   useDocumentHead({
     title: 'Promotores (teste)',
     description: 'Responsáveis pelos eventos',
-    canonical: `${siteUrl()}teste/promotores`,
+    canonical: `${siteUrl()}lab/promotores`,
     noindex: true,
   })
   const { query, ...range } = useEventsInRange()

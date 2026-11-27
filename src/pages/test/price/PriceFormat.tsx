@@ -5,7 +5,7 @@ import { normalizePrice, translatePrice } from '../../../domain/price/translateP
 import type { PriceFormatId } from './formatOptions'
 
 // Jeitos de exibir um preço com mais de um valor ("5€ ou 10€", "5€ a 15€"), para comparar em
-// /test/price-formats. Preço com um valor só (ou texto como "Pago") aparece igual em todos.
+// /lab/price-formats. Preço com um valor só (ou texto como "Pago") aparece igual em todos.
 
 const WORDS: Record<Locale, { from: string; free: string }> = {
   'pt-BR': { from: 'a partir de', free: 'Gratuito' },

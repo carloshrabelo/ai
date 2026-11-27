@@ -1,4 +1,4 @@
-// Paletas de cor dos estilos para comparar na página /test/genre-colors. Só a página de teste usa:
+// Paletas de cor dos estilos para comparar na página /lab/genre-colors. Só a página de teste usa:
 // o app continua com src/domain/genres.ts e src/index.css até a escolha.
 
 type FamilyId = 'latinas' | 'afro' | 'br' | 'american' | 'salao' | 'tradicionais'
