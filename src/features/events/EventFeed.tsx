@@ -8,7 +8,7 @@ import { addDays, agendaToday, type IsoDate } from '../../lib/dates'
 import type { Locale } from '../../i18n/locale'
 import type { Messages } from '../../i18n/messages'
 import { eventsInfiniteQueryOptions, flattenEvents } from '../../api/queries'
-import { type GenreFilterValue, matchesGenres, OTHER_GENRES } from '../../domain/genreFilter'
+import { type GenreFilterValue, matchesGenres } from '../../domain/genreFilter'
 import { EventCard, EventCardSkeleton } from './EventCard'
 import { lastSearchedDay, shouldPauseFilteredSearch } from './filteredSearch'
 import { formatDayHeading, formatDayInSentence } from './format'
@@ -61,9 +61,6 @@ function EventFeedContent({ startDate, genres, onOpenEvent }: FeedProps) {
   const [resume, setResume] = useState({ filterKey, fromPage: 0 })
   const fromPage = resume.filterKey === filterKey ? resume.fromPage : 0
   const paused = hasNextPage && shouldPauseFilteredSearch(data.pages, genres, fromPage)
-  // Só "Outros" (eventos sem estilo reconhecido): vazio quer dizer que todos já foram identificados.
-  const onlyOther = genres.length === 1 && genres[0] === OTHER_GENRES
-  const searchedUntil = formatDayInSentence(lastSearchedDay(data.pages, startDate), locale)
   const searchMore = () => {
     setResume({ filterKey, fromPage: data.pages.length })
     void fetchNextPage()
@@ -90,9 +87,7 @@ function EventFeedContent({ startDate, genres, onOpenEvent }: FeedProps) {
       {days.length === 0 && !hasNextPage && (
         <div className="flex flex-col items-center gap-3 py-12 text-center">
           <CalendarXIcon className="size-16 text-brand/70" aria-hidden="true" />
-          <p className="max-w-sm font-bold">
-            {onlyOther ? t.feed.emptyOnlyOther : genres.length > 0 ? t.feed.emptyForGenres(genreNames) : t.feed.emptyFromDate}
-          </p>
+          <p className="max-w-sm font-bold">{genres.length > 0 ? t.feed.emptyForGenres(genreNames) : t.feed.emptyFromDate}</p>
         </div>
       )}
 
@@ -139,9 +134,10 @@ function EventFeedContent({ startDate, genres, onOpenEvent }: FeedProps) {
         <div role="status" className="flex flex-col items-center gap-3 py-6 text-center">
           <MagnifyingGlassIcon className="size-14 text-brand/70" aria-hidden="true" />
           <p className="max-w-sm font-bold">
-            {onlyOther
-              ? (days.length === 0 ? t.feed.pausedNoneOnlyOther : t.feed.pausedNoOtherOnlyOther)(searchedUntil)
-              : (days.length === 0 ? t.feed.pausedNone : t.feed.pausedNoOther)(genreNames, searchedUntil)}
+            {(days.length === 0 ? t.feed.pausedNone : t.feed.pausedNoOther)(
+              genreNames,
+              formatDayInSentence(lastSearchedDay(data.pages, startDate), locale),
+            )}
           </p>
           <Button onClick={searchMore}>{t.feed.searchMore}</Button>
         </div>
