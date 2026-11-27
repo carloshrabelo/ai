@@ -18,7 +18,8 @@ describe('parseGenres', () => {
     ['Bachata & Merengue', ['Bachata', 'Merengue']],
     ['Blues', ['Blues']],
     ['Swing & Blues', ['Swing', 'Blues']],
-    ['Balboa', ['Swing']],
+    ['Balboa', ['Balboa']],
+    ['Shag', ['Shag']],
     ['Lindy Hop', ['Swing']],
   ])('%s → gêneros diretos', (tag, expected) => {
     expect(parseGenres(tag)).toEqual(expected)
@@ -42,7 +43,7 @@ describe('parseGenres', () => {
       ['Samba de Gafieira & Vários', ['Samba']],
       ['Samba de Gafieira', ['Samba']],
       ['Forro', ['Forró']],
-      ['Shag', ['Swing']],
+      ['Lindy Hop', ['Swing']],
     ])('%s → %j', (tag, expected) => {
       expect(parseGenres(tag)).toEqual(expected)
     })

@@ -23,6 +23,8 @@ const COLOR_CLASSES: Record<Genre | 'neutral', string> = {
   Samba: 'bg-genre-samba text-genre-samba-fg',
   American: 'bg-genre-american text-genre-american-fg',
   Swing: 'bg-genre-swing text-genre-swing-fg',
+  Shag: 'bg-genre-shag text-genre-shag-fg',
+  Balboa: 'bg-genre-balboa text-genre-balboa-fg',
   Blues: 'bg-genre-blues text-genre-blues-fg',
   'West Coast Swing': 'bg-genre-wcs text-genre-wcs-fg',
   Salão: 'bg-genre-salao text-genre-salao-fg',
